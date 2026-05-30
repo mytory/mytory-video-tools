@@ -48,6 +48,16 @@
 
     <!-- 2. 우측 메인 콘텐츠 영역 -->
     <main class="content">
+        <!-- 변환 작업 큐 진행 리스트 -->
+        <section class="card panel status-panel" id="conversionQueueSection">
+            <h3 class="section-title" data-mi18n-ko="작업 대기열 / 진행 목록">Task Queue</h3>
+            <div class="status-list" id="queueStatus">
+                <div class="status-item idle" id="queueStatusEmpty">
+                    <span data-mi18n-ko="대기 중인 작업이 없습니다. 파일을 추가해 주세요.">No active tasks in the queue. Add files to start.</span>
+                </div>
+            </div>
+        </section>
+
         <!-- 2.1 배속 변환기 화면 -->
         <section id="speed-changer" class="tab-content active">
             <h2 data-mi18n-ko="비디오 배속 변환기">Video Speed Changer</h2>
@@ -84,6 +94,17 @@
                         <option value="vp9">VP9 (WebM)</option>
                         <option value="av1">AV1</option>
                     </select>
+                    <div class="help-stack" id="speedCodecHelp">
+                        <p class="help-text help-text--highlight" data-mi18n-ko="대부분은 H.264를 쓰면 됩니다. 거의 모든 기기와 앱에서 잘 열리고 공유하기 쉽습니다.">
+                            For most people, H.264 is the right choice. It opens easily on almost every device and app.
+                        </p>
+                        <ul class="help-list">
+                            <li data-mi18n-ko="H.264 / AVC: 가장 무난합니다. 호환성이 가장 좋고 공유하기 쉽습니다.">H.264 / AVC: The safe default. Best compatibility and easiest to share.</li>
+                            <li data-mi18n-ko="H.265 / HEVC: 같은 화질에서 파일 크기를 줄이고 싶을 때 좋습니다. 최신 기기에서 특히 잘 맞습니다.">H.265 / HEVC: Good when you want a smaller file at similar quality, especially for newer devices.</li>
+                            <li data-mi18n-ko="VP9 (WebM): 웹사이트나 브라우저 중심으로 쓸 영상에 좋습니다.">VP9 (WebM): Good for web-first videos, especially in browsers and WebM workflows.</li>
+                            <li data-mi18n-ko="AV1: 가장 효율적이지만 변환 시간이 더 오래 걸릴 수 있습니다. 장기 보관이나 최신 환경에 좋습니다.">AV1: Most efficient, but encoding can take longer. Best for newer platforms and long-term use.</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="dropzone" id="speedDropzone">
@@ -171,6 +192,14 @@
                     <div class="video-preview-wrapper">
                         <video id="captureVideo" playsinline></video>
                         <div id="captureTimecode" class="current-time-display">00:00:00:00</div>
+                    </div>
+
+                    <div class="transport-bar">
+                        <button id="btnCapturePlayPause" class="transport-btn" type="button" aria-label="Play or pause">Play</button>
+                        <button id="btnCapturePrevFrame" class="transport-btn" type="button" aria-label="Previous frame">-1f</button>
+                        <button id="btnCaptureNextFrame" class="transport-btn" type="button" aria-label="Next frame">+1f</button>
+                        <button id="btnCaptureMarkIn" class="transport-btn" type="button" aria-label="Mark in">I</button>
+                        <button id="btnCaptureMarkOut" class="transport-btn" type="button" aria-label="Mark out">O</button>
                     </div>
 
                     <div class="timeline-container">
@@ -302,6 +331,14 @@
                         <div id="splitTimecode" class="current-time-display">00:00:00:00</div>
                     </div>
 
+                    <div class="transport-bar">
+                        <button id="btnSplitPlayPause" class="transport-btn" type="button" aria-label="Play or pause">Play</button>
+                        <button id="btnSplitPrevFrame" class="transport-btn" type="button" aria-label="Previous frame">-1f</button>
+                        <button id="btnSplitNextFrame" class="transport-btn" type="button" aria-label="Next frame">+1f</button>
+                        <button id="btnSplitMarkIn" class="transport-btn" type="button" aria-label="Mark in">I</button>
+                        <button id="btnSplitMarkOut" class="transport-btn" type="button" aria-label="Mark out">O</button>
+                    </div>
+
                     <div class="timeline-container">
                         <div class="timeline-bar" id="splitTimeline">
                             <div class="timeline-range" id="splitTimelineRange"></div>
@@ -376,15 +413,6 @@
             </div>
         </section>
 
-        <!-- 변환 작업 큐 진행 리스트 -->
-        <section class="card panel status-panel" id="conversionQueueSection">
-            <h3 class="section-title" data-mi18n-ko="작업 대기열 / 진행 목록">Task Queue</h3>
-            <div class="status-list" id="queueStatus">
-                <div class="status-item idle" id="queueStatusEmpty">
-                    <span data-mi18n-ko="대기 중인 작업이 없습니다. 파일을 추가해 주세요.">No active tasks in the queue. Add files to start.</span>
-                </div>
-            </div>
-        </section>
     </main>
 </div>
 

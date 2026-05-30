@@ -51,6 +51,7 @@ const elements = {
     speedSlider: document.getElementById('speedSlider'),
     speedDisplay: document.getElementById('speedDisplay'),
     speedCodecSelect: document.getElementById('speedCodecSelect'),
+    speedCodecHelp: document.getElementById('speedCodecHelp'),
     speedDropzone: document.getElementById('speedDropzone'),
     speedFileInput: document.getElementById('speedFileInput'),
     statSpeed: document.getElementById('statSpeed'),
@@ -70,6 +71,11 @@ const elements = {
     captureEditor: document.getElementById('captureEditor'),
     captureVideo: document.getElementById('captureVideo'),
     captureTimecode: document.getElementById('captureTimecode'),
+    btnCapturePlayPause: document.getElementById('btnCapturePlayPause'),
+    btnCapturePrevFrame: document.getElementById('btnCapturePrevFrame'),
+    btnCaptureNextFrame: document.getElementById('btnCaptureNextFrame'),
+    btnCaptureMarkIn: document.getElementById('btnCaptureMarkIn'),
+    btnCaptureMarkOut: document.getElementById('btnCaptureMarkOut'),
     captureTimeline: document.getElementById('captureTimeline'),
     captureTimelineRange: document.getElementById('captureTimelineRange'),
     captureTimelineHandle: document.getElementById('captureTimelineHandle'),
@@ -106,6 +112,11 @@ const elements = {
     splitEditor: document.getElementById('splitEditor'),
     splitVideo: document.getElementById('splitVideo'),
     splitTimecode: document.getElementById('splitTimecode'),
+    btnSplitPlayPause: document.getElementById('btnSplitPlayPause'),
+    btnSplitPrevFrame: document.getElementById('btnSplitPrevFrame'),
+    btnSplitNextFrame: document.getElementById('btnSplitNextFrame'),
+    btnSplitMarkIn: document.getElementById('btnSplitMarkIn'),
+    btnSplitMarkOut: document.getElementById('btnSplitMarkOut'),
     splitTimeline: document.getElementById('splitTimeline'),
     splitTimelineRange: document.getElementById('splitTimelineRange'),
     splitTimelineHandle: document.getElementById('splitTimelineHandle'),
@@ -120,6 +131,128 @@ const elements = {
     queueStatusEmpty: document.getElementById('queueStatusEmpty'),
     statusToast: document.getElementById('statusToast')
 };
+
+function getNativeFilePath(file) {
+    if (!file) return '';
+    if (file.path) return file.path;
+    if (window.electronAPI && typeof window.electronAPI.getPathForFile === 'function') {
+        return window.electronAPI.getPathForFile(file);
+    }
+    return '';
+}
+
+function normalizeNativeFile(file) {
+    return {
+        name: file.name,
+        path: getNativeFilePath(file),
+        size: file.size,
+        type: file.type
+    };
+}
+
+function normalizeNativeFiles(files) {
+    const list = Array.from(files).map(normalizeNativeFile);
+    const available = list.filter(file => file.path);
+    if (available.length !== list.length) {
+        showToast(
+            t('File path unavailable', '파일 경로를 가져오지 못했습니다'),
+            t('Try choosing the file with the file picker.', '파일 선택 버튼으로 다시 선택해 주세요.'),
+            'error'
+        );
+    }
+    return available;
+}
+
+function filePathToUrl(filePath) {
+    const normalized = filePath.replace(/\\/g, '/');
+    const encoded = normalized
+        .split('/')
+        .map((part, index) => (index === 0 && part === '') ? '' : encodeURIComponent(part))
+        .join('/');
+    return (encoded.startsWith('/') ? 'file://' : 'file:///') + encoded;
+}
+
+const codecHelpText = {
+    h264: {
+        en: 'For most people, H.264 is the right choice. It opens easily on almost every device and app.',
+        ko: '대부분은 H.264를 쓰면 됩니다. 거의 모든 기기와 앱에서 잘 열리고 공유하기 쉽습니다.'
+    }
+};
+
+function updateSpeedCodecHelp() {
+    const help = codecHelpText[state.speedCodec] || codecHelpText.h264;
+    const summary = elements.speedCodecHelp.querySelector('.help-text--highlight');
+    if (summary) {
+        summary.textContent = t(help.en, help.ko);
+    }
+}
+
+function resolveSpeedEncoderMeta(videoCodec, useHw) {
+    const encoders = state.config.hwEncoders || {};
+
+    if (videoCodec === 'h264') {
+        if (useHw && encoders.h264) {
+            if (encoders.h264.includes('videotoolbox')) {
+                return {
+                    encoder: encoders.h264,
+                    label: t('Using Apple hardware encoding: H.264 VideoToolbox', 'Apple 하드웨어 인코딩 사용 중: H.264 VideoToolbox')
+                };
+            }
+            return {
+                encoder: encoders.h264,
+                label: t(`Using hardware encoding: ${encoders.h264}`, `하드웨어 인코딩 사용 중: ${encoders.h264}`)
+            };
+        }
+        return {
+            encoder: 'libx264',
+            label: t('Using software encoding: H.264', '소프트웨어 인코딩 사용 중: H.264')
+        };
+    }
+
+    if (videoCodec === 'h265') {
+        if (useHw && encoders.hevc) {
+            if (encoders.hevc.includes('videotoolbox')) {
+                return {
+                    encoder: encoders.hevc,
+                    label: t('Using Apple hardware encoding: HEVC VideoToolbox', 'Apple 하드웨어 인코딩 사용 중: HEVC VideoToolbox')
+                };
+            }
+            return {
+                encoder: encoders.hevc,
+                label: t(`Using hardware encoding: ${encoders.hevc}`, `하드웨어 인코딩 사용 중: ${encoders.hevc}`)
+            };
+        }
+        return {
+            encoder: 'libx265',
+            label: t('Using software encoding: HEVC', '소프트웨어 인코딩 사용 중: HEVC')
+        };
+    }
+
+    if (videoCodec === 'vp9') {
+        return {
+            encoder: 'libvpx-vp9',
+            label: t('Using software encoding: VP9', '소프트웨어 인코딩 사용 중: VP9')
+        };
+    }
+
+    if (videoCodec === 'av1') {
+        if (useHw && encoders.av1) {
+            return {
+                encoder: encoders.av1,
+                label: t(`Using hardware encoding: ${encoders.av1}`, `하드웨어 인코딩 사용 중: ${encoders.av1}`)
+            };
+        }
+        return {
+            encoder: 'libsvtav1',
+            label: t('Using software encoding: AV1', '소프트웨어 인코딩 사용 중: AV1')
+        };
+    }
+
+    return {
+        encoder: 'unknown',
+        label: t('Encoder information unavailable', '인코더 정보를 확인할 수 없습니다')
+    };
+}
 
 // 다국어 번역 헬퍼 함수
 function t(en, ko) {
@@ -209,6 +342,7 @@ async function initApp() {
     setupFrameCapture();
     setupRemuxer();
     setupSplitter();
+    setupEditorKeyboardShortcuts();
 }
 
 // 탭 전환
@@ -257,7 +391,9 @@ function setupSpeedChanger() {
 
     elements.speedCodecSelect.addEventListener('change', (e) => {
         state.speedCodec = e.target.value;
+        updateSpeedCodecHelp();
     });
+    updateSpeedCodecHelp();
 
     // UI 동기화
     function updateSpeedUI() {
@@ -274,26 +410,29 @@ function setupSpeedChanger() {
         e.preventDefault();
         dz.classList.remove('is-dragover');
         if (e.dataTransfer.files.length > 0) {
-            processSpeedFiles(e.dataTransfer.files);
+            await processSpeedFiles(e.dataTransfer.files);
         }
     });
 
-    elements.speedFileInput.addEventListener('change', (e) => {
+    elements.speedFileInput.addEventListener('change', async (e) => {
         if (e.target.files.length > 0) {
-            processSpeedFiles(e.target.files);
+            await processSpeedFiles(e.target.files);
         }
     });
 }
 
 // 배속 파일 일괄 추가 및 태스크 실행
 async function processSpeedFiles(files) {
-    const list = Array.from(files);
+    const list = normalizeNativeFiles(files);
+    if (list.length === 0) return;
     elements.statQueue.textContent = parseInt(elements.statQueue.textContent) + list.length;
     
     for (const file of list) {
         const taskId = 'speed_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
         const inputPath = file.path;
         const name = file.name;
+        const useHw = elements.hwAccelCheck.checked;
+        const encoderMeta = resolveSpeedEncoderMeta(state.speedCodec, useHw);
         
         // 출력 경로 설정
         const outputPath = getResolvedOutputPath(inputPath, `_speed_${state.speed.toFixed(2)}x`);
@@ -305,11 +444,12 @@ async function processSpeedFiles(files) {
             name,
             status: 'running',
             percent: 0,
-            speed: '0.0x'
+            speed: '0.0x',
+            engineLabel: encoderMeta.label,
+            engineName: encoderMeta.encoder
         });
 
         // 인코더 실행 파라미터 구성
-        const useHw = elements.hwAccelCheck.checked;
         const result = await window.electronAPI.startSpeedChange({
             taskId,
             inputPath,
@@ -322,7 +462,7 @@ async function processSpeedFiles(files) {
         if (result.success) {
             finishQueueItem(taskId, 'done');
             elements.statDone.textContent = parseInt(elements.statDone.textContent) + 1;
-            showToast(t('Conversion Complete', '인코딩 완료'), `${name} -> ${state.speed.toFixed(2)}x 변환 완료!`);
+            showToast(t('Conversion Complete', '인코딩 완료'), `${name} -> ${state.speed.toFixed(2)}x, ${encoderMeta.label}`);
         } else {
             finishQueueItem(taskId, 'error', result.error);
             showToast(t('Conversion Failed', '인코딩 실패'), `${name}: ${result.error}`, 'error');
@@ -351,20 +491,21 @@ function setupAudioExtractor() {
         e.preventDefault();
         dz.classList.remove('is-dragover');
         if (e.dataTransfer.files.length > 0) {
-            processAudioFiles(e.dataTransfer.files);
+            await processAudioFiles(e.dataTransfer.files);
         }
     });
 
-    elements.audioFileInput.addEventListener('change', (e) => {
+    elements.audioFileInput.addEventListener('change', async (e) => {
         if (e.target.files.length > 0) {
-            processAudioFiles(e.target.files);
+            await processAudioFiles(e.target.files);
         }
     });
 }
 
 // 오디오 파일 추출 실행
 async function processAudioFiles(files) {
-    const list = Array.from(files);
+    const list = normalizeNativeFiles(files);
+    if (list.length === 0) return;
     elements.statAudioQueue.textContent = parseInt(elements.statAudioQueue.textContent) + list.length;
 
     for (const file of list) {
@@ -422,13 +563,13 @@ function setupFrameCapture() {
         e.preventDefault();
         dz.classList.remove('is-dragover');
         if (e.dataTransfer.files.length > 0) {
-            loadVideoForCapture(e.dataTransfer.files[0]);
+            await loadVideoForCapture(e.dataTransfer.files[0]);
         }
     });
 
-    elements.captureFileInput.addEventListener('change', (e) => {
+    elements.captureFileInput.addEventListener('change', async (e) => {
         if (e.target.files.length > 0) {
-            loadVideoForCapture(e.target.files[0]);
+            await loadVideoForCapture(e.target.files[0]);
         }
     });
 
@@ -471,6 +612,27 @@ function setupFrameCapture() {
             elements.captureTimelineHandle.style.left = `${pct}%`;
         }
     });
+
+    elements.captureVideo.addEventListener('play', () => {
+        elements.btnCapturePlayPause.textContent = t('Pause', '일시정지');
+    });
+
+    elements.captureVideo.addEventListener('pause', () => {
+        elements.btnCapturePlayPause.textContent = t('Play', '재생');
+    });
+
+    elements.captureVideo.addEventListener('click', () => {
+        togglePlayback(elements.captureVideo);
+    });
+
+    elements.btnCapturePlayPause.addEventListener('click', () => {
+        togglePlayback(elements.captureVideo);
+    });
+
+    elements.btnCapturePrevFrame.addEventListener('click', () => stepVideoFrames(elements.captureVideo, state.captureMetadata, -1));
+    elements.btnCaptureNextFrame.addEventListener('click', () => stepVideoFrames(elements.captureVideo, state.captureMetadata, 1));
+    elements.btnCaptureMarkIn.addEventListener('click', () => markCaptureIn());
+    elements.btnCaptureMarkOut.addEventListener('click', () => markCaptureOut());
 
     // 타임라인 탐색 드래그 핸들링
     setupTimelineSlider(
@@ -516,14 +678,15 @@ function setupFrameCapture() {
 
     // 구간 시간 설정 버튼들
     elements.btnCaptureSetStart.addEventListener('click', () => {
-        elements.captureBatchStart.value = secondsToTimecode(elements.captureVideo.currentTime);
-        updateCaptureTimelineOverlay();
+        markCaptureIn();
     });
 
     elements.btnCaptureSetEnd.addEventListener('click', () => {
-        elements.captureBatchEnd.value = secondsToTimecode(elements.captureVideo.currentTime);
-        updateCaptureTimelineOverlay();
+        markCaptureOut();
     });
+
+    elements.captureBatchStart.addEventListener('input', updateCaptureTimelineOverlay);
+    elements.captureBatchEnd.addEventListener('input', updateCaptureTimelineOverlay);
 
     // 배치 캡처 내보내기 실행
     elements.btnCaptureBatch.addEventListener('click', async () => {
@@ -659,19 +822,27 @@ function setupFrameCapture() {
 
 // 장면 캡처용 비디오 정보 로드
 async function loadVideoForCapture(file) {
-    state.captureFile = file;
+    const nativeFile = normalizeNativeFile(file);
+    if (!nativeFile.path) {
+        showToast(t('File path unavailable', '파일 경로를 가져오지 못했습니다'), t('Try choosing the file with the file picker.', '파일 선택 버튼으로 다시 선택해 주세요.'), 'error');
+        return;
+    }
+
+    state.captureFile = nativeFile;
     elements.captureDropzone.style.display = 'none';
     elements.captureEditor.style.display = 'flex';
     
     // HTML5 Video 태그에 소스 셋팅 (로컬 절대경로는 web-security 비활성화되지 않으면 바로 로드 안되나 Electron은 file:// 프로토콜 사용 가능)
-    elements.captureVideo.src = `file://${file.path}`;
+    elements.captureVideo.src = filePathToUrl(nativeFile.path);
     
     try {
-        const metadata = await window.electronAPI.probeVideo(file.path);
+        const metadata = await window.electronAPI.probeVideo(nativeFile.path);
         state.captureMetadata = metadata;
         
         elements.captureBatchStart.value = '00:00:00:00';
         elements.captureBatchEnd.value = secondsToTimecode(metadata.duration);
+        elements.captureTimecode.textContent = '00:00:00:00';
+        elements.btnCapturePlayPause.textContent = t('Play', '재생');
         
         updateCaptureTimelineOverlay();
     } catch (err) {
@@ -717,20 +888,21 @@ function setupRemuxer() {
         e.preventDefault();
         dz.classList.remove('is-dragover');
         if (e.dataTransfer.files.length > 0) {
-            processRemuxFiles(e.dataTransfer.files);
+            await processRemuxFiles(e.dataTransfer.files);
         }
     });
 
-    elements.remuxFileInput.addEventListener('change', (e) => {
+    elements.remuxFileInput.addEventListener('change', async (e) => {
         if (e.target.files.length > 0) {
-            processRemuxFiles(e.target.files);
+            await processRemuxFiles(e.target.files);
         }
     });
 }
 
 // 컨테이너 포맷 고속 변경 실행
 async function processRemuxFiles(files) {
-    const list = Array.from(files);
+    const list = normalizeNativeFiles(files);
+    if (list.length === 0) return;
 
     for (const file of list) {
         const taskId = 'remux_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
@@ -776,13 +948,13 @@ function setupSplitter() {
         e.preventDefault();
         dz.classList.remove('is-dragover');
         if (e.dataTransfer.files.length > 0) {
-            loadVideoForSplit(e.dataTransfer.files[0]);
+            await loadVideoForSplit(e.dataTransfer.files[0]);
         }
     });
 
-    elements.splitFileInput.addEventListener('change', (e) => {
+    elements.splitFileInput.addEventListener('change', async (e) => {
         if (e.target.files.length > 0) {
-            loadVideoForSplit(e.target.files[0]);
+            await loadVideoForSplit(e.target.files[0]);
         }
     });
 
@@ -796,6 +968,27 @@ function setupSplitter() {
             elements.splitTimelineHandle.style.left = `${pct}%`;
         }
     });
+
+    elements.splitVideo.addEventListener('play', () => {
+        elements.btnSplitPlayPause.textContent = t('Pause', '일시정지');
+    });
+
+    elements.splitVideo.addEventListener('pause', () => {
+        elements.btnSplitPlayPause.textContent = t('Play', '재생');
+    });
+
+    elements.splitVideo.addEventListener('click', () => {
+        togglePlayback(elements.splitVideo);
+    });
+
+    elements.btnSplitPlayPause.addEventListener('click', () => {
+        togglePlayback(elements.splitVideo);
+    });
+
+    elements.btnSplitPrevFrame.addEventListener('click', () => stepVideoFrames(elements.splitVideo, state.splitMetadata, -1));
+    elements.btnSplitNextFrame.addEventListener('click', () => stepVideoFrames(elements.splitVideo, state.splitMetadata, 1));
+    elements.btnSplitMarkIn.addEventListener('click', () => markSplitIn());
+    elements.btnSplitMarkOut.addEventListener('click', () => markSplitOut());
 
     // 드래그 탐색
     setupTimelineSlider(
@@ -815,14 +1008,20 @@ function setupSplitter() {
 
     // 타임코드 수동 조작
     elements.btnSplitSetStart.addEventListener('click', () => {
-        state.splitStartTime = elements.splitVideo.currentTime;
-        elements.splitStartInput.value = secondsToTimecode(state.splitStartTime);
-        updateSplitTimelineOverlay();
+        markSplitIn();
     });
 
     elements.btnSplitSetEnd.addEventListener('click', () => {
-        state.splitEndTime = elements.splitVideo.currentTime;
-        elements.splitEndInput.value = secondsToTimecode(state.splitEndTime);
+        markSplitOut();
+    });
+
+    elements.splitStartInput.addEventListener('input', () => {
+        state.splitStartTime = timecodeToSeconds(elements.splitStartInput.value);
+        updateSplitTimelineOverlay();
+    });
+
+    elements.splitEndInput.addEventListener('input', () => {
+        state.splitEndTime = timecodeToSeconds(elements.splitEndInput.value);
         updateSplitTimelineOverlay();
     });
 
@@ -872,13 +1071,19 @@ function setupSplitter() {
 
 // 분할 에디터 파일 로드
 async function loadVideoForSplit(file) {
-    state.splitFile = file;
+    const nativeFile = normalizeNativeFile(file);
+    if (!nativeFile.path) {
+        showToast(t('File path unavailable', '파일 경로를 가져오지 못했습니다'), t('Try choosing the file with the file picker.', '파일 선택 버튼으로 다시 선택해 주세요.'), 'error');
+        return;
+    }
+
+    state.splitFile = nativeFile;
     elements.splitDropzone.style.display = 'none';
     elements.splitEditor.style.display = 'flex';
-    elements.splitVideo.src = `file://${file.path}`;
+    elements.splitVideo.src = filePathToUrl(nativeFile.path);
 
     try {
-        const metadata = await window.electronAPI.probeVideo(file.path);
+        const metadata = await window.electronAPI.probeVideo(nativeFile.path);
         state.splitMetadata = metadata;
 
         state.splitStartTime = 0;
@@ -886,6 +1091,8 @@ async function loadVideoForSplit(file) {
 
         elements.splitStartInput.value = '00:00:00:00';
         elements.splitEndInput.value = secondsToTimecode(metadata.duration);
+        elements.splitTimecode.textContent = '00:00:00:00';
+        elements.btnSplitPlayPause.textContent = t('Play', '재생');
 
         updateSplitTimelineOverlay();
     } catch (err) {
@@ -903,6 +1110,126 @@ function updateSplitTimelineOverlay() {
 
     elements.splitTimelineRange.style.left = `${startPct}%`;
     elements.splitTimelineRange.style.width = `${endPct - startPct}%`;
+}
+
+function getFrameDuration(metadata) {
+    const fps = metadata && metadata.fps ? metadata.fps : 30;
+    return 1 / Math.max(1, fps);
+}
+
+function clampVideoTime(video, targetTime) {
+    const duration = Number.isFinite(video.duration) ? video.duration : null;
+    if (duration == null) return Math.max(0, targetTime);
+    return Math.max(0, Math.min(duration, targetTime));
+}
+
+function stepVideoFrames(video, metadata, frameCount) {
+    const delta = getFrameDuration(metadata) * frameCount;
+    video.pause();
+    video.currentTime = clampVideoTime(video, video.currentTime + delta);
+}
+
+function togglePlayback(video) {
+    if (video.paused) {
+        video.play().catch((err) => {
+            console.error('Playback failed:', err);
+        });
+    } else {
+        video.pause();
+    }
+}
+
+function markCaptureIn() {
+    elements.captureBatchStart.value = secondsToTimecode(elements.captureVideo.currentTime);
+    updateCaptureTimelineOverlay();
+}
+
+function markCaptureOut() {
+    elements.captureBatchEnd.value = secondsToTimecode(elements.captureVideo.currentTime);
+    updateCaptureTimelineOverlay();
+}
+
+function markSplitIn() {
+    state.splitStartTime = elements.splitVideo.currentTime;
+    elements.splitStartInput.value = secondsToTimecode(state.splitStartTime);
+    updateSplitTimelineOverlay();
+}
+
+function markSplitOut() {
+    state.splitEndTime = elements.splitVideo.currentTime;
+    elements.splitEndInput.value = secondsToTimecode(state.splitEndTime);
+    updateSplitTimelineOverlay();
+}
+
+function isTypingTarget(target) {
+    if (!target) return false;
+    const tagName = target.tagName ? target.tagName.toLowerCase() : '';
+    return tagName === 'input' || tagName === 'textarea' || tagName === 'select' || target.isContentEditable;
+}
+
+function setupEditorKeyboardShortcuts() {
+    document.addEventListener('keydown', (event) => {
+        if (isTypingTarget(event.target) || event.altKey || event.metaKey || event.ctrlKey) {
+            return;
+        }
+
+        const frameStep = event.shiftKey ? 10 : 1;
+
+        if (state.activeTab === 'splitter' && state.splitFile && state.splitMetadata) {
+            if (event.key === ' ') {
+                event.preventDefault();
+                togglePlayback(elements.splitVideo);
+                return;
+            }
+            if (event.key === 'ArrowLeft') {
+                event.preventDefault();
+                stepVideoFrames(elements.splitVideo, state.splitMetadata, -frameStep);
+                return;
+            }
+            if (event.key === 'ArrowRight') {
+                event.preventDefault();
+                stepVideoFrames(elements.splitVideo, state.splitMetadata, frameStep);
+                return;
+            }
+            if (event.key.toLowerCase() === 'i') {
+                event.preventDefault();
+                markSplitIn();
+                return;
+            }
+            if (event.key.toLowerCase() === 'o') {
+                event.preventDefault();
+                markSplitOut();
+                return;
+            }
+        }
+
+        if (state.activeTab === 'frame-capture' && state.captureFile && state.captureMetadata) {
+            if (event.key === ' ') {
+                event.preventDefault();
+                togglePlayback(elements.captureVideo);
+                return;
+            }
+            if (event.key === 'ArrowLeft') {
+                event.preventDefault();
+                stepVideoFrames(elements.captureVideo, state.captureMetadata, -frameStep);
+                return;
+            }
+            if (event.key === 'ArrowRight') {
+                event.preventDefault();
+                stepVideoFrames(elements.captureVideo, state.captureMetadata, frameStep);
+                return;
+            }
+            if (event.key.toLowerCase() === 'i') {
+                event.preventDefault();
+                markCaptureIn();
+                return;
+            }
+            if (event.key.toLowerCase() === 'o') {
+                event.preventDefault();
+                markCaptureOut();
+            }
+        }
+    });
 }
 
 // --- 공통 라이브러리 및 헬퍼 함수 ---
@@ -1015,7 +1342,8 @@ function updateQueueProgress(taskId, percent, speed) {
         elements.statusToast.hidden = false;
         elements.statusToast.innerHTML = `
             <h4>[${task.type}] Processing...</h4>
-            <p>${task.name} - Speed: ${speed}</p>
+            <p>${task.name}</p>
+            <p>${task.engineLabel || t('Encoder information unavailable', '인코더 정보를 확인할 수 없습니다')} - Speed: ${speed}</p>
             <div class="progress-bar-wrapper">
                 <div class="progress-bar-fill" style="width: ${percent}%"></div>
             </div>
@@ -1051,6 +1379,11 @@ function finishQueueItem(taskId, status, errorMsg = '') {
     renderQueue();
 }
 
+function dismissQueueItem(taskId) {
+    state.queue = state.queue.filter(task => task.taskId !== taskId);
+    renderQueue();
+}
+
 // 전역 취소 핸들러
 window.cancelTask = async function(taskId) {
     const confirmed = confirm(t('Are you sure you want to cancel this task?', '작업을 취소하시겠습니까?'));
@@ -1058,6 +1391,10 @@ window.cancelTask = async function(taskId) {
         await window.electronAPI.cancelTask(taskId);
         finishQueueItem(taskId, 'error', t('Cancelled by user', '사용자 취소'));
     }
+};
+
+window.dismissQueueItem = function(taskId) {
+    dismissQueueItem(taskId);
 };
 
 function renderQueue() {
@@ -1070,14 +1407,12 @@ function renderQueue() {
     }
     elements.queueStatusEmpty.style.display = 'none';
 
-    // 기존 큐 항목 그리기
-    const existingIds = Array.from(elements.queueStatus.querySelectorAll('.status-item:not(#queueStatusEmpty)')).map(el => el.id);
-    
     state.queue.forEach(task => {
         const existingEl = document.getElementById(task.taskId);
         
         let statusClass = 'active';
         let statusLabel = `${task.percent}% (Speed: ${task.speed})`;
+        const engineLabel = task.engineLabel || '';
         if (task.status === 'done') {
             statusClass = 'done';
             statusLabel = t('Completed', '변환 완료');
@@ -1092,6 +1427,10 @@ function renderQueue() {
                 <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">
                     <span class="task-status">${statusLabel}</span>
                 </div>
+                ${engineLabel ? `
+                <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">
+                    <span class="task-engine">${engineLabel}</span>
+                </div>` : ''}
                 ${task.status === 'running' ? `
                 <div class="progress-bar-wrapper" style="margin-top:6px;">
                     <div class="progress-bar-fill" style="width: ${task.percent}%"></div>
@@ -1100,7 +1439,9 @@ function renderQueue() {
             <div>
                 ${task.status === 'running' ? `
                 <button class="btn" style="margin:0; padding:6px 12px; font-size:0.8rem; background:rgba(255,255,255,0.06);" onclick="cancelTask('${task.taskId}')">${t('Cancel', '취소')}</button>
-                ` : ''}
+                ` : `
+                <button class="queue-dismiss-btn" type="button" aria-label="${t('Remove from queue', '대기열에서 지우기')}" title="${t('Remove from queue', '대기열에서 지우기')}" onclick="dismissQueueItem('${task.taskId}')">x</button>
+                `}
             </div>
         `;
 

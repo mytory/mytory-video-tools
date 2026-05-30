@@ -1,8 +1,9 @@
-const { contextBridge, ipcRenderer } = require('electron');
+const { contextBridge, ipcRenderer, webUtils } = require('electron');
 
 contextBridge.exposeInMainWorld('electronAPI', {
     getConfig: () => ipcRenderer.invoke('app:get-config'),
     selectDirectory: () => ipcRenderer.invoke('app:select-directory'),
+    getPathForFile: (file) => webUtils.getPathForFile(file),
     probeVideo: (inputPath) => ipcRenderer.invoke('video:probe', inputPath),
     cancelTask: (taskId) => ipcRenderer.invoke('task:cancel', taskId),
     

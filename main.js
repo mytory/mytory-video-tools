@@ -1,11 +1,18 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, nativeImage } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const { spawn } = require('child_process');
-const ffmpegPath = require('ffmpeg-static');
-const ffprobeStatic = require('ffprobe-static');
+// ASAR 환경 대응을 위한 바이너리 경로 처리
+function getExecutablePath(p) {
+    if (typeof p !== 'string') return p;
+    // 패키징된 환경(.asar)에서는 unpacked 폴더의 경로를 사용하도록 강제
+    return p.replace('app.asar', 'app.asar.unpacked');
+}
 
-const ffprobePath = ffprobeStatic.path;
+const ffmpegPath = getExecutablePath(require('ffmpeg-static'));
+const ffprobeStatic = require('ffprobe-static');
+const ffprobePath = getExecutablePath(ffprobeStatic.path);
+const appIconPath = path.join(__dirname, 'renderer', 'logo.webp');
 
 let mainWindow = null;
 const activeTasks = new Map(); // taskId -> childProcess
@@ -14,40 +21,57 @@ let hwEncoders = { h264: null, hevc: null, av1: null };
 // 1. 하드웨어 가속 인코더 탐지 기능
 function checkHwEncoders() {
     return new Promise((resolve) => {
-        const ff = spawn(ffmpegPath, ['-encoders']);
-        let output = '';
-        ff.stdout.on('data', (data) => { output += data.toString(); });
-        ff.stderr.on('data', (data) => { output += data.toString(); });
-        ff.on('close', () => {
-            const encoders = {
-                h264: null,
-                hevc: null,
-                av1: null
-            };
+        try {
+            console.log('Checking hardware encoders with:', ffmpegPath);
+            const ff = spawn(ffmpegPath, ['-encoders']);
+            let output = '';
+            ff.stdout.on('data', (data) => { output += data.toString(); });
+            ff.stderr.on('data', (data) => { output += data.toString(); });
+            
+            ff.on('error', (err) => {
+                console.error('FFmpeg encoder check spawn error:', err);
+                resolve(hwEncoders);
+            });
 
-            // macOS VideoToolbox
-            if (output.includes('h264_videotoolbox')) encoders.h264 = 'h264_videotoolbox';
-            if (output.includes('hevc_videotoolbox')) encoders.hevc = 'hevc_videotoolbox';
+            ff.on('close', (code) => {
+                if (code !== 0) {
+                    console.warn(`FFmpeg encoder check exited with code ${code}`);
+                    return resolve(hwEncoders);
+                }
 
-            // NVIDIA NVENC
-            if (!encoders.h264 && output.includes('h264_nvenc')) encoders.h264 = 'h264_nvenc';
-            if (!encoders.hevc && output.includes('hevc_nvenc')) encoders.hevc = 'hevc_nvenc';
-            if (output.includes('av1_nvenc')) encoders.av1 = 'av1_nvenc';
+                const encoders = {
+                    h264: null,
+                    hevc: null,
+                    av1: null
+                };
 
-            // Intel QSV
-            if (!encoders.h264 && output.includes('h264_qsv')) encoders.h264 = 'h264_qsv';
-            if (!encoders.hevc && output.includes('hevc_qsv')) encoders.hevc = 'hevc_qsv';
-            if (output.includes('av1_qsv')) encoders.av1 = 'av1_qsv';
+                // macOS VideoToolbox
+                if (output.includes('h264_videotoolbox')) encoders.h264 = 'h264_videotoolbox';
+                if (output.includes('hevc_videotoolbox')) encoders.hevc = 'hevc_videotoolbox';
 
-            // AMD AMF
-            if (!encoders.h264 && output.includes('h264_amf')) encoders.h264 = 'h264_amf';
-            if (!encoders.hevc && output.includes('hevc_amf')) encoders.hevc = 'hevc_amf';
-            if (output.includes('av1_amf')) encoders.av1 = 'av1_amf';
+                // NVIDIA NVENC
+                if (!encoders.h264 && output.includes('h264_nvenc')) encoders.h264 = 'h264_nvenc';
+                if (!encoders.hevc && output.includes('hevc_nvenc')) encoders.hevc = 'hevc_nvenc';
+                if (output.includes('av1_nvenc')) encoders.av1 = 'av1_nvenc';
 
-            hwEncoders = encoders;
-            console.log('Detected Hardware Encoders:', hwEncoders);
+                // Intel QSV
+                if (!encoders.h264 && output.includes('h264_qsv')) encoders.h264 = 'h264_qsv';
+                if (!encoders.hevc && output.includes('hevc_qsv')) encoders.hevc = 'hevc_qsv';
+                if (output.includes('av1_qsv')) encoders.av1 = 'av1_qsv';
+
+                // AMD AMF
+                if (!encoders.h264 && output.includes('h264_amf')) encoders.h264 = 'h264_amf';
+                if (!encoders.hevc && output.includes('hevc_amf')) encoders.hevc = 'hevc_amf';
+                if (output.includes('av1_amf')) encoders.av1 = 'av1_amf';
+
+                hwEncoders = encoders;
+                console.log('Detected Hardware Encoders:', hwEncoders);
+                resolve(hwEncoders);
+            });
+        } catch (err) {
+            console.error('checkHwEncoders catch error:', err);
             resolve(hwEncoders);
-        });
+        }
     });
 }
 
@@ -150,6 +174,7 @@ function createWindow() {
         minWidth: 900,
         minHeight: 650,
         titleBarStyle: 'default',
+        icon: appIconPath,
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: true,
@@ -166,7 +191,16 @@ function createWindow() {
 
 // IPC 핸들러 등록
 app.whenReady().then(async () => {
-    await checkHwEncoders();
+    try {
+        await checkHwEncoders();
+    } catch (err) {
+        console.error('Initialization error during checkHwEncoders:', err);
+    }
+
+    if (process.platform === 'darwin') {
+        app.dock.setIcon(nativeImage.createFromPath(appIconPath));
+    }
+    
     createWindow();
 
     app.on('activate', () => {
@@ -383,11 +417,13 @@ ipcMain.handle('split:start', async (event, { taskId, inputPath, startTime, endT
         const startSec = timecodeToSeconds(startTime);
         const endSec = timecodeToSeconds(endTime);
         const duration = Math.max(0.1, endSec - startSec);
+        const ffmpegStartTime = secondsToFfmpegTimestamp(startSec);
+        const ffmpegEndTime = secondsToFfmpegTimestamp(endSec);
 
         // 무손실 빠른 자르기 (-ss와 -to를 입력파일 앞에 선배치하여 고속 탐색)
         const args = [
-            '-ss', startTime,
-            '-to', endTime,
+            '-ss', ffmpegStartTime,
+            '-to', ffmpegEndTime,
             '-i', inputPath,
             '-c', 'copy',
             outputPath
@@ -594,4 +630,23 @@ function secondsToTimecode(sec) {
 
     const pad = (n) => String(n).padStart(2, '0');
     return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}:${pad(ms)}`;
+}
+
+function secondsToFfmpegTimestamp(sec) {
+    const safeSec = Math.max(0, sec);
+    let wholeSeconds = Math.floor(safeSec);
+    let milliseconds = Math.round((safeSec % 1) * 1000);
+
+    if (milliseconds === 1000) {
+        wholeSeconds += 1;
+        milliseconds = 0;
+    }
+
+    const hours = Math.floor(wholeSeconds / 3600);
+    const minutes = Math.floor((wholeSeconds % 3600) / 60);
+    const seconds = wholeSeconds % 60;
+
+    const pad2 = (n) => String(n).padStart(2, '0');
+    const pad3 = (n) => String(n).padStart(3, '0');
+    return `${pad2(hours)}:${pad2(minutes)}:${pad2(seconds)}.${pad3(milliseconds)}`;
 }

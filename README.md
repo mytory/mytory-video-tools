@@ -73,4 +73,32 @@ npm run dist
 ├── .gitlab-ci.yml        # GitLab CI/CD 멀티 플랫폼 빌드 설정
 ├── README.md             # 프로젝트 소개 및 매뉴얼
 └── renderer/             # 렌더러 프로세스 (프론트엔드 리소스)
+
+---
+
+## 5. 오픈소스 라이선스 고지 (Open Source Licenses)
+
+이 프로그램은 다음 오픈소스 프로젝트들을 사용하고 있으며, 각 프로젝트의 라이선스 규정을 준수합니다.
+
+*   **[Electron](https://www.electronjs.org/)** (MIT License): 데스크톱 애플리케이션 프레임워크
+*   **[FFmpeg](https://ffmpeg.org/)** (LGPL/GPL License): 멀티미디어 처리 엔진
+    *   이 프로그램은 `ffmpeg-static`을 통해 FFmpeg 바이너리를 포함하고 있습니다. FFmpeg의 소스 코드는 공식 사이트에서 다운로드할 수 있습니다.
+*   **[Pico.css](https://picocss.com/)** (MIT License): UI 스타일링을 위한 미니멀 CSS 프레임워크
+*   **[ffmpeg-static](https://github.com/eugeneware/ffmpeg-static) & [ffprobe-static](https://github.com/eugeneware/ffprobe-static)** (MIT License): FFmpeg 바이너리 제공 라이브러리
+
+---
+
+## 6. 라이선스 (License)
+
+Copyright (c) 2026 mytory. 본 프로젝트는 **ISC License**에 따라 자유롭게 이용할 수 있습니다. 자세한 내용은 [LICENSE](./LICENSE) 파일을 참조하세요.
+
+---
+
+## 7. 문의 및 연락처 (Contact)
+
+질문, 버그 보고 또는 기능 제안이 있으시면 아래 채널을 통해 연락해 주세요.
+
+*   **Email:** [mail@mytory.net](mailto:mail@mytory.net)
+*   **Blog:** [https://mytory.net](https://mytory.net)
+*   **GitHub/GitLab:** [@mytory](https://github.com/mytory)
 ```

@@ -19,7 +19,11 @@
     "remux",
     "capture"
   ],
-  "author": "mytory",
+  "author": {
+    "name": "mytory",
+    "email": "mail@mytory.net",
+    "url": "https://mytory.net"
+  },
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {

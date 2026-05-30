@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-mi18n-ko="URL 해시 실시간 전환 데모">URL Hash Real-time Switch Demo</title>
+    <style>
+        :root {
+            --brand: lch(71% 29% 258deg);
+            --text: #182033;
+            --muted: #667085;
+            --line: #d9deea;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+        body { margin: 0; color: var(--text); background: #f7f8fc; }
+        main { width: min(720px, calc(100% - 32px)); margin: 48px auto; padding: 28px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+        h1 { margin-top: 0; color: var(--brand); }
+        .row { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
+        .btn { padding: 10px 16px; border: 1px solid var(--line); border-radius: 6px; text-decoration: none; color: var(--text); background: #fff; font-weight: 700; transition: background 0.2s; }
+        .btn:hover { background: #f0f3ff; border-color: var(--brand); }
+        .status { padding: 12px; background: #f2f5ff; border-radius: 6px; font-weight: 700; }
+        [data-mi18n-cloak] { display: none !important; }
+    </style>
+</head>
+<body>
+<main data-mi18n-cloak>
+    <nav style="margin-bottom: 20px;">
+        <a href="./index.html" data-mi18n-ko="← 목록으로 돌아가기">← Back to Index</a>
+    </nav>
+    <h1 data-mi18n-ko="URL 해시 실시간 전환">URL Hash Real-time Switch</h1>
+    
+    <p data-mi18n-ko="URL 끝에 #mi18n-ko 또는 #mi18n-en을 붙이면 페이지 새로고침 없이 언어가 바뀝니다.">
+        Change the URL to include #mi18n-ko or #mi18n-en to switch languages without refreshing the page.
+    </p>
+
+    <div class="row">
+        <a href="#mi18n-ko" class="btn">#mi18n-ko (한국어)</a>
+        <a href="#mi18n-en" class="btn">#mi18n-en (English)</a>
+        <a href="#mi18n-zh-cn" class="btn">#mi18n-zh-cn (简体中文)</a>
+        <a href="#mi18n-zh-tw" class="btn">#mi18n-zh-tw (繁體中文)</a>
+    </div>
+
+    <div class="status">
+        <span data-mi18n-ko="현재 언어:">Current Language:</span>
+        <span id="currentLangDisplay">...</span>
+    </div>
+
+    <hr style="margin: 30px 0; border: 0; border-top: 1px solid var(--line);">
+
+    <section>
+        <h2 data-mi18n-ko="Locale 폴백 테스트">Locale Fallback Test</h2>
+        <p 
+            data-mi18n-zh="Base Chinese (zh)" 
+            data-mi18n-zh-cn="Simplified Chinese (zh-cn)"
+            data-mi18n-zh-tw="Traditional Chinese (zh-tw)"
+            data-mi18n-ko="한국어 (ko)"
+        >
+            This text will change based on specific locale.
+        </p>
+        <p data-mi18n-zh="Only 'zh' is provided here, so both zh-cn and zh-tw will see this.">
+            If only 'zh' is provided, both cn/tw will fallback to it.
+        </p>
+    </section>
+
+    <hr style="margin: 30px 0; border: 0; border-top: 1px solid var(--line);">
+
+    <div data-mi18n-block="ko" style="padding: 15px; background: #fff0f0; border-radius: 6px;">
+        <strong>한국어 전용 블록:</strong> 한국어일 때만 나타나는 콘텐츠입니다. (ko-kr도 포함)
+    </div>
+    <div data-mi18n-block="en" style="padding: 15px; background: #f0f0ff; border-radius: 6px;">
+        <strong>English Exclusive Block:</strong> This content is only visible in English.
+    </div>
+</main>
+
+<script src="./mytory-i18n.js?v=20260510"></script>
+<script>
+    MytoryI18n.init({
+        defaultLang: "en",
+        allowHtml: true
+    });
+
+    function updateDisplay() {
+        document.getElementById('currentLangDisplay').textContent = MytoryI18n.getLanguage();
+    }
+
+    updateDisplay();
+    window.addEventListener('hashchange', updateDisplay);
+</script>
+</body>
+</html>

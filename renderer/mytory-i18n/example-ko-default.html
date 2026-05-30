@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-mi18n-en="Mytory i18n Example (Default: Korean)">Mytory i18n 예제 (기본 언어: 한국어)</title>
+    <meta
+        name="description"
+        content="Mytory i18n에서 기본 언어를 한국어로 사용하는 예제입니다."
+        data-mi18n-en="A sample page using Korean as the default language in Mytory i18n."
+    >
+    <style>
+        :root {
+            --brand: lch(71% 29% 258deg);
+            --text: #182033;
+            --muted: #667085;
+            --line: #d9deea;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        body {
+            margin: 0;
+            color: var(--text);
+            background: #f7f8fc;
+        }
+
+        main {
+            width: min(720px, calc(100% - 32px));
+            margin: 48px auto;
+            padding: 28px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #fff;
+        }
+
+        h1 {
+            margin-top: 0;
+            color: var(--brand);
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        .muted {
+            color: var(--muted);
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 16px;
+            border: 0;
+            border-radius: 6px;
+            color: #fff;
+            background: var(--brand);
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        [data-mi18n-cloak] {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+<main data-mi18n-cloak>
+    <nav style="margin-bottom: 20px;">
+        <a href="./index.html" data-mi18n-en="← Back to Index">← 목록으로 돌아가기</a>
+    </nav>
+    <h1 data-mi18n-en="Mytory i18n Example">Mytory i18n 예제</h1>
+
+    <p data-mi18n-en="The default text is written in Korean, and English is added with data-mi18n-en.">
+        기본 문구는 한국어로 직접 작성하고, 영어는 data-mi18n-en 속성으로 추가합니다.
+    </p>
+
+    <div data-mi18n-block="ko" style="padding: 10px; background: #fff0f0; border-radius: 6px; margin: 10px 0;">
+        <strong>한국어 블록:</strong> 이 문구는 한국어일 때만 보입니다. (data-mi18n-block="ko")
+    </div>
+
+    <div data-mi18n-block="en" style="padding: 10px; background: #f0f0ff; border-radius: 6px; margin: 10px 0;">
+        <strong>English Block:</strong> This content is visible only in English. (data-mi18n-block="en")
+    </div>
+
+    <p class="muted" data-mi18n-en="By default, <strong>strong, em, i, a, b, span, div, p, br, button</strong> tags are allowed.">
+        기본 설정에서 <strong>strong, em, i, a, b, span, div, p, br, button</strong> 태그를 허용합니다.
+    </p>
+
+    <p id="statusText" data-mi18n-en="Current language: Korean default">현재 언어: 한국어 기본값</p>
+
+    <div class="row">
+        <button
+            id="applyKo"
+            type="button"
+            data-mi18n-en="Apply Korean"
+            data-mi18n-en-attr-title="Apply Korean"
+            title="한국어 적용"
+        >
+            한국어 적용
+        </button>
+        <button
+            id="applyEn"
+            type="button"
+            data-mi18n-en="Apply English"
+            data-mi18n-en-attr-title="Apply English"
+            title="영어 적용"
+        >
+            영어 적용
+        </button>
+    </div>
+</main>
+
+<script src="./mytory-i18n.js?v=20260510"></script>
+<script>
+    MytoryI18n.init({
+        defaultLang: "ko",
+        allowHtml: true,
+    });
+
+    const statusText = document.getElementById("statusText");
+    const applyKo = document.getElementById("applyKo");
+    const applyEn = document.getElementById("applyEn");
+
+    function renderStatus(lang) {
+        if (lang === "en") {
+            statusText.textContent = "Current language: English translation";
+            return;
+        }
+        statusText.textContent = "현재 언어: 한국어 기본값";
+    }
+
+    if (applyKo) {
+        applyKo.addEventListener("click", function () {
+            MytoryI18n.setLanguage("ko");
+            renderStatus("ko");
+        });
+    }
+
+    if (applyEn) {
+        applyEn.addEventListener("click", function () {
+            MytoryI18n.setLanguage("en");
+            renderStatus("en");
+        });
+    }
+
+    renderStatus(MytoryI18n.getLanguage());
+</script>
+</body>
+</html>

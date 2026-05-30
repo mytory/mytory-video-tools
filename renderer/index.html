@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-mi18n-ko="Mytory 비디오 툴 - 대용량 고속 로컬 인코더">Mytory Video Tool - High-Speed Native Video Utilities</title>
+    <link rel="stylesheet" href="./pico.min.css">
+    <link rel="stylesheet" href="./app.css">
+</head>
+<body>
+<div class="app-container">
+    <!-- 1. 좌측 사이드바 -->
+    <aside class="sidebar">
+        <div class="brand">
+            <img class="brand__logo" src="./logo.webp" alt="Mytory logo">
+            <div class="brand__text">
+                <div class="brand__eyebrow">Mytory Desktop</div>
+                <h1 class="brand__title">Video Tool</h1>
+            </div>
+        </div>
+        <nav class="nav-menu">
+            <button class="nav-item active" data-tab="speed-changer">
+                <span class="icon">⚡</span>
+                <span class="label" data-mi18n-ko="배속 변환기">Speed Changer</span>
+            </button>
+            <button class="nav-item" data-tab="audio-drop">
+                <span class="icon">🎵</span>
+                <span class="label" data-mi18n-ko="오디오 추출기">Audio Drop</span>
+            </button>
+            <button class="nav-item" data-tab="frame-capture">
+                <span class="icon">📸</span>
+                <span class="label" data-mi18n-ko="장면 캡처">Frame Capture</span>
+            </button>
+            <button class="nav-item" data-tab="remuxer">
+                <span class="icon">🔄</span>
+                <span class="label" data-mi18n-ko="확장자 변환기">Remuxer</span>
+            </button>
+            <button class="nav-item" data-tab="splitter">
+                <span class="icon">✂️</span>
+                <span class="label" data-mi18n-ko="비디오 분할기">Video Splitter</span>
+            </button>
+            <button class="nav-item" data-tab="settings">
+                <span class="icon">⚙️</span>
+                <span class="label" data-mi18n-ko="설정">Settings</span>
+            </button>
+        </nav>
+    </aside>
+
+    <!-- 2. 우측 메인 콘텐츠 영역 -->
+    <main class="content">
+        <!-- 2.1 배속 변환기 화면 -->
+        <section id="speed-changer" class="tab-content active">
+            <h2 data-mi18n-ko="비디오 배속 변환기">Video Speed Changer</h2>
+            <p class="tab-desc" data-mi18n-ko="다람쥐 목소리 방지 기술(피치 유지)을 활용해 비디오 배속 인코딩을 수행합니다.">
+                Change play speed while preserving original audio pitch.
+            </p>
+
+            <div class="card card-panel">
+                <div class="control-group">
+                    <label class="control-label" data-mi18n-ko="원하는 배속 선택">Select Play Speed</label>
+                    <div class="speed-preset-container" id="speedPresets">
+                        <button class="preset-btn" data-speed="0.5">0.5x</button>
+                        <button class="preset-btn" data-speed="0.75">0.75x</button>
+                        <button class="preset-btn" data-speed="1.0">1.0x</button>
+                        <button class="preset-btn active" data-speed="1.25">1.25x</button>
+                        <button class="preset-btn" data-speed="1.5">1.5x</button>
+                        <button class="preset-btn" data-speed="1.75">1.75x</button>
+                        <button class="preset-btn" data-speed="2.0">2.0x</button>
+                        <button class="preset-btn" data-speed="2.5">2.5x</button>
+                        <button class="preset-btn" data-speed="3.0">3.0x</button>
+                        <button class="preset-btn" data-speed="4.0">4.0x</button>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" class="speed-slider" id="speedSlider" min="0.5" max="4.0" step="0.05" value="1.25">
+                        <span class="speed-display" id="speedDisplay">1.25x</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" data-mi18n-ko="인코딩 비디오 코덱">Video Codec</label>
+                    <select id="speedCodecSelect" style="width: auto; min-width: 150px;">
+                        <option value="h264">H.264 / AVC</option>
+                        <option value="h265">H.265 / HEVC</option>
+                        <option value="vp9">VP9 (WebM)</option>
+                        <option value="av1">AV1</option>
+                    </select>
+                </div>
+
+                <div class="dropzone" id="speedDropzone">
+                    <h3 data-mi18n-ko="여기에 미디어 파일을 드롭하세요">Drop media files here</h3>
+                    <p data-mi18n-ko="여러 비디오 및 오디오 파일을 드롭할 수 있습니다.">
+                        Supports dropping multiple files at once.
+                    </p>
+                    <label class="btn" for="speedFileInput" data-mi18n-ko="파일 선택">Choose files</label>
+                    <input type="file" id="speedFileInput" accept="video/*,audio/*" multiple hidden>
+                </div>
+
+                <div class="summary-stats">
+                    <div>
+                        <div class="stat-label" data-mi18n-ko="설정 배속">Target Speed</div>
+                        <div id="statSpeed" class="stat-value">1.25x</div>
+                    </div>
+                    <div>
+                        <div class="stat-label" data-mi18n-ko="현재 대기 파일">Queue Files</div>
+                        <div id="statQueue" class="stat-value">0</div>
+                    </div>
+                    <div>
+                        <div class="stat-label" data-mi18n-ko="변환 완료">Done</div>
+                        <div id="statDone" class="stat-value">0</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2.2 오디오 추출기 화면 -->
+        <section id="audio-drop" class="tab-content">
+            <h2 data-mi18n-ko="영상 오디오 추출기">Video Audio Drop</h2>
+            <p class="tab-desc" data-mi18n-ko="영상 파일에서 오디오 트랙만 안전하고 빠르게 추출합니다.">
+                Extract audio stream from video files instantly.
+            </p>
+
+            <div class="card card-panel">
+                <div class="control-group">
+                    <label class="control-label" data-mi18n-ko="추출 포맷 선택">Output Format</label>
+                    <div class="format-presets" id="audioFormats">
+                        <button class="preset-btn active" data-format="auto">Auto (AAC/Copy)</button>
+                        <button class="preset-btn" data-format="mp3">MP3</button>
+                        <button class="preset-btn" data-format="ogg">OGG</button>
+                        <button class="preset-btn" data-format="wav">WAV</button>
+                    </div>
+                </div>
+
+                <div class="dropzone" id="audioDropzone">
+                    <h3 data-mi18n-ko="여기에 영상 파일을 드롭하세요">Drop video files here</h3>
+                    <p data-mi18n-ko="여러 영상 파일을 드롭하여 한 번에 오디오를 추출할 수 있습니다.">
+                        Extract audio from multiple videos at once.
+                    </p>
+                    <label class="btn" for="audioFileInput" data-mi18n-ko="파일 선택">Choose files</label>
+                    <input type="file" id="audioFileInput" accept="video/*" multiple hidden>
+                </div>
+
+                <div class="summary-stats">
+                    <div>
+                        <div class="stat-label" data-mi18n-ko="출력 포맷">Output Format</div>
+                        <div id="statAudioFormat" class="stat-value">AUTO</div>
+                    </div>
+                    <div>
+                        <div class="stat-label" data-mi18n-ko="현재 대기 파일">Queue Files</div>
+                        <div id="statAudioQueue" class="stat-value">0</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2.3 장면 캡처 화면 -->
+        <section id="frame-capture" class="tab-content">
+            <h2 data-mi18n-ko="비디오 장면 캡처">Video Frame Capture</h2>
+            <p class="tab-desc" data-mi18n-ko="비디오 프레임을 정밀 이동해 원본 화질 그대로 캡처하거나, 장면 전환 필터로 이미지를 자동 추출합니다.">
+                Extract high-quality frames or detect scene changes.
+            </p>
+
+            <div class="card card-panel">
+                <div class="dropzone" id="captureDropzone">
+                    <h3 data-mi18n-ko="여기에 영상 파일을 드롭하세요">Drop a video file here</h3>
+                    <label class="btn" for="captureFileInput" data-mi18n-ko="파일 선택">Choose file</label>
+                    <input type="file" id="captureFileInput" accept="video/*" hidden>
+                </div>
+
+                <!-- 플레이어 및 타임라인 영역 (파일 드롭 시 활성화) -->
+                <div id="captureEditor" class="editor-container" style="display: none;">
+                    <div class="video-preview-wrapper">
+                        <video id="captureVideo" playsinline></video>
+                        <div id="captureTimecode" class="current-time-display">00:00:00:00</div>
+                    </div>
+
+                    <div class="timeline-container">
+                        <div class="timeline-bar" id="captureTimeline">
+                            <div class="timeline-range" id="captureTimelineRange" style="display:none;"></div>
+                            <div class="timeline-handle" id="captureTimelineHandle"></div>
+                        </div>
+                    </div>
+
+                    <!-- 캡처 모드 선택 버튼 -->
+                    <div class="mode-tabs">
+                        <button id="captureModeSingle" class="btn btn-mode active" data-mode="single" data-mi18n-ko="한 장면 캡처">Single Frame</button>
+                        <button id="captureModeBatch" class="btn btn-mode" data-mode="batch" data-mi18n-ko="구간 반복 캡처">Batch Interval</button>
+                        <button id="captureModeScene" class="btn btn-mode" data-mode="scene" data-mi18n-ko="장면 전환 감지">Scene Detection</button>
+                    </div>
+
+                    <!-- 공통 캡처 옵션 -->
+                    <div class="capture-options-bar">
+                        <div class="option-item">
+                            <label data-mi18n-ko="저장 이미지 포맷">Format</label>
+                            <select id="captureFormatSelect">
+                                <option value="image/jpeg">JPEG</option>
+                                <option value="image/png">PNG</option>
+                                <option value="image/webp">WebP</option>
+                            </select>
+                        </div>
+                        <div class="option-item checkbox-item">
+                            <label>
+                                <input type="checkbox" id="captureOverlayCheck">
+                                <span data-mi18n-ko="이미지에 시간 타임코드 기록">Timestamp Overlay</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 모드별 상세 탭 내용 -->
+                    <div class="mode-settings-card">
+                        <!-- 1. 단일 프레임 모드 설정 -->
+                        <div id="captureSettingSingle" class="mode-detail active">
+                            <button id="btnCaptureSingle" class="btn btn--primary" data-mi18n-ko="현재 프레임 저장">Save Current Frame</button>
+                        </div>
+
+                        <!-- 2. 구간 반복 모드 설정 -->
+                        <div id="captureSettingBatch" class="mode-detail">
+                            <div class="grid">
+                                <div>
+                                    <label data-mi18n-ko="시작 시간">Start Time</label>
+                                    <input type="text" id="captureBatchStart" value="00:00:00:00">
+                                    <button class="btn btn--sm btn--secondary" id="btnCaptureSetStart" data-mi18n-ko="현재 시점으로">Set Current</button>
+                                </div>
+                                <div>
+                                    <label data-mi18n-ko="종료 시간">End Time</label>
+                                    <input type="text" id="captureBatchEnd" value="00:00:00:00">
+                                    <button class="btn btn--sm btn--secondary" id="btnCaptureSetEnd" data-mi18n-ko="현재 시점으로">Set Current</button>
+                                </div>
+                                <div>
+                                    <label data-mi18n-ko="캡처 간격 (초)">Interval (Sec)</label>
+                                    <input type="number" id="captureBatchInterval" value="1.0" min="0.1" step="0.1">
+                                </div>
+                            </div>
+                            <button id="btnCaptureBatch" class="btn btn--primary" style="margin-top:1rem;" data-mi18n-ko="구간 일괄 캡처 시작">Start Batch Capture</button>
+                        </div>
+
+                        <!-- 3. 장면 전환 모드 설정 -->
+                        <div id="captureSettingScene" class="mode-detail">
+                            <div>
+                                <label data-mi18n-ko="장면 전환 감지 민감도">Scene Change Sensitivity</label>
+                                <input type="range" id="captureSceneThreshold" min="0.1" max="1.0" step="0.05" value="0.4">
+                                <span id="captureSceneThresholdVal">0.4</span>
+                                <small style="display:block; opacity:0.75;" data-mi18n-ko="낮을수록 미세한 화면 변화에도 많은 장면이 추출됩니다. (추천: 0.4)">Lower values detect more scene changes.</small>
+                            </div>
+                            <button id="btnCaptureSceneDetect" class="btn btn--primary" style="margin-top:1rem;" data-mi18n-ko="장면 감지 분석 시작">Analyze & Detect Scenes</button>
+                            
+                            <div id="sceneDetectionResult" style="display:none; margin-top:1rem;">
+                                <p><span data-mi18n-ko="감지된 장면 수:">Detected Scenes:</span> <strong id="sceneCountVal">0</strong></p>
+                                <button id="btnCaptureSceneExport" class="btn btn--success" data-mi18n-ko="감지된 장면 일괄 저장">Export Detected Scenes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2.4 확장자 변환기 화면 -->
+        <section id="remuxer" class="tab-content">
+            <h2 data-mi18n-ko="비디오 확장자 변환기">Video Remuxer</h2>
+            <p class="tab-desc" data-mi18n-ko="인코딩(디코딩/재압축) 과정 없이, 영상 스트림을 그대로 새 파일 포맷에 고속 복사합니다.">
+                Change container formats (MP4, MKV, MOV) instantly without re-encoding.
+            </p>
+
+            <div class="card card-panel">
+                <div class="control-group">
+                    <label class="control-label" data-mi18n-ko="목표 확장자">Target Container</label>
+                    <div class="format-presets" id="remuxContainers">
+                        <button class="preset-btn active" data-format="mp4">MP4</button>
+                        <button class="preset-btn" data-format="mkv">MKV</button>
+                        <button class="preset-btn" data-format="mov">MOV</button>
+                    </div>
+                </div>
+
+                <div class="dropzone" id="remuxDropzone">
+                    <h3 data-mi18n-ko="여기에 영상 파일을 드롭하세요">Drop video files here</h3>
+                    <p data-mi18n-ko="여러 비디오 파일을 한 번에 드롭하여 고속 복사할 수 있습니다.">
+                        Remux multiple video files instantly.
+                    </p>
+                    <label class="btn" for="remuxFileInput" data-mi18n-ko="파일 선택">Choose files</label>
+                    <input type="file" id="remuxFileInput" accept="video/*" multiple hidden>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2.5 비디오 분할기 화면 -->
+        <section id="splitter" class="tab-content">
+            <h2 data-mi18n-ko="비디오 분할 도구">Video Splitter</h2>
+            <p class="tab-desc" data-mi18n-ko="인코딩 손실 없이, 원하는 구간의 시작점과 종료점을 선택해 매우 빠르게 비디오를 자릅니다.">
+                Trim and save video segments instantly without re-encoding.
+            </p>
+
+            <div class="card card-panel">
+                <div class="dropzone" id="splitDropzone">
+                    <h3 data-mi18n-ko="여기에 영상 파일을 드롭하세요">Drop a video file here</h3>
+                    <label class="btn" for="splitFileInput" data-mi18n-ko="파일 선택">Choose file</label>
+                    <input type="file" id="splitFileInput" accept="video/*" hidden>
+                </div>
+
+                <!-- 분할 에디터 영역 (파일 드롭 시 활성화) -->
+                <div id="splitEditor" class="editor-container" style="display: none;">
+                    <div class="video-preview-wrapper">
+                        <video id="splitVideo" playsinline></video>
+                        <div id="splitTimecode" class="current-time-display">00:00:00:00</div>
+                    </div>
+
+                    <div class="timeline-container">
+                        <div class="timeline-bar" id="splitTimeline">
+                            <div class="timeline-range" id="splitTimelineRange"></div>
+                            <div class="timeline-handle" id="splitTimelineHandle"></div>
+                        </div>
+                    </div>
+
+                    <div class="grid">
+                        <div>
+                            <label data-mi18n-ko="분할 시작 시간">Start Time</label>
+                            <input type="text" id="splitStartInput" value="00:00:00:00">
+                            <button class="btn btn--secondary" id="btnSplitSetStart" data-mi18n-ko="현재 시점으로 설정">Set Start Time</button>
+                        </div>
+                        <div>
+                            <label data-mi18n-ko="분할 종료 시간">End Time</label>
+                            <input type="text" id="splitEndInput" value="00:00:00:00">
+                            <button class="btn btn--secondary" id="btnSplitSetEnd" data-mi18n-ko="현재 시점으로 설정">Set End Time</button>
+                        </div>
+                    </div>
+
+                    <button id="btnSplitExport" class="btn btn--primary" style="margin-top:1.5rem;" data-mi18n-ko="구간 자르기 내보내기">Export Segment</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2.6 환경 설정 화면 -->
+        <section id="settings" class="tab-content">
+            <h2 data-mi18n-ko="환경 설정">Application Settings</h2>
+            <p class="tab-desc" data-mi18n-ko="앱 동작 환경 및 저장 위치를 관리합니다.">
+                Manage configurations and output storage.
+            </p>
+
+            <div class="card card-panel config-panel">
+                <div class="control-group">
+                    <label class="control-label" data-mi18n-ko="저장 폴더 위치 정책">Save Location Policy</label>
+                    <div class="policy-options">
+                        <label>
+                            <input type="radio" name="savePolicy" value="input" checked>
+                            <span data-mi18n-ko="원본 파일과 동일한 경로 (기본값)">Save in the same folder as the input file (Default)</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="savePolicy" value="custom">
+                            <span data-mi18n-ko="사용자 정의 지정 폴더">Save to a custom directory</span>
+                        </label>
+                    </div>
+
+                    <!-- 커스텀 경로 설정 영역 -->
+                    <div id="customPathWrapper" style="display:none; margin-top: 1rem; gap: 8px;">
+                        <input type="text" id="customPathInput" readonly placeholder="No directory selected" style="flex:1; margin:0;">
+                        <button class="btn" id="btnSelectCustomPath" style="margin:0;" data-mi18n-ko="폴더 선택">Browse</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" data-mi18n-ko="하드웨어 가속 설정">Hardware Acceleration (GPU)</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="hwAccelCheck">
+                        <span data-mi18n-ko="인코딩 시 GPU 하드웨어 가속 사용">Use GPU hardware acceleration for encoding when available</span>
+                    </label>
+                    <div id="hwStatusText" style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-muted);">
+                        Checking hardware capabilities...
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" data-mi18n-ko="언어 (Language)">Language</label>
+                    <select id="langSelect" style="width: auto; min-width: 150px;">
+                        <option value="ko">한국어</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- 변환 작업 큐 진행 리스트 -->
+        <section class="card panel status-panel" id="conversionQueueSection">
+            <h3 class="section-title" data-mi18n-ko="작업 대기열 / 진행 목록">Task Queue</h3>
+            <div class="status-list" id="queueStatus">
+                <div class="status-item idle" id="queueStatusEmpty">
+                    <span data-mi18n-ko="대기 중인 작업이 없습니다. 파일을 추가해 주세요.">No active tasks in the queue. Add files to start.</span>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- 실시간 진행 팝업 토스트 -->
+<div id="statusToast" class="status-toast" hidden></div>
+
+<!-- 다국어 스크립트 연결 -->
+<script src="./mytory-i18n/mytory-i18n.js"></script>
+<script>
+    MytoryI18n.init({autoApply:true});
+</script>
+<script type="module" src="./app.js"></script>
+</body>
+</html>

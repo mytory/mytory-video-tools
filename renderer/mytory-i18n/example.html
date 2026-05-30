@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-mi18n-ko="Mytory i18n 예제">Mytory i18n Example</title>
+    <meta
+        name="description"
+        content="A small example page for Mytory i18n."
+        data-mi18n-ko="Mytory i18n 사용법을 보여 주는 작은 예제 페이지입니다."
+    >
+    <style>
+        :root {
+            --brand: lch(71% 29% 258deg);
+            --text: #182033;
+            --muted: #667085;
+            --line: #d9deea;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        body {
+            margin: 0;
+            color: var(--text);
+            background: #f7f8fc;
+        }
+
+        main {
+            width: min(720px, calc(100% - 32px));
+            margin: 48px auto;
+            padding: 28px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #fff;
+        }
+
+        h1 {
+            margin-top: 0;
+            color: var(--brand);
+        }
+
+        label {
+            display: grid;
+            gap: 8px;
+            margin: 20px 0;
+            font-weight: 700;
+        }
+
+        input {
+            padding: 12px 14px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            font: inherit;
+        }
+
+        button {
+            padding: 12px 16px;
+            border: 0;
+            border-radius: 6px;
+            color: #fff;
+            background: var(--brand);
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .muted {
+            color: var(--muted);
+        }
+
+        [data-mi18n-cloak] {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+<main data-mi18n-cloak>
+    <nav style="margin-bottom: 20px;">
+        <a href="./index.html" data-mi18n-ko="← 목록으로 돌아가기">← Back to Index</a>
+    </nav>
+    <h1 data-mi18n-ko="Mytory i18n 예제">Mytory i18n Example</h1>
+
+    <p data-mi18n-ko="HTML에 기본 언어 문구를 쓰고, 다른 언어는 data-mi18n-* 속성에 넣습니다.">
+        Write the default language directly in HTML, then add other languages with data-mi18n-* attributes.
+    </p>
+
+    <div data-mi18n-block="ko" style="padding: 10px; background: #fff0f0; border-radius: 6px; margin: 10px 0;">
+        <strong>한국어 블록:</strong> 이 문구는 한국어일 때만 보입니다. (data-mi18n-block="ko")
+    </div>
+
+    <div data-mi18n-block="en" style="padding: 10px; background: #f0f0ff; border-radius: 6px; margin: 10px 0;">
+        <strong>English Block:</strong> This content is visible only in English. (data-mi18n-block="en")
+    </div>
+
+    <p
+        class="muted"
+        data-mi18n-ko="기본 설정에서 <strong>strong, em, i, a, b, span, div, p, br, button</strong> 태그를 허용합니다."
+    >
+        By default, <strong>strong, em, i, a, b, span, div, p, br, button</strong> tags are allowed.
+    </p>
+
+    <label>
+        <span data-mi18n-ko="검색어">Search term</span>
+        <input
+            type="search"
+            placeholder="Type a keyword"
+            data-mi18n-ko-attr-placeholder="검색어를 입력하세요"
+            aria-label="Search term"
+            data-mi18n-ko-attr-aria-label="검색어"
+        >
+    </label>
+
+    <button
+        type="button"
+        title="Run example"
+        data-mi18n-ko="예제 실행"
+        data-mi18n-ko-attr-title="예제 실행"
+    >
+        Run Example
+    </button>
+
+    <hr style="margin: 40px 0; border: 0; border-top: 1px solid var(--line);">
+
+    <section>
+        <h2 data-mi18n-ko="동적 속성 번역">Dynamic Attribute Translation</h2>
+        <p data-mi18n-ko="이제 data-mi18n-ko-attr-src, data-mi18n-ko-attr-width 등 모든 속성을 번역할 수 있습니다.">
+            Now you can translate any attribute like data-mi18n-ko-attr-src, data-mi18n-ko-attr-width, etc.
+        </p>
+        <img 
+            src="https://via.placeholder.com/150/0000FF/FFFFFF?text=English" 
+            alt="English"
+            width="150"
+            data-mi18n-ko-attr-src="https://via.placeholder.com/200/FF0000/FFFFFF?text=Korean"
+            data-mi18n-ko-attr-alt="한국어"
+            data-mi18n-ko-attr-width="200"
+        >
+    </section>
+</main>
+
+<script src="./mytory-i18n.js?v=20260510"></script>
+<script>
+    MytoryI18n.init({
+        defaultLang: "en",
+        allowHtml: true,
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+    "name": "mytory-i18n",
+    "version": "1.3.0",
+    "description": "Small attribute-based browser i18n helper for Mytory Tools.",
+    "main": "mytory-i18n.js",
+    "files": [
+        "mytory-i18n.js",
+        "example.html",
+        "readme.md"
+    ],
+    "license": "UNLICENSED",
+    "scripts": {
+    "test": "node test.js"
+  },
+  "dependencies": {
+        "@highlightjs/cdn-assets": "^11.11.1",
+        "highlight.js": "^11.11.1"
+    },
+    "devDependencies": {
+        "jsdom": "^29.1.0"
+    }
+}

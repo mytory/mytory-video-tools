@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-mi18n-ko="URL 쿼리 및 히스토리 API 데모">URL Query & History API Demo</title>
+    <style>
+        :root {
+            --brand: lch(71% 29% 258deg);
+            --text: #182033;
+            --muted: #667085;
+            --line: #d9deea;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+        body { margin: 0; color: var(--text); background: #f7f8fc; }
+        main { width: min(720px, calc(100% - 32px)); margin: 48px auto; padding: 28px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+        h1 { margin-top: 0; color: var(--brand); }
+        .row { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
+        .btn { padding: 10px 16px; border: 1px solid var(--line); border-radius: 6px; text-decoration: none; color: var(--text); background: #fff; font-weight: 700; transition: background 0.2s; cursor: pointer; font-family: inherit; font-size: 14px; }
+        .btn:hover { background: #f0f3ff; border-color: var(--brand); }
+        .status { padding: 12px; background: #f2f5ff; border-radius: 6px; font-weight: 700; }
+        [data-mi18n-cloak] { display: none !important; }
+        h2 { font-size: 1.1rem; margin-top: 30px; color: var(--brand); }
+    </style>
+</head>
+<body>
+<main data-mi18n-cloak>
+    <nav style="margin-bottom: 20px;">
+        <a href="./index.html" data-mi18n-ko="← 목록으로 돌아가기">← Back to Index</a>
+    </nav>
+    <h1 data-mi18n-ko="URL 쿼리 및 히스토리">URL Query & History</h1>
+    
+    <p data-mi18n-ko="URL 쿼리 파라미터(?mi18n_locale=ko)를 이용한 설정과 pushState를 통한 실시간 동기화를 테스트합니다.">
+        Test language settings using URL query parameters (?mi18n_locale=ko) and real-time sync via pushState.
+    </p>
+
+    <section>
+        <h2 data-mi18n-ko="1. 링크로 전환 (페이지 새로고침)">1. Switch via Link (Full Refresh)</h2>
+        <div class="row">
+            <a href="?mi18n_locale=ko" class="btn">?mi18n_locale=ko (Korean)</a>
+            <a href="?mi18n_locale=en" class="btn">?mi18n_locale=en (English)</a>
+        </div>
+    </section>
+
+    <section>
+        <h2 data-mi18n-ko="2. pushState로 전환 (새로고침 없음)">2. Switch via pushState (No Refresh)</h2>
+        <div class="row">
+            <button type="button" onclick="changeLang('ko')" class="btn">pushState: ko</button>
+            <button type="button" onclick="changeLang('en')" class="btn">pushState: en</button>
+        </div>
+    </section>
+
+    <div class="status" style="margin-top: 30px;">
+        <span data-mi18n-ko="현재 언어:">Current Language:</span>
+        <span id="currentLangDisplay">...</span>
+    </div>
+</main>
+
+<script src="./mytory-i18n.js?v=20260510"></script>
+<script>
+    MytoryI18n.init({
+        defaultLang: "en",
+        allowHtml: true
+    });
+
+    function updateDisplay() {
+        document.getElementById('currentLangDisplay').textContent = MytoryI18n.getLanguage();
+    }
+
+    function changeLang(lang) {
+        const url = new URL(window.location);
+        url.searchParams.set('mi18n_locale', lang);
+        window.history.pushState({}, '', url);
+        // pushState는 이벤트를 발생시키지 않으므로 수동으로 popstate를 디스패치하거나 
+        // 직접 MytoryI18n.setLanguage(lang)을 호출해야 합니다.
+        // 여기서는 popstate 리스너가 작동하는지 확인하기 위해 이벤트를 수동 발생시킵니다.
+        window.dispatchEvent(new PopStateEvent('popstate'));
+    }
+
+    updateDisplay();
+    window.addEventListener('popstate', updateDisplay);
+</script>
+</body>
+</html>

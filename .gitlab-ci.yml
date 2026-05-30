@@ -36,11 +36,11 @@ build-windows:
   only:
     - master
 
-# 3. macOS 빌드 (macOS 전용 리눅스 러너가 필요합니다)
+# 3. macOS 빌드 (로컬 macOS 러너 사용)
 build-macos:
   stage: build
   tags:
-    - saas-macos-medium-m1 # GitLab.com에서 제공하는 macOS 러너 태그
+    - macos # 로컬에 등록한 러너의 태그와 일치해야 합니다.
   script:
     - npm install
     - npm run dist:release -- --mac

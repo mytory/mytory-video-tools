@@ -3,6 +3,7 @@ image: node:20 # 기본 이미지 (Linux 빌드용)
 
 stages:
   - build
+  - release
 
 # 캐시 설정: 빌드 속도를 높이기 위해 node_modules를 저장합니다.
 cache:
@@ -18,9 +19,10 @@ build-linux:
   artifacts:
     paths:
       - dist/*.AppImage
-    expire_in: 1 week
+    expire_in: 1 month
   only:
-    - master # master 브랜치에 푸시될 때만 실행
+    - master
+    - tags
 
 # 2. Windows 빌드 (Linux 환경에서 Wine을 사용해 빌드)
 build-windows:
@@ -32,9 +34,10 @@ build-windows:
   artifacts:
     paths:
       - dist/*.exe
-    expire_in: 1 week
+    expire_in: 1 month
   only:
     - master
+    - tags
 
 # 3. macOS 빌드 (로컬 macOS 러너 사용)
 build-macos:
@@ -47,6 +50,21 @@ build-macos:
   artifacts:
     paths:
       - dist/*.dmg
-    expire_in: 1 week
+    expire_in: 1 month
   only:
     - master
+    - tags
+
+release:
+  stage: release
+  image: node:20
+  only:
+    - tags
+  script:
+    - echo "Creating GitLab Release for $CI_COMMIT_TAG"
+  release:
+    name: "$CI_PROJECT_TITLE $CI_COMMIT_TAG"
+    tag_name: "$CI_COMMIT_TAG"
+    description: |
+      Release $CI_COMMIT_TAG
+      Built release artifacts are available in pipeline jobs.

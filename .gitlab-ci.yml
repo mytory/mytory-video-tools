@@ -20,7 +20,7 @@ build-linux:
       - dist/*.AppImage
     expire_in: 1 week
   only:
-    - main # main 브랜치에 푸시될 때만 실행
+    - master # master 브랜치에 푸시될 때만 실행
 
 # 2. Windows 빌드 (Linux 환경에서 Wine을 사용해 빌드)
 build-windows:
@@ -34,7 +34,7 @@ build-windows:
       - dist/*.exe
     expire_in: 1 week
   only:
-    - main
+    - master
 
 # 3. macOS 빌드 (macOS 전용 리눅스 러너가 필요합니다)
 build-macos:
@@ -49,9 +49,4 @@ build-macos:
       - dist/*.dmg
     expire_in: 1 week
   only:
-    - main
-  variables:
-    # macOS 빌드 시 인증서가 필요하다면 아래 변수를 사용합니다.
-    # CSC_LINK와 CSC_KEY_PASSWORD는 GitLab CI/CD Variables에 등록해야 합니다.
-    CSC_LINK: $MACOS_CERTIFICATE_P12
-    CSC_KEY_PASSWORD: $MACOS_CERTIFICATE_PASSWORD
+    - master

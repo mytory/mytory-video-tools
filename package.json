@@ -49,13 +49,17 @@
     ],
     "mac": {
       "icon": "build/icon.png",
-      "target": "dmg",
+      "target": [
+        "dmg"
+      ],
       "category": "public.app-category.video",
       "hardenedRuntime": true,
       "gatekeeperAssess": false
     },
     "win": {
-      "target": "nsis"
+      "target": [
+        "nsis"
+      ]
     },
     "linux": {
       "target": "AppImage"

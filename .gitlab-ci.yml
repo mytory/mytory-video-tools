@@ -1,0 +1,57 @@
+# GitLab CI/CD 설정 파일
+image: node:20 # 기본 이미지 (Linux 빌드용)
+
+stages:
+  - build
+
+# 캐시 설정: 빌드 속도를 높이기 위해 node_modules를 저장합니다.
+cache:
+  paths:
+    - node_modules/
+
+# 1. Linux 빌드
+build-linux:
+  stage: build
+  script:
+    - npm install
+    - npm run dist:release -- --linux
+  artifacts:
+    paths:
+      - dist/*.AppImage
+    expire_in: 1 week
+  only:
+    - main # main 브랜치에 푸시될 때만 실행
+
+# 2. Windows 빌드 (Linux 환경에서 Wine을 사용해 빌드)
+build-windows:
+  stage: build
+  image: electronuserland/builder:wine # Windows 빌드를 위한 Wine 포함 이미지
+  script:
+    - npm install
+    - npm run dist:release -- --win
+  artifacts:
+    paths:
+      - dist/*.exe
+    expire_in: 1 week
+  only:
+    - main
+
+# 3. macOS 빌드 (macOS 전용 리눅스 러너가 필요합니다)
+build-macos:
+  stage: build
+  tags:
+    - saas-macos-medium-m1 # GitLab.com에서 제공하는 macOS 러너 태그
+  script:
+    - npm install
+    - npm run dist:release -- --mac
+  artifacts:
+    paths:
+      - dist/*.dmg
+    expire_in: 1 week
+  only:
+    - main
+  variables:
+    # macOS 빌드 시 인증서가 필요하다면 아래 변수를 사용합니다.
+    # CSC_LINK와 CSC_KEY_PASSWORD는 GitLab CI/CD Variables에 등록해야 합니다.
+    CSC_LINK: $MACOS_CERTIFICATE_P12
+    CSC_KEY_PASSWORD: $MACOS_CERTIFICATE_PASSWORD

@@ -61,6 +61,16 @@ npm start
 npm run dist
 ```
 
+### macOS 서명/CI 빌드 안내
+
+* `npm run dist`는 `dotenv`를 사용해 `.env`를 로드합니다.
+* macOS 서명 identity는 `.env`의 `CSC_NAME`에서 읽습니다. `CSC_NAME`은 로컬 macOS 키체인에 설치된 인증서 이름을 지정하는 변수입니다.
+* `.env` 예시:
+    ```env
+    CSC_NAME="Apple Development: my-email@test.com (XXXXJ356NG)"
+    ```
+* `.gitlab-ci.yml`의 `CSC_LINK`/`CSC_KEY_PASSWORD`는 P12 파일 기반 서명용 변수입니다. GitLab의 CI 환경에서 사용합니다.
+
 ---
 
 ## 4. 디렉터리 구조

@@ -57,7 +57,7 @@
         "dmg"
       ],
       "category": "public.app-category.video",
-      "hardenedRuntime": false,
+      "hardenedRuntime": true,
       "gatekeeperAssess": false
     },
     "win": {

@@ -1,6 +1,6 @@
 # Mytory Video Tools (데스크톱 통합 앱)
 
-> **🇬🇧 English:** [README.md](./README.md)
+> **🇬🇧 English:** [README.md](./README.md) · **🇯🇵 日本語:** [README.ja.md](./README.ja.md) · **🇨🇳 简体中文:** [README.zh-cn.md](./README.zh-cn.md) · **🇪🇸 Español:** [README.es.md](./README.es.md) · **🇧🇷 Português:** [README.pt.md](./README.pt.md) · **🇫🇷 Français:** [README.fr.md](./README.fr.md) · **🇮🇩 Bahasa Indonesia:** [README.id.md](./README.id.md) · **🇮🇳 हिन्दी:** [README.hi.md](./README.hi.md)
 
 **Mytory Video Tools**는 대용량 비디오의 배속 인코딩 및 다양한 미디어 조작을 지원하는 크로스 플랫폼(Windows, macOS, Linux) 데스크톱 애플리케이션입니다. Electron으로 제작되었으며 FFmpeg/FFprobe 바이너리를 내장하고 있습니다.
 
@@ -90,6 +90,13 @@ npm run dist
 ├── .gitlab-ci.yml        # GitLab CI/CD 멀티 플랫폼 빌드 설정
 ├── README.md             # 프로젝트 소개 (영문)
 ├── README.ko.md          # 프로젝트 소개 (한글)
+├── README.ja.md          # 프로젝트 소개 (일본어)
+├── README.zh-cn.md       # 프로젝트 소개 (중국어 간체)
+├── README.es.md          # 프로젝트 소개 (스페인어)
+├── README.pt.md          # 프로젝트 소개 (포르투갈어)
+├── README.fr.md          # 프로젝트 소개 (프랑스어)
+├── README.id.md          # 프로젝트 소개 (인도네시아어)
+├── README.hi.md          # 프로젝트 소개 (힌디어)
 └── renderer/             # 렌더러 프로세스 (프론트엔드 리소스)
 ```
 

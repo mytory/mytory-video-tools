@@ -1,6 +1,6 @@
 # Mytory Video Tools
 
-> **🇰🇷 한국어:** [README.ko.md](./README.ko.md)
+> **🇰🇷 한국어:** [README.ko.md](./README.ko.md) · **🇯🇵 日本語:** [README.ja.md](./README.ja.md) · **🇨🇳 简体中文:** [README.zh-cn.md](./README.zh-cn.md) · **🇪🇸 Español:** [README.es.md](./README.es.md) · **🇧🇷 Português:** [README.pt.md](./README.pt.md) · **🇫🇷 Français:** [README.fr.md](./README.fr.md) · **🇮🇩 Bahasa Indonesia:** [README.id.md](./README.id.md) · **🇮🇳 हिन्दी:** [README.hi.md](./README.hi.md)
 
 **Mytory Video Tools** is a cross-platform (Windows, macOS, Linux) desktop application for high-speed video encoding and various media manipulation tasks. It is built with Electron and ships with embedded FFmpeg/FFprobe binaries.
 
@@ -90,6 +90,13 @@ npm run dist
 ├── .gitlab-ci.yml        # GitLab CI/CD multi-platform build config
 ├── README.md             # Project documentation (English)
 ├── README.ko.md          # Project documentation (Korean)
+├── README.ja.md          # Project documentation (Japanese)
+├── README.zh-cn.md       # Project documentation (Chinese Simplified)
+├── README.es.md          # Project documentation (Spanish)
+├── README.pt.md          # Project documentation (Portuguese)
+├── README.fr.md          # Project documentation (French)
+├── README.id.md          # Project documentation (Indonesian)
+├── README.hi.md          # Project documentation (Hindi)
 └── renderer/             # Renderer process (frontend resources)
 ```
 

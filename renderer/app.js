@@ -755,7 +755,8 @@ async function processAudioFiles(files) {
             name: file.name,
             status: 'pending',
             percent: 0,
-            speed: 'copy'
+            speed: 'copy',
+            engineLabel: t('Audio extraction', '오디오 추출')
         });
     }
 
@@ -1826,13 +1827,31 @@ function showToast(title, message, type = 'info') {
     
     toast.style = colorStyle;
     toast.innerHTML = `
+        <button class="toast-close-btn" type="button" aria-label="${t('Close notification', '알림 닫기')}">&times;</button>
         <h4 style="margin:0; font-size:0.95rem;">${title}</h4>
         <p style="margin:4px 0 0 0; font-size:0.8rem; color:var(--text-muted);">${message}</p>
     `;
+
+    // 닫기 버튼 클릭 시 토스트 숨김
+    toast.querySelector('.toast-close-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        dismissToast();
+    });
+
+    // 토스트 본문을 클릭해도 숨김
+    toast.addEventListener('click', dismissToast, { once: true });
     
     toastTimer = setTimeout(() => {
         toast.hidden = true;
     }, 4000);
+}
+
+function dismissToast() {
+    if (toastTimer) {
+        clearTimeout(toastTimer);
+        toastTimer = null;
+    }
+    elements.statusToast.hidden = true;
 }
 
 // 초기화 시작

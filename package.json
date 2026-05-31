@@ -41,6 +41,8 @@
     "directories": {
       "output": "dist"
     },
+    "compression": "maximum",
+    "afterPack": "build/afterPack.js",
     "files": [
       "main.js",
       "preload.js",

@@ -10,6 +10,8 @@ const state = {
     // 배속 변환기 상태
     speed: 1.25,
     speedCodec: 'h264',
+    compressPreset: '1080p',
+    compressCodec: 'h264',
     // 오디오 추출 상태
     audioFormat: 'auto',
     // 확장자 변환기 상태
@@ -57,6 +59,23 @@ const elements = {
     statSpeed: document.getElementById('statSpeed'),
     statQueue: document.getElementById('statQueue'),
     statDone: document.getElementById('statDone'),
+
+    // 용량 줄이기 관련
+    compressPresets: document.getElementById('compressPresets'),
+    compressCodecSelect: document.getElementById('compressCodecSelect'),
+    compressResolutionSelect: document.getElementById('compressResolutionSelect'),
+    compressVideoBitrate: document.getElementById('compressVideoBitrate'),
+    compressMaxrate: document.getElementById('compressMaxrate'),
+    compressBufsize: document.getElementById('compressBufsize'),
+    compressAudioBitrate: document.getElementById('compressAudioBitrate'),
+    compressFpsSelect: document.getElementById('compressFpsSelect'),
+    compressFastStartCheck: document.getElementById('compressFastStartCheck'),
+    compressPresetHelp: document.getElementById('compressPresetHelp'),
+    compressDropzone: document.getElementById('compressDropzone'),
+    compressFileInput: document.getElementById('compressFileInput'),
+    statCompressPreset: document.getElementById('statCompressPreset'),
+    statCompressBitrate: document.getElementById('statCompressBitrate'),
+    statCompressQueue: document.getElementById('statCompressQueue'),
     
     // 오디오 추출 관련
     audioFormats: document.getElementById('audioFormats'),
@@ -177,6 +196,14 @@ const codecHelpText = {
         en: 'For most people, H.264 is the right choice. It opens easily on almost every device and app.',
         ko: '대부분은 H.264를 쓰면 됩니다. 거의 모든 기기와 앱에서 잘 열리고 공유하기 쉽습니다.'
     }
+};
+
+const compressPresets = {
+    '480p': { label: '480p', width: 854, height: 480, videoBitrate: 2500, maxrate: 4000, bufsize: 5000, audioBitrate: 128, fps: 'source' },
+    '720p': { label: '720p', width: 1280, height: 720, videoBitrate: 5000, maxrate: 7500, bufsize: 10000, audioBitrate: 128, fps: 'source' },
+    '1080p': { label: '1080p', width: 1920, height: 1080, videoBitrate: 8000, maxrate: 12000, bufsize: 16000, audioBitrate: 128, fps: 'source' },
+    '1440p': { label: '1440p', width: 2560, height: 1440, videoBitrate: 16000, maxrate: 24000, bufsize: 32000, audioBitrate: 192, fps: 'source' },
+    '2160p': { label: '4K', width: 3840, height: 2160, videoBitrate: 45000, maxrate: 68000, bufsize: 90000, audioBitrate: 192, fps: 'source' }
 };
 
 function updateSpeedCodecHelp() {
@@ -338,6 +365,7 @@ async function initApp() {
 
     // 각 도구별 인터랙션 설정 실행
     setupSpeedChanger();
+    setupCompressor();
     setupAudioExtractor();
     setupFrameCapture();
     setupRemuxer();
@@ -468,6 +496,148 @@ async function processSpeedFiles(files) {
             showToast(t('Conversion Failed', '인코딩 실패'), `${name}: ${result.error}`, 'error');
         }
         elements.statQueue.textContent = Math.max(0, parseInt(elements.statQueue.textContent) - 1);
+    }
+}
+
+function setupCompressor() {
+    const presetButtons = elements.compressPresets.querySelectorAll('.preset-btn');
+
+    presetButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            presetButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            state.compressPreset = btn.getAttribute('data-preset');
+            if (state.compressPreset !== 'custom') {
+                applyCompressPreset(state.compressPreset);
+            }
+            updateCompressSummary();
+        });
+    });
+
+    [
+        elements.compressCodecSelect,
+        elements.compressResolutionSelect,
+        elements.compressVideoBitrate,
+        elements.compressMaxrate,
+        elements.compressBufsize,
+        elements.compressAudioBitrate,
+        elements.compressFpsSelect
+    ].forEach(input => {
+        input.addEventListener('input', () => {
+            state.compressPreset = 'custom';
+            presetButtons.forEach(b => b.classList.toggle('active', b.getAttribute('data-preset') === 'custom'));
+            updateCompressSummary();
+        });
+    });
+
+    elements.compressCodecSelect.addEventListener('change', (e) => {
+        state.compressCodec = e.target.value;
+    });
+
+    const dz = elements.compressDropzone;
+    dz.addEventListener('dragover', (e) => { e.preventDefault(); dz.classList.add('is-dragover'); });
+    dz.addEventListener('dragleave', () => dz.classList.remove('is-dragover'));
+    dz.addEventListener('drop', async (e) => {
+        e.preventDefault();
+        dz.classList.remove('is-dragover');
+        if (e.dataTransfer.files.length > 0) {
+            await processCompressFiles(e.dataTransfer.files);
+        }
+    });
+
+    elements.compressFileInput.addEventListener('change', async (e) => {
+        if (e.target.files.length > 0) {
+            await processCompressFiles(e.target.files);
+        }
+    });
+
+    applyCompressPreset(state.compressPreset);
+}
+
+function applyCompressPreset(presetKey) {
+    const preset = compressPresets[presetKey];
+    if (!preset) return;
+
+    elements.compressCodecSelect.value = 'h264';
+    state.compressCodec = 'h264';
+    elements.compressResolutionSelect.value = presetKey;
+    elements.compressVideoBitrate.value = preset.videoBitrate;
+    elements.compressMaxrate.value = preset.maxrate;
+    elements.compressBufsize.value = preset.bufsize;
+    elements.compressAudioBitrate.value = preset.audioBitrate;
+    elements.compressFpsSelect.value = preset.fps;
+    updateCompressSummary();
+}
+
+function getCompressSettings() {
+    const resolution = elements.compressResolutionSelect.value;
+    const preset = compressPresets[resolution];
+    return {
+        videoCodec: elements.compressCodecSelect.value,
+        width: preset ? preset.width : 0,
+        height: preset ? preset.height : 0,
+        videoBitrate: parseInt(elements.compressVideoBitrate.value, 10),
+        maxrate: parseInt(elements.compressMaxrate.value, 10),
+        bufsize: parseInt(elements.compressBufsize.value, 10),
+        audioBitrate: parseInt(elements.compressAudioBitrate.value, 10),
+        fps: elements.compressFpsSelect.value,
+        fastStart: elements.compressFastStartCheck.checked
+    };
+}
+
+function updateCompressSummary() {
+    const settings = getCompressSettings();
+    const presetLabel = state.compressPreset === 'custom' ? t('Custom', '사용자 설정') : (compressPresets[state.compressPreset]?.label || 'Custom');
+    elements.statCompressPreset.textContent = presetLabel;
+    elements.statCompressBitrate.textContent = `${settings.videoBitrate}k`;
+    elements.compressPresetHelp.textContent = t(
+        `${presetLabel} size-optimized preset: ${settings.videoCodec.toUpperCase()}, ${settings.videoBitrate} kbps video, ${settings.audioBitrate} kbps audio.`,
+        `${presetLabel} 용량 최적화: ${settings.videoCodec.toUpperCase()}, 비디오 ${settings.videoBitrate} kbps, 오디오 ${settings.audioBitrate} kbps.`
+    );
+}
+
+async function processCompressFiles(files) {
+    const list = normalizeNativeFiles(files);
+    if (list.length === 0) return;
+    elements.statCompressQueue.textContent = parseInt(elements.statCompressQueue.textContent) + list.length;
+
+    for (const file of list) {
+        const taskId = 'compress_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
+        const inputPath = file.path;
+        const name = file.name;
+        const settings = getCompressSettings();
+        const useHw = elements.hwAccelCheck.checked;
+        const encoderMeta = resolveSpeedEncoderMeta(settings.videoCodec, useHw);
+        const outputPath = getResolvedOutputPath(inputPath, `_optimized_${settings.videoBitrate}k`, 'mp4');
+
+        addQueueItem({
+            taskId,
+            type: 'Size Optimizer',
+            name,
+            status: 'running',
+            percent: 0,
+            speed: '0.0x',
+            engineLabel: encoderMeta.label,
+            engineName: encoderMeta.encoder
+        });
+
+        const result = await window.electronAPI.startCompress({
+            taskId,
+            inputPath,
+            outputPath,
+            useHw,
+            ...settings
+        });
+
+        if (result.success) {
+            finishQueueItem(taskId, 'done');
+            showToast(t('Compression Complete', '용량 최적화 완료'), `${name} -> ${settings.videoBitrate}k MP4`);
+        } else {
+            finishQueueItem(taskId, 'error', result.error);
+            showToast(t('Compression Failed', '용량 최적화 실패'), `${name}: ${result.error}`, 'error');
+        }
+
+        elements.statCompressQueue.textContent = Math.max(0, parseInt(elements.statCompressQueue.textContent) - 1);
     }
 }
 

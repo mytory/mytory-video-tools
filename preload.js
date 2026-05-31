@@ -8,6 +8,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     cancelTask: (taskId) => ipcRenderer.invoke('task:cancel', taskId),
     
     startSpeedChange: (params) => ipcRenderer.invoke('speed:start', params),
+    startCompress: (params) => ipcRenderer.invoke('compress:start', params),
     startAudioExtract: (params) => ipcRenderer.invoke('audio:start', params),
     startRemux: (params) => ipcRenderer.invoke('remux:start', params),
     startSplit: (params) => ipcRenderer.invoke('split:start', params),

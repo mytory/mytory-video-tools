@@ -167,6 +167,42 @@ function runFFmpeg(taskId, args, duration, outputPath) {
     });
 }
 
+function getEncoderForCodec(videoCodec, useHw) {
+    if (videoCodec === 'h265') {
+        return useHw && hwEncoders.hevc ? hwEncoders.hevc : 'libx265';
+    }
+    if (videoCodec === 'av1') {
+        return useHw && hwEncoders.av1 ? hwEncoders.av1 : 'libsvtav1';
+    }
+    return useHw && hwEncoders.h264 ? hwEncoders.h264 : 'libx264';
+}
+
+function getCompressQualityArgs(encoder, videoCodec, bitrateKbps, maxrateKbps, bufsizeKbps) {
+    const bitrate = `${bitrateKbps}k`;
+    const maxrate = `${maxrateKbps || Math.round(bitrateKbps * 1.5)}k`;
+    const bufsize = `${bufsizeKbps || Math.round(bitrateKbps * 2)}k`;
+
+    if (encoder.includes('videotoolbox')) {
+        return ['-b:v', bitrate, '-maxrate', maxrate, '-bufsize', bufsize];
+    }
+    if (encoder.includes('nvenc')) {
+        return ['-preset', 'p5', '-rc', 'vbr', '-b:v', bitrate, '-maxrate', maxrate, '-bufsize', bufsize];
+    }
+    if (encoder.includes('qsv')) {
+        return ['-preset', 'medium', '-b:v', bitrate, '-maxrate', maxrate, '-bufsize', bufsize];
+    }
+    if (encoder.includes('amf')) {
+        return ['-quality', 'balanced', '-b:v', bitrate, '-maxrate', maxrate, '-bufsize', bufsize];
+    }
+    if (videoCodec === 'h265') {
+        return ['-preset', 'medium', '-b:v', bitrate, '-maxrate', maxrate, '-bufsize', bufsize];
+    }
+    if (videoCodec === 'av1') {
+        return ['-preset', '6', '-b:v', bitrate, '-maxrate', maxrate, '-bufsize', bufsize];
+    }
+    return ['-preset', 'medium', '-b:v', bitrate, '-maxrate', maxrate, '-bufsize', bufsize];
+}
+
 function createWindow() {
     mainWindow = new BrowserWindow({
         width: 1100,
@@ -353,6 +389,63 @@ ipcMain.handle('speed:start', async (event, { taskId, inputPath, speed, videoCod
 
         args.push('-c:v', encoder, ...qualityArgs);
         args.push('-c:a', 'aac');
+        args.push(outputPath);
+
+        await runFFmpeg(taskId, args, duration, outputPath);
+        return { success: true, outputPath };
+    } catch (err) {
+        return { success: false, error: err.message };
+    }
+});
+
+ipcMain.handle('compress:start', async (event, {
+    taskId,
+    inputPath,
+    outputPath,
+    videoCodec,
+    useHw,
+    width,
+    height,
+    videoBitrate,
+    maxrate,
+    bufsize,
+    audioBitrate,
+    fps,
+    fastStart
+}) => {
+    try {
+        const info = await probeVideo(inputPath);
+        const duration = parseFloat(info.format.duration || 0);
+        const encoder = getEncoderForCodec(videoCodec, useHw);
+        const args = ['-i', inputPath];
+        const filters = [];
+
+        if (width > 0 && height > 0) {
+            filters.push(`scale=w=${width}:h=${height}:force_original_aspect_ratio=decrease,scale=trunc(iw/2)*2:trunc(ih/2)*2`);
+        }
+
+        if (fps && fps !== 'source') {
+            filters.push(`fps=${fps}`);
+        }
+
+        if (filters.length > 0) {
+            args.push('-vf', filters.join(','));
+        }
+
+        args.push('-c:v', encoder);
+        args.push(...getCompressQualityArgs(
+            encoder,
+            videoCodec,
+            parseInt(videoBitrate, 10),
+            parseInt(maxrate, 10),
+            parseInt(bufsize, 10)
+        ));
+        args.push('-pix_fmt', 'yuv420p');
+
+        args.push('-c:a', 'aac', '-b:a', `${parseInt(audioBitrate, 10)}k`);
+        if (fastStart) {
+            args.push('-movflags', '+faststart');
+        }
         args.push(outputPath);
 
         await runFFmpeg(taskId, args, duration, outputPath);

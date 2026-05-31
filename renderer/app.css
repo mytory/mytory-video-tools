@@ -280,6 +280,36 @@ h2 {
     margin-bottom: 1rem;
 }
 
+.preset-grid--wide {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.settings-grid label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.settings-grid input,
+.settings-grid select {
+    margin-top: 0.35rem;
+    color: var(--text);
+    background-color: var(--surface-soft);
+    border-color: rgba(255, 255, 255, 0.16);
+}
+
+.setting-toggle {
+    align-self: end;
+    min-height: 48px;
+}
+
 .preset-btn {
     background-color: var(--surface-soft);
     border: 1px solid var(--border);

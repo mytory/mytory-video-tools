@@ -23,6 +23,10 @@
                 <span class="icon">⚡</span>
                 <span class="label" data-mi18n-ko="배속 변환기">Speed Changer</span>
             </button>
+            <button class="nav-item" data-tab="compressor">
+                <span class="icon">📦</span>
+                <span class="label" data-mi18n-ko="용량 줄이기">Size Optimizer</span>
+            </button>
             <button class="nav-item" data-tab="audio-drop">
                 <span class="icon">🎵</span>
                 <span class="label" data-mi18n-ko="오디오 추출기">Audio Drop</span>
@@ -128,6 +132,104 @@
                     <div>
                         <div class="stat-label" data-mi18n-ko="변환 완료">Done</div>
                         <div id="statDone" class="stat-value">0</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="compressor" class="tab-content">
+            <h2 data-mi18n-ko="비디오 용량 줄이기">Video Size Optimizer</h2>
+            <p class="tab-desc" data-mi18n-ko="하드웨어 가속과 해상도별 비트레이트 프리셋으로 유튜브 수준에 가깝게 재인코딩합니다.">
+                Re-encode videos with hardware acceleration and resolution-aware bitrate presets.
+            </p>
+
+            <div class="card card-panel">
+                <div class="control-group">
+                    <label class="control-label" data-mi18n-ko="프리셋">Preset</label>
+                    <div class="format-presets preset-grid--wide" id="compressPresets">
+                        <button class="preset-btn active" data-preset="1080p">용량 최적화 1080p</button>
+                        <button class="preset-btn" data-preset="720p">용량 최적화 720p</button>
+                        <button class="preset-btn" data-preset="1440p">용량 최적화 1440p</button>
+                        <button class="preset-btn" data-preset="2160p">용량 최적화 4K</button>
+                        <button class="preset-btn" data-preset="custom" data-mi18n-ko="사용자 설정">Custom</button>
+                    </div>
+                </div>
+
+                <div class="settings-grid">
+                    <div>
+                        <label data-mi18n-ko="비디오 코덱">Video Codec</label>
+                        <select id="compressCodecSelect">
+                            <option value="h264">H.264 / AVC</option>
+                            <option value="h265">H.265 / HEVC</option>
+                            <option value="av1">AV1</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label data-mi18n-ko="목표 해상도">Target Resolution</label>
+                        <select id="compressResolutionSelect">
+                            <option value="source" data-mi18n-ko="원본 유지">Keep source</option>
+                            <option value="2160p">3840 x 2160</option>
+                            <option value="1440p">2560 x 1440</option>
+                            <option value="1080p">1920 x 1080</option>
+                            <option value="720p">1280 x 720</option>
+                            <option value="480p">854 x 480</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label data-mi18n-ko="비디오 비트레이트 (kbps)">Video Bitrate (kbps)</label>
+                        <input type="number" id="compressVideoBitrate" min="300" step="100" value="8000">
+                    </div>
+                    <div>
+                        <label data-mi18n-ko="최대 비트레이트 (kbps)">Maxrate (kbps)</label>
+                        <input type="number" id="compressMaxrate" min="300" step="100" value="12000">
+                    </div>
+                    <div>
+                        <label data-mi18n-ko="버퍼 크기 (kbps)">Buffer Size (kbps)</label>
+                        <input type="number" id="compressBufsize" min="600" step="100" value="16000">
+                    </div>
+                    <div>
+                        <label data-mi18n-ko="오디오 비트레이트 (kbps)">Audio Bitrate (kbps)</label>
+                        <input type="number" id="compressAudioBitrate" min="64" step="16" value="128">
+                    </div>
+                    <div>
+                        <label data-mi18n-ko="프레임레이트">Frame Rate</label>
+                        <select id="compressFpsSelect">
+                            <option value="source" data-mi18n-ko="원본 유지">Keep source</option>
+                            <option value="30">30 fps</option>
+                            <option value="60">60 fps</option>
+                        </select>
+                    </div>
+                    <label class="toggle-switch setting-toggle">
+                        <input type="checkbox" id="compressFastStartCheck" checked>
+                        <span data-mi18n-ko="웹 재생 최적화">Optimize for web playback</span>
+                    </label>
+                </div>
+
+                <p class="help-text help-text--highlight" id="compressPresetHelp">
+                    1080p size-optimized preset: H.264, 8 Mbps video, 128 kbps audio.
+                </p>
+
+                <div class="dropzone" id="compressDropzone">
+                    <h3 data-mi18n-ko="여기에 영상 파일을 드롭하세요">Drop video files here</h3>
+                    <p data-mi18n-ko="여러 영상을 해상도별 프리셋으로 한 번에 재인코딩합니다.">
+                        Re-encode multiple videos with the selected compression preset.
+                    </p>
+                    <label class="btn" for="compressFileInput" data-mi18n-ko="파일 선택">Choose files</label>
+                    <input type="file" id="compressFileInput" accept="video/*" multiple hidden>
+                </div>
+
+                <div class="summary-stats">
+                    <div>
+                        <div class="stat-label" data-mi18n-ko="프리셋">Preset</div>
+                        <div id="statCompressPreset" class="stat-value">1080p</div>
+                    </div>
+                    <div>
+                        <div class="stat-label" data-mi18n-ko="비디오 비트레이트">Video Bitrate</div>
+                        <div id="statCompressBitrate" class="stat-value">8000k</div>
+                    </div>
+                    <div>
+                        <div class="stat-label" data-mi18n-ko="현재 대기 파일">Queue Files</div>
+                        <div id="statCompressQueue" class="stat-value">0</div>
                     </div>
                 </div>
             </div>

@@ -21,7 +21,6 @@ build-linux:
       - dist/*.AppImage
     expire_in: 1 month
   only:
-    - master
     - tags
 
 # 2. Windows 빌드 (Linux 환경에서 Wine을 사용해 빌드)
@@ -36,7 +35,6 @@ build-windows:
       - dist/*.exe
     expire_in: 1 month
   only:
-    - master
     - tags
 
 # 3. macOS 빌드 (로컬 macOS 러너 사용)
@@ -52,7 +50,6 @@ build-macos:
       - dist/*.dmg
     expire_in: 1 month
   only:
-    - master
     - tags
 
 release:

@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-mi18n-ko="Mytory 비디오 툴 - 대용량 고속 로컬 인코더">Mytory Video Tool - High-Speed Native Video Utilities</title>
+    <title data-mi18n-ko="Mytory 비디오 툴 - 대용량 고속 로컬 인코더"
+           data-mi18n-ja="Mytory ビデオツール - 高速ネイティブビデオエンコーダー"
+           data-mi18n-zh-cn="Mytory 视频工具 - 高速本地视频编码器"
+           data-mi18n-es="Mytory Video Tool - Utilidades de video nativas de alta velocidad"
+           data-mi18n-pt="Mytory Video Tool - Utilitários de vídeo nativos de alta velocidade"
+           data-mi18n-fr="Mytory Video Tool - Utilitaires vidéo natifs haute vitesse"
+           data-mi18n-id="Mytory Video Tool - Utilitas Video Asli Berkecepatan Tinggi"
+           data-mi18n-hi="Mytory वीडियो टूल - हाई-स्पीड नेटिव वीडियो उपयोगिताएँ">Mytory Video Tool - High-Speed Native Video Utilities</title>
     <link rel="stylesheet" href="./pico.min.css">
     <link rel="stylesheet" href="./app.css">
 </head>
@@ -21,31 +28,31 @@
         <nav class="nav-menu">
             <button class="nav-item active" data-tab="speed-changer">
                 <span class="icon">⚡</span>
-                <span class="label" data-mi18n-ko="배속 변환기">Speed Changer</span>
+                <span class="label" data-mi18n-ko="배속 변환기" data-mi18n-ja="速度変換" data-mi18n-zh-cn="倍速转换" data-mi18n-es="Cambiador de velocidad" data-mi18n-pt="Mudança de velocidade" data-mi18n-fr="Changement de vitesse" data-mi18n-id="Pengubah kecepatan" data-mi18n-hi="गति परिवर्तक">Speed Changer</span>
             </button>
             <button class="nav-item" data-tab="compressor">
                 <span class="icon">📦</span>
-                <span class="label" data-mi18n-ko="용량 줄이기">Size Optimizer</span>
+                <span class="label" data-mi18n-ko="용량 줄이기" data-mi18n-ja="ファイルサイズ最適化" data-mi18n-zh-cn="压缩优化" data-mi18n-es="Optimizador de tamaño" data-mi18n-pt="Otimizador de tamanho" data-mi18n-fr="Optimiseur de taille" data-mi18n-id="Pengoptimal ukuran" data-mi18n-hi="आकार अनुकूलक">Size Optimizer</span>
             </button>
             <button class="nav-item" data-tab="audio-drop">
                 <span class="icon">🎵</span>
-                <span class="label" data-mi18n-ko="오디오 추출기">Audio Drop</span>
+                <span class="label" data-mi18n-ko="오디오 추출기" data-mi18n-ja="音声抽出" data-mi18n-zh-cn="音频提取" data-mi18n-es="Extractor de audio" data-mi18n-pt="Extrator de áudio" data-mi18n-fr="Extracteur audio" data-mi18n-id="Ekstraktor audio" data-mi18n-hi="ऑडियो निकालने वाला">Audio Drop</span>
             </button>
             <button class="nav-item" data-tab="frame-capture">
                 <span class="icon">📸</span>
-                <span class="label" data-mi18n-ko="장면 캡처">Frame Capture</span>
+                <span class="label" data-mi18n-ko="장면 캡처" data-mi18n-ja="フレームキャプチャ" data-mi18n-zh-cn="帧捕获" data-mi18n-es="Captura de fotogramas" data-mi18n-pt="Captura de quadros" data-mi18n-fr="Capture d'image" data-mi18n-id="Tangkapan bingkai" data-mi18n-hi="फ्रेम कैप्चर">Frame Capture</span>
             </button>
             <button class="nav-item" data-tab="remuxer">
                 <span class="icon">🔄</span>
-                <span class="label" data-mi18n-ko="확장자 변환기">Remuxer</span>
+                <span class="label" data-mi18n-ko="확장자 변환기" data-mi18n-ja="コンテナ変換" data-mi18n-zh-cn="格式转换" data-mi18n-es="Remuxer" data-mi18n-pt="Remuxer" data-mi18n-fr="Remuxeur" data-mi18n-id="Remuxer" data-mi18n-hi="रीमक्सर">Remuxer</span>
             </button>
             <button class="nav-item" data-tab="splitter">
                 <span class="icon">✂️</span>
-                <span class="label" data-mi18n-ko="비디오 분할기">Video Splitter</span>
+                <span class="label" data-mi18n-ko="비디오 분할기" data-mi18n-ja="動画分割" data-mi18n-zh-cn="视频分割" data-mi18n-es="Divisor de video" data-mi18n-pt="Divisor de vídeo" data-mi18n-fr="Coupe-vidéo" data-mi18n-id="Pemotong video" data-mi18n-hi="वीडियो विभाजक">Video Splitter</span>
             </button>
             <button class="nav-item" data-tab="settings">
                 <span class="icon">⚙️</span>
-                <span class="label" data-mi18n-ko="설정">Settings</span>
+                <span class="label" data-mi18n-ko="설정" data-mi18n-ja="設定" data-mi18n-zh-cn="设置" data-mi18n-es="Configuración" data-mi18n-pt="Configurações" data-mi18n-fr="Paramètres" data-mi18n-id="Pengaturan" data-mi18n-hi="सेटिंग्स">Settings</span>
             </button>
         </nav>
     </aside>
@@ -147,11 +154,11 @@
                 <div class="control-group">
                     <label class="control-label" data-mi18n-ko="프리셋">Preset</label>
                     <div class="format-presets preset-grid--wide" id="compressPresets">
-                        <button class="preset-btn active" data-preset="1080p" data-mi18n-en="Size Optimized 1080p">용량 최적화 1080p</button>
-                        <button class="preset-btn" data-preset="720p" data-mi18n-en="Size Optimized 720p">용량 최적화 720p</button>
-                        <button class="preset-btn" data-preset="1440p" data-mi18n-en="Size Optimized 1440p">용량 최적화 1440p</button>
-                        <button class="preset-btn" data-preset="2160p" data-mi18n-en="Size Optimized 4K">용량 최적화 4K</button>
-                        <button class="preset-btn" data-preset="custom" data-mi18n-ko="사용자 설정">Custom</button>
+                        <button class="preset-btn active" data-preset="1080p" data-mi18n-ko="용량 최적화 1080p" data-mi18n-ja="サイズ最適化 1080p" data-mi18n-zh-cn="大小优化 1080p" data-mi18n-es="Optimizado 1080p" data-mi18n-pt="Otimizado 1080p" data-mi18n-fr="Optimisé 1080p" data-mi18n-id="Optimal 1080p" data-mi18n-hi="आकार-अनुकूलित 1080p">Size Optimized 1080p</button>
+                        <button class="preset-btn" data-preset="720p" data-mi18n-ko="용량 최적화 720p" data-mi18n-ja="サイズ最適化 720p" data-mi18n-zh-cn="大小优化 720p" data-mi18n-es="Optimizado 720p" data-mi18n-pt="Otimizado 720p" data-mi18n-fr="Optimisé 720p" data-mi18n-id="Optimal 720p" data-mi18n-hi="आकार-अनुकूलित 720p">Size Optimized 720p</button>
+                        <button class="preset-btn" data-preset="1440p" data-mi18n-ko="용량 최적화 1440p" data-mi18n-ja="サイズ最適化 1440p" data-mi18n-zh-cn="大小优化 1440p" data-mi18n-es="Optimizado 1440p" data-mi18n-pt="Otimizado 1440p" data-mi18n-fr="Optimisé 1440p" data-mi18n-id="Optimal 1440p" data-mi18n-hi="आकार-अनुकूलित 1440p">Size Optimized 1440p</button>
+                        <button class="preset-btn" data-preset="2160p" data-mi18n-ko="용량 최적화 4K" data-mi18n-ja="サイズ最適化 4K" data-mi18n-zh-cn="大小优化 4K" data-mi18n-es="Optimizado 4K" data-mi18n-pt="Otimizado 4K" data-mi18n-fr="Optimisé 4K" data-mi18n-id="Optimal 4K" data-mi18n-hi="आकार-अनुकूलित 4K">Size Optimized 4K</button>
+                        <button class="preset-btn" data-preset="custom" data-mi18n-ko="사용자 설정" data-mi18n-ja="カスタム" data-mi18n-zh-cn="自定义" data-mi18n-es="Personalizado" data-mi18n-pt="Personalizado" data-mi18n-fr="Personnalisé" data-mi18n-id="Kustom" data-mi18n-hi="कस्टम">Custom</button>
                     </div>
                 </div>
 
@@ -534,6 +541,13 @@
                     <select id="langSelect" style="width: auto; min-width: 150px;">
                         <option value="ko">한국어</option>
                         <option value="en">English</option>
+                        <option value="ja">日本語</option>
+                        <option value="zh-cn">简体中文</option>
+                        <option value="es">Español</option>
+                        <option value="pt">Português</option>
+                        <option value="fr">Français</option>
+                        <option value="id">Bahasa Indonesia</option>
+                        <option value="hi">हिन्दी</option>
                     </select>
                 </div>
             </div>
@@ -550,6 +564,7 @@
 <script>
     MytoryI18n.init({autoApply:true});
 </script>
+<script src="./translations.js"></script>
 <script type="module" src="./app.js"></script>
 <!-- 글로벌 드롭 오버레이 -->
 <div id="globalDropOverlay" class="global-drop-overlay">

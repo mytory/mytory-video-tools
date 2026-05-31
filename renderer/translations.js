@@ -1,0 +1,651 @@
+// Mytory Video Tools - Translation Map
+// English is the key (and default fallback).
+// To add a new language, add its key to LANG_ORDER and add entries to translations.
+// Language codes: en, ko, ja, zh-cn, es, pt, fr, id, hi
+
+const LANG_ORDER = ['en', 'ko', 'ja', 'zh-cn', 'es', 'pt', 'fr', 'id', 'hi'];
+
+const translations = {
+    // --- 공통 ---
+    'File path unavailable': {
+        en: 'File path unavailable',
+        ko: '파일 경로를 가져오지 못했습니다',
+        ja: 'ファイルパスを取得できませんでした',
+        'zh-cn': '无法获取文件路径',
+        es: 'No se pudo obtener la ruta del archivo',
+        pt: 'Não foi possível obter o caminho do arquivo',
+        fr: 'Impossible d\'obtenir le chemin du fichier',
+        id: 'Tidak dapat memperoleh jalur file',
+        hi: 'फ़ाइल पथ प्राप्त नहीं किया जा सका',
+    },
+    'Try choosing the file with the file picker.': {
+        en: 'Try choosing the file with the file picker.',
+        ko: '파일 선택 버튼으로 다시 선택해 주세요.',
+        ja: 'ファイル選択ボタンから再度お選びください。',
+        'zh-cn': '请使用文件选择按钮重新选择文件。',
+        es: 'Intente elegir el archivo usando el selector de archivos.',
+        pt: 'Tente escolher o arquivo usando o seletor de arquivos.',
+        fr: 'Essayez de choisir le fichier avec le sélecteur de fichiers.',
+        id: 'Coba pilih file menggunakan pemilih file.',
+        hi: 'कृपया फ़ाइल चुनने वाले बटन का उपयोग करके फ़ाइल चुनें।',
+    },
+    'Encoder information unavailable': {
+        en: 'Encoder information unavailable',
+        ko: '인코더 정보를 확인할 수 없습니다',
+        ja: 'エンコーダー情報を確認できません',
+        'zh-cn': '无法获取编码器信息',
+        es: 'Información del codificador no disponible',
+        pt: 'Informação do codificador indisponível',
+        fr: 'Informations sur l\'encodeur indisponibles',
+        id: 'Informasi encoder tidak tersedia',
+        hi: 'एन्कोडर जानकारी उपलब्ध नहीं है',
+    },
+    'Are you sure you want to cancel this task?': {
+        en: 'Are you sure you want to cancel this task?',
+        ko: '작업을 취소하시겠습니까?',
+        ja: 'このタスクをキャンセルしてもよろしいですか？',
+        'zh-cn': '确定要取消此任务吗？',
+        es: '¿Está seguro de que desea cancelar esta tarea?',
+        pt: 'Tem certeza de que deseja cancelar esta tarefa?',
+        fr: 'Êtes-vous sûr de vouloir annuler cette tâche ?',
+        id: 'Apakah Anda yakin ingin membatalkan tugas ini?',
+        hi: 'क्या आप वाकई इस कार्य को रद्द करना चाहते हैं?',
+    },
+    'Cancelled by user': {
+        en: 'Cancelled by user',
+        ko: '사용자 취소',
+        ja: 'ユーザーによりキャンセルされました',
+        'zh-cn': '已由用户取消',
+        es: 'Cancelado por el usuario',
+        pt: 'Cancelado pelo usuário',
+        fr: 'Annulé par l\'utilisateur',
+        id: 'Dibatalkan oleh pengguna',
+        hi: 'उपयोगकर्ता द्वारा रद्द',
+    },
+    'Task Cancelled': {
+        en: 'Task Cancelled',
+        ko: '작업 취소됨',
+        ja: 'タスクがキャンセルされました',
+        'zh-cn': '任务已取消',
+        es: 'Tarea cancelada',
+        pt: 'Tarefa cancelada',
+        fr: 'Tâche annulée',
+        id: 'Tugas dibatalkan',
+        hi: 'कार्य रद्द कर दिया गया',
+    },
+    'The ffmpeg process has been terminated.': {
+        en: 'The ffmpeg process has been terminated.',
+        ko: 'ffmpeg 프로세스가 종료되었습니다.',
+        ja: 'ffmpegプロセスが終了されました。',
+        'zh-cn': 'ffmpeg 进程已终止。',
+        es: 'El proceso ffmpeg ha sido terminado.',
+        pt: 'O processo ffmpeg foi encerrado.',
+        fr: 'Le processus ffmpeg a été terminé.',
+        id: 'Proses ffmpeg telah dihentikan.',
+        hi: 'ffmpeg प्रक्रिया समाप्त कर दी गई है।',
+    },
+    'Cancel': {
+        en: 'Cancel',
+        ko: '취소',
+        ja: 'キャンセル',
+        'zh-cn': '取消',
+        es: 'Cancelar',
+        pt: 'Cancelar',
+        fr: 'Annuler',
+        id: 'Batal',
+        hi: 'रद्द करें',
+    },
+    'Close notification': {
+        en: 'Close notification',
+        ko: '알림 닫기',
+        ja: '通知を閉じる',
+        'zh-cn': '关闭通知',
+        es: 'Cerrar notificación',
+        pt: 'Fechar notificação',
+        fr: 'Fermer la notification',
+        id: 'Tutup notifikasi',
+        hi: 'सूचना बंद करें',
+    },
+    'Completed': {
+        en: 'Completed',
+        ko: '변환 완료',
+        ja: '完了',
+        'zh-cn': '已完成',
+        es: 'Completado',
+        pt: 'Concluído',
+        fr: 'Terminé',
+        id: 'Selesai',
+        hi: 'पूर्ण',
+    },
+    'Failed': {
+        en: 'Failed',
+        ko: '오류 발생',
+        ja: '失敗',
+        'zh-cn': '失败',
+        es: 'Falló',
+        pt: 'Falhou',
+        fr: 'Échoué',
+        id: 'Gagal',
+        hi: 'विफल',
+    },
+    'Waiting...': {
+        en: 'Waiting...',
+        ko: '대기 중...',
+        ja: '待機中...',
+        'zh-cn': '等待中...',
+        es: 'Esperando...',
+        pt: 'Aguardando...',
+        fr: 'En attente...',
+        id: 'Menunggu...',
+        hi: 'प्रतीक्षा कर रहा है...',
+    },
+    'Remove from queue': {
+        en: 'Remove from queue',
+        ko: '대기열에서 지우기',
+        ja: 'キューから削除',
+        'zh-cn': '从队列中移除',
+        es: 'Eliminar de la cola',
+        pt: 'Remover da fila',
+        fr: 'Retirer de la file d\'attente',
+        id: 'Hapus dari antrean',
+        hi: 'कतार से हटाएँ',
+    },
+    'Preparing...': {
+        en: 'Preparing...',
+        ko: '작업 준비중',
+        ja: '準備中...',
+        'zh-cn': '准备中...',
+        es: 'Preparando...',
+        pt: 'Preparando...',
+        fr: 'Préparation...',
+        id: 'Menyiapkan...',
+        hi: 'तैयार कर रहा है...',
+    },
+    'File count': {
+        en: 'File count',
+        ko: '파일',
+        ja: 'ファイル数',
+        'zh-cn': '文件数',
+        es: 'Archivos',
+        pt: 'Arquivos',
+        fr: 'Fichiers',
+        id: 'Jumlah file',
+        hi: 'फ़ाइलों की संख्या',
+    },
+    'file(s)': {
+        en: 'file(s)',
+        ko: '개',
+        ja: '個',
+        'zh-cn': '个',
+        es: 'archivo(s)',
+        pt: 'arquivo(s)',
+        fr: 'fichier(s)',
+        id: 'berkas',
+        hi: 'फ़ाइल(एँ)',
+    },
+    'Custom': {
+        en: 'Custom',
+        ko: '사용자 설정',
+        ja: 'カスタム',
+        'zh-cn': '自定义',
+        es: 'Personalizado',
+        pt: 'Personalizado',
+        fr: 'Personnalisé',
+        id: 'Kustom',
+        hi: 'कस्टम',
+    },
+    'Pause': {
+        en: 'Pause',
+        ko: '일시정지',
+        ja: '一時停止',
+        'zh-cn': '暂停',
+        es: 'Pausa',
+        pt: 'Pausar',
+        fr: 'Pause',
+        id: 'Jeda',
+        hi: 'रोकें',
+    },
+    'Play': {
+        en: 'Play',
+        ko: '재생',
+        ja: '再生',
+        'zh-cn': '播放',
+        es: 'Reproducir',
+        pt: 'Reproduzir',
+        fr: 'Lire',
+        id: 'Putar',
+        hi: 'चलाएँ',
+    },
+
+    // --- Speed Changer ---
+    'Conversion Complete': {
+        en: 'Conversion Complete',
+        ko: '인코딩 완료',
+        ja: '変換完了',
+        'zh-cn': '转换完成',
+        es: 'Conversión completada',
+        pt: 'Conversão concluída',
+        fr: 'Conversion terminée',
+        id: 'Konversi selesai',
+        hi: 'रूपांतरण पूर्ण हुआ',
+    },
+    'Conversion Failed': {
+        en: 'Conversion Failed',
+        ko: '인코딩 실패',
+        ja: '変換失敗',
+        'zh-cn': '转换失败',
+        es: 'Conversión fallida',
+        pt: 'Conversão falhou',
+        fr: 'Conversion échouée',
+        id: 'Konversi gagal',
+        hi: 'रूपांतरण विफल',
+    },
+    'Using software encoding: H.264': {
+        en: 'Using software encoding: H.264',
+        ko: '소프트웨어 인코딩 사용 중: H.264',
+        ja: 'ソフトウェアエンコードを使用中: H.264',
+        'zh-cn': '正在使用软件编码: H.264',
+        es: 'Usando codificación por software: H.264',
+        pt: 'Usando codificação por software: H.264',
+        fr: 'Utilisation de l\'encodage logiciel: H.264',
+        id: 'Menggunakan encoding perangkat lunak: H.264',
+        hi: 'सॉफ़्टवेयर एन्कोडिंग का उपयोग: H.264',
+    },
+    'Using software encoding: HEVC': {
+        en: 'Using software encoding: HEVC',
+        ko: '소프트웨어 인코딩 사용 중: HEVC',
+        ja: 'ソフトウェアエンコードを使用中: HEVC',
+        'zh-cn': '正在使用软件编码: HEVC',
+        es: 'Usando codificación por software: HEVC',
+        pt: 'Usando codificação por software: HEVC',
+        fr: 'Utilisation de l\'encodage logiciel: HEVC',
+        id: 'Menggunakan encoding perangkat lunak: HEVC',
+        hi: 'सॉफ़्टवेयर एन्कोडिंग का उपयोग: HEVC',
+    },
+    'Using software encoding: VP9': {
+        en: 'Using software encoding: VP9',
+        ko: '소프트웨어 인코딩 사용 중: VP9',
+        ja: 'ソフトウェアエンコードを使用中: VP9',
+        'zh-cn': '正在使用软件编码: VP9',
+        es: 'Usando codificación por software: VP9',
+        pt: 'Usando codificação por software: VP9',
+        fr: 'Utilisation de l\'encodage logiciel: VP9',
+        id: 'Menggunakan encoding perangkat lunak: VP9',
+        hi: 'सॉफ़्टवेयर एन्कोडिंग का उपयोग: VP9',
+    },
+    'Using software encoding: AV1': {
+        en: 'Using software encoding: AV1',
+        ko: '소프트웨어 인코딩 사용 중: AV1',
+        ja: 'ソフトウェアエンコードを使用中: AV1',
+        'zh-cn': '正在使用软件编码: AV1',
+        es: 'Usando codificación por software: AV1',
+        pt: 'Usando codificação por software: AV1',
+        fr: 'Utilisation de l\'encodage logiciel: AV1',
+        id: 'Menggunakan encoding perangkat lunak: AV1',
+        hi: 'सॉफ़्टवेयर एन्कोडिंग का उपयोग: AV1',
+    },
+    'Using Apple hardware encoding: H.264 VideoToolbox': {
+        en: 'Using Apple hardware encoding: H.264 VideoToolbox',
+        ko: 'Apple 하드웨어 인코딩 사용 중: H.264 VideoToolbox',
+        ja: 'Appleハードウェアエンコードを使用中: H.264 VideoToolbox',
+        'zh-cn': '正在使用Apple硬件编码: H.264 VideoToolbox',
+        es: 'Usando codificación por hardware de Apple: H.264 VideoToolbox',
+        pt: 'Usando codificação por hardware da Apple: H.264 VideoToolbox',
+        fr: 'Utilisation de l\'encodage matériel Apple: H.264 VideoToolbox',
+        id: 'Menggunakan encoding perangkat keras Apple: H.264 VideoToolbox',
+        hi: 'Apple हार्डवेयर एन्कोडिंग का उपयोग: H.264 VideoToolbox',
+    },
+    'Using Apple hardware encoding: HEVC VideoToolbox': {
+        en: 'Using Apple hardware encoding: HEVC VideoToolbox',
+        ko: 'Apple 하드웨어 인코딩 사용 중: HEVC VideoToolbox',
+        ja: 'Appleハードウェアエンコードを使用中: HEVC VideoToolbox',
+        'zh-cn': '正在使用Apple硬件编码: HEVC VideoToolbox',
+        es: 'Usando codificación por hardware de Apple: HEVC VideoToolbox',
+        pt: 'Usando codificação por hardware da Apple: HEVC VideoToolbox',
+        fr: 'Utilisation de l\'encodage matériel Apple: HEVC VideoToolbox',
+        id: 'Menggunakan encoding perangkat keras Apple: HEVC VideoToolbox',
+        hi: 'Apple हार्डवेयर एन्कोडिंग का उपयोग: HEVC VideoToolbox',
+    },
+
+    // --- Compressor ---
+    'Compression Complete': {
+        en: 'Compression Complete',
+        ko: '용량 최적화 완료',
+        ja: '圧縮完了',
+        'zh-cn': '压缩完成',
+        es: 'Compresión completada',
+        pt: 'Compressão concluída',
+        fr: 'Compression terminée',
+        id: 'Kompresi selesai',
+        hi: 'संपीड़न पूर्ण',
+    },
+    'Compression Failed': {
+        en: 'Compression Failed',
+        ko: '용량 최적화 실패',
+        ja: '圧縮失敗',
+        'zh-cn': '压缩失败',
+        es: 'Compresión fallida',
+        pt: 'Compressão falhou',
+        fr: 'Compression échouée',
+        id: 'Kompresi gagal',
+        hi: 'संपीड़न विफल',
+    },
+
+    // --- Audio ---
+    'Audio Extracted': {
+        en: 'Audio Extracted',
+        ko: '오디오 추출 완료',
+        ja: '音声抽出完了',
+        'zh-cn': '音频提取完成',
+        es: 'Audio extraído',
+        pt: 'Áudio extraído',
+        fr: 'Audio extrait',
+        id: 'Audio diekstrak',
+        hi: 'ऑडियो निकाला गया',
+    },
+    'Extraction Failed': {
+        en: 'Extraction Failed',
+        ko: '오디오 추출 실패',
+        ja: '音声抽出失敗',
+        'zh-cn': '音频提取失败',
+        es: 'Extracción fallida',
+        pt: 'Extração falhou',
+        fr: 'Extraction échouée',
+        id: 'Ekstraksi gagal',
+        hi: 'निष्कर्षण विफल',
+    },
+    'Audio extraction': {
+        en: 'Audio extraction',
+        ko: '오디오 추출',
+        ja: '音声抽出',
+        'zh-cn': '音频提取',
+        es: 'Extracción de audio',
+        pt: 'Extração de áudio',
+        fr: 'Extraction audio',
+        id: 'Ekstraksi audio',
+        hi: 'ऑडियो निष्कर्षण',
+    },
+
+    // --- Frame Capture ---
+    'Frame Saved': {
+        en: 'Frame Saved',
+        ko: '프레임 저장 완료',
+        ja: 'フレーム保存完了',
+        'zh-cn': '帧已保存',
+        es: 'Fotograma guardado',
+        pt: 'Quadro salvo',
+        fr: 'Image enregistrée',
+        id: 'Bingkai disimpan',
+        hi: 'फ्रेम सहेजा गया',
+    },
+    'Error Saving Frame': {
+        en: 'Error Saving Frame',
+        ko: '프레임 저장 실패',
+        ja: 'フレーム保存エラー',
+        'zh-cn': '保存帧时出错',
+        es: 'Error al guardar el fotograma',
+        pt: 'Erro ao salvar o quadro',
+        fr: 'Erreur lors de l\'enregistrement de l\'image',
+        id: 'Kesalahan menyimpan bingkai',
+        hi: 'फ्रेम सहेजने में त्रुटि',
+    },
+    'Invalid Interval': {
+        en: 'Invalid Interval',
+        ko: '잘못된 간격',
+        ja: '無効な間隔',
+        'zh-cn': '无效的间隔',
+        es: 'Intervalo inválido',
+        pt: 'Intervalo inválido',
+        fr: 'Intervalle invalide',
+        id: 'Interval tidak valid',
+        hi: 'अमान्य अंतराल',
+    },
+    'Interval must be greater than 0.': {
+        en: 'Interval must be greater than 0.',
+        ko: '간격은 0초 이상이어야 합니다.',
+        ja: '間隔は0より大きくなければなりません。',
+        'zh-cn': '间隔必须大于0。',
+        es: 'El intervalo debe ser mayor que 0.',
+        pt: 'O intervalo deve ser maior que 0.',
+        fr: 'L\'intervalle doit être supérieur à 0.',
+        id: 'Interval harus lebih besar dari 0.',
+        hi: 'अंतराल 0 से अधिक होना चाहिए।',
+    },
+    'Batch Complete': {
+        en: 'Batch Complete',
+        ko: '일괄 캡처 완료',
+        ja: '一括キャプチャ完了',
+        'zh-cn': '批量捕获完成',
+        es: 'Captura por lotes completada',
+        pt: 'Captura em lote concluída',
+        fr: 'Capture par lots terminée',
+        id: 'Tangkapan batch selesai',
+        hi: 'बैच कैप्चर पूर्ण',
+    },
+    'Batch Failed': {
+        en: 'Batch Failed',
+        ko: '일괄 캡처 실패',
+        ja: '一括キャプチャ失敗',
+        'zh-cn': '批量捕获失败',
+        es: 'Captura por lotes fallida',
+        pt: 'Captura em lote falhou',
+        fr: 'Capture par lots échouée',
+        id: 'Tangkapan batch gagal',
+        hi: 'बैच कैप्चर विफल',
+    },
+    'Analysis Complete': {
+        en: 'Analysis Complete',
+        ko: '분석 완료',
+        ja: '分析完了',
+        'zh-cn': '分析完成',
+        es: 'Análisis completado',
+        pt: 'Análise concluída',
+        fr: 'Analyse terminée',
+        id: 'Analisis selesai',
+        hi: 'विश्लेषण पूर्ण',
+    },
+    'Analysis Failed': {
+        en: 'Analysis Failed',
+        ko: '분석 실패',
+        ja: '分析失敗',
+        'zh-cn': '分析失败',
+        es: 'Análisis fallido',
+        pt: 'Análise falhou',
+        fr: 'Analyse échouée',
+        id: 'Analisis gagal',
+        hi: 'विश्लेषण विफल',
+    },
+    'Export Complete': {
+        en: 'Export Complete',
+        ko: '장면 저장 완료',
+        ja: '書き出し完了',
+        'zh-cn': '导出完成',
+        es: 'Exportación completada',
+        pt: 'Exportação concluída',
+        fr: 'Exportation terminée',
+        id: 'Ekspor selesai',
+        hi: 'निर्यात पूर्ण',
+    },
+    'Export Failed': {
+        en: 'Export Failed',
+        ko: '장면 저장 실패',
+        ja: '書き出し失敗',
+        'zh-cn': '导出失败',
+        es: 'Exportación fallida',
+        pt: 'Exportação falhou',
+        fr: 'Exportation échouée',
+        id: 'Ekspor gagal',
+        hi: 'निर्यात विफल',
+    },
+
+    // --- Remuxer ---
+    'Remux Complete': {
+        en: 'Remux Complete',
+        ko: '확장자 변환 완료',
+        ja: 'リマックス完了',
+        'zh-cn': '封装转换完成',
+        es: 'Remux completado',
+        pt: 'Remux concluído',
+        fr: 'Remux terminé',
+        id: 'Remux selesai',
+        hi: 'रीमक्स पूर्ण',
+    },
+    'Remux Failed': {
+        en: 'Remux Failed',
+        ko: '확장자 변환 실패',
+        ja: 'リマックス失敗',
+        'zh-cn': '封装转换失败',
+        es: 'Remux fallido',
+        pt: 'Remux falhou',
+        fr: 'Remux échoué',
+        id: 'Remux gagal',
+        hi: 'रीमक्स विफल',
+    },
+
+    // --- Splitter ---
+    'Video Split Complete': {
+        en: 'Video Split Complete',
+        ko: '비디오 자르기 성공',
+        ja: '動画分割完了',
+        'zh-cn': '视频分割完成',
+        es: 'División de video completada',
+        pt: 'Divisão de vídeo concluída',
+        fr: 'Découpage vidéo terminé',
+        id: 'Pemotongan video selesai',
+        hi: 'वीडियो विभाजन पूर्ण',
+    },
+    'Video Split Failed': {
+        en: 'Video Split Failed',
+        ko: '비디오 자르기 실패',
+        ja: '動画分割失敗',
+        'zh-cn': '视频分割失败',
+        es: 'División de video fallida',
+        pt: 'Divisão de vídeo falhou',
+        fr: 'Découpage vidéo échoué',
+        id: 'Pemotongan video gagal',
+        hi: 'वीडियो विभाजन विफल',
+    },
+    'Invalid Segment': {
+        en: 'Invalid Segment',
+        ko: '잘못된 구간 설정',
+        ja: '無効な区間',
+        'zh-cn': '无效的片段',
+        es: 'Segmento inválido',
+        pt: 'Segmento inválido',
+        fr: 'Segment invalide',
+        id: 'Segmen tidak valid',
+        hi: 'अमान्य खंड',
+    },
+    'Start time must be before end time.': {
+        en: 'Start time must be before end time.',
+        ko: '시작 지점이 종료 지점보다 앞서야 합니다.',
+        ja: '開始時間は終了時間より前でなければなりません。',
+        'zh-cn': '开始时间必须早于结束时间。',
+        es: 'La hora de inicio debe ser anterior a la hora de finalización.',
+        pt: 'O tempo de início deve ser anterior ao tempo de término.',
+        fr: 'L\'heure de début doit être antérieure à l\'heure de fin.',
+        id: 'Waktu mulai harus lebih awal dari waktu selesai.',
+        hi: 'प्रारंभ समय समाप्ति समय से पहले होना चाहिए।',
+    },
+
+    // --- HW Status ---
+    'No hardware acceleration detected. Fallback to CPU-based encoders.': {
+        en: 'No hardware acceleration detected. Fallback to CPU-based encoders.',
+        ko: '하드웨어 가속을 지원하지 않습니다. CPU 소프트웨어 인코더로 작동합니다.',
+        ja: 'ハードウェアアクセラレーションが検出されませんでした。CPUベースのエンコーダーで動作します。',
+        'zh-cn': '未检测到硬件加速。将使用基于CPU的软件编码器。',
+        es: 'No se detectó aceleración por hardware. Se usarán codificadores por software basados en CPU.',
+        pt: 'Nenhuma aceleração de hardware detectada. Usando codificadores baseados em CPU.',
+        fr: 'Aucune accélération matérielle détectée. Utilisation des encodeurs logiciels CPU.',
+        id: 'Tidak ada akselerasi perangkat keras yang terdeteksi. Menggunakan encoder berbasis CPU.',
+        hi: 'कोई हार्डवेयर त्वरण का पता नहीं चला। CPU-आधारित एन्कोडर का उपयोग किया जाएगा।',
+    },
+};
+
+// 패턴 기반 동적 번역을 위한 템플릿 함수들
+// key는 느낌표로 시작하고, 파라미터는 함수 인자로 전달
+const templateTranslations = {
+    '!hardware_encoding': {
+        en: (name) => `Using hardware encoding: ${name}`,
+        ko: (name) => `하드웨어 인코딩 사용 중: ${name}`,
+        ja: (name) => `ハードウェアエンコードを使用中: ${name}`,
+        'zh-cn': (name) => `正在使用硬件编码: ${name}`,
+        es: (name) => `Usando codificación por hardware: ${name}`,
+        pt: (name) => `Usando codificação por hardware: ${name}`,
+        fr: (name) => `Utilisation de l'encodage matériel: ${name}`,
+        id: (name) => `Menggunakan encoding perangkat keras: ${name}`,
+        hi: (name) => `हार्डवेयर एन्कोडिंग का उपयोग: ${name}`,
+    },
+    '!supported_gpus': {
+        en: (list) => `Supported GPUs: ${list}`,
+        ko: (list) => `감지된 GPU 가속 코덱: ${list}`,
+        ja: (list) => `対応GPU: ${list}`,
+        'zh-cn': (list) => `支持的GPU: ${list}`,
+        es: (list) => `GPUs compatibles: ${list}`,
+        pt: (list) => `GPUs compatíveis: ${list}`,
+        fr: (list) => `GPU pris en charge: ${list}`,
+        id: (list) => `GPU yang didukung: ${list}`,
+        hi: (list) => `समर्थित GPU: ${list}`,
+    },
+    '!compress_preset_summary': {
+        en: (presetLabel, codec, vbitrate, abitrate) =>
+            `${presetLabel} size-optimized preset: ${codec}, ${vbitrate} kbps video, ${abitrate} kbps audio.`,
+        ko: (presetLabel, codec, vbitrate, abitrate) =>
+            `${presetLabel} 용량 최적화: ${codec}, 비디오 ${vbitrate} kbps, 오디오 ${abitrate} kbps.`,
+        ja: (presetLabel, codec, vbitrate, abitrate) =>
+            `${presetLabel} サイズ最適化プリセット: ${codec}, ビデオ ${vbitrate} kbps, オーディオ ${abitrate} kbps.`,
+        'zh-cn': (presetLabel, codec, vbitrate, abitrate) =>
+            `${presetLabel} 大小优化预设: ${codec}, 视频 ${vbitrate} kbps, 音频 ${abitrate} kbps.`,
+        es: (presetLabel, codec, vbitrate, abitrate) =>
+            `Preajuste optimizado de tamaño ${presetLabel}: ${codec}, video ${vbitrate} kbps, audio ${abitrate} kbps.`,
+        pt: (presetLabel, codec, vbitrate, abitrate) =>
+            `Predefinição otimizada de tamanho ${presetLabel}: ${codec}, vídeo ${vbitrate} kbps, áudio ${abitrate} kbps.`,
+        fr: (presetLabel, codec, vbitrate, abitrate) =>
+            `Préréglage optimisé en taille ${presetLabel}: ${codec}, vidéo ${vbitrate} kbps, audio ${abitrate} kbps.`,
+        id: (presetLabel, codec, vbitrate, abitrate) =>
+            `Prasetel optimalisasi ukuran ${presetLabel}: ${codec}, video ${vbitrate} kbps, audio ${abitrate} kbps.`,
+        hi: (presetLabel, codec, vbitrate, abitrate) =>
+            `${presetLabel} आकार-अनुकूलित प्रीसेट: ${codec}, वीडियो ${vbitrate} kbps, ऑडियो ${abitrate} kbps.`,
+    },
+};
+
+// --- 헬퍼 함수 ---
+
+// 현재 언어 코드 반환 (예: 'ko', 'ja', 'zh-cn')
+function getCurrentLangCode() {
+    if (typeof MytoryI18n !== 'undefined') {
+        return MytoryI18n.getLanguage().toLowerCase();
+    }
+    return navigator.language.toLowerCase();
+}
+
+// 베이스 언어 코드 반환 (예: 'ko', 'zh')
+function getCurrentBaseLang() {
+    return getCurrentLangCode().split('-')[0];
+}
+
+// 정적 번역 조회
+function translate(enKey) {
+    const lang = getCurrentLangCode();
+    const base = getCurrentBaseLang();
+    const entry = translations[enKey];
+    if (!entry) return enKey;
+
+    // 1. 정확한 Locale 매칭 (zh-cn)
+    if (entry[lang]) return entry[lang];
+    // 2. Base 언어 매칭 (zh)
+    if (entry[base]) return entry[base];
+    // 3. 영어 fallback
+    return entry.en || enKey;
+}
+
+// 동적 템플릿 번역 조회
+function translateTemplate(templateKey, ...args) {
+    const lang = getCurrentLangCode();
+    const base = getCurrentBaseLang();
+    const template = templateTranslations[templateKey];
+    if (!template) return '';
+
+    const fn = template[lang] || template[base] || template.en;
+    return fn ? fn(...args) : '';
+}

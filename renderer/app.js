@@ -229,7 +229,7 @@ function resolveSpeedEncoderMeta(videoCodec, useHw) {
             }
             return {
                 encoder: encoders.h264,
-                label: t(`Using hardware encoding: ${encoders.h264}`, `하드웨어 인코딩 사용 중: ${encoders.h264}`)
+                label: t('!hardware_encoding', encoders.h264)
             };
         }
         return {
@@ -248,7 +248,7 @@ function resolveSpeedEncoderMeta(videoCodec, useHw) {
             }
             return {
                 encoder: encoders.hevc,
-                label: t(`Using hardware encoding: ${encoders.hevc}`, `하드웨어 인코딩 사용 중: ${encoders.hevc}`)
+                label: t('!hardware_encoding', encoders.hevc)
             };
         }
         return {
@@ -268,7 +268,7 @@ function resolveSpeedEncoderMeta(videoCodec, useHw) {
         if (useHw && encoders.av1) {
             return {
                 encoder: encoders.av1,
-                label: t(`Using hardware encoding: ${encoders.av1}`, `하드웨어 인코딩 사용 중: ${encoders.av1}`)
+                label: t('!hardware_encoding', encoders.av1)
             };
         }
         return {
@@ -284,11 +284,28 @@ function resolveSpeedEncoderMeta(videoCodec, useHw) {
 }
 
 // 다국어 번역 헬퍼 함수
+// - t('English key') → translations.js 맵에서 현재 언어로 조회
+// - t('English key', '한국어') → 하위 호환, 맵에 없으면 한국어/영어 fallback
 function t(en, ko) {
-    const isKo = typeof MytoryI18n !== 'undefined'
-        ? MytoryI18n.getLanguage().startsWith('ko')
-        : navigator.language.startsWith('ko');
-    return isKo ? ko : en;
+    // 1. translations 맵에서 조회 (새 방식)
+    if (typeof translations !== 'undefined' && translations[en]) {
+        return translate(en);
+    }
+
+    // 2. 템플릿 번역 조회
+    if (typeof templateTranslations !== 'undefined' && templateTranslations[en]) {
+        return translateTemplate(en, ...[].slice.call(arguments, 2));
+    }
+
+    // 3. 레거시: positional 인자 방식 (en, ko)
+    if (arguments.length >= 2) {
+        const lang = typeof MytoryI18n !== 'undefined'
+            ? MytoryI18n.getLanguage().toLowerCase()
+            : navigator.language.toLowerCase();
+        return lang.startsWith('ko') ? ko : en;
+    }
+
+    return en;
 }
 
 function updateHwStatusText() {
@@ -301,10 +318,7 @@ function updateHwStatusText() {
     if (encoders.av1) availableList.push(`AV1 (${encoders.av1})`);
     
     if (availableList.length > 0) {
-        elements.hwStatusText.textContent = t(
-            `Supported GPUs: ${availableList.join(', ')}`,
-            `감지된 GPU 가속 코덱: ${availableList.join(', ')}`
-        );
+        elements.hwStatusText.textContent = t('!supported_gpus', availableList.join(', '));
         elements.hwAccelCheck.checked = true;
     } else {
         elements.hwStatusText.textContent = t(
@@ -336,9 +350,13 @@ async function initApp() {
     let savedLang = localStorage.getItem('mytory-video-lang');
     if (!savedLang) {
         const detected = typeof MytoryI18n !== 'undefined'
-            ? MytoryI18n.getLanguage()
-            : (navigator.language.startsWith('ko') ? 'ko' : 'en');
-        savedLang = detected.startsWith('ko') ? 'ko' : 'en';
+            ? MytoryI18n.getLanguage().toLowerCase()
+            : navigator.language.toLowerCase();
+        // 지원하는 언어에 매칭되는지 확인
+        const supportedLangs = ['en', 'ko', 'ja', 'zh-cn', 'zh-tw', 'es', 'pt', 'fr', 'id', 'hi'];
+        const exactMatch = supportedLangs.find(l => l === detected);
+        const baseMatch = supportedLangs.find(l => l === detected.split('-')[0]);
+        savedLang = exactMatch || baseMatch || 'en';
         localStorage.setItem('mytory-video-lang', savedLang);
     }
     applyLanguage(savedLang);
@@ -693,8 +711,11 @@ function updateCompressSummary() {
     elements.statCompressPreset.textContent = presetLabel;
     elements.statCompressBitrate.textContent = `${settings.videoBitrate}k`;
     elements.compressPresetHelp.textContent = t(
-        `${presetLabel} size-optimized preset: ${settings.videoCodec.toUpperCase()}, ${settings.videoBitrate} kbps video, ${settings.audioBitrate} kbps audio.`,
-        `${presetLabel} 용량 최적화: ${settings.videoCodec.toUpperCase()}, 비디오 ${settings.videoBitrate} kbps, 오디오 ${settings.audioBitrate} kbps.`
+        '!compress_preset_summary',
+        presetLabel,
+        settings.videoCodec.toUpperCase(),
+        settings.videoBitrate,
+        settings.audioBitrate
     );
 }
 

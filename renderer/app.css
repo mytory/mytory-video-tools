@@ -195,6 +195,29 @@ h2 {
     background-color: var(--brand-alpha);
 }
 
+.dropzone.drop-received {
+    border-color: var(--success);
+    background-color: rgba(16, 185, 129, 0.08);
+    animation: dropFlash 0.3s ease-out;
+}
+
+.dropzone.drop-received h3,
+.dropzone.drop-received p,
+.dropzone.drop-received .btn {
+    display: none;
+}
+
+@keyframes dropFlash {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
 .dropzone h3 {
     font-size: 1.2rem;
     margin: 0 0 8px 0;
@@ -842,4 +865,47 @@ label[for="splitEndInput"] {
 @keyframes slideUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── 글로벌 드롭 오버레이 ── */
+.global-drop-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+body.global-dragover .global-drop-overlay {
+    display: flex;
+}
+
+.global-drop-overlay__content {
+    text-align: center;
+    padding: 3rem 4rem;
+    border: 3px dashed var(--brand);
+    border-radius: 24px;
+    background: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.2s ease-out;
+}
+
+.global-drop-overlay__icon {
+    font-size: 4rem;
+    line-height: 1;
+    margin-bottom: 1rem;
+}
+
+.global-drop-overlay__content h2 {
+    margin: 0 0 0.5rem;
+    color: white;
+}
+
+.global-drop-overlay__content p {
+    margin: 0;
+    color: var(--text-muted);
 }

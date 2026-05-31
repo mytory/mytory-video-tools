@@ -18,6 +18,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     detectScenes: (params) => ipcRenderer.invoke('capture:scene-detect', params),
     exportScenes: (params) => ipcRenderer.invoke('capture:export-scenes', params),
     
+    resolveUniquePath: (desiredPath) => ipcRenderer.invoke('app:resolve-unique-path', desiredPath),
+
     // 진행 상황 이벤트 리스너 및 해제 기능 제공
     onProgress: (callback) => {
         const listener = (event, data) => callback(data);

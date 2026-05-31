@@ -398,6 +398,77 @@ async function initApp() {
     setupRemuxer();
     setupSplitter();
     setupEditorKeyboardShortcuts();
+
+    // 글로벌 드래그 & 드롭 핸들러 (화면 전체)
+    let dragCounter = 0;
+
+    document.addEventListener('dragenter', (e) => {
+        e.preventDefault();
+        dragCounter++;
+        if (dragCounter === 1) {
+            document.body.classList.add('global-dragover');
+        }
+    });
+
+    document.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        dragCounter--;
+        if (dragCounter === 0) {
+            document.body.classList.remove('global-dragover');
+        }
+    });
+
+    document.addEventListener('dragover', (e) => {
+        e.preventDefault();
+    });
+
+    document.addEventListener('drop', async (e) => {
+        e.preventDefault();
+        dragCounter = 0;
+        document.body.classList.remove('global-dragover');
+
+        const dt = e.dataTransfer;
+        if (!dt || dt.files.length === 0) return;
+
+        const active = state.activeTab;
+        const dzMap = {
+            'speed-changer': elements.speedDropzone,
+            'compressor': elements.compressDropzone,
+            'audio-drop': elements.audioDropzone,
+            'frame-capture': elements.captureDropzone,
+            'remuxer': elements.remuxDropzone,
+            'splitter': elements.splitDropzone,
+        };
+        const dz = dzMap[active];
+        if (!dz) return; // settings 등 드롭 불가 탭
+
+        switch (active) {
+            case 'speed-changer':
+                showDropReceivedFeedback(dz, dt.files.length);
+                await processSpeedFiles(dt.files);
+                break;
+            case 'compressor':
+                showDropReceivedFeedback(dz, dt.files.length);
+                await processCompressFiles(dt.files);
+                break;
+            case 'audio-drop':
+                showDropReceivedFeedback(dz, dt.files.length);
+                await processAudioFiles(dt.files);
+                break;
+            case 'frame-capture':
+                showDropReceivedFeedback(dz, dt.files.length);
+                await loadVideoForCapture(dt.files[0]);
+                break;
+            case 'remuxer':
+                showDropReceivedFeedback(dz, dt.files.length);
+                await processRemuxFiles(dt.files);
+                break;
+            case 'splitter':
+                showDropReceivedFeedback(dz, dt.files.length);
+                await loadVideoForSplit(dt.files[0]);
+                break;
+        }
+    });
 }
 
 // 탭 전환
@@ -457,18 +528,6 @@ function setupSpeedChanger() {
         elements.statSpeed.textContent = speedText;
     }
 
-    // 드롭존 Drag & Drop
-    const dz = elements.speedDropzone;
-    dz.addEventListener('dragover', (e) => { e.preventDefault(); dz.classList.add('is-dragover'); });
-    dz.addEventListener('dragleave', () => dz.classList.remove('is-dragover'));
-    dz.addEventListener('drop', async (e) => {
-        e.preventDefault();
-        dz.classList.remove('is-dragover');
-        if (e.dataTransfer.files.length > 0) {
-            await processSpeedFiles(e.dataTransfer.files);
-        }
-    });
-
     elements.speedFileInput.addEventListener('change', async (e) => {
         if (e.target.files.length > 0) {
             await processSpeedFiles(e.target.files);
@@ -483,11 +542,12 @@ async function processSpeedFiles(files) {
     elements.statQueue.textContent = parseInt(elements.statQueue.textContent) + list.length;
     
     // 모든 파일을 pending 상태로 먼저 큐에 추가
-    const tasks = list.map(file => {
+    const tasks = await Promise.all(list.map(async file => {
         const taskId = 'speed_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
         const useHw = elements.hwAccelCheck.checked;
         const encoderMeta = resolveSpeedEncoderMeta(state.speedCodec, useHw);
-        const outputPath = getResolvedOutputPath(file.path, `_speed_${state.speed.toFixed(2)}x`);
+        const basePath = getResolvedOutputPath(file.path, `_speed_${state.speed.toFixed(2)}x`);
+        const outputPath = await window.electronAPI.resolveUniquePath(basePath);
         return {
             taskId,
             file,
@@ -495,7 +555,7 @@ async function processSpeedFiles(files) {
             encoderMeta,
             outputPath
         };
-    });
+    }));
 
     for (const task of tasks) {
         addQueueItem({
@@ -509,6 +569,7 @@ async function processSpeedFiles(files) {
             engineName: task.encoderMeta.encoder
         });
     }
+    clearDropReceivedFeedback();
 
     // 순차적으로 하나씩 running으로 변경하며 처리
     for (const task of tasks) {
@@ -574,17 +635,6 @@ function setupCompressor() {
         state.compressCodec = e.target.value;
     });
 
-    const dz = elements.compressDropzone;
-    dz.addEventListener('dragover', (e) => { e.preventDefault(); dz.classList.add('is-dragover'); });
-    dz.addEventListener('dragleave', () => dz.classList.remove('is-dragover'));
-    dz.addEventListener('drop', async (e) => {
-        e.preventDefault();
-        dz.classList.remove('is-dragover');
-        if (e.dataTransfer.files.length > 0) {
-            await processCompressFiles(e.dataTransfer.files);
-        }
-    });
-
     elements.compressFileInput.addEventListener('change', async (e) => {
         if (e.target.files.length > 0) {
             await processCompressFiles(e.target.files);
@@ -643,11 +693,12 @@ async function processCompressFiles(files) {
 
     // 모든 파일을 pending 상태로 먼저 큐에 추가
     const settings = getCompressSettings();
-    const tasks = list.map(file => {
+    const tasks = await Promise.all(list.map(async file => {
         const taskId = 'compress_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
         const useHw = elements.hwAccelCheck.checked;
         const encoderMeta = resolveSpeedEncoderMeta(settings.videoCodec, useHw);
-        const outputPath = getResolvedOutputPath(file.path, `_optimized_${settings.videoBitrate}k`, 'mp4');
+        const basePath = getResolvedOutputPath(file.path, `_optimized_${settings.videoBitrate}k`, 'mp4');
+        const outputPath = await window.electronAPI.resolveUniquePath(basePath);
         return {
             taskId,
             file,
@@ -655,7 +706,7 @@ async function processCompressFiles(files) {
             encoderMeta,
             outputPath
         };
-    });
+    }));
 
     for (const task of tasks) {
         addQueueItem({
@@ -669,6 +720,7 @@ async function processCompressFiles(files) {
             engineName: task.encoderMeta.encoder
         });
     }
+    clearDropReceivedFeedback();
 
     // 순차적으로 하나씩 running으로 변경하며 처리
     for (const task of tasks) {
@@ -711,17 +763,6 @@ function setupAudioExtractor() {
         });
     });
 
-    const dz = elements.audioDropzone;
-    dz.addEventListener('dragover', (e) => { e.preventDefault(); dz.classList.add('is-dragover'); });
-    dz.addEventListener('dragleave', () => dz.classList.remove('is-dragover'));
-    dz.addEventListener('drop', async (e) => {
-        e.preventDefault();
-        dz.classList.remove('is-dragover');
-        if (e.dataTransfer.files.length > 0) {
-            await processAudioFiles(e.dataTransfer.files);
-        }
-    });
-
     elements.audioFileInput.addEventListener('change', async (e) => {
         if (e.target.files.length > 0) {
             await processAudioFiles(e.target.files);
@@ -746,7 +787,8 @@ async function processAudioFiles(files) {
             const mapping = { aac: 'aac', mp3: 'mp3', vorbis: 'ogg', pcm_s16le: 'wav' };
             ext = mapping[codec] || 'aac';
         }
-        const outputPath = getResolvedOutputPath(file.path, `_audio`, ext);
+        const basePath = getResolvedOutputPath(file.path, `_audio`, ext);
+        const outputPath = await window.electronAPI.resolveUniquePath(basePath);
         tasks.push({ taskId, file, outputPath, ext });
 
         addQueueItem({
@@ -759,6 +801,7 @@ async function processAudioFiles(files) {
             engineLabel: t('Audio extraction', '오디오 추출')
         });
     }
+    clearDropReceivedFeedback();
 
     // 순차적으로 하나씩 running으로 변경하며 처리
     for (const task of tasks) {
@@ -788,19 +831,6 @@ async function processAudioFiles(files) {
 
 // 4. 도구 3: 장면 및 프레임 캡처 핸들링
 function setupFrameCapture() {
-    const dz = elements.captureDropzone;
-    
-    // 파일 드롭 핸들링
-    dz.addEventListener('dragover', (e) => { e.preventDefault(); dz.classList.add('is-dragover'); });
-    dz.addEventListener('dragleave', () => dz.classList.remove('is-dragover'));
-    dz.addEventListener('drop', async (e) => {
-        e.preventDefault();
-        dz.classList.remove('is-dragover');
-        if (e.dataTransfer.files.length > 0) {
-            await loadVideoForCapture(e.dataTransfer.files[0]);
-        }
-    });
-
     elements.captureFileInput.addEventListener('change', async (e) => {
         if (e.target.files.length > 0) {
             await loadVideoForCapture(e.target.files[0]);
@@ -904,7 +934,8 @@ function setupFrameCapture() {
         
         const baseName = getFileBaseName(state.captureFile.name);
         const fileTimecode = secondsToTimecode(timestamp).replace(/:/g, '-');
-        const outputPath = getResolvedOutputPath(state.captureFile.path, `_frame_${fileTimecode}`, ext);
+        const basePath = getResolvedOutputPath(state.captureFile.path, `_frame_${fileTimecode}`, ext);
+        const outputPath = await window.electronAPI.resolveUniquePath(basePath);
 
         const result = await window.electronAPI.captureSingle({
             inputPath: state.captureFile.path,
@@ -1077,6 +1108,7 @@ async function loadVideoForCapture(file) {
     state.captureFile = nativeFile;
     elements.captureDropzone.style.display = 'none';
     elements.captureEditor.style.display = 'flex';
+    clearDropReceivedFeedback();
     
     // HTML5 Video 태그에 소스 셋팅 (로컬 절대경로는 web-security 비활성화되지 않으면 바로 로드 안되나 Electron은 file:// 프로토콜 사용 가능)
     elements.captureVideo.src = filePathToUrl(nativeFile.path);
@@ -1127,17 +1159,6 @@ function setupRemuxer() {
         });
     });
 
-    const dz = elements.remuxDropzone;
-    dz.addEventListener('dragover', (e) => { e.preventDefault(); dz.classList.add('is-dragover'); });
-    dz.addEventListener('dragleave', () => dz.classList.remove('is-dragover'));
-    dz.addEventListener('drop', async (e) => {
-        e.preventDefault();
-        dz.classList.remove('is-dragover');
-        if (e.dataTransfer.files.length > 0) {
-            await processRemuxFiles(e.dataTransfer.files);
-        }
-    });
-
     elements.remuxFileInput.addEventListener('change', async (e) => {
         if (e.target.files.length > 0) {
             await processRemuxFiles(e.target.files);
@@ -1151,11 +1172,12 @@ async function processRemuxFiles(files) {
     if (list.length === 0) return;
 
     // 모든 파일을 pending 상태로 먼저 큐에 추가
-    const tasks = list.map(file => {
+    const tasks = await Promise.all(list.map(async file => {
         const taskId = 'remux_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
-        const outputPath = getResolvedOutputPath(file.path, `_remuxed`, state.remuxFormat);
+        const basePath = getResolvedOutputPath(file.path, `_remuxed`, state.remuxFormat);
+        const outputPath = await window.electronAPI.resolveUniquePath(basePath);
         return { taskId, file, outputPath };
-    });
+    }));
 
     for (const task of tasks) {
         addQueueItem({
@@ -1167,6 +1189,7 @@ async function processRemuxFiles(files) {
             speed: 'copy'
         });
     }
+    clearDropReceivedFeedback();
 
     // 순차적으로 하나씩 running으로 변경하며 처리
     for (const task of tasks) {
@@ -1194,19 +1217,6 @@ async function processRemuxFiles(files) {
 
 // 6. 도구 5: 비디오 분할 도구 (Splitter) 핸들링
 function setupSplitter() {
-    const dz = elements.splitDropzone;
-
-    // 파일 드롭
-    dz.addEventListener('dragover', (e) => { e.preventDefault(); dz.classList.add('is-dragover'); });
-    dz.addEventListener('dragleave', () => dz.classList.remove('is-dragover'));
-    dz.addEventListener('drop', async (e) => {
-        e.preventDefault();
-        dz.classList.remove('is-dragover');
-        if (e.dataTransfer.files.length > 0) {
-            await loadVideoForSplit(e.dataTransfer.files[0]);
-        }
-    });
-
     elements.splitFileInput.addEventListener('change', async (e) => {
         if (e.target.files.length > 0) {
             await loadVideoForSplit(e.target.files[0]);
@@ -1325,7 +1335,8 @@ function setupSplitter() {
         const taskId = 'split_' + Date.now();
         const baseName = getFileBaseName(state.splitFile.name);
         const ext = getFileExtension(state.splitFile.name);
-        const outputPath = getResolvedOutputPath(state.splitFile.path, `_trimmed`, ext);
+        const basePath = getResolvedOutputPath(state.splitFile.path, `_trimmed`, ext);
+        const outputPath = await window.electronAPI.resolveUniquePath(basePath);
 
         addQueueItem({
             taskId,
@@ -1365,6 +1376,7 @@ async function loadVideoForSplit(file) {
     state.splitFile = nativeFile;
     elements.splitDropzone.style.display = 'none';
     elements.splitEditor.style.display = 'flex';
+    clearDropReceivedFeedback();
     elements.splitVideo.src = filePathToUrl(nativeFile.path);
 
     try {
@@ -1810,7 +1822,42 @@ function renderQueue() {
     });
 }
 
-// 5. 토스트 메시지 표출
+// 6. 드롭존 즉시 피드백
+let activeFeedbackDropzone = null;
+
+function showDropReceivedFeedback(dz, count) {
+    // 이전 피드백 정리
+    clearDropReceivedFeedback();
+    
+    activeFeedbackDropzone = dz;
+    dz.classList.add('drop-received');
+    
+    // 원래 컨텐츠를 data-* 속성에 백업 (최초 한 번)
+    if (!dz.dataset.originalHtml) {
+        dz.dataset.originalHtml = dz.innerHTML;
+    }
+    
+    dz.innerHTML = `
+        <div style="display:flex; flex-direction:column; align-items:center; gap:0.5rem;">
+            <span style="font-size:2.2rem; line-height:1; animation: spin 1s linear infinite; display:inline-block;">🔄</span>
+            <h3 style="margin:0; font-size:1.1rem;">${t('Preparing...', '작업 준비중')}</h3>
+            <p style="margin:0; font-size:0.9rem; color:var(--text-muted);">${t('File count', '파일')} ${count}${t('file(s)', '개')}</p>
+        </div>
+    `;
+}
+
+function clearDropReceivedFeedback() {
+    if (!activeFeedbackDropzone) return;
+    const dz = activeFeedbackDropzone;
+    activeFeedbackDropzone = null;
+    dz.classList.remove('drop-received');
+    if (dz.dataset.originalHtml) {
+        dz.innerHTML = dz.dataset.originalHtml;
+        delete dz.dataset.originalHtml;
+    }
+}
+
+// 7. 토스트 메시지 표출
 let toastTimer = null;
 function showToast(title, message, type = 'info') {
     if (toastTimer) {

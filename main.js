@@ -312,6 +312,24 @@ ipcMain.handle('task:cancel', (event, taskId) => {
     return false;
 });
 
+// 4-2. 출력 경로 중복 확인 후 유니크 경로 반환
+ipcMain.handle('app:resolve-unique-path', (event, desiredPath) => {
+    if (!fs.existsSync(desiredPath)) {
+        return desiredPath;
+    }
+    const dir = path.dirname(desiredPath);
+    const ext = path.extname(desiredPath);
+    const base = path.basename(desiredPath, ext);
+    let counter = 1;
+    while (true) {
+        const candidate = path.join(dir, `${base}_${counter}${ext}`);
+        if (!fs.existsSync(candidate)) {
+            return candidate;
+        }
+        counter++;
+    }
+});
+
 // 5. 배속 변환 태스크 시작
 ipcMain.handle('speed:start', async (event, { taskId, inputPath, speed, videoCodec, useHw, outputPath }) => {
     try {

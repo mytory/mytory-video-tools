@@ -1,6 +1,6 @@
-# Mytory Video Tool (데스크톱 통합 앱)
+# Mytory Video Tools (데스크톱 통합 앱)
 
-**Mytory Video Tool**은 대용량 비디오의 배속 인코딩 및 다양한 미디어 조작을 지원하는 크로스 플랫폼(Windows, macOS, Linux) 데스크톱 애플리케이션입니다.
+**Mytory Video Tools**는 대용량 비디오의 배속 인코딩 및 다양한 미디어 조작을 지원하는 크로스 플랫폼(Windows, macOS, Linux) 데스크톱 애플리케이션입니다.
 
 ---
 

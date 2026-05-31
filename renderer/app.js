@@ -285,22 +285,36 @@ function resolveSpeedEncoderMeta(videoCodec, useHw) {
 
 // 다국어 번역 헬퍼 함수
 function t(en, ko) {
-    const isKo = (typeof MytoryI18n !== 'undefined' && MytoryI18n.getLanguage().startsWith('ko')) || 
-                 navigator.language.startsWith('ko');
+    const isKo = typeof MytoryI18n !== 'undefined'
+        ? MytoryI18n.getLanguage().startsWith('ko')
+        : navigator.language.startsWith('ko');
     return isKo ? ko : en;
 }
 
 // 1. 초기 로드 및 설정 연동
 async function initApp() {
     // 다국어 바인딩 및 선택값 셋팅
-    const curLang = typeof MytoryI18n !== 'undefined' ? MytoryI18n.getLanguage() : (navigator.language.startsWith('ko') ? 'ko' : 'en');
-    elements.langSelect.value = curLang.startsWith('ko') ? 'ko' : 'en';
+    function applyLanguage(lang) {
+        if (typeof MytoryI18n !== 'undefined') {
+            MytoryI18n.setLanguage(lang);
+        }
+        localStorage.setItem('mytory-video-lang', lang);
+        elements.langSelect.value = lang;
+    }
+
+    // 저장된 언어가 있으면 사용, 없으면 브라우저 언어 감지 후 저장
+    let savedLang = localStorage.getItem('mytory-video-lang');
+    if (!savedLang) {
+        const detected = typeof MytoryI18n !== 'undefined'
+            ? MytoryI18n.getLanguage()
+            : (navigator.language.startsWith('ko') ? 'ko' : 'en');
+        savedLang = detected.startsWith('ko') ? 'ko' : 'en';
+        localStorage.setItem('mytory-video-lang', savedLang);
+    }
+    applyLanguage(savedLang);
 
     elements.langSelect.addEventListener('change', (e) => {
-        if (typeof MytoryI18n !== 'undefined') {
-            MytoryI18n.setLanguage(e.target.value);
-            MytoryI18n.apply();
-        }
+        applyLanguage(e.target.value);
     });
 
     // 메인 프로세스로부터 설정 로드

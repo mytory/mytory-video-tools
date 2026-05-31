@@ -61,24 +61,24 @@
     <main class="content">
         <!-- 변환 작업 큐 진행 리스트 -->
         <section class="card panel status-panel" id="conversionQueueSection">
-            <h3 class="section-title" data-mi18n-ko="작업 대기열 / 진행 목록">Task Queue</h3>
+            <h3 class="section-title" data-mi18n-ko="작업 대기열 / 진행 목록" data-mi18n-ja="タスクキュー / 進行状況" data-mi18n-zh-cn="任务队列 / 进度列表" data-mi18n-es="Cola de tareas / Progreso" data-mi18n-pt="Fila de tarefas / Progresso" data-mi18n-fr="File d'attente / Progression" data-mi18n-id="Antrean tugas / Kemajuan" data-mi18n-hi="कार्य कतार / प्रगति">Task Queue</h3>
             <div class="status-list" id="queueStatus">
                 <div class="status-item idle" id="queueStatusEmpty">
-                    <span data-mi18n-ko="대기 중인 작업이 없습니다. 파일을 추가해 주세요.">No active tasks in the queue. Add files to start.</span>
+                    <span data-mi18n-ko="대기 중인 작업이 없습니다. 파일을 추가해 주세요." data-mi18n-ja="キューにアクティブなタスクはありません。ファイルを追加してください。" data-mi18n-zh-cn="队列中没有活动任务。请添加文件。" data-mi18n-es="No hay tareas activas en la cola. Agregue archivos para comenzar." data-mi18n-pt="Nenhuma tarefa ativa na fila. Adicione arquivos para começar." data-mi18n-fr="Aucune tâche active dans la file d'attente. Ajoutez des fichiers pour commencer." data-mi18n-id="Tidak ada tugas aktif dalam antrean. Tambahkan file untuk memulai." data-mi18n-hi="कतार में कोई सक्रिय कार्य नहीं है। आरंभ करने के लिए फ़ाइलें जोड़ें।">No active tasks in the queue. Add files to start.</span>
                 </div>
             </div>
         </section>
 
         <!-- 2.1 배속 변환기 화면 -->
         <section id="speed-changer" class="tab-content active">
-            <h2 data-mi18n-ko="비디오 배속 변환기">Video Speed Changer</h2>
-            <p class="tab-desc" data-mi18n-ko="다람쥐 목소리 방지 기술(피치 유지)을 활용해 비디오 배속 인코딩을 수행합니다.">
+            <h2 data-mi18n-ko="비디오 배속 변환기" data-mi18n-ja="ビデオ速度変換" data-mi18n-zh-cn="视频倍速转换" data-mi18n-es="Cambiador de velocidad de video" data-mi18n-pt="Mudança de velocidade de vídeo" data-mi18n-fr="Changement de vitesse vidéo" data-mi18n-id="Pengubah kecepatan video" data-mi18n-hi="वीडियो गति परिवर्तक">Video Speed Changer</h2>
+            <p class="tab-desc" data-mi18n-ko="다람쥐 목소리 방지 기술(피치 유지)을 활용해 비디오 배속 인코딩을 수행합니다." data-mi18n-ja="音程を保持しながら再生速度を変更します。" data-mi18n-zh-cn="在保持原始音调的同时更改播放速度。" data-mi18n-es="Cambie la velocidad de reproducción mientras conserva el tono original." data-mi18n-pt="Altere a velocidade de reprodução preservando o tom original." data-mi18n-fr="Modifiez la vitesse de lecture tout en préservant la hauteur originale." data-mi18n-id="Ubah kecepatan pemutaran sambil mempertahankan nada asli." data-mi18n-hi="मूल पिच को संरक्षित करते हुए प्लेबैक गति बदलें।">
                 Change play speed while preserving original audio pitch.
             </p>
 
             <div class="card card-panel">
                 <div class="control-group">
-                    <label class="control-label" data-mi18n-ko="원하는 배속 선택">Select Play Speed</label>
+                    <label class="control-label" data-mi18n-ko="원하는 배속 선택" data-mi18n-ja="再生速度を選択" data-mi18n-zh-cn="选择播放速度" data-mi18n-es="Seleccione la velocidad de reproducción" data-mi18n-pt="Selecione a velocidade de reprodução" data-mi18n-fr="Sélectionnez la vitesse de lecture" data-mi18n-id="Pilih kecepatan pemutaran" data-mi18n-hi="प्लेबैक गति चुनें">Select Play Speed</label>
                     <div class="speed-preset-container" id="speedPresets">
                         <button class="preset-btn" data-speed="0.5">0.5x</button>
                         <button class="preset-btn" data-speed="0.75">0.75x</button>
@@ -98,7 +98,7 @@
                 </div>
 
                 <div class="control-group">
-                    <label class="control-label" data-mi18n-ko="인코딩 비디오 코덱">Video Codec</label>
+                    <label class="control-label" data-mi18n-ko="인코딩 비디오 코덱" data-mi18n-ja="エンコードビデオコーデック" data-mi18n-zh-cn="编码视频编解码器" data-mi18n-es="Códec de video de codificación" data-mi18n-pt="Codec de vídeo de codificação" data-mi18n-fr="Codec vidéo d'encodage" data-mi18n-id="Codec video encoding" data-mi18n-hi="एन्कोडिंग वीडियो कोडेक">Video Codec</label>
                     <select id="speedCodecSelect" style="width: auto; min-width: 150px;">
                         <option value="h264">H.264 / AVC</option>
                         <option value="h265">H.265 / HEVC</option>
@@ -106,38 +106,38 @@
                         <option value="av1">AV1</option>
                     </select>
                     <div class="help-stack" id="speedCodecHelp">
-                        <p class="help-text help-text--highlight" data-mi18n-ko="대부분은 H.264를 쓰면 됩니다. 거의 모든 기기와 앱에서 잘 열리고 공유하기 쉽습니다.">
+                        <p class="help-text help-text--highlight" data-mi18n-ko="대부분은 H.264를 쓰면 됩니다. 거의 모든 기기와 앱에서 잘 열리고 공유하기 쉽습니다." data-mi18n-ja="ほとんどの場合、H.264が適切です。ほぼすべてのデバイスやアプリで問題なく開けます。" data-mi18n-zh-cn="对大多数人来说，H.264是正确的选择。几乎可以在所有设备和应用中轻松打开。" data-mi18n-es="Para la mayoría de las personas, H.264 es la opción correcta. Se abre fácilmente en casi todos los dispositivos y aplicaciones." data-mi18n-pt="Para a maioria das pessoas, H.264 é a escolha certa. Abre facilmente em quase todos os dispositivos e aplicativos." data-mi18n-fr="Pour la plupart des gens, H.264 est le bon choix. Il s'ouvre facilement sur presque tous les appareils et applications." data-mi18n-id="Bagi kebanyakan orang, H.264 adalah pilihan yang tepat. Mudah dibuka di hampir semua perangkat dan aplikasi." data-mi18n-hi="अधिकांश लोगों के लिए, H.264 सही विकल्प है। यह लगभग हर डिवाइस और ऐप पर आसानी से खुलता है।">
                             For most people, H.264 is the right choice. It opens easily on almost every device and app.
                         </p>
                         <ul class="help-list">
-                            <li data-mi18n-ko="H.264 / AVC: 가장 무난합니다. 호환성이 가장 좋고 공유하기 쉽습니다.">H.264 / AVC: The safe default. Best compatibility and easiest to share.</li>
-                            <li data-mi18n-ko="H.265 / HEVC: 같은 화질에서 파일 크기를 줄이고 싶을 때 좋습니다. 최신 기기에서 특히 잘 맞습니다.">H.265 / HEVC: Good when you want a smaller file at similar quality, especially for newer devices.</li>
-                            <li data-mi18n-ko="VP9 (WebM): 웹사이트나 브라우저 중심으로 쓸 영상에 좋습니다.">VP9 (WebM): Good for web-first videos, especially in browsers and WebM workflows.</li>
-                            <li data-mi18n-ko="AV1: 가장 효율적이지만 변환 시간이 더 오래 걸릴 수 있습니다. 장기 보관이나 최신 환경에 좋습니다.">AV1: Most efficient, but encoding can take longer. Best for newer platforms and long-term use.</li>
+                            <li data-mi18n-ko="H.264 / AVC: 가장 무난합니다. 호환성이 가장 좋고 공유하기 쉽습니다." data-mi18n-ja="H.264 / AVC: 最も無難です。互換性が最も高く、共有が簡単です。" data-mi18n-zh-cn="H.264 / AVC: 最安全的选择。兼容性最好，最容易分享。" data-mi18n-es="H.264 / AVC: La opción más segura. La mejor compatibilidad y la más fácil de compartir." data-mi18n-pt="H.264 / AVC: A opção mais segura. Melhor compatibilidade e mais fácil de compartilhar." data-mi18n-fr="H.264 / AVC : L'option la plus sûre. Meilleure compatibilité et plus facile à partager." data-mi18n-id="H.264 / AVC: Pilihan paling aman. Kompatibilitas terbaik dan termudah untuk dibagikan." data-mi18n-hi="H.264 / AVC: सबसे सुरक्षित विकल्प। सर्वोत्तम संगतता और साझा करने में सबसे आसान।">H.264 / AVC: The safe default. Best compatibility and easiest to share.</li>
+                            <li data-mi18n-ko="H.265 / HEVC: 같은 화질에서 파일 크기를 줄이고 싶을 때 좋습니다. 최신 기기에서 특히 잘 맞습니다." data-mi18n-ja="H.265 / HEVC: 同じ画質でファイルサイズを抑えたい場合に適しています。新しいデバイスに特に最適です。" data-mi18n-zh-cn="H.265 / HEVC: 在相同画质下减小文件大小，特别适合较新的设备。" data-mi18n-es="H.265 / HEVC: Bueno cuando desea un archivo más pequeño con calidad similar, especialmente para dispositivos más nuevos." data-mi18n-pt="H.265 / HEVC: Bom quando você quer um arquivo menor com qualidade semelhante, especialmente para dispositivos mais novos." data-mi18n-fr="H.265 / HEVC : Idéal pour obtenir un fichier plus petit avec une qualité similaire, surtout pour les appareils récents." data-mi18n-id="H.265 / HEVC: Cocok jika Anda menginginkan file lebih kecil dengan kualitas serupa, terutama untuk perangkat yang lebih baru." data-mi18n-hi="H.265 / HEVC: समान गुणवत्ता पर छोटी फ़ाइल चाहने पर अच्छा, विशेषकर नए डिवाइसों के लिए।">H.265 / HEVC: Good when you want a smaller file at similar quality, especially for newer devices.</li>
+                            <li data-mi18n-ko="VP9 (WebM): 웹사이트나 브라우저 중심으로 쓸 영상에 좋습니다." data-mi18n-ja="VP9 (WebM): ウェブサイトやブラウザ中心の動画に適しています。" data-mi18n-zh-cn="VP9 (WebM): 适合以网络和浏览器为中心的视频。" data-mi18n-es="VP9 (WebM): Bueno para videos orientados a la web, especialmente en navegadores y flujos de trabajo WebM." data-mi18n-pt="VP9 (WebM): Bom para vídeos voltados para a web, especialmente em navegadores e fluxos de trabalho WebM." data-mi18n-fr="VP9 (WebM) : Idéal pour les vidéos destinées au Web, notamment dans les navigateurs et les flux WebM." data-mi18n-id="VP9 (WebM): Baik untuk video berbasis web, terutama di browser dan alur kerja WebM." data-mi18n-hi="VP9 (WebM): वेब-प्रथम वीडियो के लिए अच्छा, विशेषकर ब्राउज़र और WebM वर्कफ़्लो में।">VP9 (WebM): Good for web-first videos, especially in browsers and WebM workflows.</li>
+                            <li data-mi18n-ko="AV1: 가장 효율적이지만 변환 시간이 더 오래 걸릴 수 있습니다. 장기 보관이나 최신 환경에 좋습니다." data-mi18n-ja="AV1: 最も効率的ですが、変換に時間がかかる場合があります。長期保存や新しい環境に最適です。" data-mi18n-zh-cn="AV1: 效率最高，但编码时间可能更长。适合新平台和长期存储。" data-mi18n-es="AV1: El más eficiente, pero la codificación puede tomar más tiempo. Mejor para plataformas nuevas y uso a largo plazo." data-mi18n-pt="AV1: O mais eficiente, mas a codificação pode levar mais tempo. Melhor para plataformas novas e uso a longo prazo." data-mi18n-fr="AV1 : Le plus efficace, mais l'encodage peut prendre plus de temps. Idéal pour les nouvelles plateformes et une utilisation à long terme." data-mi18n-id="AV1: Paling efisien, tetapi encoding mungkin memakan waktu lebih lama. Terbaik untuk platform baru dan penggunaan jangka panjang." data-mi18n-hi="AV1: सबसे कुशल, लेकिन एन्कोडिंग में अधिक समय लग सकता है। नए प्लेटफ़ॉर्म और दीर्घकालिक उपयोग के लिए सर्वोत्तम।">AV1: Most efficient, but encoding can take longer. Best for newer platforms and long-term use.</li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="dropzone" id="speedDropzone">
-                    <h3 data-mi18n-ko="여기에 미디어 파일을 드롭하세요">Drop media files here</h3>
-                    <p data-mi18n-ko="여러 비디오 및 오디오 파일을 드롭할 수 있습니다.">
+                    <h3 data-mi18n-ko="여기에 미디어 파일을 드롭하세요" data-mi18n-ja="メディアファイルをここにドロップ" data-mi18n-zh-cn="将媒体文件拖放到此处" data-mi18n-es="Arrastre archivos multimedia aquí" data-mi18n-pt="Arraste arquivos de mídia aqui" data-mi18n-fr="Déposez les fichiers multimédias ici" data-mi18n-id="Jatuhkan file media di sini" data-mi18n-hi="मीडिया फ़ाइलें यहाँ छोड़ें">Drop media files here</h3>
+                    <p data-mi18n-ko="여러 비디오 및 오디오 파일을 드롭할 수 있습니다." data-mi18n-ja="複数のファイルを一度にドロップできます。" data-mi18n-zh-cn="支持一次拖放多个文件。" data-mi18n-es="Admite soltar varios archivos a la vez." data-mi18n-pt="Suporta soltar vários arquivos de uma vez." data-mi18n-fr="Prend en charge le dépôt de plusieurs fichiers à la fois." data-mi18n-id="Mendukung menjatuhkan beberapa file sekaligus." data-mi18n-hi="एक बार में कई फ़ाइलें छोड़ने का समर्थन करता है।">
                         Supports dropping multiple files at once.
                     </p>
-                    <label class="btn" for="speedFileInput" data-mi18n-ko="파일 선택">Choose files</label>
+                    <label class="btn" for="speedFileInput" data-mi18n-ko="파일 선택" data-mi18n-ja="ファイルを選択" data-mi18n-zh-cn="选择文件" data-mi18n-es="Elegir archivos" data-mi18n-pt="Escolher arquivos" data-mi18n-fr="Choisir des fichiers" data-mi18n-id="Pilih file" data-mi18n-hi="फ़ाइलें चुनें">Choose files</label>
                     <input type="file" id="speedFileInput" accept="video/*,audio/*" multiple hidden>
                 </div>
 
                 <div class="summary-stats">
                     <div>
-                        <div class="stat-label" data-mi18n-ko="설정 배속">Target Speed</div>
+                        <div class="stat-label" data-mi18n-ko="설정 배속" data-mi18n-ja="設定速度" data-mi18n-zh-cn="目标速度" data-mi18n-es="Velocidad objetivo" data-mi18n-pt="Velocidade alvo" data-mi18n-fr="Vitesse cible" data-mi18n-id="Kecepatan target" data-mi18n-hi="लक्ष्य गति">Target Speed</div>
                         <div id="statSpeed" class="stat-value">1.25x</div>
                     </div>
                     <div>
-                        <div class="stat-label" data-mi18n-ko="현재 대기 파일">Queue Files</div>
+                        <div class="stat-label" data-mi18n-ko="현재 대기 파일" data-mi18n-ja="待機ファイル数" data-mi18n-zh-cn="队列文件" data-mi18n-es="Archivos en cola" data-mi18n-pt="Arquivos na fila" data-mi18n-fr="Fichiers en file d'attente" data-mi18n-id="File dalam antrean" data-mi18n-hi="कतार में फ़ाइलें">Queue Files</div>
                         <div id="statQueue" class="stat-value">0</div>
                     </div>
                     <div>
-                        <div class="stat-label" data-mi18n-ko="변환 완료">Done</div>
+                        <div class="stat-label" data-mi18n-ko="변환 완료" data-mi18n-ja="完了" data-mi18n-zh-cn="已完成" data-mi18n-es="Completado" data-mi18n-pt="Concluído" data-mi18n-fr="Terminé" data-mi18n-id="Selesai" data-mi18n-hi="पूर्ण">Done</div>
                         <div id="statDone" class="stat-value">0</div>
                     </div>
                 </div>
@@ -145,14 +145,14 @@
         </section>
 
         <section id="compressor" class="tab-content">
-            <h2 data-mi18n-ko="비디오 용량 줄이기">Video Size Optimizer</h2>
-            <p class="tab-desc" data-mi18n-ko="하드웨어 가속과 해상도별 비트레이트 프리셋으로 유튜브 수준에 가깝게 재인코딩합니다.">
+            <h2 data-mi18n-ko="비디오 용량 줄이기" data-mi18n-ja="動画ファイルサイズ最適化" data-mi18n-zh-cn="视频大小优化" data-mi18n-es="Optimizador de tamaño de video" data-mi18n-pt="Otimizador de tamanho de vídeo" data-mi18n-fr="Optimiseur de taille vidéo" data-mi18n-id="Pengoptimal ukuran video" data-mi18n-hi="वीडियो आकार अनुकूलक">Video Size Optimizer</h2>
+            <p class="tab-desc" data-mi18n-ko="하드웨어 가속과 해상도별 비트레이트 프리셋으로 유튜브 수준에 가깝게 재인코딩합니다." data-mi18n-ja="ハードウェアアクセラレーションと解像度別ビットレートプリセットで再エンコードします。" data-mi18n-zh-cn="使用硬件加速和分辨率感知的比特率预设进行重新编码。" data-mi18n-es="Re-codifique videos con aceleración por hardware y ajustes preestablecidos de tasa de bits según la resolución." data-mi18n-pt="Re-codifique vídeos com aceleração de hardware e predefinições de taxa de bits conscientes da resolução." data-mi18n-fr="Re-encodez des vidéos avec accélération matérielle et des préréglages de débit adaptés à la résolution." data-mi18n-id="Encode ulang video dengan akselerasi perangkat keras dan prasetel bitrate sesuai resolusi." data-mi18n-hi="हार्डवेयर त्वरण और रिज़ॉल्यूशन-जागरूक बिटरेट प्रीसेट के साथ वीडियो को पुनः एन्कोड करें।">
                 Re-encode videos with hardware acceleration and resolution-aware bitrate presets.
             </p>
 
             <div class="card card-panel">
                 <div class="control-group">
-                    <label class="control-label" data-mi18n-ko="프리셋">Preset</label>
+                    <label class="control-label" data-mi18n-ko="프리셋" data-mi18n-ja="プリセット" data-mi18n-zh-cn="预设" data-mi18n-es="Preajuste" data-mi18n-pt="Predefinição" data-mi18n-fr="Préréglage" data-mi18n-id="Prasetel" data-mi18n-hi="प्रीसेट">Preset</label>
                     <div class="format-presets preset-grid--wide" id="compressPresets">
                         <button class="preset-btn active" data-preset="1080p" data-mi18n-ko="용량 최적화 1080p" data-mi18n-ja="サイズ最適化 1080p" data-mi18n-zh-cn="大小优化 1080p" data-mi18n-es="Optimizado 1080p" data-mi18n-pt="Otimizado 1080p" data-mi18n-fr="Optimisé 1080p" data-mi18n-id="Optimal 1080p" data-mi18n-hi="आकार-अनुकूलित 1080p">Size Optimized 1080p</button>
                         <button class="preset-btn" data-preset="720p" data-mi18n-ko="용량 최적화 720p" data-mi18n-ja="サイズ最適化 720p" data-mi18n-zh-cn="大小优化 720p" data-mi18n-es="Optimizado 720p" data-mi18n-pt="Otimizado 720p" data-mi18n-fr="Optimisé 720p" data-mi18n-id="Optimal 720p" data-mi18n-hi="आकार-अनुकूलित 720p">Size Optimized 720p</button>
@@ -164,7 +164,7 @@
 
                 <div class="settings-grid">
                     <div>
-                        <label><span data-mi18n-ko="비디오 코덱">Video Codec</span> <span class="help-tip" tabindex="0" aria-label="비디오 코덱 설명"
+                        <label><span data-mi18n-ko="비디오 코덱" data-mi18n-ja="ビデオコーデック" data-mi18n-zh-cn="视频编解码器" data-mi18n-es="Códec de video" data-mi18n-pt="Codec de vídeo" data-mi18n-fr="Codec vidéo" data-mi18n-id="Codec video" data-mi18n-hi="वीडियो कोडेक">Video Codec</span> <span class="help-tip" tabindex="0" aria-label="비디오 코덱 설명"
                                     data-mi18n-en-attr-aria-label="Video Codec Help">?<span
                                     class="help-tip__bubble"><span data-mi18n-block="ko">영상을 어떤 방식으로 압축할지 정합니다. H.264는 거의 모든 기기에서 안전합니다. H.265는 같은 화질에서 더 작지만 오래된 기기 호환성이 낮을 수 있습니다. AV1은 가장 작게 만들 수 있지만 변환이 느릴 수 있습니다. 예: 가족/업무 공유는 H.264, 용량 절약은 H.265.</span><span data-mi18n-block="en">Determines how the video is compressed. H.264 is safe on almost every device. H.265 gives smaller files at similar quality but may have lower compatibility with older devices. AV1 can make the smallest files but encoding may be slower. Example: Use H.264 for family/work sharing, H.265 for space savings.</span><span data-mi18n-block="ja">ビデオの圧縮方式を指定します。H.264はほとんどすべてのデバイスで安全に使用できます。H.265は同じ画質でより小さいファイルサイズですが、古いデバイスでは互換性が低い場合があります。AV1は最も小さくできますが、エンコードに時間がかかることがあります。例: 家族/仕事での共有はH.264、容量節約はH.265。</span><span data-mi18n-block="zh-cn">确定视频的压缩方式。H.264在几乎所有设备上都很安全。H.265在相同画质下文件更小，但可能不兼容较老的设备。AV1可以生成最小的文件，但编码速度可能较慢。示例: 家庭/工作分享用H.264，节省空间用H.265。</span><span data-mi18n-block="es">Determina cómo se comprime el video. H.264 es seguro en casi todos los dispositivos. H.265 ofrece archivos más pequeños con calidad similar, pero puede tener menor compatibilidad con dispositivos antiguos. AV1 puede crear los archivos más pequeños pero la codificación puede ser más lenta. Ejemplo: Use H.264 para compartir en familia/trabajo, H.265 para ahorrar espacio.</span><span data-mi18n-block="pt">Determina como o vídeo é comprimido. H.264 é seguro em quase todos os dispositivos. H.265 oferece arquivos menores com qualidade semelhante, mas pode ter menor compatibilidade com dispositivos antigos. AV1 pode criar os menores arquivos, mas a codificação pode ser mais lenta. Exemplo: Use H.264 para compartilhar com família/trabalho, H.265 para economizar espaço.</span><span data-mi18n-block="fr">Détermine comment la vidéo est compressée. H.264 est sûr sur presque tous les appareils. H.265 offre des fichiers plus petits avec une qualité similaire mais peut avoir une compatibilité moindre avec les appareils plus anciens. AV1 peut créer les fichiers les plus petits mais l'encodage peut être plus lent. Exemple : Utilisez H.264 pour le partage familial/professionnel, H.265 pour économiser de l'espace.</span><span data-mi18n-block="id">Menentukan bagaimana video dikompresi. H.264 aman di hampir semua perangkat. H.265 memberikan file lebih kecil dengan kualitas serupa tetapi mungkin memiliki kompatibilitas lebih rendah dengan perangkat lama. AV1 dapat membuat file terkecil namun encoding mungkin lebih lambat. Contoh: Gunakan H.264 untuk berbagi keluarga/kerja, H.265 untuk menghemat ruang.</span><span data-mi18n-block="hi">यह निर्धारित करता है कि वीडियो कैसे संपीड़ित किया जाता है। H.264 लगभग सभी डिवाइसों पर सुरक्षित है। H.265 समान गुणवत्ता पर छोटी फ़ाइलें देता है लेकिन पुराने डिवाइसों पर संगतता कम हो सकती है। AV1 सबसे छोटी फ़ाइलें बना सकता है लेकिन एन्कोडिंग धीमी हो सकती है। उदाहरण: परिवार/कार्य शेयरिंग के लिए H.264, स्थान बचाने के लिए H.265 का उपयोग करें।</span></span></span></label>
                         <select id="compressCodecSelect">
@@ -174,11 +174,11 @@
                         </select>
                     </div>
                     <div>
-                        <label><span data-mi18n-ko="목표 해상도">Target Resolution</span> <span class="help-tip" tabindex="0"
+                        <label><span data-mi18n-ko="목표 해상도" data-mi18n-ja="目標解像度" data-mi18n-zh-cn="目标分辨率" data-mi18n-es="Resolución objetivo" data-mi18n-pt="Resolução alvo" data-mi18n-fr="Résolution cible" data-mi18n-id="Resolusi target" data-mi18n-hi="लक्ष्य रिज़ॉल्यूशन">Target Resolution</span> <span class="help-tip" tabindex="0"
                                 aria-label="목표 해상도 설명"
                                 data-mi18n-en-attr-aria-label="Target Resolution Help">?<span class="help-tip__bubble"><span data-mi18n-block="ko">영상의 가로세로 크기입니다. 원본보다 낮추면 파일이 확 줄지만 선명도도 줄어듭니다. 예: 용량이 작은 게 중요하면 720p, 스마트폰 공유, 일반 보관/유튜브는 1080p, 큰 모니터 감상은 1440p나 4K.</span><span data-mi18n-block="en">The width and height of the video. Lowering it from the original greatly reduces file size but also reduces sharpness. Example: Choose 720p if small file size matters, 1080p for smartphone sharing or general storage/YouTube, 1440p or 4K for large monitor viewing.</span><span data-mi18n-block="ja">ビデオの幅と高さです。元より小さくするとファイルサイズは大幅に減りますが、鮮明さも低下します。例: ファイルサイズ重視なら720p、スマホ共有や一般的な保存/YouTubeには1080p、大型モニター視聴には1440pまたは4K。</span><span data-mi18n-block="zh-cn">视频的宽度和高度。降低分辨率会大幅减小文件大小，但也会降低清晰度。示例: 如果文件大小很重要，选择720p；智能手机分享或一般存储/YouTube使用1080p；大屏幕观看使用1440p或4K。</span><span data-mi18n-block="es">El ancho y alto del video. Reducirlo respecto al original reduce considerablemente el tamaño del archivo pero también la nitidez. Ejemplo: Elija 720p si el tamaño del archivo es importante, 1080p para compartir en smartphone o almacenamiento general/YouTube, 1440p o 4K para ver en monitores grandes.</span><span data-mi18n-block="pt">A largura e altura do vídeo. Reduzir em relação ao original reduz muito o tamanho do arquivo, mas também reduz a nitidez. Exemplo: Escolha 720p se o tamanho do arquivo for importante, 1080p para compartilhar em smartphone ou armazenamento geral/YouTube, 1440p ou 4K para visualização em monitores grandes.</span><span data-mi18n-block="fr">La largeur et la hauteur de la vidéo. La réduire par rapport à l'original réduit considérablement la taille du fichier mais aussi la netteté. Exemple : Choisissez 720p si la taille du fichier compte, 1080p pour le partage sur smartphone ou le stockage général/YouTube, 1440p ou 4K pour les grands écrans.</span><span data-mi18n-block="id">Lebar dan tinggi video. Menurunkannya dari ukuran asli akan sangat mengurangi ukuran file tetapi juga mengurangi ketajaman. Contoh: Pilih 720p jika ukuran file penting, 1080p untuk berbagi smartphone atau penyimpanan umum/YouTube, 1440p atau 4K untuk menonton di monitor besar.</span><span data-mi18n-block="hi">वीडियो की चौड़ाई और ऊँचाई। मूल से कम करने से फ़ाइल का आकार बहुत कम हो जाता है लेकिन स्पष्टता भी कम हो जाती है। उदाहरण: यदि फ़ाइल आकार मायने रखता है तो 720p चुनें, स्मार्टफ़ोन शेयरिंग या सामान्य स्टोरेज/YouTube के लिए 1080p, बड़े मॉनिटर देखने के लिए 1440p या 4K चुनें।</span></span></span></label>
                         <select id="compressResolutionSelect">
-                            <option value="source" data-mi18n-ko="원본 유지">Keep source</option>
+                            <option value="source" data-mi18n-ko="원본 유지" data-mi18n-ja="ソースを維持" data-mi18n-zh-cn="保持原样" data-mi18n-es="Mantener original" data-mi18n-pt="Manter original" data-mi18n-fr="Conserver la source" data-mi18n-id="Pertahankan asli" data-mi18n-hi="स्रोत बनाए रखें">Keep source</option>
                             <option value="2160p">3840 x 2160</option>
                             <option value="1440p">2560 x 1440</option>
                             <option value="1080p">1920 x 1080</option>
@@ -187,42 +187,42 @@
                         </select>
                     </div>
                     <div>
-                        <label><span data-mi18n-ko="비디오 비트레이트 (kbps)">Video Bitrate (kbps)</span> <span class="help-tip" tabindex="0"
+                        <label><span data-mi18n-ko="비디오 비트레이트 (kbps)" data-mi18n-ja="ビデオビットレート (kbps)" data-mi18n-zh-cn="视频比特率 (kbps)" data-mi18n-es="Tasa de bits de video (kbps)" data-mi18n-pt="Taxa de bits de vídeo (kbps)" data-mi18n-fr="Débit vidéo (kbps)" data-mi18n-id="Bitrate video (kbps)" data-mi18n-hi="वीडियो बिटरेट (kbps)">Video Bitrate (kbps)</span> <span class="help-tip" tabindex="0"
                                 aria-label="비디오 비트레이트 설명"
                                 data-mi18n-en-attr-aria-label="Video Bitrate Help">?<span class="help-tip__bubble"><span data-mi18n-block="ko">1초마다 영상에 쓰는 데이터 양입니다. 높을수록 깨끗하지만 파일이 커집니다. 예: 720p는 2500-5000, 1080p는 6000-9000, 4K는 18000-35000 정도부터 시작해 보세요.</span><span data-mi18n-block="en">The amount of data used per second of video. Higher values give cleaner video but larger files. Example: Start with 2500-5000 for 720p, 6000-9000 for 1080p, 18000-35000 for 4K.</span><span data-mi18n-block="ja">1秒あたりのビデオに使用するデータ量です。数値が高いほど画質はきれいですが、ファイルサイズは大きくなります。例: 720pは2500-5000、1080pは6000-9000、4Kは18000-35000程度から始めてみてください。</span><span data-mi18n-block="zh-cn">每秒视频使用的数据量。数值越高，视频越清晰，但文件也越大。示例: 720p从2500-5000开始，1080p从6000-9000开始，4K从18000-35000开始。</span><span data-mi18n-block="es">La cantidad de datos utilizados por segundo de video. Valores más altos dan video más limpio pero archivos más grandes. Ejemplo: Comience con 2500-5000 para 720p, 6000-9000 para 1080p, 18000-35000 para 4K.</span><span data-mi18n-block="pt">A quantidade de dados usada por segundo de vídeo. Valores mais altos oferecem vídeo mais limpo, mas arquivos maiores. Exemplo: Comece com 2500-5000 para 720p, 6000-9000 para 1080p, 18000-35000 para 4K.</span><span data-mi18n-block="fr">La quantité de données utilisée par seconde de vidéo. Des valeurs plus élevées donnent une vidéo plus nette mais des fichiers plus volumineux. Exemple : Commencez avec 2500-5000 pour 720p, 6000-9000 pour 1080p, 18000-35000 pour 4K.</span><span data-mi18n-block="id">Jumlah data yang digunakan per detik video. Nilai lebih tinggi memberikan video lebih bersih tetapi file lebih besar. Contoh: Mulai dengan 2500-5000 untuk 720p, 6000-9000 untuk 1080p, 18000-35000 untuk 4K.</span><span data-mi18n-block="hi">प्रति सेकंड वीडियो में उपयोग किए जाने वाले डेटा की मात्रा। उच्च मान साफ़ वीडियो देते हैं लेकिन फ़ाइलें बड़ी होती हैं। उदाहरण: 720p के लिए 2500-5000, 1080p के लिए 6000-9000, 4K के लिए 18000-35000 से शुरू करें।</span></span></span></label>
                         <input type="number" id="compressVideoBitrate" min="300" step="100" value="8000">
                     </div>
                     <div>
-                        <label><span data-mi18n-ko="최대 비트레이트 (kbps)">Maxrate (kbps)</span> <span class="help-tip" tabindex="0"
+                        <label><span data-mi18n-ko="최대 비트레이트 (kbps)" data-mi18n-ja="最大ビットレート (kbps)" data-mi18n-zh-cn="最大比特率 (kbps)" data-mi18n-es="Tasa de bits máxima (kbps)" data-mi18n-pt="Taxa de bits máxima (kbps)" data-mi18n-fr="Débit maximal (kbps)" data-mi18n-id="Bitrate maksimum (kbps)" data-mi18n-hi="अधिकतम बिटरेट (kbps)">Maxrate (kbps)</span> <span class="help-tip" tabindex="0"
                                 aria-label="최대 비트레이트 설명"
                                 data-mi18n-en-attr-aria-label="Maxrate Help">?<span class="help-tip__bubble"><span data-mi18n-block="ko">복잡한 장면에서 순간적으로 올라갈 수 있는 최고 데이터 양입니다. 평균 비트레이트보다 조금 높게 두면 움직임 많은 장면이 덜 뭉개집니다. 예: 비디오 비트레이트가 8000이면 10000-12000.</span><span data-mi18n-block="en">The maximum data rate that can momentarily spike during complex scenes. Setting it slightly higher than the target bitrate helps prevent blockiness in high-motion scenes. Example: If video bitrate is 8000, set maxrate to 10000-12000.</span><span data-mi18n-block="ja">複雑なシーンで瞬間的に上昇する可能性のある最大データレートです。ターゲットビットレートより少し高く設定すると、動きの多いシーンでのブロックノイズを軽減できます。例: ビデオビットレートが8000の場合、maxrateを10000-12000に設定。</span><span data-mi18n-block="zh-cn">在复杂场景中可能瞬时飙升的最大数据速率。设置为略高于目标比特率有助于防止高动态场景中出现马赛克。示例: 如果视频比特率为8000，将最大比特率设置为10000-12000。</span><span data-mi18n-block="es">La tasa de datos máxima que puede aumentar momentáneamente durante escenas complejas. Configurarlo ligeramente por encima de la tasa de bits objetivo ayuda a prevenir bloqueos en escenas de alto movimiento. Ejemplo: Si la tasa de bits de video es 8000, establezca maxrate en 10000-12000.</span><span data-mi18n-block="pt">A taxa máxima de dados que pode aumentar momentaneamente durante cenas complexas. Definir ligeiramente acima da taxa de bits alvo ajuda a evitar blocos em cenas de alto movimento. Exemplo: Se a taxa de bits do vídeo for 8000, defina maxrate para 10000-12000.</span><span data-mi18n-block="fr">Le débit de données maximal qui peut augmenter momentanément lors de scènes complexes. Le définir légèrement au-dessus du débit cible aide à prévenir les artefacts de blocage dans les scènes très mouvementées. Exemple : Si le débit vidéo est de 8000, définissez maxrate sur 10000-12000.</span><span data-mi18n-block="id">Kecepatan data maksimum yang dapat melonjak sesaat selama adegan kompleks. Mengaturnya sedikit lebih tinggi dari bitrate target membantu mencegah blokir di adegan dengan gerakan tinggi. Contoh: Jika bitrate video 8000, atur maxrate ke 10000-12000.</span><span data-mi18n-block="hi">जटिल दृश्यों के दौरान अस्थायी रूप से बढ़ सकने वाली अधिकतम डेटा दर। इसे लक्ष्य बिटरेट से थोड़ा अधिक सेट करने से उच्च-गति वाले दृश्यों में ब्लॉकीनेस को रोकने में मदद मिलती है। उदाहरण: यदि वीडियो बिटरेट 8000 है, तो maxrate को 10000-12000 पर सेट करें।</span></span></span></label>
                         <input type="number" id="compressMaxrate" min="300" step="100" value="12000">
                     </div>
                     <div>
-                        <label><span data-mi18n-ko="버퍼 크기 (kbps)">Buffer Size (kbps)</span> <span class="help-tip" tabindex="0"
+                        <label><span data-mi18n-ko="버퍼 크기 (kbps)" data-mi18n-ja="バッファサイズ (kbps)" data-mi18n-zh-cn="缓冲区大小 (kbps)" data-mi18n-es="Tamaño del búfer (kbps)" data-mi18n-pt="Tamanho do buffer (kbps)" data-mi18n-fr="Taille du tampon (kbps)" data-mi18n-id="Ukuran buffer (kbps)" data-mi18n-hi="बफ़र आकार (kbps)">Buffer Size (kbps)</span> <span class="help-tip" tabindex="0"
                                 aria-label="버퍼 크기 설명"
                                 data-mi18n-en-attr-aria-label="Buffer Size Help">?<span class="help-tip__bubble"><span data-mi18n-block="ko">비트레이트가 장면에 따라 얼마나 부드럽게 오르내릴지 정하는 여유 공간입니다. 너무 낮으면 품질이 답답해질 수 있습니다. 보통 최대 비트레이트와 같거나 1.5-2배가 편합니다. 예: Maxrate 12000이면 16000-24000.</span><span data-mi18n-block="en">The allowance for how smoothly the bitrate can fluctuate across scenes. Too low may result in quality feeling constrained. Usually set to the same as maxrate or 1.5-2x higher. Example: If maxrate is 12000, set buffer size to 16000-24000.</span><span data-mi18n-block="ja">シーンに応じてビットレートがどれだけスムーズに変動できるかの余裕です。低すぎると画質が制限されているように感じられることがあります。通常は最大ビットレートと同じか1.5〜2倍に設定します。例: Maxrate 12000の場合、バッファサイズは16000-24000。</span><span data-mi18n-block="zh-cn">比特率在不同场景间平滑波动的余量。设置过低可能导致画质受限。通常设置为与最大比特率相同或1.5-2倍。示例: 如果最大比特率为12000，将缓冲区大小设置为16000-24000。</span><span data-mi18n-block="es">El margen para que la tasa de bits fluctúe suavemente entre escenas. Demasiado bajo puede hacer que la calidad se sienta limitada. Generalmente se configura igual que maxrate o 1.5-2x más alto. Ejemplo: Si maxrate es 12000, configure el tamaño del búfer en 16000-24000.</span><span data-mi18n-block="pt">A margem para que a taxa de bits flutue suavemente entre cenas. Muito baixo pode fazer com que a qualidade pareça limitada. Geralmente definido como o mesmo que maxrate ou 1.5-2x maior. Exemplo: Se maxrate for 12000, defina o tamanho do buffer para 16000-24000.</span><span data-mi18n-block="fr">La marge de fluctuation du débit entre les scènes. Trop faible peut donner l'impression que la qualité est limitée. Généralement réglé sur la même valeur que maxrate ou 1,5 à 2 fois plus élevé. Exemple : Si maxrate est 12000, définissez la taille du tampon sur 16000-24000.</span><span data-mi18n-block="id">Kelonggaran untuk bitrate agar dapat berfluktuasi dengan lancar antar adegan. Terlalu rendah dapat mengakibatkan kualitas terasa terbatas. Biasanya diatur sama dengan maxrate atau 1,5-2x lebih tinggi. Contoh: Jika maxrate 12000, atur ukuran buffer ke 16000-24000.</span><span data-mi18n-block="hi">यह मार्जिन है कि बिटरेट दृश्यों के बीच कितनी सुचारू रूप से उतार-चढ़ाव कर सकता है। बहुत कम होने पर गुणवत्ता सीमित महसूस हो सकती है। आमतौर पर maxrate के समान या 1.5-2 गुना अधिक सेट किया जाता है। उदाहरण: यदि maxrate 12000 है, तो बफ़र आकार 16000-24000 पर सेट करें।</span></span></span></label>
                         <input type="number" id="compressBufsize" min="600" step="100" value="16000">
                     </div>
                     <div>
-                        <label><span data-mi18n-ko="오디오 비트레이트 (kbps)">Audio Bitrate (kbps)</span> <span class="help-tip" tabindex="0"
+                        <label><span data-mi18n-ko="오디오 비트레이트 (kbps)" data-mi18n-ja="オーディオビットレート (kbps)" data-mi18n-zh-cn="音频比特率 (kbps)" data-mi18n-es="Tasa de bits de audio (kbps)" data-mi18n-pt="Taxa de bits de áudio (kbps)" data-mi18n-fr="Débit audio (kbps)" data-mi18n-id="Bitrate audio (kbps)" data-mi18n-hi="ऑडियो बिटरेट (kbps)">Audio Bitrate (kbps)</span> <span class="help-tip" tabindex="0"
                                 aria-label="오디오 비트레이트 설명"
                                 data-mi18n-en-attr-aria-label="Audio Bitrate Help">?<span class="help-tip__bubble"><span data-mi18n-block="ko">소리에 쓰는 데이터 양입니다. 말소리 위주는 96-128이면 충분하고, 음악이 중요하면 160-256이 좋습니다. 예: 강의/회의 96 또는 128, 공연/뮤직비디오 192 이상.</span><span data-mi18n-block="en">The amount of data used for audio. 96-128 kbps is sufficient for speech, 160-256 kbps is better for music. Example: Use 96 or 128 for lectures/meetings, 192+ for concerts/music videos.</span><span data-mi18n-block="ja">音声に使用するデータ量です。音声主体の場合は96-128kbpsで十分で、音楽が重要な場合は160-256kbpsが適しています。例: 講義/会議は96または128、コンサート/ミュージックビデオは192以上。</span><span data-mi18n-block="zh-cn">音频使用的数据量。以语音为主的内容96-128 kbps就足够了，音乐重要的内容160-256 kbps更合适。示例: 讲座/会议使用96或128，演唱会/音乐视频使用192以上。</span><span data-mi18n-block="es">La cantidad de datos utilizados para el audio. 96-128 kbps es suficiente para voz, 160-256 kbps es mejor para música. Ejemplo: Use 96 o 128 para conferencias/reuniones, 192+ para conciertos/videos musicales.</span><span data-mi18n-block="pt">A quantidade de dados usada para áudio. 96-128 kbps é suficiente para fala, 160-256 kbps é melhor para música. Exemplo: Use 96 ou 128 para palestras/reuniões, 192+ para concertos/vídeos musicais.</span><span data-mi18n-block="fr">La quantité de données utilisée pour l'audio. 96-128 kbps est suffisant pour la parole, 160-256 kbps est mieux pour la musique. Exemple : Utilisez 96 ou 128 pour les cours/réunions, 192+ pour les concerts/clips musicaux.</span><span data-mi18n-block="id">Jumlah data yang digunakan untuk audio. 96-128 kbps cukup untuk ucapan, 160-256 kbps lebih baik untuk musik. Contoh: Gunakan 96 atau 128 untuk kuliah/rapat, 192+ untuk konser/video musik.</span><span data-mi18n-block="hi">ऑडियो के लिए उपयोग किए जाने वाले डेटा की मात्रा। भाषण के लिए 96-128 kbps पर्याप्त है, संगीत के लिए 160-256 kbps बेहतर है। उदाहरण: व्याख्यान/बैठकों के लिए 96 या 128, संगीत कार्यक्रम/संगीत वीडियो के लिए 192+ का उपयोग करें।</span></span></span></label>
                         <input type="number" id="compressAudioBitrate" min="64" step="16" value="128">
                     </div>
                     <div>
-                        <label><span data-mi18n-ko="프레임레이트">Frame Rate</span> <span class="help-tip" tabindex="0" aria-label="프레임레이트 설명"
+                        <label><span data-mi18n-ko="프레임레이트" data-mi18n-ja="フレームレート" data-mi18n-zh-cn="帧率" data-mi18n-es="Fotogramas por segundo" data-mi18n-pt="Quadros por segundo" data-mi18n-fr="Images par seconde" data-mi18n-id="Bingkai per detik" data-mi18n-hi="फ्रेम दर">Frame Rate</span> <span class="help-tip" tabindex="0" aria-label="프레임레이트 설명"
                                     data-mi18n-en-attr-aria-label="Frame Rate Help">?<span
                                     class="help-tip__bubble"><span data-mi18n-block="ko">1초에 보이는 화면 장수입니다. 원본 유지는 가장 자연스럽습니다. 30fps는 용량을 줄이기 좋고, 게임/스포츠처럼 움직임이 빠른 영상은 60fps가 부드럽습니다.</span><span data-mi18n-block="en">Number of frames displayed per second. Keeping source is most natural. 30 fps helps reduce file size, 60 fps is smoother for fast-motion content like games or sports.</span><span data-mi18n-block="ja">1秒間に表示されるフレーム数です。元のままが最も自然です。30fpsはファイルサイズ削減に適しており、ゲームやスポーツなどの動きの速いコンテンツには60fpsが滑らかです。</span><span data-mi18n-block="zh-cn">每秒显示的帧数。保持原始帧率最自然。30fps有助于减小文件大小，60fps适合游戏或体育等高动态内容。</span><span data-mi18n-block="es">Número de fotogramas mostrados por segundo. Mantener el original es lo más natural. 30 fps ayuda a reducir el tamaño del archivo, 60 fps es más fluido para contenido de movimiento rápido como juegos o deportes.</span><span data-mi18n-block="pt">Número de quadros exibidos por segundo. Manter o original é o mais natural. 30 fps ajuda a reduzir o tamanho do arquivo, 60 fps é mais suave para conteúdo de movimento rápido como jogos ou esportes.</span><span data-mi18n-block="fr">Nombre d'images affichées par seconde. Garder l'original est le plus naturel. 30 ips aide à réduire la taille du fichier, 60 ips est plus fluide pour les contenus à mouvement rapide comme les jeux ou le sport.</span><span data-mi18n-block="id">Jumlah bingkai yang ditampilkan per detik. Mempertahankan asli adalah yang paling alami. 30 fps membantu mengurangi ukuran file, 60 fps lebih halus untuk konten gerakan cepat seperti game atau olahraga.</span><span data-mi18n-block="hi">प्रति सेकंड प्रदर्शित फ़्रेमों की संख्या। मूल बनाए रखना सबसे स्वाभाविक है। 30 fps फ़ाइल आकार कम करने में मदद करता है, 60 fps गेम या खेल जैसी तेज़ गति वाली सामग्री के लिए चिकना है।</span></span></span></label>
                         <select id="compressFpsSelect">
-                            <option value="source" data-mi18n-ko="원본 유지">Keep source</option>
+                            <option value="source" data-mi18n-ko="원본 유지" data-mi18n-ja="ソースを維持" data-mi18n-zh-cn="保持原样" data-mi18n-es="Mantener original" data-mi18n-pt="Manter original" data-mi18n-fr="Conserver la source" data-mi18n-id="Pertahankan asli" data-mi18n-hi="स्रोत बनाए रखें">Keep source</option>
                             <option value="30">30 fps</option>
                             <option value="60">60 fps</option>
                         </select>
                     </div>
                     <label class="toggle-switch setting-toggle">
                         <input type="checkbox" id="compressFastStartCheck" checked>
-                        <span><span data-mi18n-ko="웹 재생 최적화">Optimize for web playback</span> <span class="help-tip" tabindex="0"
+                        <span><span data-mi18n-ko="웹 재생 최적화" data-mi18n-ja="ウェブ再生に最適化" data-mi18n-zh-cn="优化网络播放" data-mi18n-es="Optimizar para reproducción web" data-mi18n-pt="Otimizar para reprodução na web" data-mi18n-fr="Optimiser pour la lecture Web" data-mi18n-id="Optimalkan untuk pemutaran web" data-mi18n-hi="वेब प्लेबैक के लिए अनुकूलित करें">Optimize for web playback</span> <span class="help-tip" tabindex="0"
                                 aria-label="웹 재생 최적화 설명"
                                 data-mi18n-en-attr-aria-label="Web Playback Optimization Help">?<span class="help-tip__bubble"><span data-mi18n-block="ko">파일을 끝까지 내려받기 전에도 웹이나 메신저에서 재생이 빨리 시작되도록 정리합니다. 화질이나 용량은 거의 바꾸지 않습니다. 온라인 공유용이면 켜두는 편이 좋습니다.</span><span data-mi18n-block="en">Rearranges the file so playback starts faster on web browsers and messengers, even before the entire file is downloaded. Has minimal effect on quality or file size. Recommended to keep enabled for online sharing.</span><span data-mi18n-block="ja">ファイルのダウンロードが完了する前に、Webブラウザやメッセンジャーで再生がより速く開始されるようにファイルを再配置します。画質やファイルサイズへの影響は最小限です。オンライン共有用には有効にしておくことをおすすめします。</span><span data-mi18n-block="zh-cn">重新排列文件，使网页浏览器和即时通讯软件上的播放更快开始，即使在文件完全下载之前。对画质或文件大小几乎没有影响。建议在线分享时保持启用。</span><span data-mi18n-block="es">Reorganiza el archivo para que la reproducción comience más rápido en navegadores web y mensajeros, incluso antes de que se descargue todo el archivo. Tiene un efecto mínimo en la calidad o el tamaño del archivo. Se recomienda mantenerlo habilitado para compartir en línea.</span><span data-mi18n-block="pt">Reorganiza o arquivo para que a reprodução comece mais rápido em navegadores e mensageiros, mesmo antes de todo o arquivo ser baixado. Tem efeito mínimo na qualidade ou tamanho do arquivo. Recomenda-se manter ativado para compartilhamento online.</span><span data-mi18n-block="fr">Réorganise le fichier pour que la lecture démarre plus rapidement dans les navigateurs Web et les messageries, avant même que le fichier entier ne soit téléchargé. A un effet minimal sur la qualité ou la taille du fichier. Recommandé de garder activé pour le partage en ligne.</span><span data-mi18n-block="id">Menyusun ulang file agar pemutaran dimulai lebih cepat di browser web dan aplikasi pesan, bahkan sebelum seluruh file diunduh. Efeknya minimal terhadap kualitas atau ukuran file. Disarankan untuk tetap diaktifkan untuk berbagi online.</span><span data-mi18n-block="hi">फ़ाइल को इस तरह पुनर्व्यवस्थित करता है कि पूरी फ़ाइल डाउनलोड होने से पहले भी वेब ब्राउज़र और मैसेंजर पर प्लेबैक तेज़ी से शुरू हो। गुणवत्ता या फ़ाइल आकार पर न्यूनतम प्रभाव पड़ता है। ऑनलाइन शेयरिंग के लिए इसे सक्षम रखने की अनुशंसा की जाती है।</span></span></span></span>
                     </label>
@@ -233,25 +233,25 @@
                 </p>
 
                 <div class="dropzone" id="compressDropzone">
-                    <h3 data-mi18n-ko="여기에 영상 파일을 드롭하세요">Drop video files here</h3>
-                    <p data-mi18n-ko="여러 영상을 해상도별 프리셋으로 한 번에 재인코딩합니다.">
+                    <h3 data-mi18n-ko="여기에 영상 파일을 드롭하세요" data-mi18n-ja="動画ファイルをここにドロップ" data-mi18n-zh-cn="将视频文件拖放到此处" data-mi18n-es="Arrastre archivos de video aquí" data-mi18n-pt="Arraste arquivos de vídeo aqui" data-mi18n-fr="Déposez les fichiers vidéo ici" data-mi18n-id="Jatuhkan file video di sini" data-mi18n-hi="वीडियो फ़ाइलें यहाँ छोड़ें">Drop video files here</h3>
+                    <p data-mi18n-ko="여러 영상을 해상도별 프리셋으로 한 번에 재인코딩합니다." data-mi18n-ja="選択したプリセットで複数の動画を一括再エンコードします。" data-mi18n-zh-cn="使用所选预设批量重新编码多个视频。" data-mi18n-es="Re-codifique múltiples videos con el preset de compresión seleccionado." data-mi18n-pt="Re-codifique vários vídeos com a predefinição de compressão selecionada." data-mi18n-fr="Re-encodez plusieurs vidéos avec le préréglage de compression sélectionné." data-mi18n-id="Encode ulang beberapa video dengan prasetel kompresi yang dipilih." data-mi18n-hi="चयनित संपीड़न प्रीसेट के साथ कई वीडियो को पुनः एन्कोड करें।">
                         Re-encode multiple videos with the selected compression preset.
                     </p>
-                    <label class="btn" for="compressFileInput" data-mi18n-ko="파일 선택">Choose files</label>
+                    <label class="btn" for="compressFileInput" data-mi18n-ko="파일 선택" data-mi18n-ja="ファイルを選択" data-mi18n-zh-cn="选择文件" data-mi18n-es="Elegir archivos" data-mi18n-pt="Escolher arquivos" data-mi18n-fr="Choisir des fichiers" data-mi18n-id="Pilih file" data-mi18n-hi="फ़ाइलें चुनें">Choose files</label>
                     <input type="file" id="compressFileInput" accept="video/*" multiple hidden>
                 </div>
 
                 <div class="summary-stats">
                     <div>
-                        <div class="stat-label" data-mi18n-ko="프리셋">Preset</div>
+                        <div class="stat-label" data-mi18n-ko="프리셋" data-mi18n-ja="プリセット" data-mi18n-zh-cn="预设" data-mi18n-es="Preajuste" data-mi18n-pt="Predefinição" data-mi18n-fr="Préréglage" data-mi18n-id="Prasetel" data-mi18n-hi="प्रीसेट">Preset</div>
                         <div id="statCompressPreset" class="stat-value">1080p</div>
                     </div>
                     <div>
-                        <div class="stat-label" data-mi18n-ko="비디오 비트레이트">Video Bitrate</div>
+                        <div class="stat-label" data-mi18n-ko="비디오 비트레이트" data-mi18n-ja="ビデオビットレート" data-mi18n-zh-cn="视频比特率" data-mi18n-es="Tasa de bits de video" data-mi18n-pt="Taxa de bits de vídeo" data-mi18n-fr="Débit vidéo" data-mi18n-id="Bitrate video" data-mi18n-hi="वीडियो बिटरेट">Video Bitrate</div>
                         <div id="statCompressBitrate" class="stat-value">8000k</div>
                     </div>
                     <div>
-                        <div class="stat-label" data-mi18n-ko="현재 대기 파일">Queue Files</div>
+                        <div class="stat-label" data-mi18n-ko="현재 대기 파일" data-mi18n-ja="待機ファイル数" data-mi18n-zh-cn="队列文件" data-mi18n-es="Archivos en cola" data-mi18n-pt="Arquivos na fila" data-mi18n-fr="Fichiers en file d'attente" data-mi18n-id="File dalam antrean" data-mi18n-hi="कतार में फ़ाइलें">Queue Files</div>
                         <div id="statCompressQueue" class="stat-value">0</div>
                     </div>
                 </div>
@@ -260,14 +260,14 @@
 
         <!-- 2.2 오디오 추출기 화면 -->
         <section id="audio-drop" class="tab-content">
-            <h2 data-mi18n-ko="영상 오디오 추출기">Video Audio Drop</h2>
-            <p class="tab-desc" data-mi18n-ko="영상 파일에서 오디오 트랙만 안전하고 빠르게 추출합니다.">
+            <h2 data-mi18n-ko="영상 오디오 추출기" data-mi18n-ja="動画音声抽出" data-mi18n-zh-cn="视频音频提取" data-mi18n-es="Extractor de audio de video" data-mi18n-pt="Extrator de áudio de vídeo" data-mi18n-fr="Extracteur audio vidéo" data-mi18n-id="Ekstraktor audio video" data-mi18n-hi="वीडियो ऑडियो निष्कर्षण">Video Audio Drop</h2>
+            <p class="tab-desc" data-mi18n-ko="영상 파일에서 오디오 트랙만 안전하고 빠르게 추출합니다." data-mi18n-ja="動画ファイルから音声トラックを高速に抽出します。" data-mi18n-zh-cn="从视频文件中快速提取音轨。" data-mi18n-es="Extraiga pistas de audio de archivos de video al instante." data-mi18n-pt="Extraia faixas de áudio de arquivos de vídeo instantaneamente." data-mi18n-fr="Extrayez les pistes audio des fichiers vidéo instantanément." data-mi18n-id="Ekstrak trek audio dari file video secara instan." data-mi18n-hi="वीडियो फ़ाइलों से तुरंत ऑडियो ट्रैक निकालें।">
                 Extract audio stream from video files instantly.
             </p>
 
             <div class="card card-panel">
                 <div class="control-group">
-                    <label class="control-label" data-mi18n-ko="추출 포맷 선택">Output Format</label>
+                    <label class="control-label" data-mi18n-ko="추출 포맷 선택" data-mi18n-ja="出力形式を選択" data-mi18n-zh-cn="选择输出格式" data-mi18n-es="Seleccionar formato de salida" data-mi18n-pt="Selecionar formato de saída" data-mi18n-fr="Sélectionner le format de sortie" data-mi18n-id="Pilih format output" data-mi18n-hi="आउटपुट प्रारूप चुनें">Output Format</label>
                     <div class="format-presets" id="audioFormats">
                         <button class="preset-btn active" data-format="auto">Auto (AAC/Copy)</button>
                         <button class="preset-btn" data-format="mp3">MP3</button>
@@ -277,21 +277,21 @@
                 </div>
 
                 <div class="dropzone" id="audioDropzone">
-                    <h3 data-mi18n-ko="여기에 영상 파일을 드롭하세요">Drop video files here</h3>
-                    <p data-mi18n-ko="여러 영상 파일을 드롭하여 한 번에 오디오를 추출할 수 있습니다.">
+                    <h3 data-mi18n-ko="여기에 영상 파일을 드롭하세요" data-mi18n-ja="動画ファイルをここにドロップ" data-mi18n-zh-cn="将视频文件拖放到此处" data-mi18n-es="Arrastre archivos de video aquí" data-mi18n-pt="Arraste arquivos de vídeo aqui" data-mi18n-fr="Déposez les fichiers vidéo ici" data-mi18n-id="Jatuhkan file video di sini" data-mi18n-hi="वीडियो फ़ाइलें यहाँ छोड़ें">Drop video files here</h3>
+                    <p data-mi18n-ko="여러 영상 파일을 드롭하여 한 번에 오디오를 추출할 수 있습니다." data-mi18n-ja="複数の動画から一度に音声を抽出できます。" data-mi18n-zh-cn="可一次提取多个视频的音频。" data-mi18n-es="Extraiga audio de múltiples videos a la vez." data-mi18n-pt="Extraia áudio de vários vídeos de uma vez." data-mi18n-fr="Extrayez l'audio de plusieurs vidéos à la fois." data-mi18n-id="Ekstrak audio dari beberapa video sekaligus." data-mi18n-hi="एक बार में कई वीडियो से ऑडियो निकालें।">
                         Extract audio from multiple videos at once.
                     </p>
-                    <label class="btn" for="audioFileInput" data-mi18n-ko="파일 선택">Choose files</label>
+                    <label class="btn" for="audioFileInput" data-mi18n-ko="파일 선택" data-mi18n-ja="ファイルを選択" data-mi18n-zh-cn="选择文件" data-mi18n-es="Elegir archivos" data-mi18n-pt="Escolher arquivos" data-mi18n-fr="Choisir des fichiers" data-mi18n-id="Pilih file" data-mi18n-hi="फ़ाइलें चुनें">Choose files</label>
                     <input type="file" id="audioFileInput" accept="video/*" multiple hidden>
                 </div>
 
                 <div class="summary-stats">
                     <div>
-                        <div class="stat-label" data-mi18n-ko="출력 포맷">Output Format</div>
+                        <div class="stat-label" data-mi18n-ko="출력 포맷" data-mi18n-ja="出力形式" data-mi18n-zh-cn="输出格式" data-mi18n-es="Formato de salida" data-mi18n-pt="Formato de saída" data-mi18n-fr="Format de sortie" data-mi18n-id="Format output" data-mi18n-hi="आउटपुट प्रारूप">Output Format</div>
                         <div id="statAudioFormat" class="stat-value">AUTO</div>
                     </div>
                     <div>
-                        <div class="stat-label" data-mi18n-ko="현재 대기 파일">Queue Files</div>
+                        <div class="stat-label" data-mi18n-ko="현재 대기 파일" data-mi18n-ja="待機ファイル数" data-mi18n-zh-cn="队列文件" data-mi18n-es="Archivos en cola" data-mi18n-pt="Arquivos na fila" data-mi18n-fr="Fichiers en file d'attente" data-mi18n-id="File dalam antrean" data-mi18n-hi="कतार में फ़ाइलें">Queue Files</div>
                         <div id="statAudioQueue" class="stat-value">0</div>
                     </div>
                 </div>
@@ -300,15 +300,15 @@
 
         <!-- 2.3 장면 캡처 화면 -->
         <section id="frame-capture" class="tab-content">
-            <h2 data-mi18n-ko="비디오 장면 캡처">Video Frame Capture</h2>
-            <p class="tab-desc" data-mi18n-ko="비디오 프레임을 정밀 이동해 원본 화질 그대로 캡처하거나, 장면 전환 필터로 이미지를 자동 추출합니다.">
+            <h2 data-mi18n-ko="비디오 장면 캡처" data-mi18n-ja="ビデオフレームキャプチャ" data-mi18n-zh-cn="视频帧捕获" data-mi18n-es="Captura de fotogramas de video" data-mi18n-pt="Captura de quadros de vídeo" data-mi18n-fr="Capture d'images vidéo" data-mi18n-id="Tangkapan bingkai video" data-mi18n-hi="वीडियो फ्रेम कैप्चर">Video Frame Capture</h2>
+            <p class="tab-desc" data-mi18n-ko="비디오 프레임을 정밀 이동해 원본 화질 그대로 캡처하거나, 장면 전환 필터로 이미지를 자동 추출합니다." data-mi18n-ja="高画質でフレームを抽出するか、シーン遷移を自動検出します。" data-mi18n-zh-cn="提取高质量帧或自动检测场景变化。" data-mi18n-es="Extraiga fotogramas de alta calidad o detecte cambios de escena automáticamente." data-mi18n-pt="Extraia quadros de alta qualidade ou detecte mudanças de cena automaticamente." data-mi18n-fr="Extrayez des images de haute qualité ou détectez automatiquement les changements de scène." data-mi18n-id="Ekstrak bingkai berkualitas tinggi atau deteksi perubahan adegan secara otomatis." data-mi18n-hi="उच्च गुणवत्ता वाले फ्रेम निकालें या स्वचालित रूप से दृश्य परिवर्तन का पता लगाएं।">
                 Extract high-quality frames or detect scene changes.
             </p>
 
             <div class="card card-panel">
                 <div class="dropzone" id="captureDropzone">
-                    <h3 data-mi18n-ko="여기에 영상 파일을 드롭하세요">Drop a video file here</h3>
-                    <label class="btn" for="captureFileInput" data-mi18n-ko="파일 선택">Choose file</label>
+                    <h3 data-mi18n-ko="여기에 영상 파일을 드롭하세요" data-mi18n-ja="動画ファイルをここにドロップ" data-mi18n-zh-cn="将视频文件拖放到此处" data-mi18n-es="Arrastre archivos de video aquí" data-mi18n-pt="Arraste arquivos de vídeo aqui" data-mi18n-fr="Déposez les fichiers vidéo ici" data-mi18n-id="Jatuhkan file video di sini" data-mi18n-hi="वीडियो फ़ाइलें यहाँ छोड़ें">Drop a video file here</h3>
+                    <label class="btn" for="captureFileInput" data-mi18n-ko="파일 선택" data-mi18n-ja="ファイルを選択" data-mi18n-zh-cn="选择文件" data-mi18n-es="Elegir archivos" data-mi18n-pt="Escolher arquivos" data-mi18n-fr="Choisir des fichiers" data-mi18n-id="Pilih file" data-mi18n-hi="फ़ाइलें चुनें">Choose file</label>
                     <input type="file" id="captureFileInput" accept="video/*" hidden>
                 </div>
 
@@ -325,7 +325,7 @@
 </div>
 
                     <div class="timecode-control-row">
-                        <label for="captureTimecode" data-mi18n-ko="현재 시각">Current Time</label>
+                        <label for="captureTimecode" data-mi18n-ko="현재 시각" data-mi18n-ja="現在時刻" data-mi18n-zh-cn="当前时间" data-mi18n-es="Tiempo actual" data-mi18n-pt="Tempo atual" data-mi18n-fr="Temps actuel" data-mi18n-id="Waktu saat ini" data-mi18n-hi="वर्तमान समय">Current Time</label>
                         <input type="text" id="captureTimecode" class="current-time-input" value="00:00:00:00" aria-label="Current capture time">
                     </div>
 
@@ -339,15 +339,15 @@
 
                     <!-- 캡처 모드 선택 버튼 -->
                     <div class="mode-tabs">
-                        <button id="captureModeSingle" class="btn btn-mode active" data-mode="single" data-mi18n-ko="한 장면 캡처">Single Frame</button>
-                        <button id="captureModeBatch" class="btn btn-mode" data-mode="batch" data-mi18n-ko="구간 반복 캡처">Batch Interval</button>
-                        <button id="captureModeScene" class="btn btn-mode" data-mode="scene" data-mi18n-ko="장면 전환 감지">Scene Detection</button>
+                        <button id="captureModeSingle" class="btn btn-mode active" data-mode="single" data-mi18n-ko="한 장면 캡처" data-mi18n-ja="単一フレーム" data-mi18n-zh-cn="单帧" data-mi18n-es="Fotograma único" data-mi18n-pt="Quadro único" data-mi18n-fr="Image unique" data-mi18n-id="Bingkai tunggal" data-mi18n-hi="एकल फ्रेम">Single Frame</button>
+                        <button id="captureModeBatch" class="btn btn-mode" data-mode="batch" data-mi18n-ko="구간 반복 캡처" data-mi18n-ja="バッチ間隔" data-mi18n-zh-cn="批量间隔" data-mi18n-es="Intervalo por lotes" data-mi18n-pt="Intervalo em lote" data-mi18n-fr="Intervalle par lots" data-mi18n-id="Interval batch" data-mi18n-hi="बैच अंतराल">Batch Interval</button>
+                        <button id="captureModeScene" class="btn btn-mode" data-mode="scene" data-mi18n-ko="장면 전환 감지" data-mi18n-ja="シーン検出" data-mi18n-zh-cn="场景检测" data-mi18n-es="Detección de escenas" data-mi18n-pt="Detecção de cenas" data-mi18n-fr="Détection de scènes" data-mi18n-id="Deteksi adegan" data-mi18n-hi="दृश्य पहचान">Scene Detection</button>
                     </div>
 
                     <!-- 공통 캡처 옵션 -->
                     <div class="capture-options-bar">
                         <div class="option-item">
-                            <label data-mi18n-ko="저장 이미지 포맷">Format</label>
+                            <label data-mi18n-ko="저장 이미지 포맷" data-mi18n-ja="保存形式" data-mi18n-zh-cn="保存格式" data-mi18n-es="Formato" data-mi18n-pt="Formato" data-mi18n-fr="Format" data-mi18n-id="Format" data-mi18n-hi="प्रारूप">Format</label>
                             <select id="captureFormatSelect">
                                 <option value="image/jpeg">JPEG</option>
                                 <option value="image/png">PNG</option>
@@ -357,7 +357,7 @@
                         <div class="option-item checkbox-item">
                             <label>
                                 <input type="checkbox" id="captureOverlayCheck">
-                                <span data-mi18n-ko="이미지에 시간 타임코드 기록">Timestamp Overlay</span>
+                                <span data-mi18n-ko="이미지에 시간 타임코드 기록" data-mi18n-ja="タイムスタンプ表示" data-mi18n-zh-cn="时间戳叠加" data-mi18n-es="Superposición de marca de tiempo" data-mi18n-pt="Sobreposição de carimbo de data/hora" data-mi18n-fr="Superposition d'horodatage" data-mi18n-id="Penyampelan stempel waktu" data-mi18n-hi="टाइमस्टैंप ओवरले">Timestamp Overlay</span>
                             </label>
                         </div>
                     </div>
@@ -366,43 +366,43 @@
                     <div class="mode-settings-card">
                         <!-- 1. 단일 프레임 모드 설정 -->
                         <div id="captureSettingSingle" class="mode-detail active">
-                            <button id="btnCaptureSingle" class="btn btn--primary" data-mi18n-ko="현재 프레임 저장">Save Current Frame</button>
+                            <button id="btnCaptureSingle" class="btn btn--primary" data-mi18n-ko="현재 프레임 저장" data-mi18n-ja="現在のフレームを保存" data-mi18n-zh-cn="保存当前帧" data-mi18n-es="Guardar fotograma actual" data-mi18n-pt="Salvar quadro atual" data-mi18n-fr="Enregistrer l'image actuelle" data-mi18n-id="Simpan bingkai saat ini" data-mi18n-hi="वर्तमान फ्रेम सहेजें">Save Current Frame</button>
                         </div>
 
                         <!-- 2. 구간 반복 모드 설정 -->
                         <div id="captureSettingBatch" class="mode-detail">
                             <div class="grid">
                                 <div>
-                                    <label data-mi18n-ko="시작 시간">Start Time</label>
+                                    <label data-mi18n-ko="시작 시간" data-mi18n-ja="開始時間" data-mi18n-zh-cn="开始时间" data-mi18n-es="Hora de inicio" data-mi18n-pt="Tempo de início" data-mi18n-fr="Heure de début" data-mi18n-id="Waktu mulai" data-mi18n-hi="प्रारंभ समय">Start Time</label>
                                     <input type="text" id="captureBatchStart" value="00:00:00:00">
-                                    <button class="btn btn--sm btn--secondary" id="btnCaptureSetStart" data-mi18n-ko="현재 시점으로">Set Current</button>
+                                    <button class="btn btn--sm btn--secondary" id="btnCaptureSetStart" data-mi18n-ko="현재 시점으로" data-mi18n-ja="現在時刻に設定" data-mi18n-zh-cn="设为当前" data-mi18n-es="Establecer actual" data-mi18n-pt="Definir atual" data-mi18n-fr="Définir actuel" data-mi18n-id="Atur saat ini" data-mi18n-hi="वर्तमान सेट करें">Set Current</button>
                                 </div>
                                 <div>
-                                    <label data-mi18n-ko="종료 시간">End Time</label>
+                                    <label data-mi18n-ko="종료 시간" data-mi18n-ja="終了時間" data-mi18n-zh-cn="结束时间" data-mi18n-es="Hora de finalización" data-mi18n-pt="Tempo de término" data-mi18n-fr="Heure de fin" data-mi18n-id="Waktu selesai" data-mi18n-hi="समाप्ति समय">End Time</label>
                                     <input type="text" id="captureBatchEnd" value="00:00:00:00">
-                                    <button class="btn btn--sm btn--secondary" id="btnCaptureSetEnd" data-mi18n-ko="현재 시점으로">Set Current</button>
+                                    <button class="btn btn--sm btn--secondary" id="btnCaptureSetEnd" data-mi18n-ko="현재 시점으로" data-mi18n-ja="現在時刻に設定" data-mi18n-zh-cn="设为当前" data-mi18n-es="Establecer actual" data-mi18n-pt="Definir atual" data-mi18n-fr="Définir actuel" data-mi18n-id="Atur saat ini" data-mi18n-hi="वर्तमान सेट करें">Set Current</button>
                                 </div>
                                 <div>
-                                    <label data-mi18n-ko="캡처 간격 (초)">Interval (Sec)</label>
+                                    <label data-mi18n-ko="캡처 간격 (초)" data-mi18n-ja="キャプチャ間隔 (秒)" data-mi18n-zh-cn="捕获间隔 (秒)" data-mi18n-es="Intervalo de captura (seg)" data-mi18n-pt="Intervalo de captura (seg)" data-mi18n-fr="Intervalle de capture (sec)" data-mi18n-id="Interval tangkapan (detik)" data-mi18n-hi="कैप्चर अंतराल (सेकंड)">Interval (Sec)</label>
                                     <input type="number" id="captureBatchInterval" value="1.0" min="0.1" step="0.1">
                                 </div>
                             </div>
-                            <button id="btnCaptureBatch" class="btn btn--primary" style="margin-top:1rem;" data-mi18n-ko="구간 일괄 캡처 시작">Start Batch Capture</button>
+                            <button id="btnCaptureBatch" class="btn btn--primary" style="margin-top:1rem;" data-mi18n-ko="구간 일괄 캡처 시작" data-mi18n-ja="バッチキャプチャ開始" data-mi18n-zh-cn="开始批量捕获" data-mi18n-es="Iniciar captura por lotes" data-mi18n-pt="Iniciar captura em lote" data-mi18n-fr="Démarrer la capture par lots" data-mi18n-id="Mulai tangkapan batch" data-mi18n-hi="बैच कैप्चर शुरू करें">Start Batch Capture</button>
                         </div>
 
                         <!-- 3. 장면 전환 모드 설정 -->
                         <div id="captureSettingScene" class="mode-detail">
                             <div>
-                                <label data-mi18n-ko="장면 전환 감지 민감도">Scene Change Sensitivity</label>
+                                <label data-mi18n-ko="장면 전환 감지 민감도" data-mi18n-ja="シーン変更感度" data-mi18n-zh-cn="场景变化灵敏度" data-mi18n-es="Sensibilidad de cambio de escena" data-mi18n-pt="Sensibilidade de mudança de cena" data-mi18n-fr="Sensibilité au changement de scène" data-mi18n-id="Sensitivitas perubahan adegan" data-mi18n-hi="दृश्य परिवर्तन संवेदनशीलता">Scene Change Sensitivity</label>
                                 <input type="range" id="captureSceneThreshold" min="0.1" max="1.0" step="0.05" value="0.4">
                                 <span id="captureSceneThresholdVal">0.4</span>
-                                <small style="display:block; opacity:0.75;" data-mi18n-ko="낮을수록 미세한 화면 변화에도 많은 장면이 추출됩니다. (추천: 0.4)">Lower values detect more scene changes.</small>
+                                <small style="display:block; opacity:0.75;" data-mi18n-ko="낮을수록 미세한 화면 변화에도 많은 장면이 추출됩니다. (추천: 0.4)" data-mi18n-ja="値が低いほど、より多くのシーン変化を検出します。（推奨: 0.4）" data-mi18n-zh-cn="值越低，检测到的场景变化越多。（推荐: 0.4）" data-mi18n-es="Los valores más bajos detectan más cambios de escena. (Recomendado: 0.4)" data-mi18n-pt="Valores mais baixos detectam mais mudanças de cena. (Recomendado: 0.4)" data-mi18n-fr="Des valeurs plus basses détectent plus de changements de scène. (Recommandé: 0.4)" data-mi18n-id="Nilai lebih rendah mendeteksi lebih banyak perubahan adegan. (Disarankan: 0.4)" data-mi18n-hi="कम मान अधिक दृश्य परिवर्तन का पता लगाते हैं। (अनुशंसित: 0.4)">Lower values detect more scene changes.</small>
                             </div>
-                            <button id="btnCaptureSceneDetect" class="btn btn--primary" style="margin-top:1rem;" data-mi18n-ko="장면 감지 분석 시작">Analyze & Detect Scenes</button>
+                            <button id="btnCaptureSceneDetect" class="btn btn--primary" style="margin-top:1rem;" data-mi18n-ko="장면 감지 분석 시작" data-mi18n-ja="シーン検出分析開始" data-mi18n-zh-cn="分析并检测场景" data-mi18n-es="Analizar y detectar escenas" data-mi18n-pt="Analisar e detectar cenas" data-mi18n-fr="Analyser et détecter les scènes" data-mi18n-id="Analisis dan deteksi adegan" data-mi18n-hi="विश्लेषण करें और दृश्य पहचानें">Analyze & Detect Scenes</button>
                             
                             <div id="sceneDetectionResult" style="display:none; margin-top:1rem;">
-                                <p><span data-mi18n-ko="감지된 장면 수:">Detected Scenes:</span> <strong id="sceneCountVal">0</strong></p>
-                                <button id="btnCaptureSceneExport" class="btn btn--success" data-mi18n-ko="감지된 장면 일괄 저장">Export Detected Scenes</button>
+                                <p><span data-mi18n-ko="감지된 장면 수:" data-mi18n-ja="検出されたシーン数:" data-mi18n-zh-cn="检测到的场景数:" data-mi18n-es="Escenas detectadas:" data-mi18n-pt="Cenas detectadas:" data-mi18n-fr="Scènes détectées:" data-mi18n-id="Adegan terdeteksi:" data-mi18n-hi="पहचाने गए दृश्य:">Detected Scenes:</span> <strong id="sceneCountVal">0</strong></p>
+                                <button id="btnCaptureSceneExport" class="btn btn--success" data-mi18n-ko="감지된 장면 일괄 저장" data-mi18n-ja="検出されたシーンを一括保存" data-mi18n-zh-cn="导出检测到的场景" data-mi18n-es="Exportar escenas detectadas" data-mi18n-pt="Exportar cenas detectadas" data-mi18n-fr="Exporter les scènes détectées" data-mi18n-id="Ekspor adegan terdeteksi" data-mi18n-hi="पहचाने गए दृश्य निर्यात करें">Export Detected Scenes</button>
                             </div>
                         </div>
                     </div>
@@ -412,14 +412,14 @@
 
         <!-- 2.4 확장자 변환기 화면 -->
         <section id="remuxer" class="tab-content">
-            <h2 data-mi18n-ko="비디오 확장자 변환기">Video Remuxer</h2>
-            <p class="tab-desc" data-mi18n-ko="인코딩(디코딩/재압축) 과정 없이, 영상 스트림을 그대로 새 파일 포맷에 고속 복사합니다.">
+            <h2 data-mi18n-ko="비디오 확장자 변환기" data-mi18n-ja="ビデオコンテナ変換" data-mi18n-zh-cn="视频格式转换" data-mi18n-es="Remuxer de video" data-mi18n-pt="Remuxer de vídeo" data-mi18n-fr="Remuxeur vidéo" data-mi18n-id="Remuxer video" data-mi18n-hi="वीडियो रीमक्सर">Video Remuxer</h2>
+            <p class="tab-desc" data-mi18n-ko="인코딩(디코딩/재압축) 과정 없이, 영상 스트림을 그대로 새 파일 포맷에 고속 복사합니다." data-mi18n-ja="再エンコードなしでコンテナ形式を高速変換します。" data-mi18n-zh-cn="无需重新编码，即时更改容器格式。" data-mi18n-es="Cambie formatos de contenedor instantáneamente sin recodificar." data-mi18n-pt="Altere formatos de contêiner instantaneamente sem recodificar." data-mi18n-fr="Changez de format de conteneur instantanément sans ré-encodage." data-mi18n-id="Ubah format kontainer secara instan tanpa encoding ulang." data-mi18n-hi="बिना पुनः एन्कोडिंग के तुरंत कंटेनर प्रारूप बदलें।">
                 Change container formats (MP4, MKV, MOV) instantly without re-encoding.
             </p>
 
             <div class="card card-panel">
                 <div class="control-group">
-                    <label class="control-label" data-mi18n-ko="목표 확장자">Target Container</label>
+                    <label class="control-label" data-mi18n-ko="목표 확장자" data-mi18n-ja="ターゲットコンテナ" data-mi18n-zh-cn="目标容器" data-mi18n-es="Contenedor objetivo" data-mi18n-pt="Contêiner alvo" data-mi18n-fr="Conteneur cible" data-mi18n-id="Kontainer target" data-mi18n-hi="लक्ष्य कंटेनर">Target Container</label>
                     <div class="format-presets" id="remuxContainers">
                         <button class="preset-btn active" data-format="mp4">MP4</button>
                         <button class="preset-btn" data-format="mkv">MKV</button>
@@ -428,11 +428,11 @@
                 </div>
 
                 <div class="dropzone" id="remuxDropzone">
-                    <h3 data-mi18n-ko="여기에 영상 파일을 드롭하세요">Drop video files here</h3>
-                    <p data-mi18n-ko="여러 비디오 파일을 한 번에 드롭하여 고속 복사할 수 있습니다.">
+                    <h3 data-mi18n-ko="여기에 영상 파일을 드롭하세요" data-mi18n-ja="動画ファイルをここにドロップ" data-mi18n-zh-cn="将视频文件拖放到此处" data-mi18n-es="Arrastre archivos de video aquí" data-mi18n-pt="Arraste arquivos de vídeo aqui" data-mi18n-fr="Déposez les fichiers vidéo ici" data-mi18n-id="Jatuhkan file video di sini" data-mi18n-hi="वीडियो फ़ाइलें यहाँ छोड़ें">Drop video files here</h3>
+                    <p data-mi18n-ko="여러 비디오 파일을 한 번에 드롭하여 고속 복사할 수 있습니다." data-mi18n-ja="複数の動画ファイルを一度にリマックスできます。" data-mi18n-zh-cn="可即时重新封装多个视频文件。" data-mi18n-es="Remuxee múltiples archivos de video al instante." data-mi18n-pt="Remuxe vários arquivos de vídeo instantaneamente." data-mi18n-fr="Remuxez plusieurs fichiers vidéo instantanément." data-mi18n-id="Remux beberapa file video secara instan." data-mi18n-hi="कई वीडियो फ़ाइलों को तुरंत रीमक्स करें।">
                         Remux multiple video files instantly.
                     </p>
-                    <label class="btn" for="remuxFileInput" data-mi18n-ko="파일 선택">Choose files</label>
+                    <label class="btn" for="remuxFileInput" data-mi18n-ko="파일 선택" data-mi18n-ja="ファイルを選択" data-mi18n-zh-cn="选择文件" data-mi18n-es="Elegir archivos" data-mi18n-pt="Escolher arquivos" data-mi18n-fr="Choisir des fichiers" data-mi18n-id="Pilih file" data-mi18n-hi="फ़ाइलें चुनें">Choose files</label>
                     <input type="file" id="remuxFileInput" accept="video/*" multiple hidden>
                 </div>
             </div>
@@ -440,15 +440,15 @@
 
         <!-- 2.5 비디오 분할기 화면 -->
         <section id="splitter" class="tab-content">
-            <h2 data-mi18n-ko="비디오 분할 도구">Video Splitter</h2>
-            <p class="tab-desc" data-mi18n-ko="인코딩 손실 없이, 원하는 구간의 시작점과 종료점을 선택해 매우 빠르게 비디오를 자릅니다.">
+            <h2 data-mi18n-ko="비디오 분할 도구" data-mi18n-ja="動画分割ツール" data-mi18n-zh-cn="视频分割工具" data-mi18n-es="Divisor de video" data-mi18n-pt="Divisor de vídeo" data-mi18n-fr="Coupe-vidéo" data-mi18n-id="Pemotong video" data-mi18n-hi="वीडियो विभाजक">Video Splitter</h2>
+            <p class="tab-desc" data-mi18n-ko="인코딩 손실 없이, 원하는 구간의 시작점과 종료점을 선택해 매우 빠르게 비디오를 자릅니다." data-mi18n-ja="再エンコードなしで動画の一部を高速に切り出します。" data-mi18n-zh-cn="无需重新编码即可快速剪辑视频片段。" data-mi18n-es="Recorte segmentos de video al instante sin recodificar." data-mi18n-pt="Corte segmentos de vídeo instantaneamente sem recodificar." data-mi18n-fr="Coupez des segments vidéo instantanément sans ré-encodage." data-mi18n-id="Potong segmen video secara instan tanpa encoding ulang." data-mi18n-hi="बिना पुनः एन्कोडिंग के तुरंत वीडियो खंड काटें।">
                 Trim and save video segments instantly without re-encoding.
             </p>
 
             <div class="card card-panel">
                 <div class="dropzone" id="splitDropzone">
-                    <h3 data-mi18n-ko="여기에 영상 파일을 드롭하세요">Drop a video file here</h3>
-                    <label class="btn" for="splitFileInput" data-mi18n-ko="파일 선택">Choose file</label>
+                    <h3 data-mi18n-ko="여기에 영상 파일을 드롭하세요" data-mi18n-ja="動画ファイルをここにドロップ" data-mi18n-zh-cn="将视频文件拖放到此处" data-mi18n-es="Arrastre archivos de video aquí" data-mi18n-pt="Arraste arquivos de vídeo aqui" data-mi18n-fr="Déposez les fichiers vidéo ici" data-mi18n-id="Jatuhkan file video di sini" data-mi18n-hi="वीडियो फ़ाइलें यहाँ छोड़ें">Drop a video file here</h3>
+                    <label class="btn" for="splitFileInput" data-mi18n-ko="파일 선택" data-mi18n-ja="ファイルを選択" data-mi18n-zh-cn="选择文件" data-mi18n-es="Elegir archivos" data-mi18n-pt="Escolher arquivos" data-mi18n-fr="Choisir des fichiers" data-mi18n-id="Pilih file" data-mi18n-hi="फ़ाइलें चुनें">Choose file</label>
                     <input type="file" id="splitFileInput" accept="video/*" hidden>
                 </div>
 
@@ -465,7 +465,7 @@
 </div>
 
                     <div class="timecode-control-row">
-                        <label for="splitTimecode" data-mi18n-ko="현재 시각">Current Time</label>
+                        <label for="splitTimecode" data-mi18n-ko="현재 시각" data-mi18n-ja="現在時刻" data-mi18n-zh-cn="当前时间" data-mi18n-es="Tiempo actual" data-mi18n-pt="Tempo atual" data-mi18n-fr="Temps actuel" data-mi18n-id="Waktu saat ini" data-mi18n-hi="वर्तमान समय">Current Time</label>
                         <input type="text" id="splitTimecode" class="current-time-input" value="00:00:00:00" aria-label="Current split time">
                     </div>
 
@@ -479,57 +479,57 @@
 
                     <div class="grid">
                         <div>
-                            <label for="splitStartInput" data-mi18n-ko="분할 시작 시간">Start Time</label>
+                            <label for="splitStartInput" data-mi18n-ko="분할 시작 시간" data-mi18n-ja="分割開始時間" data-mi18n-zh-cn="分割开始时间" data-mi18n-es="Hora de inicio de división" data-mi18n-pt="Tempo de início da divisão" data-mi18n-fr="Heure de début de coupe" data-mi18n-id="Waktu mulai pemotongan" data-mi18n-hi="विभाजन प्रारंभ समय">Start Time</label>
                             <input type="text" id="splitStartInput" value="00:00:00:00">
-                            <button class="btn btn--secondary" id="btnSplitSetStart" data-mi18n-ko="현재 시점으로 설정">Set Start Time</button>
-                            <button class="btn btn--secondary" id="btnSplitGoStart" data-mi18n-ko="시작점으로 이동">Go Start</button>
+                            <button class="btn btn--secondary" id="btnSplitSetStart" data-mi18n-ko="현재 시점으로 설정" data-mi18n-ja="開始時間に設定" data-mi18n-zh-cn="设为开始时间" data-mi18n-es="Establecer hora de inicio" data-mi18n-pt="Definir hora de início" data-mi18n-fr="Définir l'heure de début" data-mi18n-id="Atur waktu mulai" data-mi18n-hi="प्रारंभ समय सेट करें">Set Start Time</button>
+                            <button class="btn btn--secondary" id="btnSplitGoStart" data-mi18n-ko="시작점으로 이동" data-mi18n-ja="開始位置へ移動" data-mi18n-zh-cn="转到起点" data-mi18n-es="Ir al inicio" data-mi18n-pt="Ir ao início" data-mi18n-fr="Aller au début" data-mi18n-id="Pergi ke awal" data-mi18n-hi="प्रारंभ पर जाएँ">Go Start</button>
                         </div>
                         <div>
-                            <label for="splitEndInput" data-mi18n-ko="분할 종료 시간">End Time</label>
+                            <label for="splitEndInput" data-mi18n-ko="분할 종료 시간" data-mi18n-ja="分割終了時間" data-mi18n-zh-cn="分割结束时间" data-mi18n-es="Hora de finalización de división" data-mi18n-pt="Tempo de término da divisão" data-mi18n-fr="Heure de fin de coupe" data-mi18n-id="Waktu selesai pemotongan" data-mi18n-hi="विभाजन समाप्ति समय">End Time</label>
                             <input type="text" id="splitEndInput" value="00:00:00:00">
-                            <button class="btn btn--secondary" id="btnSplitSetEnd" data-mi18n-ko="현재 시점으로 설정">Set End Time</button>
-                            <button class="btn btn--secondary" id="btnSplitGoEnd" data-mi18n-ko="종료점으로 이동">Go End</button>
+                            <button class="btn btn--secondary" id="btnSplitSetEnd" data-mi18n-ko="현재 시점으로 설정" data-mi18n-ja="終了時間に設定" data-mi18n-zh-cn="设为结束时间" data-mi18n-es="Establecer hora de finalización" data-mi18n-pt="Definir hora de término" data-mi18n-fr="Définir l'heure de fin" data-mi18n-id="Atur waktu selesai" data-mi18n-hi="समाप्ति समय सेट करें">Set End Time</button>
+                            <button class="btn btn--secondary" id="btnSplitGoEnd" data-mi18n-ko="종료점으로 이동" data-mi18n-ja="終了位置へ移動" data-mi18n-zh-cn="转到终点" data-mi18n-es="Ir al final" data-mi18n-pt="Ir ao fim" data-mi18n-fr="Aller à la fin" data-mi18n-id="Pergi ke akhir" data-mi18n-hi="अंत पर जाएँ">Go End</button>
                         </div>
                     </div>
 
-                    <button id="btnSplitExport" class="btn btn--primary" style="margin-top:1.5rem;" data-mi18n-ko="구간 자르기 내보내기">Export Segment</button>
+                    <button id="btnSplitExport" class="btn btn--primary" style="margin-top:1.5rem;" data-mi18n-ko="구간 자르기 내보내기" data-mi18n-ja="切り出しをエクスポート" data-mi18n-zh-cn="导出片段" data-mi18n-es="Exportar segmento" data-mi18n-pt="Exportar segmento" data-mi18n-fr="Exporter le segment" data-mi18n-id="Ekspor segmen" data-mi18n-hi="खंड निर्यात करें">Export Segment</button>
                 </div>
             </div>
         </section>
 
         <!-- 2.6 환경 설정 화면 -->
         <section id="settings" class="tab-content">
-            <h2 data-mi18n-ko="환경 설정">Application Settings</h2>
-            <p class="tab-desc" data-mi18n-ko="앱 동작 환경 및 저장 위치를 관리합니다.">
+            <h2 data-mi18n-ko="환경 설정" data-mi18n-ja="アプリ設定" data-mi18n-zh-cn="应用设置" data-mi18n-es="Configuración de la aplicación" data-mi18n-pt="Configurações do aplicativo" data-mi18n-fr="Paramètres de l'application" data-mi18n-id="Pengaturan aplikasi" data-mi18n-hi="एप्लिकेशन सेटिंग्स">Application Settings</h2>
+            <p class="tab-desc" data-mi18n-ko="앱 동작 환경 및 저장 위치를 관리합니다." data-mi18n-ja="設定と出力保存先を管理します。" data-mi18n-zh-cn="管理配置和输出存储。" data-mi18n-es="Administre configuraciones y almacenamiento de salida." data-mi18n-pt="Gerencie configurações e armazenamento de saída." data-mi18n-fr="Gérez les configurations et le stockage de sortie." data-mi18n-id="Kelola konfigurasi dan penyimpanan output." data-mi18n-hi="कॉन्फ़िगरेशन और आउटपुट स्टोरेज प्रबंधित करें।">
                 Manage configurations and output storage.
             </p>
 
             <div class="card card-panel config-panel">
                 <div class="control-group">
-                    <label class="control-label" data-mi18n-ko="저장 폴더 위치 정책">Save Location Policy</label>
+                    <label class="control-label" data-mi18n-ko="저장 폴더 위치 정책" data-mi18n-ja="保存先フォルダポリシー" data-mi18n-zh-cn="保存位置策略" data-mi18n-es="Política de ubicación de guardado" data-mi18n-pt="Política de local de salvamento" data-mi18n-fr="Politique de dossier de sauvegarde" data-mi18n-id="Kebijakan lokasi penyimpanan" data-mi18n-hi="सहेजें स्थान नीति">Save Location Policy</label>
                     <div class="policy-options">
                         <label>
                             <input type="radio" name="savePolicy" value="input" checked>
-                            <span data-mi18n-ko="원본 파일과 동일한 경로 (기본값)">Save in the same folder as the input file (Default)</span>
+                            <span data-mi18n-ko="원본 파일과 동일한 경로 (기본값)" data-mi18n-ja="入力ファイルと同じフォルダに保存（デフォルト）" data-mi18n-zh-cn="保存在输入文件同一文件夹（默认）" data-mi18n-es="Guardar en la misma carpeta que el archivo de entrada (Predeterminado)" data-mi18n-pt="Salvar na mesma pasta do arquivo de entrada (Padrão)" data-mi18n-fr="Enregistrer dans le même dossier que le fichier d'entrée (Par défaut)" data-mi18n-id="Simpan di folder yang sama dengan file input (Default)" data-mi18n-hi="इनपुट फ़ाइल के समान फ़ोल्डर में सहेजें (डिफ़ॉल्ट)">Save in the same folder as the input file (Default)</span>
                         </label>
                         <label>
                             <input type="radio" name="savePolicy" value="custom">
-                            <span data-mi18n-ko="사용자 정의 지정 폴더">Save to a custom directory</span>
+                            <span data-mi18n-ko="사용자 정의 지정 폴더" data-mi18n-ja="カスタムディレクトリに保存" data-mi18n-zh-cn="保存到自定义目录" data-mi18n-es="Guardar en un directorio personalizado" data-mi18n-pt="Salvar em um diretório personalizado" data-mi18n-fr="Enregistrer dans un répertoire personnalisé" data-mi18n-id="Simpan ke direktori kustom" data-mi18n-hi="कस्टम निर्देशिका में सहेजें">Save to a custom directory</span>
                         </label>
                     </div>
 
                     <!-- 커스텀 경로 설정 영역 -->
                     <div id="customPathWrapper" style="display:none; margin-top: 1rem; gap: 8px;">
                         <input type="text" id="customPathInput" readonly placeholder="No directory selected" style="flex:1; margin:0;">
-                        <button class="btn" id="btnSelectCustomPath" style="margin:0;" data-mi18n-ko="폴더 선택">Browse</button>
+                        <button class="btn" id="btnSelectCustomPath" style="margin:0;" data-mi18n-ko="폴더 선택" data-mi18n-ja="フォルダを選択" data-mi18n-zh-cn="浏览" data-mi18n-es="Examinar" data-mi18n-pt="Procurar" data-mi18n-fr="Parcourir" data-mi18n-id="Jelajahi" data-mi18n-hi="ब्राउज़ करें">Browse</button>
                     </div>
                 </div>
 
                 <div class="control-group">
-                    <label class="control-label" data-mi18n-ko="하드웨어 가속 설정">Hardware Acceleration (GPU)</label>
+                    <label class="control-label" data-mi18n-ko="하드웨어 가속 설정" data-mi18n-ja="ハードウェアアクセラレーション設定" data-mi18n-zh-cn="硬件加速设置" data-mi18n-es="Configuración de aceleración por hardware" data-mi18n-pt="Configuração de aceleração de hardware" data-mi18n-fr="Paramètres d'accélération matérielle" data-mi18n-id="Pengaturan akselerasi perangkat keras" data-mi18n-hi="हार्डवेयर त्वरण सेटिंग्स">Hardware Acceleration (GPU)</label>
                     <label class="toggle-switch">
                         <input type="checkbox" id="hwAccelCheck">
-                        <span data-mi18n-ko="인코딩 시 GPU 하드웨어 가속 사용">Use GPU hardware acceleration for encoding when available</span>
+                        <span data-mi18n-ko="인코딩 시 GPU 하드웨어 가속 사용" data-mi18n-ja="利用可能な場合、GPUハードウェアアクセラレーションを使用" data-mi18n-zh-cn="可用时使用GPU硬件加速编码" data-mi18n-es="Usar aceleración por hardware de GPU cuando esté disponible" data-mi18n-pt="Usar aceleração de hardware de GPU quando disponível" data-mi18n-fr="Utiliser l'accélération matérielle GPU lorsqu'elle est disponible" data-mi18n-id="Gunakan akselerasi perangkat keras GPU jika tersedia" data-mi18n-hi="उपलब्ध होने पर GPU हार्डवेयर त्वरण का उपयोग करें">Use GPU hardware acceleration for encoding when available</span>
                     </label>
                     <div id="hwStatusText" style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-muted);">
                         Checking hardware capabilities...
@@ -537,7 +537,7 @@
                 </div>
 
                 <div class="control-group">
-                    <label class="control-label" data-mi18n-ko="언어 (Language)">Language</label>
+                    <label class="control-label" data-mi18n-ko="언어 (Language)" data-mi18n-ja="言語" data-mi18n-zh-cn="语言" data-mi18n-es="Idioma" data-mi18n-pt="Idioma" data-mi18n-fr="Langue" data-mi18n-id="Bahasa" data-mi18n-hi="भाषा">Language</label>
                     <select id="langSelect" style="width: auto; min-width: 150px;">
                         <option value="ko">한국어</option>
                         <option value="en">English</option>
@@ -570,8 +570,8 @@
 <div id="globalDropOverlay" class="global-drop-overlay">
     <div class="global-drop-overlay__content">
         <div class="global-drop-overlay__icon">📥</div>
-        <h2 data-mi18n-ko="파일을 놓으면 현재 도구로 처리됩니다">Drop files to process</h2>
-        <p data-mi18n-ko="드래그한 파일이 현재 활성화된 도구로 전달됩니다">Files will be handled by the current tool</p>
+        <h2 data-mi18n-ko="파일을 놓으면 현재 도구로 처리됩니다" data-mi18n-ja="ファイルをドロップすると現在のツールで処理されます" data-mi18n-zh-cn="放下文件后由当前工具处理" data-mi18n-es="Suelte los archivos para que sean procesados por la herramienta actual" data-mi18n-pt="Solte os arquivos para serem processados pela ferramenta atual" data-mi18n-fr="Déposez les fichiers pour qu'ils soient traités par l'outil actuel" data-mi18n-id="Jatuhkan file untuk diproses oleh alat saat ini" data-mi18n-hi="फ़ाइलें छोड़ें, वर्तमान उपकरण द्वारा संसाधित की जाएँगी">Drop files to process</h2>
+        <p data-mi18n-ko="드래그한 파일이 현재 활성화된 도구로 전달됩니다" data-mi18n-ja="ドラッグしたファイルは現在アクティブなツールに渡されます" data-mi18n-zh-cn="拖放的文件将传递给当前工具" data-mi18n-es="Los archivos arrastrados se enviarán a la herramienta activa actual" data-mi18n-pt="Os arquivos arrastrados serão enviados para a ferramenta ativa atual" data-mi18n-fr="Les fichiers glissés seront transmis à l'outil actif actuel" data-mi18n-id="File yang diseret akan dikirim ke alat yang aktif saat ini" data-mi18n-hi="खींची गई फ़ाइलें वर्तमान सक्रिय उपकरण को भेज दी जाएंगी">Files will be handled by the current tool</p>
     </div>
 </div>
 

@@ -294,7 +294,7 @@ function t(en, ko) {
 
     // 2. 템플릿 번역 조회
     if (typeof templateTranslations !== 'undefined' && templateTranslations[en]) {
-        return translateTemplate(en, ...[].slice.call(arguments, 2));
+        return translateTemplate(en, ...[].slice.call(arguments, 1));
     }
 
     // 3. 레거시: positional 인자 방식 (en, ko)

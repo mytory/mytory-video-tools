@@ -147,19 +147,19 @@
                 <div class="control-group">
                     <label class="control-label" data-mi18n-ko="프리셋">Preset</label>
                     <div class="format-presets preset-grid--wide" id="compressPresets">
-                        <button class="preset-btn active" data-preset="1080p">용량 최적화 1080p</button>
-                        <button class="preset-btn" data-preset="720p">용량 최적화 720p</button>
-                        <button class="preset-btn" data-preset="1440p">용량 최적화 1440p</button>
-                        <button class="preset-btn" data-preset="2160p">용량 최적화 4K</button>
+                        <button class="preset-btn active" data-preset="1080p" data-mi18n-en="Size Optimized 1080p">용량 최적화 1080p</button>
+                        <button class="preset-btn" data-preset="720p" data-mi18n-en="Size Optimized 720p">용량 최적화 720p</button>
+                        <button class="preset-btn" data-preset="1440p" data-mi18n-en="Size Optimized 1440p">용량 최적화 1440p</button>
+                        <button class="preset-btn" data-preset="2160p" data-mi18n-en="Size Optimized 4K">용량 최적화 4K</button>
                         <button class="preset-btn" data-preset="custom" data-mi18n-ko="사용자 설정">Custom</button>
                     </div>
                 </div>
 
                 <div class="settings-grid">
                     <div>
-                        <label><span data-mi18n-ko="비디오 코덱">Video Codec</span> <span class="help-tip" tabindex="0" aria-label="비디오 코덱 설명">?<span
-                                    class="help-tip__bubble">영상을 어떤 방식으로 압축할지 정합니다. H.264는 거의 모든 기기에서 안전합니다. H.265는 같은 화질에서 더 작지만 오래된 기기 호환성이 낮을
-                                    수 있습니다. AV1은 가장 작게 만들 수 있지만 변환이 느릴 수 있습니다. 예: 가족/업무 공유는 H.264, 용량 절약은 H.265.</span></span></label>
+                        <label><span data-mi18n-ko="비디오 코덱">Video Codec</span> <span class="help-tip" tabindex="0" aria-label="비디오 코덱 설명"
+                                    data-mi18n-en-attr-aria-label="Video Codec Help">?<span
+                                    class="help-tip__bubble"><span data-mi18n-block="ko">영상을 어떤 방식으로 압축할지 정합니다. H.264는 거의 모든 기기에서 안전합니다. H.265는 같은 화질에서 더 작지만 오래된 기기 호환성이 낮을 수 있습니다. AV1은 가장 작게 만들 수 있지만 변환이 느릴 수 있습니다. 예: 가족/업무 공유는 H.264, 용량 절약은 H.265.</span><span data-mi18n-block="en">Determines how the video is compressed. H.264 is safe on almost every device. H.265 gives smaller files at similar quality but may have lower compatibility with older devices. AV1 can make the smallest files but encoding may be slower. Example: Use H.264 for family/work sharing, H.265 for space savings.</span></span></span></label>
                         <select id="compressCodecSelect">
                             <option value="h264">H.264 / AVC</option>
                             <option value="h265">H.265 / HEVC</option>
@@ -168,8 +168,8 @@
                     </div>
                     <div>
                         <label><span data-mi18n-ko="목표 해상도">Target Resolution</span> <span class="help-tip" tabindex="0"
-                                aria-label="목표 해상도 설명">?<span class="help-tip__bubble">영상의 가로세로 크기입니다. 원본보다 낮추면 파일이 확 줄지만 선명도도 줄어듭니다.
-                                    예: 용량이 작은 게 중요하면 720p, 스마트폰 공유, 일반 보관/유튜브는 1080p, 큰 모니터 감상은 1440p나 4K.</span></span></label>
+                                aria-label="목표 해상도 설명"
+                                data-mi18n-en-attr-aria-label="Target Resolution Help">?<span class="help-tip__bubble"><span data-mi18n-block="ko">영상의 가로세로 크기입니다. 원본보다 낮추면 파일이 확 줄지만 선명도도 줄어듭니다. 예: 용량이 작은 게 중요하면 720p, 스마트폰 공유, 일반 보관/유튜브는 1080p, 큰 모니터 감상은 1440p나 4K.</span><span data-mi18n-block="en">The width and height of the video. Lowering it from the original greatly reduces file size but also reduces sharpness. Example: Choose 720p if small file size matters, 1080p for smartphone sharing or general storage/YouTube, 1440p or 4K for large monitor viewing.</span></span></span></label>
                         <select id="compressResolutionSelect">
                             <option value="source" data-mi18n-ko="원본 유지">Keep source</option>
                             <option value="2160p">3840 x 2160</option>
@@ -181,32 +181,32 @@
                     </div>
                     <div>
                         <label><span data-mi18n-ko="비디오 비트레이트 (kbps)">Video Bitrate (kbps)</span> <span class="help-tip" tabindex="0"
-                                aria-label="비디오 비트레이트 설명">?<span class="help-tip__bubble">1초마다 영상에 쓰는 데이터 양입니다. 높을수록 깨끗하지만 파일이 커집니다. 예: 720p는
-                                    2500-5000, 1080p는 6000-9000, 4K는 18000-35000 정도부터 시작해 보세요.</span></span></label>
+                                aria-label="비디오 비트레이트 설명"
+                                data-mi18n-en-attr-aria-label="Video Bitrate Help">?<span class="help-tip__bubble"><span data-mi18n-block="ko">1초마다 영상에 쓰는 데이터 양입니다. 높을수록 깨끗하지만 파일이 커집니다. 예: 720p는 2500-5000, 1080p는 6000-9000, 4K는 18000-35000 정도부터 시작해 보세요.</span><span data-mi18n-block="en">The amount of data used per second of video. Higher values give cleaner video but larger files. Example: Start with 2500-5000 for 720p, 6000-9000 for 1080p, 18000-35000 for 4K.</span></span></span></label>
                         <input type="number" id="compressVideoBitrate" min="300" step="100" value="8000">
                     </div>
                     <div>
                         <label><span data-mi18n-ko="최대 비트레이트 (kbps)">Maxrate (kbps)</span> <span class="help-tip" tabindex="0"
-                                aria-label="최대 비트레이트 설명">?<span class="help-tip__bubble">복잡한 장면에서 순간적으로 올라갈 수 있는 최고 데이터 양입니다. 평균 비트레이트보다 조금 높게
-                                    두면 움직임 많은 장면이 덜 뭉개집니다. 예: 비디오 비트레이트가 8000이면 10000-12000.</span></span></label>
+                                aria-label="최대 비트레이트 설명"
+                                data-mi18n-en-attr-aria-label="Maxrate Help">?<span class="help-tip__bubble"><span data-mi18n-block="ko">복잡한 장면에서 순간적으로 올라갈 수 있는 최고 데이터 양입니다. 평균 비트레이트보다 조금 높게 두면 움직임 많은 장면이 덜 뭉개집니다. 예: 비디오 비트레이트가 8000이면 10000-12000.</span><span data-mi18n-block="en">The maximum data rate that can momentarily spike during complex scenes. Setting it slightly higher than the target bitrate helps prevent blockiness in high-motion scenes. Example: If video bitrate is 8000, set maxrate to 10000-12000.</span></span></span></label>
                         <input type="number" id="compressMaxrate" min="300" step="100" value="12000">
                     </div>
                     <div>
                         <label><span data-mi18n-ko="버퍼 크기 (kbps)">Buffer Size (kbps)</span> <span class="help-tip" tabindex="0"
-                                aria-label="버퍼 크기 설명">?<span class="help-tip__bubble">비트레이트가 장면에 따라 얼마나 부드럽게 오르내릴지 정하는 여유 공간입니다. 너무 낮으면 품질이 답답해질
-                                    수 있습니다. 보통 최대 비트레이트와 같거나 1.5-2배가 편합니다. 예: Maxrate 12000이면 16000-24000.</span></span></label>
+                                aria-label="버퍼 크기 설명"
+                                data-mi18n-en-attr-aria-label="Buffer Size Help">?<span class="help-tip__bubble"><span data-mi18n-block="ko">비트레이트가 장면에 따라 얼마나 부드럽게 오르내릴지 정하는 여유 공간입니다. 너무 낮으면 품질이 답답해질 수 있습니다. 보통 최대 비트레이트와 같거나 1.5-2배가 편합니다. 예: Maxrate 12000이면 16000-24000.</span><span data-mi18n-block="en">The allowance for how smoothly the bitrate can fluctuate across scenes. Too low may result in quality feeling constrained. Usually set to the same as maxrate or 1.5-2x higher. Example: If maxrate is 12000, set buffer size to 16000-24000.</span></span></span></label>
                         <input type="number" id="compressBufsize" min="600" step="100" value="16000">
                     </div>
                     <div>
                         <label><span data-mi18n-ko="오디오 비트레이트 (kbps)">Audio Bitrate (kbps)</span> <span class="help-tip" tabindex="0"
-                                aria-label="오디오 비트레이트 설명">?<span class="help-tip__bubble">소리에 쓰는 데이터 양입니다. 말소리 위주는 96-128이면 충분하고, 음악이 중요하면
-                                    160-256이 좋습니다. 예: 강의/회의 96 또는 128, 공연/뮤직비디오 192 이상.</span></span></label>
+                                aria-label="오디오 비트레이트 설명"
+                                data-mi18n-en-attr-aria-label="Audio Bitrate Help">?<span class="help-tip__bubble"><span data-mi18n-block="ko">소리에 쓰는 데이터 양입니다. 말소리 위주는 96-128이면 충분하고, 음악이 중요하면 160-256이 좋습니다. 예: 강의/회의 96 또는 128, 공연/뮤직비디오 192 이상.</span><span data-mi18n-block="en">The amount of data used for audio. 96-128 kbps is sufficient for speech, 160-256 kbps is better for music. Example: Use 96 or 128 for lectures/meetings, 192+ for concerts/music videos.</span></span></span></label>
                         <input type="number" id="compressAudioBitrate" min="64" step="16" value="128">
                     </div>
                     <div>
-                        <label><span data-mi18n-ko="프레임레이트">Frame Rate</span> <span class="help-tip" tabindex="0" aria-label="프레임레이트 설명">?<span
-                                    class="help-tip__bubble">1초에 보이는 화면 장수입니다. 원본 유지는 가장 자연스럽습니다. 30fps는 용량을 줄이기 좋고, 게임/스포츠처럼 움직임이 빠른 영상은 60fps가
-                                    부드럽습니다.</span></span></label>
+                        <label><span data-mi18n-ko="프레임레이트">Frame Rate</span> <span class="help-tip" tabindex="0" aria-label="프레임레이트 설명"
+                                    data-mi18n-en-attr-aria-label="Frame Rate Help">?<span
+                                    class="help-tip__bubble"><span data-mi18n-block="ko">1초에 보이는 화면 장수입니다. 원본 유지는 가장 자연스럽습니다. 30fps는 용량을 줄이기 좋고, 게임/스포츠처럼 움직임이 빠른 영상은 60fps가 부드럽습니다.</span><span data-mi18n-block="en">Number of frames displayed per second. Keeping source is most natural. 30 fps helps reduce file size, 60 fps is smoother for fast-motion content like games or sports.</span></span></span></label>
                         <select id="compressFpsSelect">
                             <option value="source" data-mi18n-ko="원본 유지">Keep source</option>
                             <option value="30">30 fps</option>
@@ -216,8 +216,8 @@
                     <label class="toggle-switch setting-toggle">
                         <input type="checkbox" id="compressFastStartCheck" checked>
                         <span><span data-mi18n-ko="웹 재생 최적화">Optimize for web playback</span> <span class="help-tip" tabindex="0"
-                                aria-label="웹 재생 최적화 설명">?<span class="help-tip__bubble">파일을 끝까지 내려받기 전에도 웹이나 메신저에서 재생이 빨리 시작되도록 정리합니다. 화질이나 용량은
-                                    거의 바꾸지 않습니다. 온라인 공유용이면 켜두는 편이 좋습니다.</span></span></span>
+                                aria-label="웹 재생 최적화 설명"
+                                data-mi18n-en-attr-aria-label="Web Playback Optimization Help">?<span class="help-tip__bubble"><span data-mi18n-block="ko">파일을 끝까지 내려받기 전에도 웹이나 메신저에서 재생이 빨리 시작되도록 정리합니다. 화질이나 용량은 거의 바꾸지 않습니다. 온라인 공유용이면 켜두는 편이 좋습니다.</span><span data-mi18n-block="en">Rearranges the file so playback starts faster on web browsers and messengers, even before the entire file is downloaded. Has minimal effect on quality or file size. Recommended to keep enabled for online sharing.</span></span></span></span>
                     </label>
                 </div>
 

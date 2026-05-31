@@ -291,6 +291,31 @@ function t(en, ko) {
     return isKo ? ko : en;
 }
 
+function updateHwStatusText() {
+    const encoders = state.config.hwEncoders;
+    if (!encoders) return;
+    
+    const availableList = [];
+    if (encoders.h264) availableList.push(`H.264 (${encoders.h264})`);
+    if (encoders.hevc) availableList.push(`H.265 (${encoders.hevc})`);
+    if (encoders.av1) availableList.push(`AV1 (${encoders.av1})`);
+    
+    if (availableList.length > 0) {
+        elements.hwStatusText.textContent = t(
+            `Supported GPUs: ${availableList.join(', ')}`,
+            `감지된 GPU 가속 코덱: ${availableList.join(', ')}`
+        );
+        elements.hwAccelCheck.checked = true;
+    } else {
+        elements.hwStatusText.textContent = t(
+            "No hardware acceleration detected. Fallback to CPU-based encoders.",
+            "하드웨어 가속을 지원하지 않습니다. CPU 소프트웨어 인코더로 작동합니다."
+        );
+        elements.hwAccelCheck.checked = false;
+        elements.hwAccelCheck.disabled = true;
+    }
+}
+
 // 1. 초기 로드 및 설정 연동
 async function initApp() {
     // 다국어 바인딩 및 선택값 셋팅
@@ -300,6 +325,11 @@ async function initApp() {
         }
         localStorage.setItem('mytory-video-lang', lang);
         elements.langSelect.value = lang;
+        
+        // 언어 변경 후 동적 UI 텍스트 업데이트
+        updateSpeedCodecHelp();
+        updateCompressSummary();
+        updateHwStatusText();
     }
 
     // 저장된 언어가 있으면 사용, 없으면 브라우저 언어 감지 후 저장
@@ -323,26 +353,7 @@ async function initApp() {
         elements.customPathInput.value = state.config.defaultOutputDir;
         
         // 하드웨어 가속 리포트
-        const encoders = state.config.hwEncoders;
-        const availableList = [];
-        if (encoders.h264) availableList.push(`H.264 (${encoders.h264})`);
-        if (encoders.hevc) availableList.push(`H.265 (${encoders.hevc})`);
-        if (encoders.av1) availableList.push(`AV1 (${encoders.av1})`);
-        
-        if (availableList.length > 0) {
-            elements.hwStatusText.textContent = t(
-                `Supported GPUs: ${availableList.join(', ')}`,
-                `감지된 GPU 가속 코덱: ${availableList.join(', ')}`
-            );
-            elements.hwAccelCheck.checked = true;
-        } else {
-            elements.hwStatusText.textContent = t(
-                "No hardware acceleration detected. Fallback to CPU-based encoders.",
-                "하드웨어 가속을 지원하지 않습니다. CPU 소프트웨어 인코더로 작동합니다."
-            );
-            elements.hwAccelCheck.checked = false;
-            elements.hwAccelCheck.disabled = true;
-        }
+        updateHwStatusText();
     } catch (err) {
         console.error('Failed to get app configurations:', err);
     }

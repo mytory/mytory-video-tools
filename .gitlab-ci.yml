@@ -82,7 +82,15 @@ release:
     description: |
       Release $CI_COMMIT_TAG
 
-      ### ⚠️ 보안 경고 관련 안내 (필독)
+      ### ⚠️ Security Warning (필독 / Please Read)
+
+      **English:**
+      This program is distributed by an individual developer and is not signed with a paid code signing certificate. The security warning you may see is not a defect. Please follow the instructions below to run the application.
+
+      *   **Windows:** Click **\[More info\]** on the blue warning screen → Click **\[Run anyway\]**
+      *   **macOS:** **Right-click (or Control+click)** the app file → Select **\[Open\]** → Click **\[Open\]** again
+
+      **한국어:**
       본 프로그램은 개인 개발자가 배포하는 오픈소스 소프트웨어로, 유료 개발자 인증서 서명이 되어 있지 않습니다. 실행 시 발생하는 보안 경고는 프로그램의 결함이 아니니 아래 방법으로 실행해 주세요.
 
       *   **Windows:** 파란색 경고창에서 **[추가 정보]** 클릭 -> **[실행]** 버튼 클릭

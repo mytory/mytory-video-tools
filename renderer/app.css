@@ -691,6 +691,11 @@ label[for="splitEndInput"] {
     background-color: var(--brand-alpha);
 }
 
+.status-item.pending {
+    border-color: rgba(250, 204, 21, 0.3);
+    background-color: rgba(250, 204, 21, 0.05);
+}
+
 .status-item.done {
     border-color: rgba(16, 185, 129, 0.3);
     background-color: rgba(16, 185, 129, 0.05);

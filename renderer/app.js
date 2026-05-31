@@ -482,45 +482,58 @@ async function processSpeedFiles(files) {
     if (list.length === 0) return;
     elements.statQueue.textContent = parseInt(elements.statQueue.textContent) + list.length;
     
-    for (const file of list) {
+    // 모든 파일을 pending 상태로 먼저 큐에 추가
+    const tasks = list.map(file => {
         const taskId = 'speed_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
-        const inputPath = file.path;
-        const name = file.name;
         const useHw = elements.hwAccelCheck.checked;
         const encoderMeta = resolveSpeedEncoderMeta(state.speedCodec, useHw);
-        
-        // 출력 경로 설정
-        const outputPath = getResolvedOutputPath(inputPath, `_speed_${state.speed.toFixed(2)}x`);
-        
-        // 대기열 아이템 추가
-        addQueueItem({
+        const outputPath = getResolvedOutputPath(file.path, `_speed_${state.speed.toFixed(2)}x`);
+        return {
             taskId,
+            file,
+            useHw,
+            encoderMeta,
+            outputPath
+        };
+    });
+
+    for (const task of tasks) {
+        addQueueItem({
+            taskId: task.taskId,
             type: 'Speed Changer',
-            name,
-            status: 'running',
+            name: task.file.name,
+            status: 'pending',
             percent: 0,
             speed: '0.0x',
-            engineLabel: encoderMeta.label,
-            engineName: encoderMeta.encoder
+            engineLabel: task.encoderMeta.label,
+            engineName: task.encoderMeta.encoder
         });
+    }
 
-        // 인코더 실행 파라미터 구성
+    // 순차적으로 하나씩 running으로 변경하며 처리
+    for (const task of tasks) {
+        const queueItem = state.queue.find(t => t.taskId === task.taskId);
+        if (queueItem) {
+            queueItem.status = 'running';
+            renderQueue();
+        }
+
         const result = await window.electronAPI.startSpeedChange({
-            taskId,
-            inputPath,
+            taskId: task.taskId,
+            inputPath: task.file.path,
             speed: state.speed,
             videoCodec: state.speedCodec,
-            useHw,
-            outputPath
+            useHw: task.useHw,
+            outputPath: task.outputPath
         });
 
         if (result.success) {
-            finishQueueItem(taskId, 'done');
+            finishQueueItem(task.taskId, 'done');
             elements.statDone.textContent = parseInt(elements.statDone.textContent) + 1;
-            showToast(t('Conversion Complete', '인코딩 완료'), `${name} -> ${state.speed.toFixed(2)}x, ${encoderMeta.label}`);
+            showToast(t('Conversion Complete', '인코딩 완료'), `${task.file.name} -> ${state.speed.toFixed(2)}x, ${task.encoderMeta.label}`);
         } else {
-            finishQueueItem(taskId, 'error', result.error);
-            showToast(t('Conversion Failed', '인코딩 실패'), `${name}: ${result.error}`, 'error');
+            finishQueueItem(task.taskId, 'error', result.error);
+            showToast(t('Conversion Failed', '인코딩 실패'), `${task.file.name}: ${result.error}`, 'error');
         }
         elements.statQueue.textContent = Math.max(0, parseInt(elements.statQueue.textContent) - 1);
     }
@@ -628,40 +641,57 @@ async function processCompressFiles(files) {
     if (list.length === 0) return;
     elements.statCompressQueue.textContent = parseInt(elements.statCompressQueue.textContent) + list.length;
 
-    for (const file of list) {
+    // 모든 파일을 pending 상태로 먼저 큐에 추가
+    const settings = getCompressSettings();
+    const tasks = list.map(file => {
         const taskId = 'compress_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
-        const inputPath = file.path;
-        const name = file.name;
-        const settings = getCompressSettings();
         const useHw = elements.hwAccelCheck.checked;
         const encoderMeta = resolveSpeedEncoderMeta(settings.videoCodec, useHw);
-        const outputPath = getResolvedOutputPath(inputPath, `_optimized_${settings.videoBitrate}k`, 'mp4');
-
-        addQueueItem({
+        const outputPath = getResolvedOutputPath(file.path, `_optimized_${settings.videoBitrate}k`, 'mp4');
+        return {
             taskId,
+            file,
+            useHw,
+            encoderMeta,
+            outputPath
+        };
+    });
+
+    for (const task of tasks) {
+        addQueueItem({
+            taskId: task.taskId,
             type: 'Size Optimizer',
-            name,
-            status: 'running',
+            name: task.file.name,
+            status: 'pending',
             percent: 0,
             speed: '0.0x',
-            engineLabel: encoderMeta.label,
-            engineName: encoderMeta.encoder
+            engineLabel: task.encoderMeta.label,
+            engineName: task.encoderMeta.encoder
         });
+    }
+
+    // 순차적으로 하나씩 running으로 변경하며 처리
+    for (const task of tasks) {
+        const queueItem = state.queue.find(t => t.taskId === task.taskId);
+        if (queueItem) {
+            queueItem.status = 'running';
+            renderQueue();
+        }
 
         const result = await window.electronAPI.startCompress({
-            taskId,
-            inputPath,
-            outputPath,
-            useHw,
+            taskId: task.taskId,
+            inputPath: task.file.path,
+            outputPath: task.outputPath,
+            useHw: task.useHw,
             ...settings
         });
 
         if (result.success) {
-            finishQueueItem(taskId, 'done');
-            showToast(t('Compression Complete', '용량 최적화 완료'), `${name} -> ${settings.videoBitrate}k MP4`);
+            finishQueueItem(task.taskId, 'done');
+            showToast(t('Compression Complete', '용량 최적화 완료'), `${task.file.name} -> ${settings.videoBitrate}k MP4`);
         } else {
-            finishQueueItem(taskId, 'error', result.error);
-            showToast(t('Compression Failed', '용량 최적화 실패'), `${name}: ${result.error}`, 'error');
+            finishQueueItem(task.taskId, 'error', result.error);
+            showToast(t('Compression Failed', '용량 최적화 실패'), `${task.file.name}: ${result.error}`, 'error');
         }
 
         elements.statCompressQueue.textContent = Math.max(0, parseInt(elements.statCompressQueue.textContent) - 1);
@@ -705,45 +735,51 @@ async function processAudioFiles(files) {
     if (list.length === 0) return;
     elements.statAudioQueue.textContent = parseInt(elements.statAudioQueue.textContent) + list.length;
 
+    // 모든 파일을 pending 상태로 먼저 큐에 추가 (probe는 각 파일별로 필요)
+    const tasks = [];
     for (const file of list) {
         const taskId = 'audio_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
-        const inputPath = file.path;
-        const name = file.name;
-        
-        // 원본 분석을 해 확장자 감지
-        const probe = await window.electronAPI.probeVideo(inputPath);
+        const probe = await window.electronAPI.probeVideo(file.path);
         let ext = state.audioFormat;
         if (ext === 'auto') {
             const codec = probe.audioCodec || '';
             const mapping = { aac: 'aac', mp3: 'mp3', vorbis: 'ogg', pcm_s16le: 'wav' };
             ext = mapping[codec] || 'aac';
         }
-
-        const baseName = getFileBaseName(name);
-        const outputPath = getResolvedOutputPath(inputPath, `_audio`, ext);
+        const outputPath = getResolvedOutputPath(file.path, `_audio`, ext);
+        tasks.push({ taskId, file, outputPath, ext });
 
         addQueueItem({
             taskId,
             type: 'Audio Drop',
-            name,
-            status: 'running',
+            name: file.name,
+            status: 'pending',
             percent: 0,
             speed: 'copy'
         });
+    }
+
+    // 순차적으로 하나씩 running으로 변경하며 처리
+    for (const task of tasks) {
+        const queueItem = state.queue.find(t => t.taskId === task.taskId);
+        if (queueItem) {
+            queueItem.status = 'running';
+            renderQueue();
+        }
 
         const result = await window.electronAPI.startAudioExtract({
-            taskId,
-            inputPath,
+            taskId: task.taskId,
+            inputPath: task.file.path,
             format: state.audioFormat,
-            outputPath
+            outputPath: task.outputPath
         });
 
         if (result.success) {
-            finishQueueItem(taskId, 'done');
-            showToast(t('Audio Extracted', '오디오 추출 완료'), `${name} 오디오 파일 저장 완료!`);
+            finishQueueItem(task.taskId, 'done');
+            showToast(t('Audio Extracted', '오디오 추출 완료'), `${task.file.name} 오디오 파일 저장 완료!`);
         } else {
-            finishQueueItem(taskId, 'error', result.error);
-            showToast(t('Extraction Failed', '오디오 추출 실패'), `${name}: ${result.error}`, 'error');
+            finishQueueItem(task.taskId, 'error', result.error);
+            showToast(t('Extraction Failed', '오디오 추출 실패'), `${task.file.name}: ${result.error}`, 'error');
         }
         elements.statAudioQueue.textContent = Math.max(0, parseInt(elements.statAudioQueue.textContent) - 1);
     }
@@ -1113,35 +1149,44 @@ async function processRemuxFiles(files) {
     const list = normalizeNativeFiles(files);
     if (list.length === 0) return;
 
-    for (const file of list) {
+    // 모든 파일을 pending 상태로 먼저 큐에 추가
+    const tasks = list.map(file => {
         const taskId = 'remux_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
-        const inputPath = file.path;
-        const name = file.name;
-        
-        const baseName = getFileBaseName(name);
-        const outputPath = getResolvedOutputPath(inputPath, `_remuxed`, state.remuxFormat);
+        const outputPath = getResolvedOutputPath(file.path, `_remuxed`, state.remuxFormat);
+        return { taskId, file, outputPath };
+    });
 
+    for (const task of tasks) {
         addQueueItem({
-            taskId,
+            taskId: task.taskId,
             type: 'Remuxer',
-            name,
-            status: 'running',
+            name: task.file.name,
+            status: 'pending',
             percent: 0,
             speed: 'copy'
         });
+    }
+
+    // 순차적으로 하나씩 running으로 변경하며 처리
+    for (const task of tasks) {
+        const queueItem = state.queue.find(t => t.taskId === task.taskId);
+        if (queueItem) {
+            queueItem.status = 'running';
+            renderQueue();
+        }
 
         const result = await window.electronAPI.startRemux({
-            taskId,
-            inputPath,
-            outputPath
+            taskId: task.taskId,
+            inputPath: task.file.path,
+            outputPath: task.outputPath
         });
 
         if (result.success) {
-            finishQueueItem(taskId, 'done');
-            showToast(t('Remux Complete', '확장자 변환 완료'), `${name} -> ${state.remuxFormat.toUpperCase()} 저장 완료!`);
+            finishQueueItem(task.taskId, 'done');
+            showToast(t('Remux Complete', '확장자 변환 완료'), `${task.file.name} -> ${state.remuxFormat.toUpperCase()} 저장 완료!`);
         } else {
-            finishQueueItem(taskId, 'error', result.error);
-            showToast(t('Remux Failed', '확장자 변환 실패'), `${name}: ${result.error}`, 'error');
+            finishQueueItem(task.taskId, 'error', result.error);
+            showToast(t('Remux Failed', '확장자 변환 실패'), `${task.file.name}: ${result.error}`, 'error');
         }
     }
 }
@@ -1716,7 +1761,10 @@ function renderQueue() {
         let statusClass = 'active';
         let statusLabel = `${task.percent}% (Speed: ${task.speed})`;
         const engineLabel = task.engineLabel || '';
-        if (task.status === 'done') {
+        if (task.status === 'pending') {
+            statusClass = 'pending';
+            statusLabel = t('Waiting...', '대기 중...');
+        } else if (task.status === 'done') {
             statusClass = 'done';
             statusLabel = t('Completed', '변환 완료');
         } else if (task.status === 'error') {

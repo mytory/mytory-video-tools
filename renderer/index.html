@@ -157,7 +157,9 @@
 
                 <div class="settings-grid">
                     <div>
-                        <label data-mi18n-ko="비디오 코덱">Video Codec</label>
+                        <label><span data-mi18n-ko="비디오 코덱">Video Codec</span> <span class="help-tip" tabindex="0" aria-label="비디오 코덱 설명">?<span
+                                    class="help-tip__bubble">영상을 어떤 방식으로 압축할지 정합니다. H.264는 거의 모든 기기에서 안전합니다. H.265는 같은 화질에서 더 작지만 오래된 기기 호환성이 낮을
+                                    수 있습니다. AV1은 가장 작게 만들 수 있지만 변환이 느릴 수 있습니다. 예: 가족/업무 공유는 H.264, 용량 절약은 H.265.</span></span></label>
                         <select id="compressCodecSelect">
                             <option value="h264">H.264 / AVC</option>
                             <option value="h265">H.265 / HEVC</option>
@@ -165,7 +167,9 @@
                         </select>
                     </div>
                     <div>
-                        <label data-mi18n-ko="목표 해상도">Target Resolution</label>
+                        <label><span data-mi18n-ko="목표 해상도">Target Resolution</span> <span class="help-tip" tabindex="0"
+                                aria-label="목표 해상도 설명">?<span class="help-tip__bubble">영상의 가로세로 크기입니다. 원본보다 낮추면 파일이 확 줄지만 선명도도 줄어듭니다.
+                                    예: 용량이 작은 게 중요하면 720p, 스마트폰 공유, 일반 보관/유튜브는 1080p, 큰 모니터 감상은 1440p나 4K.</span></span></label>
                         <select id="compressResolutionSelect">
                             <option value="source" data-mi18n-ko="원본 유지">Keep source</option>
                             <option value="2160p">3840 x 2160</option>
@@ -176,23 +180,33 @@
                         </select>
                     </div>
                     <div>
-                        <label data-mi18n-ko="비디오 비트레이트 (kbps)">Video Bitrate (kbps)</label>
+                        <label><span data-mi18n-ko="비디오 비트레이트 (kbps)">Video Bitrate (kbps)</span> <span class="help-tip" tabindex="0"
+                                aria-label="비디오 비트레이트 설명">?<span class="help-tip__bubble">1초마다 영상에 쓰는 데이터 양입니다. 높을수록 깨끗하지만 파일이 커집니다. 예: 720p는
+                                    2500-5000, 1080p는 6000-9000, 4K는 18000-35000 정도부터 시작해 보세요.</span></span></label>
                         <input type="number" id="compressVideoBitrate" min="300" step="100" value="8000">
                     </div>
                     <div>
-                        <label data-mi18n-ko="최대 비트레이트 (kbps)">Maxrate (kbps)</label>
+                        <label><span data-mi18n-ko="최대 비트레이트 (kbps)">Maxrate (kbps)</span> <span class="help-tip" tabindex="0"
+                                aria-label="최대 비트레이트 설명">?<span class="help-tip__bubble">복잡한 장면에서 순간적으로 올라갈 수 있는 최고 데이터 양입니다. 평균 비트레이트보다 조금 높게
+                                    두면 움직임 많은 장면이 덜 뭉개집니다. 예: 비디오 비트레이트가 8000이면 10000-12000.</span></span></label>
                         <input type="number" id="compressMaxrate" min="300" step="100" value="12000">
                     </div>
                     <div>
-                        <label data-mi18n-ko="버퍼 크기 (kbps)">Buffer Size (kbps)</label>
+                        <label><span data-mi18n-ko="버퍼 크기 (kbps)">Buffer Size (kbps)</span> <span class="help-tip" tabindex="0"
+                                aria-label="버퍼 크기 설명">?<span class="help-tip__bubble">비트레이트가 장면에 따라 얼마나 부드럽게 오르내릴지 정하는 여유 공간입니다. 너무 낮으면 품질이 답답해질
+                                    수 있습니다. 보통 최대 비트레이트와 같거나 1.5-2배가 편합니다. 예: Maxrate 12000이면 16000-24000.</span></span></label>
                         <input type="number" id="compressBufsize" min="600" step="100" value="16000">
                     </div>
                     <div>
-                        <label data-mi18n-ko="오디오 비트레이트 (kbps)">Audio Bitrate (kbps)</label>
+                        <label><span data-mi18n-ko="오디오 비트레이트 (kbps)">Audio Bitrate (kbps)</span> <span class="help-tip" tabindex="0"
+                                aria-label="오디오 비트레이트 설명">?<span class="help-tip__bubble">소리에 쓰는 데이터 양입니다. 말소리 위주는 96-128이면 충분하고, 음악이 중요하면
+                                    160-256이 좋습니다. 예: 강의/회의 96 또는 128, 공연/뮤직비디오 192 이상.</span></span></label>
                         <input type="number" id="compressAudioBitrate" min="64" step="16" value="128">
                     </div>
                     <div>
-                        <label data-mi18n-ko="프레임레이트">Frame Rate</label>
+                        <label><span data-mi18n-ko="프레임레이트">Frame Rate</span> <span class="help-tip" tabindex="0" aria-label="프레임레이트 설명">?<span
+                                    class="help-tip__bubble">1초에 보이는 화면 장수입니다. 원본 유지는 가장 자연스럽습니다. 30fps는 용량을 줄이기 좋고, 게임/스포츠처럼 움직임이 빠른 영상은 60fps가
+                                    부드럽습니다.</span></span></label>
                         <select id="compressFpsSelect">
                             <option value="source" data-mi18n-ko="원본 유지">Keep source</option>
                             <option value="30">30 fps</option>
@@ -201,7 +215,9 @@
                     </div>
                     <label class="toggle-switch setting-toggle">
                         <input type="checkbox" id="compressFastStartCheck" checked>
-                        <span data-mi18n-ko="웹 재생 최적화">Optimize for web playback</span>
+                        <span><span data-mi18n-ko="웹 재생 최적화">Optimize for web playback</span> <span class="help-tip" tabindex="0"
+                                aria-label="웹 재생 최적화 설명">?<span class="help-tip__bubble">파일을 끝까지 내려받기 전에도 웹이나 메신저에서 재생이 빨리 시작되도록 정리합니다. 화질이나 용량은
+                                    거의 바꾸지 않습니다. 온라인 공유용이면 켜두는 편이 좋습니다.</span></span></span>
                     </label>
                 </div>
 
@@ -293,7 +309,17 @@
                 <div id="captureEditor" class="editor-container" style="display: none;">
                     <div class="video-preview-wrapper">
                         <video id="captureVideo" playsinline></video>
-                        <div id="captureTimecode" class="current-time-display">00:00:00:00</div>
+                    </div>
+<div class="timeline-container">
+    <div class="timeline-bar" id="captureTimeline">
+        <div class="timeline-range" id="captureTimelineRange" style="display:none;"></div>
+        <div class="timeline-handle" id="captureTimelineHandle"></div>
+    </div>
+</div>
+
+                    <div class="timecode-control-row">
+                        <label for="captureTimecode" data-mi18n-ko="현재 시각">Current Time</label>
+                        <input type="text" id="captureTimecode" class="current-time-input" value="00:00:00:00" aria-label="Current capture time">
                     </div>
 
                     <div class="transport-bar">
@@ -302,13 +328,6 @@
                         <button id="btnCaptureNextFrame" class="transport-btn" type="button" aria-label="Next frame">+1f</button>
                         <button id="btnCaptureMarkIn" class="transport-btn" type="button" aria-label="Mark in">I</button>
                         <button id="btnCaptureMarkOut" class="transport-btn" type="button" aria-label="Mark out">O</button>
-                    </div>
-
-                    <div class="timeline-container">
-                        <div class="timeline-bar" id="captureTimeline">
-                            <div class="timeline-range" id="captureTimelineRange" style="display:none;"></div>
-                            <div class="timeline-handle" id="captureTimelineHandle"></div>
-                        </div>
                     </div>
 
                     <!-- 캡처 모드 선택 버튼 -->
@@ -430,7 +449,17 @@
                 <div id="splitEditor" class="editor-container" style="display: none;">
                     <div class="video-preview-wrapper">
                         <video id="splitVideo" playsinline></video>
-                        <div id="splitTimecode" class="current-time-display">00:00:00:00</div>
+                    </div>
+<div class="timeline-container">
+    <div class="timeline-bar" id="splitTimeline">
+        <div class="timeline-range" id="splitTimelineRange"></div>
+        <div class="timeline-handle" id="splitTimelineHandle"></div>
+    </div>
+</div>
+
+                    <div class="timecode-control-row">
+                        <label for="splitTimecode" data-mi18n-ko="현재 시각">Current Time</label>
+                        <input type="text" id="splitTimecode" class="current-time-input" value="00:00:00:00" aria-label="Current split time">
                     </div>
 
                     <div class="transport-bar">
@@ -441,23 +470,18 @@
                         <button id="btnSplitMarkOut" class="transport-btn" type="button" aria-label="Mark out">O</button>
                     </div>
 
-                    <div class="timeline-container">
-                        <div class="timeline-bar" id="splitTimeline">
-                            <div class="timeline-range" id="splitTimelineRange"></div>
-                            <div class="timeline-handle" id="splitTimelineHandle"></div>
-                        </div>
-                    </div>
-
                     <div class="grid">
                         <div>
-                            <label data-mi18n-ko="분할 시작 시간">Start Time</label>
+                            <label for="splitStartInput" data-mi18n-ko="분할 시작 시간">Start Time</label>
                             <input type="text" id="splitStartInput" value="00:00:00:00">
                             <button class="btn btn--secondary" id="btnSplitSetStart" data-mi18n-ko="현재 시점으로 설정">Set Start Time</button>
+                            <button class="btn btn--secondary" id="btnSplitGoStart" data-mi18n-ko="시작점으로 이동">Go Start</button>
                         </div>
                         <div>
-                            <label data-mi18n-ko="분할 종료 시간">End Time</label>
+                            <label for="splitEndInput" data-mi18n-ko="분할 종료 시간">End Time</label>
                             <input type="text" id="splitEndInput" value="00:00:00:00">
                             <button class="btn btn--secondary" id="btnSplitSetEnd" data-mi18n-ko="현재 시점으로 설정">Set End Time</button>
+                            <button class="btn btn--secondary" id="btnSplitGoEnd" data-mi18n-ko="종료점으로 이동">Go End</button>
                         </div>
                     </div>
 

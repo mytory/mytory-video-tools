@@ -15,6 +15,7 @@
     --error: #ef4444;
     --shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
     font-size: 16px;
+    color: white;
 }
 
 * {
@@ -159,6 +160,7 @@ h2 {
     font-size: 1.8rem;
     font-weight: 700;
     margin: 0 0 0.5rem 0;
+    color: white;
 }
 
 .tab-desc {
@@ -196,6 +198,7 @@ h2 {
 .dropzone h3 {
     font-size: 1.2rem;
     margin: 0 0 8px 0;
+    color: white;
 }
 
 .dropzone p {
@@ -297,6 +300,54 @@ h2 {
     font-weight: 600;
 }
 
+.help-tip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    margin-left: 4px;
+    border-radius: 999px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text);
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: help;
+    vertical-align: middle;
+}
+
+.help-tip:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(106, 122, 255, 0.22);
+}
+
+.help-tip__bubble {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 8px);
+    z-index: 30;
+    display: none;
+    width: min(320px, 78vw);
+    padding: 12px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 10px;
+    background-color: rgba(248, 250, 252, 0.98);
+    color: #111827;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.32);
+    font-size: 0.82rem;
+    font-weight: 500;
+    line-height: 1.55;
+    text-align: left;
+    transform: translateX(-50%);
+}
+
+.help-tip:hover .help-tip__bubble,
+.help-tip:focus .help-tip__bubble,
+.help-tip:focus-within .help-tip__bubble {
+    display: block;
+}
 .settings-grid input,
 .settings-grid select {
     margin-top: 0.35rem;
@@ -400,17 +451,40 @@ h2 {
     object-fit: contain;
 }
 
-.current-time-display {
-    position: absolute;
-    bottom: 12px;
-    right: 12px;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: #10b981;
+.timecode-control-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    align-self: flex-start;
+    margin: 0;
+}
+
+.timecode-control-row label {
+    margin: 0;
+    color: var(--text);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.current-time-input {
+    width: 148px;
+        max-width: 148px;
+    margin: 0;
+    background-color: #f8fafc;
+    color: #111827;
     font-family: monospace;
     font-size: 0.95rem;
-    padding: 4px 10px;
+    padding: 6px 6px;
     border-radius: 6px;
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    text-align: center;
+}
+
+.current-time-input:focus {
+    outline: none;
+    border-color: var(--brand-hover);
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(106, 122, 255, 0.18);
 }
 
 .transport-bar {
@@ -521,6 +595,35 @@ h2 {
     color: var(--text);
 }
 
+.mode-settings-card .grid label {
+    color: var(--text);
+    font-weight: 700;
+}
+
+.mode-settings-card .grid input[type="text"],
+.mode-settings-card .grid input[type="number"] {
+    color: var(--text);
+    background-color: #111827;
+    border-color: rgba(255, 255, 255, 0.24);
+}
+
+.mode-settings-card .grid input[type="text"]:focus,
+.mode-settings-card .grid input[type="number"]:focus {
+    border-color: var(--brand-hover);
+    box-shadow: 0 0 0 3px rgba(106, 122, 255, 0.18);
+}
+
+#splitStartInput,
+#splitEndInput {
+    color: #111827;
+    background-color: #f8fafc;
+}
+
+label[for="splitStartInput"],
+label[for="splitEndInput"] {
+    color: #ffffff;
+}
+
 .checkbox-item {
     justify-content: center;
 }
@@ -564,6 +667,7 @@ h2 {
     margin: 0 0 0.5rem;
     font-size: 0.95rem;
     line-height: 1.25;
+    color: white;
 }
 
 .status-list {
@@ -612,18 +716,18 @@ h2 {
     height: 28px;
     margin: 0;
     padding: 0;
-    border: 1px solid var(--border);
+    border: 1px solid rgba(239, 68, 68, 0.28);
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.04);
-    color: var(--text-muted);
+    background: rgba(239, 68, 68, 0.12);
+    color: #fecaca;
     font-size: 0.95rem;
     line-height: 1;
 }
 
 .queue-dismiss-btn:hover {
-    color: var(--text);
-    border-color: rgba(255, 255, 255, 0.18);
-    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    border-color: rgba(239, 68, 68, 0.5);
+    background: rgba(239, 68, 68, 0.22);
 }
 
 /* 토스트 */

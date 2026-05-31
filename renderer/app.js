@@ -143,6 +143,8 @@ const elements = {
     splitEndInput: document.getElementById('splitEndInput'),
     btnSplitSetStart: document.getElementById('btnSplitSetStart'),
     btnSplitSetEnd: document.getElementById('btnSplitSetEnd'),
+    btnSplitGoStart: document.getElementById('btnSplitGoStart'),
+    btnSplitGoEnd: document.getElementById('btnSplitGoEnd'),
     btnSplitExport: document.getElementById('btnSplitExport'),
     
     // 공통 큐 관련
@@ -774,7 +776,9 @@ function setupFrameCapture() {
     // 비디오 시점 변경 시 타임코드 업데이트
     elements.captureVideo.addEventListener('timeupdate', () => {
         const time = elements.captureVideo.currentTime;
-        elements.captureTimecode.textContent = secondsToTimecode(time);
+        if (document.activeElement !== elements.captureTimecode) {
+            elements.captureTimecode.value = secondsToTimecode(time);
+        }
         
         // 타임라인 핸들 위치 동기화
         if (!state.captureTimelineDragging && state.captureMetadata) {
@@ -803,6 +807,14 @@ function setupFrameCapture() {
     elements.btnCaptureNextFrame.addEventListener('click', () => stepVideoFrames(elements.captureVideo, state.captureMetadata, 1));
     elements.btnCaptureMarkIn.addEventListener('click', () => markCaptureIn());
     elements.btnCaptureMarkOut.addEventListener('click', () => markCaptureOut());
+    elements.captureTimecode.addEventListener('change', () => seekVideoToInput(elements.captureVideo, elements.captureTimecode, state.captureMetadata));
+    elements.captureTimecode.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            seekVideoToInput(elements.captureVideo, elements.captureTimecode, state.captureMetadata);
+            elements.captureTimecode.blur();
+        }
+    });
 
     // 타임라인 탐색 드래그 핸들링
     setupTimelineSlider(
@@ -857,6 +869,8 @@ function setupFrameCapture() {
 
     elements.captureBatchStart.addEventListener('input', updateCaptureTimelineOverlay);
     elements.captureBatchEnd.addEventListener('input', updateCaptureTimelineOverlay);
+    elements.captureBatchStart.addEventListener('change', () => normalizeTimecodeField(elements.captureBatchStart, updateCaptureTimelineOverlay));
+    elements.captureBatchEnd.addEventListener('change', () => normalizeTimecodeField(elements.captureBatchEnd, updateCaptureTimelineOverlay));
 
     // 배치 캡처 내보내기 실행
     elements.btnCaptureBatch.addEventListener('click', async () => {
@@ -1011,7 +1025,7 @@ async function loadVideoForCapture(file) {
         
         elements.captureBatchStart.value = '00:00:00:00';
         elements.captureBatchEnd.value = secondsToTimecode(metadata.duration);
-        elements.captureTimecode.textContent = '00:00:00:00';
+        elements.captureTimecode.value = '00:00:00:00';
         elements.btnCapturePlayPause.textContent = t('Play', '재생');
         
         updateCaptureTimelineOverlay();
@@ -1131,7 +1145,9 @@ function setupSplitter() {
     // 재생 정보 타임라인 동기화
     elements.splitVideo.addEventListener('timeupdate', () => {
         const time = elements.splitVideo.currentTime;
-        elements.splitTimecode.textContent = secondsToTimecode(time);
+        if (document.activeElement !== elements.splitTimecode) {
+            elements.splitTimecode.value = secondsToTimecode(time);
+        }
 
         if (!state.splitTimelineDragging && state.splitMetadata) {
             const pct = (time / state.splitMetadata.duration) * 100;
@@ -1159,6 +1175,14 @@ function setupSplitter() {
     elements.btnSplitNextFrame.addEventListener('click', () => stepVideoFrames(elements.splitVideo, state.splitMetadata, 1));
     elements.btnSplitMarkIn.addEventListener('click', () => markSplitIn());
     elements.btnSplitMarkOut.addEventListener('click', () => markSplitOut());
+    elements.splitTimecode.addEventListener('change', () => seekVideoToInput(elements.splitVideo, elements.splitTimecode, state.splitMetadata));
+    elements.splitTimecode.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            seekVideoToInput(elements.splitVideo, elements.splitTimecode, state.splitMetadata);
+            elements.splitTimecode.blur();
+        }
+    });
 
     // 드래그 탐색
     setupTimelineSlider(
@@ -1185,14 +1209,34 @@ function setupSplitter() {
         markSplitOut();
     });
 
+    elements.btnSplitGoStart.addEventListener('click', () => {
+        seekVideoToSeconds(elements.splitVideo, state.splitStartTime, state.splitMetadata);
+    });
+
+    elements.btnSplitGoEnd.addEventListener('click', () => {
+        seekVideoToSeconds(elements.splitVideo, state.splitEndTime, state.splitMetadata);
+    });
+
     elements.splitStartInput.addEventListener('input', () => {
         state.splitStartTime = timecodeToSeconds(elements.splitStartInput.value);
         updateSplitTimelineOverlay();
+    });
+    elements.splitStartInput.addEventListener('change', () => {
+        normalizeTimecodeField(elements.splitStartInput, () => {
+            state.splitStartTime = timecodeToSeconds(elements.splitStartInput.value);
+            updateSplitTimelineOverlay();
+        });
     });
 
     elements.splitEndInput.addEventListener('input', () => {
         state.splitEndTime = timecodeToSeconds(elements.splitEndInput.value);
         updateSplitTimelineOverlay();
+    });
+    elements.splitEndInput.addEventListener('change', () => {
+        normalizeTimecodeField(elements.splitEndInput, () => {
+            state.splitEndTime = timecodeToSeconds(elements.splitEndInput.value);
+            updateSplitTimelineOverlay();
+        });
     });
 
     // 분할 내보내기 실행
@@ -1261,7 +1305,7 @@ async function loadVideoForSplit(file) {
 
         elements.splitStartInput.value = '00:00:00:00';
         elements.splitEndInput.value = secondsToTimecode(metadata.duration);
-        elements.splitTimecode.textContent = '00:00:00:00';
+        elements.splitTimecode.value = '00:00:00:00';
         elements.btnSplitPlayPause.textContent = t('Play', '재생');
 
         updateSplitTimelineOverlay();
@@ -1307,6 +1351,23 @@ function togglePlayback(video) {
     } else {
         video.pause();
     }
+}
+
+function getMetadataDuration(metadata) {
+    return metadata && Number.isFinite(metadata.duration) ? metadata.duration : null;
+}
+
+function seekVideoToSeconds(video, seconds, metadata) {
+    const duration = getMetadataDuration(metadata);
+    const max = duration == null ? Number.POSITIVE_INFINITY : duration;
+    video.currentTime = Math.max(0, Math.min(max, seconds));
+}
+
+function seekVideoToInput(video, input, metadata) {
+    input.value = normalizeTimecodeInput(input.value);
+    const nextTime = timecodeToSeconds(input.value);
+    seekVideoToSeconds(video, nextTime, metadata);
+    input.value = secondsToTimecode(video.currentTime);
 }
 
 function markCaptureIn() {
@@ -1361,12 +1422,12 @@ function setupEditorKeyboardShortcuts() {
                 stepVideoFrames(elements.splitVideo, state.splitMetadata, frameStep);
                 return;
             }
-            if (event.key.toLowerCase() === 'i') {
+            if (event.code === 'KeyI') {
                 event.preventDefault();
                 markSplitIn();
                 return;
             }
-            if (event.key.toLowerCase() === 'o') {
+            if (event.code === 'KeyO') {
                 event.preventDefault();
                 markSplitOut();
                 return;
@@ -1389,12 +1450,12 @@ function setupEditorKeyboardShortcuts() {
                 stepVideoFrames(elements.captureVideo, state.captureMetadata, frameStep);
                 return;
             }
-            if (event.key.toLowerCase() === 'i') {
+            if (event.code === 'KeyI') {
                 event.preventDefault();
                 markCaptureIn();
                 return;
             }
-            if (event.key.toLowerCase() === 'o') {
+            if (event.code === 'KeyO') {
                 event.preventDefault();
                 markCaptureOut();
             }
@@ -1481,17 +1542,44 @@ function secondsToTimecode(sec) {
     return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}:${pad(frames)}`;
 }
 
+function normalizeTimecodeInput(value) {
+    const raw = String(value || '').trim();
+    if (/^\d{1,8}$/.test(raw)) {
+        const padded = raw.padStart(8, '0');
+        return `${padded.slice(0, 2)}:${padded.slice(2, 4)}:${padded.slice(4, 6)}:${padded.slice(6, 8)}`;
+    }
+
+    const parts = raw.split(':').map(part => part.trim());
+    if (parts.length === 4 && parts.every(part => /^\d+$/.test(part))) {
+        return parts.map(part => part.padStart(2, '0')).join(':');
+    }
+
+    if (parts.length === 3 && parts.every((part, index) => index === 2 ? /^\d+(\.\d+)?$/.test(part) : /^\d+$/.test(part))) {
+        return `${parts[0].padStart(2, '0')}:${parts[1].padStart(2, '0')}:${parts[2].padStart(2, '0')}:00`;
+    }
+
+    return raw;
+}
+
+function normalizeTimecodeField(input, onChange) {
+    input.value = normalizeTimecodeInput(input.value);
+    if (onChange) onChange();
+}
+
 // 타임코드 -> 초 변환
 function timecodeToSeconds(tc) {
-    const parts = tc.split(':');
+    const parts = String(tc || '').trim().split(':');
     if (parts.length < 3) return 0;
     const hours = parseInt(parts[0], 10);
     const minutes = parseInt(parts[1], 10);
     const seconds = parseFloat(parts[2]);
+    if (!Number.isFinite(hours) || !Number.isFinite(minutes) || !Number.isFinite(seconds)) return 0;
     let sec = hours * 3600 + minutes * 60 + seconds;
     if (parts.length === 4) {
         const frames = parseInt(parts[3], 10);
-        sec += frames / 30;
+        if (Number.isFinite(frames)) {
+            sec += frames / 30;
+        }
     }
     return sec;
 }
@@ -1524,7 +1612,7 @@ function updateQueueProgress(taskId, percent, speed) {
         `;
 
         // 큐 내 개별 항목 인디케이터 업데이트
-        const itemEl = document.getElementById(taskId);
+        const itemEl = elements.queueStatus.querySelector(`[data-task-id="${CSS.escape(taskId)}"]`);
         if (itemEl) {
             const fillEl = itemEl.querySelector('.progress-bar-fill');
             const percentEl = itemEl.querySelector('.task-percent');
@@ -1567,6 +1655,19 @@ window.dismissQueueItem = function(taskId) {
     dismissQueueItem(taskId);
 };
 
+elements.queueStatus.addEventListener('click', (event) => {
+    const dismissButton = event.target.closest('.queue-dismiss-btn');
+    if (dismissButton && dismissButton.dataset.taskId) {
+        dismissQueueItem(dismissButton.dataset.taskId);
+        return;
+    }
+
+    const cancelButton = event.target.closest('.queue-cancel-btn');
+    if (cancelButton && cancelButton.dataset.taskId) {
+        window.cancelTask(cancelButton.dataset.taskId);
+    }
+});
+
 function renderQueue() {
     if (state.queue.length === 0) {
         elements.queueStatusEmpty.style.display = 'flex';
@@ -1576,9 +1677,16 @@ function renderQueue() {
         return;
     }
     elements.queueStatusEmpty.style.display = 'none';
+    const currentTaskIds = new Set(state.queue.map(task => task.taskId));
+    const items = elements.queueStatus.querySelectorAll('.status-item:not(#queueStatusEmpty)');
+    items.forEach(el => {
+        if (!currentTaskIds.has(el.dataset.taskId)) {
+            el.remove();
+        }
+    });
 
     state.queue.forEach(task => {
-        const existingEl = document.getElementById(task.taskId);
+        const existingEl = elements.queueStatus.querySelector(`[data-task-id="${CSS.escape(task.taskId)}"]`);
         
         let statusClass = 'active';
         let statusLabel = `${task.percent}% (Speed: ${task.speed})`;
@@ -1608,9 +1716,9 @@ function renderQueue() {
             </div>
             <div>
                 ${task.status === 'running' ? `
-                <button class="btn" style="margin:0; padding:6px 12px; font-size:0.8rem; background:rgba(255,255,255,0.06);" onclick="cancelTask('${task.taskId}')">${t('Cancel', '취소')}</button>
+                <button class="btn queue-cancel-btn" type="button" data-task-id="${task.taskId}" style="margin:0; padding:6px 12px; font-size:0.8rem; background:rgba(255,255,255,0.06);">${t('Cancel', '취소')}</button>
                 ` : `
-                <button class="queue-dismiss-btn" type="button" aria-label="${t('Remove from queue', '대기열에서 지우기')}" title="${t('Remove from queue', '대기열에서 지우기')}" onclick="dismissQueueItem('${task.taskId}')">x</button>
+                <button class="queue-dismiss-btn" type="button" data-task-id="${task.taskId}" aria-label="${t('Remove from queue', '대기열에서 지우기')}" title="${t('Remove from queue', '대기열에서 지우기')}">&times;</button>
                 `}
             </div>
         `;
@@ -1620,7 +1728,7 @@ function renderQueue() {
             existingEl.innerHTML = html;
         } else {
             const el = document.createElement('div');
-            el.id = task.taskId;
+            el.dataset.taskId = task.taskId;
             el.className = `status-item ${statusClass}`;
             el.innerHTML = html;
             elements.queueStatus.appendChild(el);

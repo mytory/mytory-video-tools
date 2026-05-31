@@ -1,4 +1,4 @@
-// Mytory Video Tool - Renderer App Script
+// Mytory Video Tools - Renderer App Script
 
 // 글로벌 상태 객체
 const state = {

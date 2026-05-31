@@ -37,7 +37,7 @@
   },
   "build": {
     "appId": "net.mytory.videotool",
-    "productName": "Mytory Video Tool",
+    "productName": "Mytory Video Tools",
     "directories": {
       "output": "dist"
     },

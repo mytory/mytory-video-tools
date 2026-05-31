@@ -81,4 +81,11 @@ release:
     tag_name: "$CI_COMMIT_TAG"
     description: |
       Release $CI_COMMIT_TAG
+
+      ### ⚠️ 보안 경고 관련 안내 (필독)
+      본 프로그램은 개인 개발자가 배포하는 오픈소스 소프트웨어로, 유료 개발자 인증서 서명이 되어 있지 않습니다. 실행 시 발생하는 보안 경고는 프로그램의 결함이 아니니 아래 방법으로 실행해 주세요.
+
+      *   **Windows:** 파란색 경고창에서 **[추가 정보]** 클릭 -> **[실행]** 버튼 클릭
+      *   **macOS:** 앱 파일 위에서 **마우스 오른쪽 버튼(또는 Control+클릭)** -> **[열기]** 선택 -> 다시 한번 **[열기]** 클릭
+
       Built release artifacts are available in pipeline jobs.

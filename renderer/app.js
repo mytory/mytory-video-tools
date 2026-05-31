@@ -399,6 +399,18 @@ async function initApp() {
     setupSplitter();
     setupEditorKeyboardShortcuts();
 
+    // 창을 닫거나 페이지를 떠날 때 모든 실행 중인 작업 취소
+    window.addEventListener('beforeunload', async () => {
+        const runningTasks = state.queue.filter(t => t.status === 'running' || t.status === 'pending');
+        for (const task of runningTasks) {
+            try {
+                await window.electronAPI.cancelTask(task.taskId);
+            } catch (e) {
+                // 취소 중 오류는 무시
+            }
+        }
+    });
+
     // 글로벌 드래그 & 드롭 핸들러 (화면 전체)
     let dragCounter = 0;
 
@@ -1731,6 +1743,10 @@ window.cancelTask = async function(taskId) {
     if (confirmed) {
         await window.electronAPI.cancelTask(taskId);
         finishQueueItem(taskId, 'error', t('Cancelled by user', '사용자 취소'));
+        showToast(
+            t('Task Cancelled', '작업 취소됨'),
+            t('The ffmpeg process has been terminated.', 'ffmpeg 프로세스가 종료되었습니다.')
+        );
     }
 };
 

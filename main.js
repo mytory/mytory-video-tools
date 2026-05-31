@@ -151,8 +151,8 @@ function runFFmpeg(taskId, args, duration, outputPath) {
             if (code === 0) {
                 resolve(outputPath);
             } else {
-                // 취소된 경우와 실제 오류가 발생한 경우 구분
-                if (ff.killed) {
+                // 취소된 경우(code가 null이고 signal로 종료)와 실제 오류 구분
+                if (ff.killed || code === null) {
                     reject(new Error('Task was cancelled by user.'));
                 } else {
                     reject(new Error(`FFmpeg exited with code ${code}. Log:\n${stderrBuffer.slice(-500)}`));
@@ -244,12 +244,58 @@ app.whenReady().then(async () => {
     });
 });
 
-app.on('window-all-closed', () => {
-    // 백그라운드 태스크 모두 강제 정렬 후 종료
+// 모든 활성 ffmpeg 프로세스를 확실히 종료하는 함수
+function killAllActiveTasks() {
     for (const [taskId, proc] of activeTasks.entries()) {
-        proc.kill('SIGKILL');
+        try {
+            proc.kill('SIGTERM');
+        } catch (e) {
+            // 이미 종료된 프로세스는 무시
+        }
     }
-    if (process.platform !== 'darwin') app.quit();
+
+    // SIGTERM 후 2초 기다렸다가 남아있는 프로세스는 SIGKILL
+    setTimeout(() => {
+        for (const [taskId, proc] of activeTasks.entries()) {
+            try {
+                if (!proc.killed) {
+                    proc.kill('SIGKILL');
+                }
+            } catch (e) {
+                // 이미 종료된 프로세스는 무시
+            }
+        }
+        activeTasks.clear();
+    }, 2000);
+}
+
+app.on('window-all-closed', () => {
+    if (process.platform === 'darwin') {
+        // macOS는 창을 모두 닫아도 앱이 완전히 종료되지 않을 수 있으므로
+        // 활성 작업이 있으면 강제 종료, 없으면 일반 종료
+        if (activeTasks.size > 0) {
+            killAllActiveTasks();
+            app.quit();
+        }
+        // 작업이 없으면 기본 동작 유지 (Dock에 남음)
+    } else {
+        killAllActiveTasks();
+        app.quit();
+    }
+});
+
+app.on('before-quit', () => {
+    // 앱이 완전히 종료되기 전에 모든 ffmpeg 프로세스를 SIGKILL로 확실히 제거
+    // killAllActiveTasks에서 이미 SIGTERM 후 SIGKILL 타이머가 동작 중일 수 있으므로,
+    // 여기서는 바로 SIGKILL로 확실히 죽임
+    for (const [taskId, proc] of activeTasks.entries()) {
+        try {
+            proc.kill('SIGKILL');
+        } catch (e) {
+            // 이미 종료됨
+        }
+    }
+    activeTasks.clear();
 });
 
 // --- IPC 구현부 ---
@@ -301,15 +347,39 @@ ipcMain.handle('video:probe', async (event, inputPath) => {
     }
 });
 
-// 4. 태스크 취소
-ipcMain.handle('task:cancel', (event, taskId) => {
+// 4. 태스크 취소 — SIGTERM 후 일정 시간 내 종료되지 않으면 SIGKILL
+ipcMain.handle('task:cancel', async (event, taskId) => {
     const proc = activeTasks.get(taskId);
-    if (proc) {
-        proc.kill('SIGTERM');
-        activeTasks.delete(taskId);
-        return true;
+    if (!proc) return false;
+
+    // 먼저 SIGTERM 전송
+    proc.kill('SIGTERM');
+
+    // 3초 안에 프로세스가 종료되는지 확인
+    const exited = await new Promise((resolve) => {
+        const timeout = setTimeout(() => resolve(false), 3000);
+        proc.on('close', () => {
+            clearTimeout(timeout);
+            resolve(true);
+        });
+        // 프로세스가 이미 종료된 경우를 대비
+        if (proc.killed || proc.exitCode !== null) {
+            clearTimeout(timeout);
+            resolve(true);
+        }
+    });
+
+    if (!exited) {
+        // SIGTERM으로 안 죽으면 SIGKILL
+        try {
+            proc.kill('SIGKILL');
+        } catch (e) {
+            // 이미 종료됨
+        }
     }
-    return false;
+
+    activeTasks.delete(taskId);
+    return true;
 });
 
 // 4-2. 출력 경로 중복 확인 후 유니크 경로 반환
@@ -642,13 +712,17 @@ ipcMain.handle('capture:scene-detect', async (event, { taskId, inputPath, thresh
             }
         });
 
-        const code = await new Promise((resolve) => {
-            ff.on('close', resolve);
+        const { code, signal } = await new Promise((resolve) => {
+            ff.on('close', (code, signal) => resolve({ code, signal }));
         });
 
         activeTasks.delete(taskId);
 
-        if (code !== 0 && !ff.killed) {
+        if (signal === 'SIGTERM' || signal === 'SIGKILL') {
+            return { success: false, error: 'Task was cancelled by user.' };
+        }
+
+        if (code !== 0) {
             return { success: false, error: `FFmpeg analysis failed with code ${code}` };
         }
 
@@ -674,13 +748,47 @@ ipcMain.handle('capture:scene-detect', async (event, { taskId, inputPath, thresh
     }
 });
 
+// 특정 taskId에 속한 모든 ffmpeg 하위 프로세스를 정리 (export-scenes용)
+function cleanupSubProcesses(procList) {
+    for (const p of procList) {
+        try {
+            p.kill('SIGTERM');
+        } catch (e) { /* ignore */ }
+    }
+    // 2초 후에도 살아있으면 SIGKILL
+    setTimeout(() => {
+        for (const p of procList) {
+            try {
+                if (!p.killed) p.kill('SIGKILL');
+            } catch (e) { /* ignore */ }
+        }
+    }, 2000);
+}
+
 // 12. 추출된 장면 프레임들을 개별 이미지로 일괄 내보내기
 ipcMain.handle('capture:export-scenes', async (event, { taskId, inputPath, timestamps, format, outputDir, baseName }) => {
+    const subProcesses = [];
+    let cancelled = false;
+
+    // 취소 요청을 받으면 cancelled 플래그 설정 + 모든 하위 프로세스 종료
+    const cancelHandler = () => {
+        cancelled = true;
+        cleanupSubProcesses(subProcesses);
+    };
+
+    // 가짜 proc 객체를 activeTasks에 등록 (취소 시 하위 프로세스들 정리용)
+    const controller = { kill: cancelHandler };
+    activeTasks.set(taskId, controller);
+
     try {
         const ext = format === 'image/png' ? 'png' : format === 'image/webp' ? 'webp' : 'jpg';
         const total = timestamps.length;
 
         for (let i = 0; i < total; i++) {
+            if (cancelled) {
+                return { success: false, error: 'Task was cancelled by user.' };
+            }
+
             const ts = timestamps[i];
             const timecode = secondsToTimecode(ts).replace(/:/g, '-');
             const outputPath = path.join(outputDir, `${baseName}_scene_${timecode}.${ext}`);
@@ -694,7 +802,20 @@ ipcMain.handle('capture:export-scenes', async (event, { taskId, inputPath, times
             ];
 
             const ff = spawn(ffmpegPath, ['-y', ...args]);
-            await new Promise((resolve) => ff.on('close', resolve));
+            subProcesses.push(ff);
+
+            await new Promise((resolve, reject) => {
+                ff.on('close', (code) => {
+                    if (cancelled) {
+                        reject(new Error('Task was cancelled by user.'));
+                    } else if (code !== 0) {
+                        reject(new Error(`FFmpeg exited with code ${code}`));
+                    } else {
+                        resolve();
+                    }
+                });
+                ff.on('error', reject);
+            });
 
             // 진행률 보고
             if (mainWindow) {
@@ -710,7 +831,11 @@ ipcMain.handle('capture:export-scenes', async (event, { taskId, inputPath, times
 
         return { success: true, count: total };
     } catch (err) {
+        // 취소나 오류 시 모든 하위 프로세스 정리
+        cleanupSubProcesses(subProcesses);
         return { success: false, error: err.message };
+    } finally {
+        activeTasks.delete(taskId);
     }
 });
 

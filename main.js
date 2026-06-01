@@ -575,39 +575,64 @@ ipcMain.handle('audio:start', async (event, { taskId, inputPath, format, outputP
     }
 });
 
-// 7. 확장자 변환(Remuxer) 시작
+// 7. 확장자 변환(Remuxer) 시작 — 3단계 fallback
+// 1차: 전체 스트림 카피  2차: 오디오만 인코딩  3차: 사용자 확인 후 풀 인코딩
 ipcMain.handle('remux:start', async (event, { taskId, inputPath, outputPath }) => {
     try {
         const info = await probeVideo(inputPath);
         const duration = parseFloat(info.format.duration || 0);
 
-        // 대상 컨테이너 포맷 확인
-        const ext = path.extname(outputPath).toLowerCase();
+        // Stage 1: 전체 스트림 카피 (컨테이너만 변경)
+        try {
+            await runFFmpeg(
+                taskId,
+                ['-i', inputPath, '-c', 'copy', '-map', '0', outputPath],
+                duration,
+                outputPath
+            );
+            return { success: true, outputPath };
+        } catch (copyErr) {
+            // Stage 2: 비디오는 카피, 오디오만 AAC로 인코딩
+            try {
+                await runFFmpeg(
+                    taskId,
+                    ['-i', inputPath, '-c:v', 'copy', '-c:a', 'aac', '-map', '0', outputPath],
+                    duration,
+                    outputPath
+                );
+                return { success: true, outputPath };
+            } catch (audioErr) {
+                // Stage 3: 사용자 확인 후 풀 인코딩
+                const { response } = await dialog.showMessageBox(mainWindow, {
+                    type: 'question',
+                    buttons: ['Full Re-encode', 'Cancel'],
+                    defaultId: 1,
+                    cancelId: 1,
+                    title: 'Re-encode Required',
+                    message: 'Container does not support the current video or audio codec.',
+                    detail: [
+                        'Perform a full re-encode (H.264 video + AAC audio)?',
+                        'This will take much longer than a simple container swap.',
+                        '',
+                        `Stage 1 error (copy all): ${copyErr.message}`,
+                        `Stage 2 error (copy video): ${audioErr.message}`
+                    ].join('\n')
+                });
 
-        // PCM 오디오는 MP4 컨테이너에서 지원되지 않음 -> AAC로 트랜스코딩
-        let audioCodec = null;
-        if (info.streams) {
-            for (const stream of info.streams) {
-                if (stream.codec_type === 'audio') {
-                    audioCodec = stream.codec_name;
-                    break;
+                if (response === 0) {
+                    // 풀 인코딩: H.264 + AAC
+                    await runFFmpeg(
+                        taskId,
+                        ['-i', inputPath, '-c:v', 'libx264', '-c:a', 'aac', '-map', '0', outputPath],
+                        duration,
+                        outputPath
+                    );
+                    return { success: true, outputPath };
+                } else {
+                    return { success: false, error: 'Re-encode cancelled by user. ' + copyErr.message };
                 }
             }
         }
-
-        const needsAudioTranscode = ext === '.mp4' && audioCodec && audioCodec.startsWith('pcm');
-
-        const args = ['-i', inputPath];
-        if (needsAudioTranscode) {
-            // 비디오는 copy, 오디오만 AAC로 재인코딩
-            args.push('-c:v', 'copy', '-c:a', 'aac', '-map', '0');
-        } else {
-            args.push('-c', 'copy', '-map', '0');
-        }
-        args.push(outputPath);
-
-        await runFFmpeg(taskId, args, duration, outputPath);
-        return { success: true, outputPath };
     } catch (err) {
         return { success: false, error: err.message };
     }

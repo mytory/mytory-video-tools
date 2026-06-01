@@ -64,12 +64,14 @@
       "gatekeeperAssess": false
     },
     "win": {
+      "icon": "build/icon.ico",
       "target": [
         "nsis"
       ],
       "artifactName": "${name}-Setup-v${version}.${ext}"
     },
     "linux": {
+      "icon": "build/icon-transparent-bg.png",
       "target": "AppImage",
       "artifactName": "${name}-v${version}.${ext}"
     }

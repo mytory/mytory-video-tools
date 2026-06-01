@@ -32,7 +32,7 @@
 自分でビルドせずにアプリを使用する場合は、以下の手順に従ってください。
 
 ### ダウンロード
-*   [GitLab Releases](リンク_入力_予定) ページにアクセスし、お使いのOSに合ったパッケージをダウンロードします。
+*   [GitLab Releases](https://gitlab.com/mytory/mytory-video-tools/-/releases) ページにアクセスし、お使いのOSに合ったパッケージをダウンロードします。
     *   **Windows:** `.exe`（インストーラー）
     *   **macOS:** `.dmg`（ディスクイメージ）
     *   **Linux:** `.AppImage`（ポータブル）

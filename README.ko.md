@@ -32,7 +32,7 @@
 프로그램을 직접 빌드하지 않고 완성된 파일을 사용하시려면 아래 절차를 따르세요.
 
 ### 다운로드
-*   [GitLab Releases](링크_입력_예정) 페이지에서 본인의 운영체제에 맞는 파일을 다운로드합니다.
+*   [GitLab Releases](https://gitlab.com/mytory/mytory-video-tools/-/releases) 페이지에서 본인의 운영체제에 맞는 파일을 다운로드합니다.
     *   **Windows:** `.exe` (설치 파일)
     *   **macOS:** `.dmg` (설치 파일)
     *   **Linux:** `.AppImage` (실행 파일)

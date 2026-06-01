@@ -32,7 +32,7 @@
 Si solo quieres usar la aplicación sin compilarla tú mismo, sigue los pasos a continuación.
 
 ### Descargar
-*   Visita la página de [GitLab Releases](enlace_por_definir) y descarga el paquete para tu sistema operativo.
+*   Visita la página de [GitLab Releases](https://gitlab.com/mytory/mytory-video-tools/-/releases) y descarga el paquete para tu sistema operativo.
     *   **Windows:** `.exe` (instalador)
     *   **macOS:** `.dmg` (imagen de disco)
     *   **Linux:** `.AppImage` (portátil)

@@ -32,7 +32,7 @@
 Jika Anda hanya ingin menggunakan aplikasi tanpa membangunnya sendiri, ikuti langkah-langkah di bawah ini.
 
 ### Unduh
-*   Kunjungi halaman [GitLab Releases](tautan_akan_diisi) dan unduh paket untuk sistem operasi Anda.
+*   Kunjungi halaman [GitLab Releases](https://gitlab.com/mytory/mytory-video-tools/-/releases) dan unduh paket untuk sistem operasi Anda.
     *   **Windows:** `.exe` (pemasang)
     *   **macOS:** `.dmg` (gambar disk)
     *   **Linux:** `.AppImage` (portabel)

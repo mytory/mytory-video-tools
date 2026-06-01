@@ -32,7 +32,7 @@
 如果您只想使用应用程序而不自行构建，请按以下步骤操作。
 
 ### 下载
-*   访问 [GitLab Releases](链接_待填写) 页面，下载您操作系统对应的安装包。
+*   访问 [GitLab Releases](https://gitlab.com/mytory/mytory-video-tools/-/releases) 页面，下载您操作系统对应的安装包。
     *   **Windows:** `.exe`（安装程序）
     *   **macOS:** `.dmg`（磁盘映像）
     *   **Linux:** `.AppImage`（便携式）

@@ -32,7 +32,7 @@
 If you just want to use the app without building it yourself, follow the steps below.
 
 ### Download
-*   Visit the [GitLab Releases](링크_입력_예정) page and download the package for your operating system.
+*   Visit the [GitLab Releases](https://gitlab.com/mytory/mytory-video-tools/-/releases) page and download the package for your operating system.
     *   **Windows:** `.exe` (installer)
     *   **macOS:** `.dmg` (disk image)
     *   **Linux:** `.AppImage` (portable)

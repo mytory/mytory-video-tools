@@ -581,7 +581,31 @@ ipcMain.handle('remux:start', async (event, { taskId, inputPath, outputPath }) =
         const info = await probeVideo(inputPath);
         const duration = parseFloat(info.format.duration || 0);
 
-        const args = ['-i', inputPath, '-c', 'copy', outputPath];
+        // 대상 컨테이너 포맷 확인
+        const ext = path.extname(outputPath).toLowerCase();
+
+        // PCM 오디오는 MP4 컨테이너에서 지원되지 않음 -> AAC로 트랜스코딩
+        let audioCodec = null;
+        if (info.streams) {
+            for (const stream of info.streams) {
+                if (stream.codec_type === 'audio') {
+                    audioCodec = stream.codec_name;
+                    break;
+                }
+            }
+        }
+
+        const needsAudioTranscode = ext === '.mp4' && audioCodec && audioCodec.startsWith('pcm');
+
+        const args = ['-i', inputPath];
+        if (needsAudioTranscode) {
+            // 비디오는 copy, 오디오만 AAC로 재인코딩
+            args.push('-c:v', 'copy', '-c:a', 'aac', '-map', '0');
+        } else {
+            args.push('-c', 'copy', '-map', '0');
+        }
+        args.push(outputPath);
+
         await runFFmpeg(taskId, args, duration, outputPath);
         return { success: true, outputPath };
     } catch (err) {

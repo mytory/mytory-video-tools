@@ -1,6 +1,6 @@
 {
   "name": "mytory-video-tool",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Unified high-performance native desktop video utilities.",
   "main": "main.js",
   "scripts": {
@@ -58,6 +58,7 @@
       "target": [
         "dmg"
       ],
+      "artifactName": "${name}-${version}-${arch}.${ext}",
       "category": "public.app-category.video",
       "hardenedRuntime": true,
       "gatekeeperAssess": false
@@ -65,10 +66,12 @@
     "win": {
       "target": [
         "nsis"
-      ]
+      ],
+      "artifactName": "${name}-Setup-${version}.${ext}"
     },
     "linux": {
-      "target": "AppImage"
+      "target": "AppImage",
+      "artifactName": "${name}-${version}.${ext}"
     }
   }
 }

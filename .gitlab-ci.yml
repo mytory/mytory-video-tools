@@ -72,12 +72,10 @@ upload:
       for f in dist/*; do
         [ -f "$f" ] || continue
         BASENAME=$(basename "$f")
-        # URL 인코딩: 공백만 %20으로 변환 (파일명에 공백 포함)
-        ENCODED=$(echo "$BASENAME" | sed 's/ /%20/g')
         echo "Uploading: $BASENAME"
         curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
              --upload-file "$f" \
-             "${PACKAGE_REGISTRY_URL}/${ENCODED}"
+             "${PACKAGE_REGISTRY_URL}/${BASENAME}"
         echo ""
       done
     - echo "Upload complete."
@@ -116,8 +114,8 @@ release:
     assets:
       links:
         - name: "Linux (AppImage)"
-          url: "${PACKAGE_REGISTRY_URL}/Mytory%20Video%20Tools-${CI_COMMIT_TAG}.AppImage"
+          url: "${PACKAGE_REGISTRY_URL}/mytory-video-tool-${CI_COMMIT_TAG}.AppImage"
         - name: "Windows (Setup)"
-          url: "${PACKAGE_REGISTRY_URL}/Mytory%20Video%20Tools%20Setup%20${CI_COMMIT_TAG}.exe"
+          url: "${PACKAGE_REGISTRY_URL}/mytory-video-tool-Setup-${CI_COMMIT_TAG}.exe"
         - name: "macOS (DMG)"
-          url: "${PACKAGE_REGISTRY_URL}/Mytory%20Video%20Tools-${CI_COMMIT_TAG}-arm64.dmg"
+          url: "${PACKAGE_REGISTRY_URL}/mytory-video-tool-${CI_COMMIT_TAG}-arm64.dmg"

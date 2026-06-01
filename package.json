@@ -58,7 +58,7 @@
       "target": [
         "dmg"
       ],
-      "artifactName": "${name}-${version}-${arch}.${ext}",
+      "artifactName": "${name}-v${version}-${arch}.${ext}",
       "category": "public.app-category.video",
       "hardenedRuntime": true,
       "gatekeeperAssess": false
@@ -67,11 +67,11 @@
       "target": [
         "nsis"
       ],
-      "artifactName": "${name}-Setup-${version}.${ext}"
+      "artifactName": "${name}-Setup-v${version}.${ext}"
     },
     "linux": {
       "target": "AppImage",
-      "artifactName": "${name}-${version}.${ext}"
+      "artifactName": "${name}-v${version}.${ext}"
     }
   }
 }

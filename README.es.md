@@ -40,7 +40,7 @@ Si solo quieres usar la aplicación sin compilarla tú mismo, sigue los pasos a 
 ### ⚠️ Advertencia de seguridad (Lea esto)
 Este programa es distribuido por un desarrollador individual y no está firmado con un certificado de firma de código de pago. La advertencia de seguridad que pueda ver **no es un defecto**. Siga las instrucciones a continuación para ejecutar la aplicación.
 
-*   **Windows:** En la advertencia azul de SmartScreen, haga clic en **[Más información]** → **[Ejecutar de todas formas]**
+*   **Windows:** En la advertencia roja de SmartScreen, haga clic en **[Más información]** → **[Ejecutar de todas formas]**
 *   **macOS:** **Haga clic derecho (o Control+clic)** en el archivo de la aplicación → Seleccione **[Abrir]** → Haga clic en **[Abrir]** nuevamente
 
 ---

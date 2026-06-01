@@ -40,7 +40,7 @@ Jika Anda hanya ingin menggunakan aplikasi tanpa membangunnya sendiri, ikuti lan
 ### ⚠️ Peringatan Keamanan (Harap Baca)
 Program ini didistribusikan oleh pengembang individu dan tidak ditandatangani dengan sertifikat penandatanganan kode berbayar. Peringatan keamanan yang mungkin Anda lihat **bukanlah cacat**. Ikuti petunjuk di bawah ini untuk menjalankan aplikasi.
 
-*   **Windows:** Pada peringatan SmartScreen biru, klik **[Info lebih lanjut]** → **[Tetap jalankan]**
+*   **Windows:** Pada peringatan SmartScreen merah, klik **[Info lebih lanjut]** → **[Tetap jalankan]**
 *   **macOS:** **Klik kanan (atau Control+klik)** file aplikasi → Pilih **[Buka]** → Klik **[Buka]** lagi
 
 ---

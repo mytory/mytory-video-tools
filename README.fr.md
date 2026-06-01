@@ -40,7 +40,7 @@ Si vous souhaitez simplement utiliser l'application sans la construire vous-mêm
 ### ⚠️ Avertissement de sécurité (À lire)
 Ce programme est distribué par un développeur individuel et n'est pas signé avec un certificat de signature de code payant. L'avertissement de sécurité que vous pourriez voir **n'est pas un défaut**. Veuillez suivre les instructions ci-dessous pour exécuter l'application.
 
-*   **Windows :** Sur l'avertissement bleu de SmartScreen, cliquez sur **[Plus d'informations]** → **[Exécuter quand même]**
+*   **Windows :** Sur l'avertissement rouge de SmartScreen, cliquez sur **[Plus d'informations]** → **[Exécuter quand même]**
 *   **macOS :** **Cliquez droit (ou Control+clic)** sur le fichier de l'application → Sélectionnez **[Ouvrir]** → Cliquez à nouveau sur **[Ouvrir]**
 
 ---

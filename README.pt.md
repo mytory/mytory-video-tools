@@ -40,7 +40,7 @@ Se você quiser apenas usar o aplicativo sem compilá-lo, siga as etapas abaixo.
 ### ⚠️ Aviso de segurança (Leia por favor)
 Este programa é distribuído por um desenvolvedor individual e não possui assinatura com certificado de código pago. O aviso de segurança que você pode ver **não é um defeito**. Siga as instruções abaixo para executar o aplicativo.
 
-*   **Windows:** No aviso azul do SmartScreen, clique em **[Mais informações]** → **[Executar assim mesmo]**
+*   **Windows:** No aviso vermelho do SmartScreen, clique em **[Mais informações]** → **[Executar assim mesmo]**
 *   **macOS:** **Clique com o botão direito (ou Control+clique)** no arquivo do aplicativo → Selecione **[Abrir]** → Clique em **[Abrir]** novamente
 
 ---

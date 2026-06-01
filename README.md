@@ -40,7 +40,7 @@ If you just want to use the app without building it yourself, follow the steps b
 ### ⚠️ Security Warning (Please Read)
 This program is distributed by an individual developer and is not signed with a paid code signing certificate. The security warning you may see is **not a defect**. Please follow the instructions below to run the application.
 
-*   **Windows:** On the blue SmartScreen warning, click **\[More info\]** → **\[Run anyway\]**
+*   **Windows:** On the red SmartScreen warning, click **\[More info\]** → **\[Run anyway\]**
 *   **macOS:** **Right-click (or Control+click)** the app file → Select **\[Open\]** → Click **\[Open\]** again
 
 ---

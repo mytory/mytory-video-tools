@@ -8,11 +8,11 @@
 
 ## 1. Fitur
 
-1. **Navigasi Tab Sidebar**: Beralih di antara 6 utilitas media inti dalam dasbor tema gelap yang ramping.
+1. **Navigasi Tab Sidebar**: Beralih di antara 7 utilitas media inti dalam dasbor tema gelap yang ramping.
 2. **Kebijakan Output Fleksibel**: Secara default, file disimpan di samping file asli dengan sufiks khusus tugas. Folder output kustom juga dapat dikonfigurasi.
 3. **Deteksi Akselerasi Perangkat Keras Otomatis**: Saat startup, aplikasi memindai GPU Anda dan memilih encoder perangkat keras optimal untuk platform Anda (Apple Silicon VideoToolbox, NVIDIA NVENC, Intel QSV, AMD AMF, dll.).
 
-### 6 Alat Inti
+### 7 Alat Inti
 
 | Alat | Deskripsi |
 |---|---|
@@ -20,6 +20,7 @@
 | 🎵 **Ekstraksi Audio** | Ekstrak trek audio tanpa kehilangan (Otomatis) atau konversi ke MP3, AAC, OGG, atau WAV. |
 | 📸 **Tangkapan Bingkai** | Tangkapan bingkai tunggal, ekstraksi batch pada interval, dan deteksi adegan otomatis dengan kontrol sensitivitas. |
 | 🔄 **Remuxer** | Konversi format kontainer cepat (MP4, MKV, MOV) tanpa encoding ulang. |
+| 🔗 **Gabungkan video** | Menggabungkan beberapa file video dengan parameter encoding identik tanpa kehilangan kualitas. Sempurna untuk menyusun ulang segmen yang dipisah. |
 | ✂️ **Pemotong Video** | Potong segmen tanpa kehilangan dengan menetapkan titik awal dan akhir. Sangat cepat. |
 | 📦 **Kompresor** | Kompres video ke ukuran file target dengan berbagai opsi codec dan kualitas. |
 

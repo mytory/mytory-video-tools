@@ -8,11 +8,11 @@
 
 ## 1. Recursos
 
-1. **Navegação por abas na barra lateral**: Alterne entre 6 utilitários de mídia principais em um painel elegante com tema escuro.
+1. **Navegação por abas na barra lateral**: Alterne entre 7 utilitários de mídia principais em um painel elegante com tema escuro.
 2. **Política de saída flexível**: Por padrão, os arquivos são salvos junto ao original com um sufixo específico da tarefa. Pastas de saída personalizadas também podem ser configuradas.
 3. **Detecção automática de aceleração de hardware**: Na inicialização, o aplicativo escaneia sua GPU e seleciona o codificador de hardware ideal para sua plataforma (Apple Silicon VideoToolbox, NVIDIA NVENC, Intel QSV, AMD AMF, etc.).
 
-### 6 Ferramentas Principais
+### 7 Ferramentas Principais
 
 | Ferramenta | Descrição |
 |---|---|
@@ -20,6 +20,7 @@
 | 🎵 **Extração de áudio** | Extrai faixas de áudio sem perdas (Automático) ou converte para MP3, AAC, OGG ou WAV. |
 | 📸 **Captura de quadros** | Captura de quadro único, extração em lote em intervalos e detecção automática de cenas com controle de sensibilidade. |
 | 🔄 **Remuxer** | Conversão rápida de formato de contêiner (MP4, MKV, MOV) sem recodificação. |
+| 🔗 **Juntar vídeos** | Concatena sem perdas vários arquivos de vídeo com parâmetros de codificação idênticos. Perfeito para remontar segmentos divididos. |
 | ✂️ **Divisor de vídeo** | Corta um segmento sem perdas definindo pontos de início e fim. Extremamente rápido. |
 | 📦 **Compressor** | Comprime vídeo para um tamanho de arquivo alvo com várias opções de codec e qualidade. |
 

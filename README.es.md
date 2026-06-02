@@ -8,11 +8,11 @@
 
 ## 1. Características
 
-1. **Navegación por pestañas en la barra lateral**: Cambia entre 6 herramientas multimedia principales en un elegante panel con tema oscuro.
+1. **Navegación por pestañas en la barra lateral**: Cambia entre 7 herramientas multimedia principales en un elegante panel con tema oscuro.
 2. **Política de salida flexible**: Por defecto, los archivos se guardan junto al original con un sufijo específico de la tarea. También se pueden configurar carpetas de salida personalizadas.
 3. **Detección automática de aceleración por hardware**: Al iniciar, la aplicación escanea tu GPU y selecciona el codificador de hardware óptimo para tu plataforma (Apple Silicon VideoToolbox, NVIDIA NVENC, Intel QSV, AMD AMF, etc.).
 
-### 6 Herramientas Principales
+### 7 Herramientas Principales
 
 | Herramienta | Descripción |
 |---|---|
@@ -20,6 +20,7 @@
 | 🎵 **Extracción de audio** | Extrae pistas de audio sin pérdida (Auto) o convierte a MP3, AAC, OGG o WAV. |
 | 📸 **Captura de fotogramas** | Captura de un solo fotograma, extracción por lotes a intervalos y detección automática de escenas con control de sensibilidad. |
 | 🔄 **Remuxer** | Conversión rápida de formato de contenedor (MP4, MKV, MOV) sin recodificación. |
+| 🔗 **Unir videos** | Concatena sin pérdidas múltiples archivos de video con parámetros de codificación idénticos. Perfecto para reensamblar segmentos divididos. |
 | ✂️ **Divisor de video** | Corta un segmento sin pérdidas estableciendo puntos de inicio y fin. Extremadamente rápido. |
 | 📦 **Compresor** | Comprime video a un tamaño de archivo objetivo con varias opciones de códec y calidad. |
 

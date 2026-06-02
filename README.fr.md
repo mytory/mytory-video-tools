@@ -8,11 +8,11 @@
 
 ## 1. Fonctionnalités
 
-1. **Navigation par onglets latéraux** : Basculez entre 6 utilitaires multimédia principaux dans un tableau de bord élégant au thème sombre.
+1. **Navigation par onglets latéraux** : Basculez entre 7 utilitaires multimédia principaux dans un tableau de bord élégant au thème sombre.
 2. **Politique de sortie flexible** : Par défaut, les fichiers sont sauvegardés à côté de l'original avec un suffixe spécifique à la tâche. Des dossiers de sortie personnalisés peuvent également être configurés.
 3. **Détection automatique de l'accélération matérielle** : Au démarrage, l'application analyse votre GPU et sélectionne l'encodeur matériel optimal pour votre plateforme (Apple Silicon VideoToolbox, NVIDIA NVENC, Intel QSV, AMD AMF, etc.).
 
-### 6 Outils Principaux
+### 7 Outils Principaux
 
 | Outil | Description |
 |---|---|
@@ -20,6 +20,7 @@
 | 🎵 **Extraction audio** | Extrait les pistes audio sans perte (Auto) ou convertit en MP3, AAC, OGG ou WAV. |
 | 📸 **Capture d'image** | Capture d'une seule image, extraction par lots à intervalles réguliers et détection automatique de scènes avec réglage de la sensibilité. |
 | 🔄 **Remuxeur** | Conversion rapide de format de conteneur (MP4, MKV, MOV) sans ré-encodage. |
+| 🔗 **Assembler les vidéos** | Concatène sans perte plusieurs fichiers vidéo avec des paramètres d'encodage identiques. Parfait pour réassembler des segments divisés. |
 | ✂️ **Coupe-vidéo** | Coupe un segment sans perte en définissant les points de début et de fin. Extrêmement rapide. |
 | 📦 **Compresseur** | Compresse une vidéo à une taille de fichier cible avec diverses options de codec et de qualité. |
 

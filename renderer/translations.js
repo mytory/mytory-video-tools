@@ -84,6 +84,17 @@ const translations = {
         id: 'Proses ffmpeg telah dihentikan.',
         hi: 'ffmpeg प्रक्रिया समाप्त कर दी गई है।',
     },
+    'Run Now': {
+        en: 'Run Now',
+        ko: '병렬 실행',
+        ja: '並列実行',
+        'zh-cn': '并行运行',
+        es: 'Ejecutar ahora',
+        pt: 'Executar agora',
+        fr: 'Exécuter maintenant',
+        id: 'Jalankan sekarang',
+        hi: 'अभी चलाएँ',
+    },
     'Cancel': {
         en: 'Cancel',
         ko: '취소',

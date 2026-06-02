@@ -1791,7 +1791,28 @@ window.dismissQueueItem = function(taskId) {
     dismissQueueItem(taskId);
 };
 
+// 대기 중인 작업을 지금 바로 병렬 실행
+window.runTaskNow = async function(taskId) {
+    const task = state.queue.find(t => t.taskId === taskId);
+    if (!task || task.status !== 'pending') return;
+    
+    task.status = 'running';
+    renderQueue();
+    
+    try {
+        await task.run();
+    } catch (err) {
+        finishQueueItem(taskId, 'error', err.message);
+    }
+};
+
 elements.queueStatus.addEventListener('click', (event) => {
+    const runNowButton = event.target.closest('.queue-runnow-btn');
+    if (runNowButton && runNowButton.dataset.taskId) {
+        window.runTaskNow(runNowButton.dataset.taskId);
+        return;
+    }
+
     const dismissButton = event.target.closest('.queue-dismiss-btn');
     if (dismissButton && dismissButton.dataset.taskId) {
         dismissQueueItem(dismissButton.dataset.taskId);
@@ -1853,7 +1874,10 @@ function renderQueue() {
                     <div class="progress-bar-fill" style="width: ${task.percent}%"></div>
                 </div>` : ''}
             </div>
-            <div>
+            <div style="display:flex; gap:6px; align-items:center;">
+                ${task.status === 'pending' ? `
+                <button class="btn queue-runnow-btn" type="button" data-task-id="${task.taskId}" style="margin:0; padding:4px 10px; font-size:0.75rem; background:rgba(100,200,100,0.2); border-color:rgba(100,200,100,0.3);">${t('Run Now', '병렬 실행')}</button>
+                ` : ''}
                 ${task.status === 'running' ? `
                 <button class="btn queue-cancel-btn" type="button" data-task-id="${task.taskId}" style="margin:0; padding:6px 12px; font-size:0.8rem; background:rgba(255,255,255,0.06);">${t('Cancel', '취소')}</button>
                 ` : `

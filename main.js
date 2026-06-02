@@ -2,6 +2,10 @@ const { app, BrowserWindow, ipcMain, dialog, nativeImage } = require('electron')
 const path = require('path');
 const fs = require('fs');
 const { spawn } = require('child_process');
+
+// EPIPE 에러 무시 (console.log 시 stdout/stderr 파이프가 끊어지는 경우 대응)
+process.stdout.on('error', () => {});
+process.stderr.on('error', () => {});
 // ASAR 환경 대응을 위한 바이너리 경로 처리
 function getExecutablePath(p) {
     if (typeof p !== 'string') return p;

@@ -2,6 +2,10 @@ const { app, BrowserWindow, ipcMain, dialog, nativeImage } = require('electron')
 const path = require('path');
 const fs = require('fs');
 const { spawn } = require('child_process');
+
+// EPIPE 에러 무시 (console.log 시 stdout/stderr 파이프가 끊어지는 경우 대응)
+process.stdout.on('error', () => {});
+process.stderr.on('error', () => {});
 // ASAR 환경 대응을 위한 바이너리 경로 처리
 function getExecutablePath(p) {
     if (typeof p !== 'string') return p;
@@ -111,7 +115,8 @@ function runFFmpeg(taskId, args, duration, outputPath) {
         console.log(`Command: ffmpeg ${args.join(' ')}`);
 
         // OS별 파일 오버라이트 대응 (-y 옵션 포함 권장)
-        const ff = spawn(ffmpegPath, ['-y', ...args]);
+        // 모든 작업에서 진행 정보가 정기적으로 출력되도록 stats_period 설정
+        const ff = spawn(ffmpegPath, ['-y', '-stats_period', '0.5', ...args]);
         activeTasks.set(taskId, ff);
 
         let stderrBuffer = '';
@@ -406,12 +411,63 @@ ipcMain.handle('speed:start', async (event, { taskId, inputPath, speed, videoCod
         const info = await probeVideo(inputPath);
         const duration = parseFloat(info.format.duration || 0);
 
+        const hasVideo = (info.streams || []).some(s => s.codec_type === 'video');
+
         const args = ['-i', inputPath];
 
-        // 비디오 필터 및 코덱 설정
-        args.push('-vf', `setpts=(1/${speed})*PTS`);
+        // 비디오 스트림이 있을 때만 비디오 필터 및 코덱 설정
+        if (hasVideo) {
+            args.push('-vf', `setpts=(1/${speed})*PTS`);
 
-        // 오디오 템포 계산
+            // 인코더 및 압축 화질 설정 (선택 코덱 + HW 적용 여부)
+            let encoder = 'libx264';
+            let qualityArgs = ['-preset', 'ultrafast', '-crf', '23'];
+
+            if (videoCodec === 'h264') {
+                if (useHw && hwEncoders.h264) {
+                    encoder = hwEncoders.h264;
+                    if (encoder.includes('videotoolbox')) {
+                        qualityArgs = ['-q:v', '50'];
+                    } else if (encoder.includes('nvenc')) {
+                        qualityArgs = ['-preset', 'p1', '-cq', '28'];
+                    } else if (encoder.includes('qsv')) {
+                        qualityArgs = ['-global_quality', '25'];
+                    }
+                } else {
+                    encoder = 'libx264';
+                    qualityArgs = ['-preset', 'ultrafast', '-crf', '23'];
+                }
+            } else if (videoCodec === 'h265') {
+                if (useHw && hwEncoders.hevc) {
+                    encoder = hwEncoders.hevc;
+                    if (encoder.includes('videotoolbox')) {
+                        qualityArgs = ['-q:v', '45'];
+                    } else if (encoder.includes('nvenc')) {
+                        qualityArgs = ['-preset', 'p1', '-cq', '30'];
+                    } else if (encoder.includes('qsv')) {
+                        qualityArgs = ['-global_quality', '28'];
+                    }
+                } else {
+                    encoder = 'libx265';
+                    qualityArgs = ['-preset', 'ultrafast', '-crf', '28'];
+                }
+            } else if (videoCodec === 'vp9') {
+                encoder = 'libvpx-vp9';
+                qualityArgs = ['-deadline', 'good', '-cpu-used', '4', '-crf', '32'];
+            } else if (videoCodec === 'av1') {
+                if (useHw && hwEncoders.av1) {
+                    encoder = hwEncoders.av1;
+                    qualityArgs = [];
+                } else {
+                    encoder = 'libsvtav1';
+                    qualityArgs = ['-preset', '8', '-crf', '35'];
+                }
+            }
+
+            args.push('-c:v', encoder, ...qualityArgs);
+        }
+
+        // 오디오 템포 계산 (비디오/오디오 모두 공통)
         let atempoChain = '';
         let tempSpeed = speed;
         while (tempSpeed > 2.0) {
@@ -430,52 +486,7 @@ ipcMain.handle('speed:start', async (event, { taskId, inputPath, speed, videoCod
             args.push('-af', atempoChain);
         }
 
-        // 인코더 및 압축 화질 설정 (선택 코덱 + HW 적용 여부)
-        let encoder = 'libx264';
-        let qualityArgs = ['-preset', 'ultrafast', '-crf', '23'];
-
-        if (videoCodec === 'h264') {
-            if (useHw && hwEncoders.h264) {
-                encoder = hwEncoders.h264;
-                if (encoder.includes('videotoolbox')) {
-                    qualityArgs = ['-q:v', '50'];
-                } else if (encoder.includes('nvenc')) {
-                    qualityArgs = ['-preset', 'p1', '-cq', '28'];
-                } else if (encoder.includes('qsv')) {
-                    qualityArgs = ['-global_quality', '25'];
-                }
-            } else {
-                encoder = 'libx264';
-                qualityArgs = ['-preset', 'ultrafast', '-crf', '23'];
-            }
-        } else if (videoCodec === 'h265') {
-            if (useHw && hwEncoders.hevc) {
-                encoder = hwEncoders.hevc;
-                if (encoder.includes('videotoolbox')) {
-                    qualityArgs = ['-q:v', '45'];
-                } else if (encoder.includes('nvenc')) {
-                    qualityArgs = ['-preset', 'p1', '-cq', '30'];
-                } else if (encoder.includes('qsv')) {
-                    qualityArgs = ['-global_quality', '28'];
-                }
-            } else {
-                encoder = 'libx265';
-                qualityArgs = ['-preset', 'ultrafast', '-crf', '28'];
-            }
-        } else if (videoCodec === 'vp9') {
-            encoder = 'libvpx-vp9';
-            qualityArgs = ['-deadline', 'good', '-cpu-used', '4', '-crf', '32'];
-        } else if (videoCodec === 'av1') {
-            if (useHw && hwEncoders.av1) {
-                encoder = hwEncoders.av1;
-                qualityArgs = [];
-            } else {
-                encoder = 'libsvtav1';
-                qualityArgs = ['-preset', '8', '-crf', '35'];
-            }
-        }
-
-        args.push('-c:v', encoder, ...qualityArgs);
+        // 오디오 코덱 설정
         args.push('-c:a', 'aac');
         args.push(outputPath);
 

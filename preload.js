@@ -12,6 +12,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     startAudioExtract: (params) => ipcRenderer.invoke('audio:start', params),
     startRemux: (params) => ipcRenderer.invoke('remux:start', params),
     startSplit: (params) => ipcRenderer.invoke('split:start', params),
+    startJoin: (params) => ipcRenderer.invoke('join:start', params),
+    joinerProbe: (inputPath) => ipcRenderer.invoke('joiner:probe', inputPath),
     
     captureSingle: (params) => ipcRenderer.invoke('capture:single', params),
     captureBatch: (params) => ipcRenderer.invoke('capture:batch', params),

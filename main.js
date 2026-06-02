@@ -352,6 +352,46 @@ ipcMain.handle('video:probe', async (event, inputPath) => {
     }
 });
 
+// 3-2. 조이너 전용 상세 프로브 (원시 ffprobe JSON 반환)
+ipcMain.handle('joiner:probe', async (event, inputPath) => {
+    try {
+        const metadata = await probeVideo(inputPath);
+        const format = metadata.format || {};
+        const videoStream = (metadata.streams || []).find(s => s.codec_type === 'video') || {};
+        const audioStream = (metadata.streams || []).find(s => s.codec_type === 'audio') || {};
+
+        // r_frame_rate를 초 단위 실수로 변환
+        let fps = 0;
+        if (videoStream.r_frame_rate) {
+            const parts = videoStream.r_frame_rate.split('/');
+            if (parts.length === 2 && parseFloat(parts[1]) > 0) {
+                fps = parseFloat(parts[0]) / parseFloat(parts[1]);
+            }
+        }
+
+        return {
+            success: true,
+            duration: parseFloat(format.duration || 0),
+            size: parseInt(format.size || 0),
+            video: videoStream.codec_name ? {
+                codec: videoStream.codec_name,
+                width: videoStream.width || 0,
+                height: videoStream.height || 0,
+                pix_fmt: videoStream.pix_fmt || '',
+                fps: fps,
+                r_frame_rate: videoStream.r_frame_rate || '0/1',
+            } : null,
+            audio: audioStream.codec_name ? {
+                codec: audioStream.codec_name,
+                sample_rate: audioStream.sample_rate || 0,
+                channels: audioStream.channels || 0,
+            } : null,
+        };
+    } catch (err) {
+        return { success: false, error: err.message };
+    }
+});
+
 // 4. 태스크 취소 — SIGTERM 후 일정 시간 내 종료되지 않으면 SIGKILL
 ipcMain.handle('task:cancel', async (event, taskId) => {
     const proc = activeTasks.get(taskId);
@@ -679,7 +719,38 @@ ipcMain.handle('split:start', async (event, { taskId, inputPath, startTime, endT
     }
 });
 
-// 9. 프레임 캡처: 단일 프레임
+// 9. 영상 합치기 (Video Joiner)
+ipcMain.handle('join:start', async (event, { taskId, inputPaths, outputPath, totalDuration }) => {
+    try {
+
+        // Create concat file list
+        const listContent = inputPaths.map(p => {
+            const escaped = p.replace(/'/g, "'\\''");
+            return `file '${escaped}'`;
+        }).join('\n');
+
+        const tmpFile = path.join(app.getPath('temp'), `concat_list_${Date.now()}.txt`);
+        fs.writeFileSync(tmpFile, listContent, 'utf-8');
+
+        try {
+            await runFFmpeg(taskId, [
+                '-f', 'concat',
+                '-safe', '0',
+                '-i', tmpFile,
+                '-c', 'copy',
+                outputPath
+            ], totalDuration, outputPath);
+            return { success: true, outputPath };
+        } finally {
+            // Clean up temp file
+            try { fs.unlinkSync(tmpFile); } catch (_) {}
+        }
+    } catch (err) {
+        return { success: false, error: err.message };
+    }
+});
+
+// 10. 프레임 캡처: 단일 프레임
 ipcMain.handle('capture:single', async (event, { inputPath, timestamp, format, outputPath }) => {
     try {
         const ext = format === 'image/png' ? 'png' : format === 'image/webp' ? 'webp' : 'jpg';
@@ -703,7 +774,7 @@ ipcMain.handle('capture:single', async (event, { inputPath, timestamp, format, o
     }
 });
 
-// 10. 프레임 캡처: 일정 간격(Batch)
+// 11. 프레임 캡처: 일정 간격(Batch)
 ipcMain.handle('capture:batch', async (event, { taskId, inputPath, startTime, endTime, interval, format, outputDir, baseName }) => {
     try {
         const startSec = timecodeToSeconds(startTime);
@@ -730,7 +801,7 @@ ipcMain.handle('capture:batch', async (event, { taskId, inputPath, startTime, en
     }
 });
 
-// 11. 프레임 캡처: 장면 감지 (Scene Detection)
+// 12. 프레임 캡처: 장면 감지 (Scene Detection)
 ipcMain.handle('capture:scene-detect', async (event, { taskId, inputPath, threshold }) => {
     try {
         const info = await probeVideo(inputPath);
@@ -827,7 +898,7 @@ function cleanupSubProcesses(procList) {
     }, 2000);
 }
 
-// 12. 추출된 장면 프레임들을 개별 이미지로 일괄 내보내기
+// 13. 추출된 장면 프레임들을 개별 이미지로 일괄 내보내기
 ipcMain.handle('capture:export-scenes', async (event, { taskId, inputPath, timestamps, format, outputDir, baseName }) => {
     const subProcesses = [];
     let cancelled = false;

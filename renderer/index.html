@@ -50,6 +50,10 @@
                 <span class="icon">✂️</span>
                 <span class="label" data-mi18n-ko="비디오 분할기" data-mi18n-ja="動画分割" data-mi18n-zh-cn="视频分割" data-mi18n-es="Divisor de video" data-mi18n-pt="Divisor de vídeo" data-mi18n-fr="Coupe-vidéo" data-mi18n-id="Pemotong video" data-mi18n-hi="वीडियो विभाजक">Video Splitter</span>
             </button>
+            <button class="nav-item" data-tab="joiner">
+                <span class="icon">🔗</span>
+                <span class="label" data-mi18n-ko="영상 합치기" data-mi18n-ja="動画結合" data-mi18n-zh-cn="视频合并" data-mi18n-es="Unir videos" data-mi18n-pt="Juntar vídeos" data-mi18n-fr="Assembler les vidéos" data-mi18n-id="Gabungkan video" data-mi18n-hi="वीडियो जोड़ें">Video Joiner</span>
+            </button>
             <button class="nav-item" data-tab="settings">
                 <span class="icon">⚙️</span>
                 <span class="label" data-mi18n-ko="설정" data-mi18n-ja="設定" data-mi18n-zh-cn="设置" data-mi18n-es="Configuración" data-mi18n-pt="Configurações" data-mi18n-fr="Paramètres" data-mi18n-id="Pengaturan" data-mi18n-hi="सेटिंग्स">Settings</span>
@@ -497,7 +501,40 @@
             </div>
         </section>
 
-        <!-- 2.6 환경 설정 화면 -->
+        <!-- 2.6 영상 합치기 화면 -->
+        <section id="joiner" class="tab-content">
+            <h2 data-mi18n-ko="영상 합치기" data-mi18n-ja="動画結合" data-mi18n-zh-cn="视频合并" data-mi18n-es="Unir videos" data-mi18n-pt="Juntar vídeos" data-mi18n-fr="Assembler les vidéos" data-mi18n-id="Gabungkan video" data-mi18n-hi="वीडियो जोड़ें">Video Joiner</h2>
+            <p class="tab-desc" data-mi18n-ko="여러 동영상 파일을 하나로 초고속 합칩니다. 모든 파일의 코덱/해상도/프레임이 동일해야 합니다." data-mi18n-ja="複数の動画ファイルを1つに高速結合します。すべてのファイルのコーデック・解像度・フレームレートが同一である必要があります。" data-mi18n-zh-cn="快速合并多个视频文件。所有文件的编解码器、分辨率、帧率必须相同。" data-mi18n-es="Une varios archivos de video en uno a alta velocidad. Todos los archivos deben tener el mismo códec, resolución y fotogramas." data-mi18n-pt="Junta vários arquivos de vídeo em um só em alta velocidade. Todos os arquivos devem ter o mesmo codec, resolução e quadros." data-mi18n-fr="Assemblez plusieurs fichiers vidéo en un seul à grande vitesse. Tous les fichiers doivent avoir le même codec, résolution et images." data-mi18n-id="Gabungkan beberapa file video menjadi satu dengan kecepatan tinggi. Semua file harus memiliki codec, resolusi, dan frame yang sama." data-mi18n-hi="एकाधिक वीडियो फ़ाइलों को एक में तेज़ी से जोड़ें। सभी फ़ाइलों का कोडेक, रिज़ॉल्यूशन और फ्रेम समान होना चाहिए।">
+                Quickly join multiple video files into one. All files must have identical codec, resolution, and frame rate.
+            </p>
+
+            <div class="card card-panel">
+                <div class="joiner-file-list" id="joinerFileList">
+                    <div class="joiner-empty" id="joinerEmpty">
+                        <span data-mi18n-ko="동영상 파일을 여기에 끌어다 놓거나, 아래 버튼으로 추가하세요." data-mi18n-ja="動画ファイルをここにドラッグ＆ドロップするか、下のボタンで追加してください。" data-mi18n-zh-cn="将视频文件拖放到此处，或通过下方按钮添加。" data-mi18n-es="Arrastre y suelte archivos de video aquí, o agréguelos con el botón de abajo." data-mi18n-pt="Arraste arquivos de vídeo para cá ou adicione-os com o botão abaixo." data-mi18n-fr="Glissez-déposez les fichiers vidéo ici, ou ajoutez-les avec le bouton ci-dessous." data-mi18n-id="Seret dan lepas file video ke sini, atau tambahkan dengan tombol di bawah." data-mi18n-hi="वीडियो फ़ाइलों को यहाँ खींचें और छोड़ें, या नीचे दिए गए बटन से जोड़ें।">Drag and drop video files here, or add them with the button below.</span>
+                    </div>
+                </div>
+
+                <div class="joiner-controls">
+                    <div class="joiner-controls__left">
+                        <button id="btnJoinerAddFiles" class="btn">
+                            <span data-mi18n-ko="파일 추가" data-mi18n-ja="ファイル追加" data-mi18n-zh-cn="添加文件" data-mi18n-es="Agregar archivos" data-mi18n-pt="Adicionar arquivos" data-mi18n-fr="Ajouter des fichiers" data-mi18n-id="Tambah file" data-mi18n-hi="फ़ाइलें जोड़ें">+ Add Files</span>
+                        </button>
+                        <button id="btnJoinerSort" class="btn btn--secondary">
+                            <span data-mi18n-ko="파일명순 정렬" data-mi18n-ja="ファイル名順に並べ替え" data-mi18n-zh-cn="按文件名排序" data-mi18n-es="Ordenar por nombre" data-mi18n-pt="Ordenar por nome" data-mi18n-fr="Trier par nom" data-mi18n-id="Urutkan berdasarkan nama" data-mi18n-hi="नाम के अनुसार क्रमबद्ध करें">Sort by Name</span>
+                        </button>
+                    </div>
+                    <div class="joiner-controls__right">
+                        <div id="joinerCompatibility" class="joiner-compatibility"></div>
+                        <button id="btnJoinerJoin" class="btn btn--primary" disabled>
+                            <span data-mi18n-ko="초고속 합치기" data-mi18n-ja="高速結合" data-mi18n-zh-cn="快速合并" data-mi18n-es="Unir rápidamente" data-mi18n-pt="Juntar rapidamente" data-mi18n-fr="Assembler rapidement" data-mi18n-id="Gabungkan cepat" data-mi18n-hi="तेज़ी से जोड़ें">Join Videos</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2.7 환경 설정 화면 -->
         <section id="settings" class="tab-content">
             <h2 data-mi18n-ko="환경 설정" data-mi18n-ja="アプリ設定" data-mi18n-zh-cn="应用设置" data-mi18n-es="Configuración de la aplicación" data-mi18n-pt="Configurações do aplicativo" data-mi18n-fr="Paramètres de l'application" data-mi18n-id="Pengaturan aplikasi" data-mi18n-hi="एप्लिकेशन सेटिंग्स">Application Settings</h2>
             <p class="tab-desc" data-mi18n-ko="앱 동작 환경 및 저장 위치를 관리합니다." data-mi18n-ja="設定と出力保存先を管理します。" data-mi18n-zh-cn="管理配置和输出存储。" data-mi18n-es="Administre configuraciones y almacenamiento de salida." data-mi18n-pt="Gerencie configurações e armazenamento de saída." data-mi18n-fr="Gérez les configurations et le stockage de sortie." data-mi18n-id="Kelola konfigurasi dan penyimpanan output." data-mi18n-hi="कॉन्फ़िगरेशन और आउटपुट स्टोरेज प्रबंधित करें।">

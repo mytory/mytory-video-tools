@@ -29,6 +29,9 @@ const state = {
     splitStartTime: 0,
     splitEndTime: 0,
     
+    // 영상 합치기 상태
+    joinerFiles: [], // [{ path, name, size, probe }], sorted by user order
+    
     // 작업 큐 목록
     queue: [] // { taskId, type, name, status, percent, speed, eta }
 };
@@ -128,6 +131,15 @@ const elements = {
     // 비디오 분할 관련
     splitDropzone: document.getElementById('splitDropzone'),
     splitFileInput: document.getElementById('splitFileInput'),
+
+    // 영상 합치기 관련
+    joinerFileList: document.getElementById('joinerFileList'),
+    joinerEmpty: document.getElementById('joinerEmpty'),
+    btnJoinerAddFiles: document.getElementById('btnJoinerAddFiles'),
+    btnJoinerSort: document.getElementById('btnJoinerSort'),
+    btnJoinerJoin: document.getElementById('btnJoinerJoin'),
+    joinerCompatibility: document.getElementById('joinerCompatibility'),
+    joinerFileInput: null, // 동적으로 생성
     splitEditor: document.getElementById('splitEditor'),
     splitVideo: document.getElementById('splitVideo'),
     splitTimecode: document.getElementById('splitTimecode'),
@@ -416,6 +428,7 @@ async function initApp() {
     setupRemuxer();
     setupSplitter();
     setupEditorKeyboardShortcuts();
+    setupJoiner();
 
     // 창을 닫거나 페이지를 떠날 때 모든 실행 중인 작업 취소
     window.addEventListener('beforeunload', async () => {
@@ -433,6 +446,10 @@ async function initApp() {
     let dragCounter = 0;
 
     document.addEventListener('dragenter', (e) => {
+        // 내부 드래그(파일 없음)는 무시 — 조이너 재정렬 등
+        if (!e.dataTransfer.types || !Array.from(e.dataTransfer.types).includes('Files')) {
+            return;
+        }
         e.preventDefault();
         dragCounter++;
         if (dragCounter === 1) {
@@ -441,6 +458,9 @@ async function initApp() {
     });
 
     document.addEventListener('dragleave', (e) => {
+        if (!e.dataTransfer.types || !Array.from(e.dataTransfer.types).includes('Files')) {
+            return;
+        }
         e.preventDefault();
         dragCounter--;
         if (dragCounter === 0) {
@@ -449,6 +469,9 @@ async function initApp() {
     });
 
     document.addEventListener('dragover', (e) => {
+        if (!e.dataTransfer.types || !Array.from(e.dataTransfer.types).includes('Files')) {
+            return;
+        }
         e.preventDefault();
     });
 
@@ -468,6 +491,7 @@ async function initApp() {
             'frame-capture': elements.captureDropzone,
             'remuxer': elements.remuxDropzone,
             'splitter': elements.splitDropzone,
+            'joiner': elements.joinerFileList,
         };
         const dz = dzMap[active];
         if (!dz) return; // settings 등 드롭 불가 탭
@@ -496,6 +520,10 @@ async function initApp() {
             case 'splitter':
                 showDropReceivedFeedback(dz, dt.files.length);
                 await loadVideoForSplit(dt.files[0]);
+                break;
+            case 'joiner':
+                showDropReceivedFeedback(dz, dt.files.length);
+                await processJoinerFiles(dt.files);
                 break;
         }
     });
@@ -1713,6 +1741,357 @@ function timecodeToSeconds(tc) {
         }
     }
     return sec;
+}
+
+// ===== Video Joiner =====
+function setupJoiner() {
+    // Hidden file input for add files button
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'video/*';
+    fileInput.multiple = true;
+    fileInput.style.display = 'none';
+    fileInput.id = 'joinerFileInput';
+    elements.joinerFileList.parentNode.appendChild(fileInput);
+    elements.joinerFileInput = fileInput;
+
+    elements.btnJoinerAddFiles.addEventListener('click', () => {
+        fileInput.value = '';
+        fileInput.click();
+    });
+
+    fileInput.addEventListener('change', async (e) => {
+        if (e.target.files.length > 0) {
+            await processJoinerFiles(e.target.files);
+        }
+    });
+
+    elements.btnJoinerSort.addEventListener('click', () => {
+        state.joinerFiles.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
+        renderJoinerQueue();
+    });
+
+    elements.btnJoinerJoin.addEventListener('click', runJoinerJoin);
+}
+
+async function processJoinerFiles(files) {
+    const list = normalizeNativeFiles(files);
+    if (list.length === 0) return;
+
+    // Probe each file for metadata
+    const newFiles = [];
+    for (const file of list) {
+        try {
+            const result = await window.electronAPI.joinerProbe(file.path);
+            if (!result.success) {
+                throw new Error(result.error || 'Probe failed');
+            }
+            newFiles.push({
+                path: file.path,
+                name: file.name,
+                size: result.size || file.size,
+                probe: {
+                    duration: result.duration || 0,
+                    video: result.video || null,
+                    audio: result.audio || null,
+                }
+            });
+        } catch (err) {
+            console.error('Failed to probe file:', file.name, err);
+            showToast(
+                t('Probe Failed', '파일 분석 실패'),
+                `${file.name}: ${err.message}`,
+                'error'
+            );
+        }
+    }
+
+    if (newFiles.length === 0) {
+        clearDropReceivedFeedback();
+        return;
+    }
+
+    const existing = state.joinerFiles;
+    const isEmpty = existing.length === 0;
+
+    if (isEmpty) {
+        // First batch: sort by filename
+        newFiles.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
+        state.joinerFiles = newFiles;
+    } else {
+        // Subsequent additions: append at end
+        state.joinerFiles = [...existing, ...newFiles];
+    }
+
+    clearDropReceivedFeedback();
+    renderJoinerQueue();
+}
+
+function renderJoinerQueue() {
+    const container = elements.joinerFileList;
+    const files = state.joinerFiles;
+
+    // Show/hide empty state
+    elements.joinerEmpty.style.display = files.length === 0 ? 'flex' : 'none';
+
+    // Remove existing file rows (keep empty state)
+    const existingRows = container.querySelectorAll('.joiner-file-row');
+    existingRows.forEach(el => el.remove());
+
+    if (files.length === 0) {
+        elements.btnJoinerJoin.disabled = true;
+        elements.joinerCompatibility.textContent = '';
+        elements.joinerCompatibility.className = 'joiner-compatibility';
+        return;
+    }
+
+    // Check compatibility
+    const compatibility = checkJoinerCompatibility();
+
+    // Render each file row
+    files.forEach((file, index) => {
+        const row = document.createElement('div');
+        row.className = 'joiner-file-row';
+        row.draggable = true;
+        row.dataset.index = index;
+
+        const v = file.probe.video;
+        const a = file.probe.audio;
+
+        // Frame rate display
+        const fpsValue = calcFps(v);
+        const fpsDisplay = fpsValue > 0 ? fpsValue.toFixed(2) + ' fps' : '';
+
+        // Check which fields are incompatible for this file
+        const fileIssues = compatibility.issues.filter(issue => issue.index === index);
+        const isIncompatible = fileIssues.length > 0;
+
+        row.innerHTML = `
+            <div class="joiner-file-row__order">${index + 1}</div>
+            <div class="joiner-file-row__info">
+                <div class="joiner-file-row__name">${escapeHtml(file.name)}</div>
+                <div class="joiner-file-row__meta">
+                    ${v ? `<span class="joiner-file-row__meta-item ${isIncompatible && fileIssues.some(i => i.field === 'resolution') ? 'incompatible' : ''}">${v.width}×${v.height}</span>` : ''}
+                    ${v ? `<span class="joiner-file-row__meta-item ${isIncompatible && fileIssues.some(i => i.field === 'video_codec') ? 'incompatible' : ''}">${v.codec.toUpperCase()}</span>` : ''}
+                    ${fpsDisplay ? `<span class="joiner-file-row__meta-item ${isIncompatible && fileIssues.some(i => i.field === 'frame_rate') ? 'incompatible' : ''}">${fpsDisplay}</span>` : ''}
+                    ${a ? `<span class="joiner-file-row__meta-item ${isIncompatible && fileIssues.some(i => i.field === 'audio_codec') ? 'incompatible' : ''}">${a.codec.toUpperCase()}</span>` : ''}
+                    ${a && a.sample_rate ? `<span class="joiner-file-row__meta-item ${isIncompatible && fileIssues.some(i => i.field === 'sample_rate') ? 'incompatible' : ''}">${a.sample_rate} Hz</span>` : ''}
+                    ${a && a.channels ? `<span class="joiner-file-row__meta-item ${isIncompatible && fileIssues.some(i => i.field === 'channels') ? 'incompatible' : ''}">${a.channels === 1 ? 'Mono' : a.channels === 2 ? 'Stereo' : a.channels + 'ch'}</span>` : ''}
+                    <span class="joiner-file-row__meta-item">${formatFileSize(file.size)}</span>
+                    <span class="joiner-file-row__meta-item">${secondsToTimecode(file.probe.duration)}</span>
+                </div>
+            </div>
+            <div class="joiner-file-row__remove" title="Remove">✕</div>
+        `;
+
+        // Remove button
+        row.querySelector('.joiner-file-row__remove').addEventListener('click', () => {
+            state.joinerFiles.splice(index, 1);
+            renderJoinerQueue();
+        });
+
+        // Drag reorder
+        setupJoinerDragReorder(row, index);
+
+        container.appendChild(row);
+    });
+
+    // Update join button & compatibility status
+    const canJoin = compatibility.ok;
+    elements.btnJoinerJoin.disabled = !canJoin;
+    const compatEl = elements.joinerCompatibility;
+
+    if (files.length < 2) {
+        compatEl.textContent = '⚠️ ' + t('Need at least 2 files', '최소 2개의 파일이 필요합니다');
+        compatEl.className = 'joiner-compatibility error';
+        elements.btnJoinerJoin.disabled = true;
+    } else if (canJoin) {
+        compatEl.textContent = '✅ ' + t('All files are compatible', '모든 파일이 조건에 맞습니다');
+        compatEl.className = 'joiner-compatibility ok';
+    } else {
+        // Show first issue
+        const firstIssue = compatibility.issues[0];
+        compatEl.textContent = '❌ ' + firstIssue.message;
+        compatEl.className = 'joiner-compatibility error';
+    }
+}
+
+function setupJoinerDragReorder(row, index) {
+    let dragSrcIndex = null;
+
+    row.addEventListener('dragstart', (e) => {
+        dragSrcIndex = index;
+        row.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', String(index));
+    });
+
+    row.addEventListener('dragend', () => {
+        row.classList.remove('dragging');
+        document.querySelectorAll('.joiner-file-row').forEach(r => r.classList.remove('drag-over'));
+    });
+
+    row.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        document.querySelectorAll('.joiner-file-row').forEach(r => r.classList.remove('drag-over'));
+        row.classList.add('drag-over');
+    });
+
+    row.addEventListener('dragleave', () => {
+        row.classList.remove('drag-over');
+    });
+
+    row.addEventListener('drop', (e) => {
+        e.preventDefault();
+        row.classList.remove('drag-over');
+        const fromIndex = parseInt(e.dataTransfer.getData('text/plain'), 10);
+        if (isNaN(fromIndex) || fromIndex === index) return;
+
+        const files = state.joinerFiles;
+        const [moved] = files.splice(fromIndex, 1);
+        files.splice(index, 0, moved);
+        renderJoinerQueue();
+    });
+}
+
+function calcFps(video) {
+    if (!video) return 0;
+    if (video.fps) return video.fps;
+    if (video.r_frame_rate && video.r_frame_rate !== '0/1') {
+        const parts = video.r_frame_rate.split('/');
+        if (parts.length === 2 && parseFloat(parts[1]) > 0) {
+            return parseFloat(parts[0]) / parseFloat(parts[1]);
+        }
+    }
+    return 0;
+}
+
+function checkJoinerCompatibility() {
+    const files = state.joinerFiles;
+    const issues = [];
+
+    if (files.length < 2) {
+        return { ok: false, issues: [] };
+    }
+
+    const ref = files[0].probe;
+    if (!ref.video) {
+        return { ok: false, issues: [{ index: 0, field: 'video', message: 'First file has no video stream' }] };
+    }
+
+    for (let i = 1; i < files.length; i++) {
+        const file = files[i];
+        const p = file.probe;
+
+        // Video checks
+        if (!p.video) {
+            issues.push({ index: i, field: 'video', message: `${file.name}: No video stream` });
+            continue;
+        }
+        if (p.video.codec !== ref.video.codec) {
+            issues.push({ index: i, field: 'video_codec', message: `${file.name}: Video codec mismatch (${p.video.codec} ≠ ${ref.video.codec})` });
+        }
+        if (p.video.width !== ref.video.width || p.video.height !== ref.video.height) {
+            issues.push({ index: i, field: 'resolution', message: `${file.name}: Resolution mismatch (${p.video.width}×${p.video.height} ≠ ${ref.video.width}×${ref.video.height})` });
+        }
+        if (p.video.pix_fmt && ref.video.pix_fmt && p.video.pix_fmt !== ref.video.pix_fmt) {
+            issues.push({ index: i, field: 'pix_fmt', message: `${file.name}: Pixel format mismatch (${p.video.pix_fmt} ≠ ${ref.video.pix_fmt})` });
+        }
+        // fps를 실수로 변환하여 비교 (r_frame_rate 문자열 직접 비교는
+        // 30000/1001 ≈ 30/1 같은 경우를 걸러내기 위해)
+        const thisFps = calcFps(p.video);
+        const refFps = calcFps(ref.video);
+        if (Math.abs(thisFps - refFps) > 0.1) {
+            issues.push({ index: i, field: 'frame_rate', message: `${file.name}: Frame rate mismatch (${thisFps.toFixed(2)} fps ≠ ${refFps.toFixed(2)} fps)` });
+        }
+
+        // Audio checks (only if both files have audio)
+        if (ref.audio && p.audio) {
+            if (p.audio.codec !== ref.audio.codec) {
+                issues.push({ index: i, field: 'audio_codec', message: `${file.name}: Audio codec mismatch (${p.audio.codec} ≠ ${ref.audio.codec})` });
+            }
+            if (p.audio.sample_rate && ref.audio.sample_rate && Number(p.audio.sample_rate) !== Number(ref.audio.sample_rate)) {
+                issues.push({ index: i, field: 'sample_rate', message: `${file.name}: Sample rate mismatch (${p.audio.sample_rate} ≠ ${ref.audio.sample_rate})` });
+            }
+            if (p.audio.channels && ref.audio.channels && Number(p.audio.channels) !== Number(ref.audio.channels)) {
+                issues.push({ index: i, field: 'channels', message: `${file.name}: Audio channels mismatch (${p.audio.channels} ≠ ${ref.audio.channels})` });
+            }
+        } else if (ref.audio && !p.audio) {
+            issues.push({ index: i, field: 'audio', message: `${file.name}: Missing audio stream (reference has audio)` });
+        } else if (!ref.audio && p.audio) {
+            issues.push({ index: i, field: 'audio', message: `${file.name}: Has extra audio stream (reference has no audio)` });
+        }
+    }
+
+    // If there are issues, also mark the reference as incompatible for display purposes
+    // (so the user can see which field the first file sets as reference)
+
+    return { ok: issues.length === 0, issues };
+}
+
+function formatFileSize(bytes) {
+    if (!bytes) return '';
+    const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+    let i = 0;
+    let size = bytes;
+    while (size >= 1024 && i < units.length - 1) {
+        size /= 1024;
+        i++;
+    }
+    return size.toFixed(i > 0 ? 1 : 0) + ' ' + units[i];
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+async function runJoinerJoin() {
+    const files = state.joinerFiles;
+    if (files.length < 2) return;
+
+    const firstFile = files[0];
+
+    // Resolve output path: same folder as first file, with _joined suffix
+    const basePath = getResolvedOutputPath(firstFile.path, '_joined', 'mp4');
+    const outputPath = await window.electronAPI.resolveUniquePath(basePath);
+
+    const taskId = 'join_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
+
+    const totalDuration = files.reduce((sum, f) => sum + f.probe.duration, 0);
+
+    const task = {
+        taskId,
+        type: t('Video Joiner', '영상 합치기'),
+        name: `${t('Joining {n} files', '{n}개 파일 합치는 중').replace('{n}', files.length)} → ${outputPath.split(/[\\/]/).pop()}`,
+        status: 'pending',
+        percent: 0,
+        speed: '0.0x',
+        run: async () => {
+            const result = await window.electronAPI.startJoin({
+                taskId,
+                inputPaths: files.map(f => f.path),
+                outputPath,
+                totalDuration
+            });
+
+            if (result.success) {
+                finishQueueItem(taskId, 'done');
+                showToast(t('Join Complete', '합치기 완료'), outputPath.split(/[\\/]/).pop());
+                // Clear the joiner queue after successful join
+                state.joinerFiles = [];
+                renderJoinerQueue();
+            } else {
+                finishQueueItem(taskId, 'error', result.error);
+                showToast(t('Join Failed', '합치기 실패'), result.error, 'error');
+            }
+        }
+    };
+
+    addQueueItem(task);
+    processQueueDispatcher();
 }
 
 // 4. 대기열 UI 관리 함수들

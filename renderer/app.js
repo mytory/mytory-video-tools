@@ -575,14 +575,21 @@ async function processSpeedFiles(files) {
     const tasks = await Promise.all(list.map(async file => {
         const taskId = 'speed_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
         const useHw = elements.hwAccelCheck.checked;
-        const encoderMeta = resolveSpeedEncoderMeta(state.speedCodec, useHw);
-        const basePath = getResolvedOutputPath(file.path, `_speed_${state.speed.toFixed(2)}x`);
+        const isAudio = isAudioExtension(file.path);
+        // 오디오 전용 파일은 m4a로 출력, 비디오는 원본 확장자 유지
+        const basePath = isAudio
+            ? getResolvedOutputPath(file.path, `_speed_${state.speed.toFixed(2)}x`, 'm4a')
+            : getResolvedOutputPath(file.path, `_speed_${state.speed.toFixed(2)}x`);
         const outputPath = await window.electronAPI.resolveUniquePath(basePath);
+        const encoderMeta = isAudio
+            ? { label: t('Speed change with pitch preserved (audio)', '음성 피치 유지 배속 변환 (오디오)'), encoder: 'aac' }
+            : resolveSpeedEncoderMeta(state.speedCodec, useHw);
         return {
             taskId,
             file,
             useHw,
             encoderMeta,
+            isAudio,
             outputPath
         };
     }));
@@ -621,7 +628,10 @@ async function processSpeedFiles(files) {
         if (result.success) {
             finishQueueItem(task.taskId, 'done');
             elements.statDone.textContent = parseInt(elements.statDone.textContent) + 1;
-            showToast(t('Conversion Complete', '인코딩 완료'), `${task.file.name} -> ${state.speed.toFixed(2)}x, ${task.encoderMeta.label}`);
+            const label = task.isAudio
+                ? `${state.speed.toFixed(2)}x ${t('audio speed change', '오디오 배속')}`
+                : `${state.speed.toFixed(2)}x, ${task.encoderMeta.label}`;
+            showToast(t('Conversion Complete', '인코딩 완료'), `${task.file.name} -> ${label}`);
         } else {
             finishQueueItem(task.taskId, 'error', result.error);
             showToast(t('Conversion Failed', '인코딩 실패'), `${task.file.name}: ${result.error}`, 'error');
@@ -1645,6 +1655,13 @@ function getFileBaseName(filePath) {
 function getFileExtension(filePath) {
     const dotIdx = filePath.lastIndexOf('.');
     return dotIdx > 0 ? filePath.substring(dotIdx + 1) : '';
+}
+
+// 오디오 전용 파일 확장자인지 확인
+function isAudioExtension(filePath) {
+    const audioExts = ['mp3', 'wav', 'ogg', 'flac', 'aac', 'm4a', 'wma', 'opus'];
+    const ext = getFileExtension(filePath).toLowerCase();
+    return audioExts.includes(ext);
 }
 
 // 3. 시간 변환 포맷 가공 (초 -> HH:MM:SS:FF)

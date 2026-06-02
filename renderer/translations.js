@@ -306,6 +306,28 @@ const translations = {
         id: 'Menggunakan encoding perangkat keras Apple: HEVC VideoToolbox',
         hi: 'Apple हार्डवेयर एन्कोडिंग का उपयोग: HEVC VideoToolbox',
     },
+    'Speed change with pitch preserved (audio)': {
+        en: 'Speed change with pitch preserved (audio)',
+        ko: '음성 피치 유지 배속 변환 (오디오)',
+        ja: '音程を保持した速度変換（オーディオ）',
+        'zh-cn': '保持音调的速度变化（音频）',
+        es: 'Cambio de velocidad con tono preservado (audio)',
+        pt: 'Mudança de velocidade com tom preservado (áudio)',
+        fr: 'Changement de vitesse avec préservation de la hauteur (audio)',
+        id: 'Perubahan kecepatan dengan nada dipertahankan (audio)',
+        hi: 'पिच संरक्षित के साथ गति परिवर्तन (ऑडियो)',
+    },
+    'audio speed change': {
+        en: 'audio speed change',
+        ko: '오디오 배속',
+        ja: 'オーディオ速度変換',
+        'zh-cn': '音频速度变化',
+        es: 'cambio de velocidad de audio',
+        pt: 'mudança de velocidade de áudio',
+        fr: 'changement de vitesse audio',
+        id: 'perubahan kecepatan audio',
+        hi: 'ऑडियो गति परिवर्तन',
+    },
 
     // --- Compressor ---
     'Compression Complete': {

@@ -32,9 +32,9 @@
 यदि आप एप्लिकेशन को स्वयं बनाए बिना उपयोग करना चाहते हैं, तो नीचे दिए गए चरणों का पालन करें।
 
 ### डाउनलोड
-*   [GitLab Releases](https://gitlab.com/mytory/mytory-video-tools/-/releases) पेज पर जाएँ और अपने ऑपरेटिंग सिस्टम के लिए पैकेज डाउनलोड करें।
+*   [GitHub Releases](https://github.com/mytory/mytory-video-tools/releases) पेज पर जाएँ और अपने ऑपरेटिंग सिस्टम के लिए पैकेज डाउनलोड करें।
     *   **Windows:** `.exe` (इंस्टॉलर)
-    *   **macOS:** `.dmg` (डिस्क इमेज)
+    *   **macOS:** `.dmg` (डिस्क इमेज) — Intel (x64) / Apple Silicon (arm64)
     *   **Linux:** `.AppImage` (पोर्टेबल)
 
 ### ⚠️ सुरक्षा चेतावनी (कृपया पढ़ें)
@@ -76,7 +76,7 @@ npm run dist
     ```env
     CSC_NAME="Apple Development: my-email@test.com (XXXXJ356NG)"
     ```
-* `.gitlab-ci.yml` में `CSC_LINK` / `CSC_KEY_PASSWORD` GitLab CI वातावरण में P12-आधारित हस्ताक्षर के लिए उपयोग किए जाते हैं।
+* `.github/workflows/release.yml` में `CSC_LINK` / `CSC_KEY_PASSWORD` GitHub Actions वातावरण में P12-आधारित हस्ताक्षर के लिए उपयोग किए जाते हैं।
 
 ---
 
@@ -87,7 +87,7 @@ npm run dist
 ├── package.json          # npm पैकेज और बिल्ड कॉन्फ़िग
 ├── main.js               # Electron मुख्य प्रक्रिया
 ├── preload.js            # कॉन्टेक्स्ट आइसोलेशन प्रीलोड स्क्रिप्ट
-├── .gitlab-ci.yml        # GitLab CI/CD मल्टी-प्लेटफ़ॉर्म बिल्ड कॉन्फ़िग
+├── .github/workflows/   # GitHub Actions CI/CD वर्कफ़्लो
 ├── README.md             # प्रोजेक्ट दस्तावेज़ीकरण (अंग्रेज़ी)
 ├── README.ko.md          # प्रोजेक्ट दस्तावेज़ीकरण (कोरियाई)
 ├── README.ja.md          # प्रोजेक्ट दस्तावेज़ीकरण (जापानी)
@@ -126,4 +126,4 @@ npm run dist
 
 *   **Email:** [mail@mytory.net](mailto:mail@mytory.net)
 *   **Blog:** [https://mytory.net](https://mytory.net)
-*   **GitHub/GitLab:** [@mytory](https://github.com/mytory)
+*   **GitHub:** [@mytory](https://github.com/mytory)

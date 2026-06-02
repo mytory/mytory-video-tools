@@ -32,9 +32,9 @@
 Si vous souhaitez simplement utiliser l'application sans la construire vous-même, suivez les étapes ci-dessous.
 
 ### Téléchargement
-*   Visitez la page [GitLab Releases](https://gitlab.com/mytory/mytory-video-tools/-/releases) et téléchargez le package pour votre système d'exploitation.
+*   Visitez la page [GitHub Releases](https://github.com/mytory/mytory-video-tools/releases) et téléchargez le package pour votre système d'exploitation.
     *   **Windows :** `.exe` (installateur)
-    *   **macOS :** `.dmg` (image disque)
+    *   **macOS :** `.dmg` (image disque) — Intel (x64) / Apple Silicon (arm64)
     *   **Linux :** `.AppImage` (portable)
 
 ### ⚠️ Avertissement de sécurité (À lire)
@@ -76,7 +76,7 @@ npm run dist
     ```env
     CSC_NAME="Apple Development: my-email@test.com (XXXXJ356NG)"
     ```
-* `CSC_LINK` / `CSC_KEY_PASSWORD` dans `.gitlab-ci.yml` sont utilisés pour la signature basée sur P12 dans les environnements GitLab CI.
+* `CSC_LINK` / `CSC_KEY_PASSWORD` dans `.github/workflows/release.yml` sont utilisés pour la signature basée sur P12 dans les environnements GitHub Actions.
 
 ---
 
@@ -87,7 +87,7 @@ npm run dist
 ├── package.json          # Package npm et configuration de build
 ├── main.js               # Processus principal Electron
 ├── preload.js            # Script de préchargement d'isolation de contexte
-├── .gitlab-ci.yml        # Configuration de build multiplateforme GitLab CI/CD
+├── .github/workflows/   # Workflows CI/CD GitHub Actions
 ├── README.md             # Documentation du projet (Anglais)
 ├── README.ko.md          # Documentation du projet (Coréen)
 ├── README.ja.md          # Documentation du projet (Japonais)
@@ -126,4 +126,4 @@ Pour toute question, rapport de bug ou suggestion de fonctionnalité, veuillez c
 
 *   **Email :** [mail@mytory.net](mailto:mail@mytory.net)
 *   **Blog :** [https://mytory.net](https://mytory.net)
-*   **GitHub/GitLab :** [@mytory](https://github.com/mytory)
+*   **GitHub :** [@mytory](https://github.com/mytory)

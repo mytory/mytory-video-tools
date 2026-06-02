@@ -32,9 +32,9 @@
 Jika Anda hanya ingin menggunakan aplikasi tanpa membangunnya sendiri, ikuti langkah-langkah di bawah ini.
 
 ### Unduh
-*   Kunjungi halaman [GitLab Releases](https://gitlab.com/mytory/mytory-video-tools/-/releases) dan unduh paket untuk sistem operasi Anda.
+*   Kunjungi halaman [GitHub Releases](https://github.com/mytory/mytory-video-tools/releases) dan unduh paket untuk sistem operasi Anda.
     *   **Windows:** `.exe` (pemasang)
-    *   **macOS:** `.dmg` (gambar disk)
+    *   **macOS:** `.dmg` (gambar disk) — Intel (x64) / Apple Silicon (arm64)
     *   **Linux:** `.AppImage` (portabel)
 
 ### ⚠️ Peringatan Keamanan (Harap Baca)
@@ -76,7 +76,7 @@ npm run dist
     ```env
     CSC_NAME="Apple Development: my-email@test.com (XXXXJ356NG)"
     ```
-* `CSC_LINK` / `CSC_KEY_PASSWORD` di `.gitlab-ci.yml` digunakan untuk penandatanganan berbasis P12 di lingkungan GitLab CI.
+* `CSC_LINK` / `CSC_KEY_PASSWORD` di `.github/workflows/release.yml` digunakan untuk penandatanganan berbasis P12 di lingkungan GitHub Actions.
 
 ---
 
@@ -87,7 +87,7 @@ npm run dist
 ├── package.json          # Paket npm & konfigurasi build
 ├── main.js               # Proses utama Electron
 ├── preload.js            # Skrip pramuat isolasi konteks
-├── .gitlab-ci.yml        # Konfigurasi build multi-platform GitLab CI/CD
+├── .github/workflows/   # Workflow CI/CD GitHub Actions
 ├── README.md             # Dokumentasi proyek (Inggris)
 ├── README.ko.md          # Dokumentasi proyek (Korea)
 ├── README.ja.md          # Dokumentasi proyek (Jepang)
@@ -126,4 +126,4 @@ Untuk pertanyaan, laporan bug, atau saran fitur, silakan hubungi melalui:
 
 *   **Email:** [mail@mytory.net](mailto:mail@mytory.net)
 *   **Blog:** [https://mytory.net](https://mytory.net)
-*   **GitHub/GitLab:** [@mytory](https://github.com/mytory)
+*   **GitHub:** [@mytory](https://github.com/mytory)

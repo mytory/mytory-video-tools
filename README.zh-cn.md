@@ -32,9 +32,9 @@
 如果您只想使用应用程序而不自行构建，请按以下步骤操作。
 
 ### 下载
-*   访问 [GitLab Releases](https://gitlab.com/mytory/mytory-video-tools/-/releases) 页面，下载您操作系统对应的安装包。
+*   访问 [GitHub Releases](https://github.com/mytory/mytory-video-tools/releases) 页面，下载您操作系统对应的安装包。
     *   **Windows:** `.exe`（安装程序）
-    *   **macOS:** `.dmg`（磁盘映像）
+    *   **macOS:** `.dmg`（磁盘映像） — Intel (x64) / Apple Silicon (arm64)
     *   **Linux:** `.AppImage`（便携式）
 
 ### ⚠️ 安全警告（请阅读）
@@ -76,7 +76,7 @@ npm run dist
     ```env
     CSC_NAME="Apple Development: my-email@test.com (XXXXJ356NG)"
     ```
-* `.gitlab-ci.yml` 中的 `CSC_LINK` / `CSC_KEY_PASSWORD` 用于 GitLab CI 环境中基于 P12 的签名。
+* `.github/workflows/release.yml` 中的 `CSC_LINK` / `CSC_KEY_PASSWORD` 用于 GitHub Actions 环境中基于 P12 的签名。
 
 ---
 
@@ -87,7 +87,7 @@ npm run dist
 ├── package.json          # npm 包 & 构建配置
 ├── main.js               # Electron 主进程
 ├── preload.js            # 上下文隔离预加载脚本
-├── .gitlab-ci.yml        # GitLab CI/CD 多平台构建配置
+├── .github/workflows/   # GitHub Actions CI/CD 工作流配置
 ├── README.md             # 项目文档 (英语)
 ├── README.ko.md          # 项目文档 (韩语)
 ├── README.ja.md          # 项目文档 (日语)
@@ -126,4 +126,4 @@ Copyright (c) 2026 mytory. 本项目采用 **ISC License** 许可。详情请参
 
 *   **Email:** [mail@mytory.net](mailto:mail@mytory.net)
 *   **Blog:** [https://mytory.net](https://mytory.net)
-*   **GitHub/GitLab:** [@mytory](https://github.com/mytory)
+*   **GitHub:** [@mytory](https://github.com/mytory)

@@ -1,0 +1,93 @@
+# GitHub Actions Release workflow
+# GitLab CI → GitHub Actions 변환 (2025-06-03)
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  # 1. Linux 빌드 (AppImage)
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run dist:release -- --linux
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-build
+          path: dist/*.AppImage
+
+  # 2. Windows 빌드 (Wine 컨테이너)
+  build-windows:
+    runs-on: ubuntu-latest
+    container:
+      image: electronuserland/builder:wine
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npm run dist:release -- --win
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-build
+          path: dist/*.exe
+
+  # 3. macOS 빌드
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run dist:release -- --mac --x64 --arm64
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-build
+          path: dist/*.dmg
+
+  # 4. GitHub Release 생성 + 빌드 결과물 첨부
+  release:
+    needs:
+      - build-linux
+      - build-windows
+      - build-macos
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+      - name: Collect release assets
+        run: |
+          mkdir -p release-assets
+          find . -type f \( -name "*.AppImage" -o -name "*.exe" -o -name "*.dmg" \) -exec cp {} release-assets/ \;
+          echo "=== Release assets ==="
+          ls -lh release-assets/
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: release-assets/*
+          name: Mytory Video Tools ${{ github.ref_name }}
+          body: |
+            Release ${{ github.ref_name }}
+
+            ### ⚠️ Security Warning (필독 / Please Read)
+
+            **English:**
+            This program is distributed by an individual developer and is not signed with a paid code signing certificate. The security warning you may see is not a defect. Please follow the instructions below to run the application.
+
+            *   **Windows:** Click **[More info]** on the red warning screen → Click **[Run anyway]**
+            *   **macOS:** **Right-click (or Control+click)** the app file → Select **[Open]** → Click **[Open]** again
+
+            **한국어:**
+            본 프로그램은 개인 개발자가 배포하는 오픈소스 소프트웨어로, 유료 개발자 인증서 서명이 되어 있지 않습니다. 실행 시 발생하는 보안 경고는 프로그램의 결함이 아니니 아래 방법으로 실행해 주세요.
+
+            *   **Windows:** 빨간색 경고창에서 **[추가 정보]** 클릭 → **[실행]** 버튼 클릭
+            *   **macOS:** 앱 파일 위에서 **마우스 오른쪽 버튼(또는 Control+클릭)** → **[열기]** 선택 → 다시 한번 **[열기]** 클릭

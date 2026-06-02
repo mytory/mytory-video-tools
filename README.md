@@ -32,9 +32,9 @@
 If you just want to use the app without building it yourself, follow the steps below.
 
 ### Download
-*   Visit the [GitLab Releases](https://gitlab.com/mytory/mytory-video-tools/-/releases) page and download the package for your operating system.
+*   Visit the [GitHub Releases](https://github.com/mytory/mytory-video-tools/releases) page and download the package for your operating system.
     *   **Windows:** `.exe` (installer)
-    *   **macOS:** `.dmg` (disk image)
+    *   **macOS:** `.dmg` (disk image) — Intel (x64) / Apple Silicon (arm64)
     *   **Linux:** `.AppImage` (portable)
 
 ### ⚠️ Security Warning (Please Read)
@@ -76,7 +76,7 @@ npm run dist
     ```env
     CSC_NAME="Apple Development: my-email@test.com (XXXXJ356NG)"
     ```
-* `CSC_LINK` / `CSC_KEY_PASSWORD` in `.gitlab-ci.yml` are used for P12-based signing in GitLab CI environments.
+* `CSC_LINK` / `CSC_KEY_PASSWORD` in `.github/workflows/release.yml` are used for P12-based signing in GitHub Actions environments.
 
 ---
 
@@ -87,7 +87,7 @@ npm run dist
 ├── package.json          # npm package & build config
 ├── main.js               # Electron main process
 ├── preload.js            # Context isolation preload script
-├── .gitlab-ci.yml        # GitLab CI/CD multi-platform build config
+├── .github/workflows/   # GitHub Actions CI/CD workflows
 ├── README.md             # Project documentation (English)
 ├── README.ko.md          # Project documentation (Korean)
 ├── README.ja.md          # Project documentation (Japanese)
@@ -126,4 +126,4 @@ For questions, bug reports, or feature suggestions, please reach out via:
 
 *   **Email:** [mail@mytory.net](mailto:mail@mytory.net)
 *   **Blog:** [https://mytory.net](https://mytory.net)
-*   **GitHub/GitLab:** [@mytory](https://github.com/mytory)
+*   **GitHub:** [@mytory](https://github.com/mytory)

@@ -115,7 +115,8 @@ function runFFmpeg(taskId, args, duration, outputPath) {
         console.log(`Command: ffmpeg ${args.join(' ')}`);
 
         // OS별 파일 오버라이트 대응 (-y 옵션 포함 권장)
-        const ff = spawn(ffmpegPath, ['-y', ...args]);
+        // 모든 작업에서 진행 정보가 정기적으로 출력되도록 stats_period 설정
+        const ff = spawn(ffmpegPath, ['-y', '-stats_period', '0.5', ...args]);
         activeTasks.set(taskId, ff);
 
         let stderrBuffer = '';
@@ -487,8 +488,6 @@ ipcMain.handle('speed:start', async (event, { taskId, inputPath, speed, videoCod
 
         // 오디오 코덱 설정
         args.push('-c:a', 'aac');
-        // 오디오 전용 파일에서도 진행률이 정기적으로 업데이트되도록 강제 출력 주기 설정
-        args.push('-stats_period', '0.5');
         args.push(outputPath);
 
         await runFFmpeg(taskId, args, duration, outputPath);

@@ -24,7 +24,7 @@
     "email": "mail@mytory.net",
     "url": "https://mytory.net"
   },
-  "license": "ISC",
+  "license": "GPL-3.0-only",
   "type": "commonjs",
   "devDependencies": {
     "dotenv-cli": "^11.0.0",

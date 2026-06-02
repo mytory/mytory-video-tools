@@ -1712,21 +1712,6 @@ function updateQueueProgress(taskId, percent, speed) {
         task.percent = percent;
         task.speed = speed;
         
-        // 실시간 진행 팝업 토스트 업데이트
-        elements.statusToast.hidden = false;
-        elements.statusToast.innerHTML = `
-            <h4>[${task.type}] Processing...</h4>
-            <p>${task.name}</p>
-            <p>${task.engineLabel || t('Encoder information unavailable', '인코더 정보를 확인할 수 없습니다')} - Speed: ${speed}</p>
-            <div class="progress-bar-wrapper">
-                <div class="progress-bar-fill" style="width: ${percent}%"></div>
-            </div>
-            <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-top:6px;">
-                <span>${percent}%</span>
-                <button class="btn btn--sm" style="margin:0; padding:2px 8px; font-size:0.7rem; background:#444;" onclick="cancelTask('${taskId}')">Cancel</button>
-            </div>
-        `;
-
         // 큐 내 개별 항목 인디케이터 업데이트
         const itemEl = elements.queueStatus.querySelector(`[data-task-id="${CSS.escape(taskId)}"]`);
         if (itemEl) {
@@ -1747,9 +1732,6 @@ function finishQueueItem(taskId, status, errorMsg = '') {
         task.status = status;
         if (errorMsg) task.error = errorMsg;
     }
-    
-    // 토스트 숨김
-    elements.statusToast.hidden = true;
     renderQueue();
 }
 

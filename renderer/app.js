@@ -1846,11 +1846,16 @@ function renderQueue() {
         const existingEl = elements.queueStatus.querySelector(`[data-task-id="${CSS.escape(task.taskId)}"]`);
         
         let statusClass = 'active';
-        let statusLabel = `${task.percent}% (Speed: ${task.speed})`;
+        let statusLabel = '';
         const engineLabel = task.engineLabel || '';
         if (task.status === 'pending') {
             statusClass = 'pending';
             statusLabel = t('Waiting...', '대기 중...');
+        } else if (task.status === 'running') {
+            statusClass = 'active';
+            statusLabel = task.percent > 0 || task.speed !== '0.0x'
+                ? `${task.percent}% (Speed: ${task.speed})`
+                : t('Preparing...', '작업 준비중');
         } else if (task.status === 'done') {
             statusClass = 'done';
             statusLabel = t('Completed', '변환 완료');

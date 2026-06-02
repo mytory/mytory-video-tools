@@ -410,6 +410,8 @@ ipcMain.handle('speed:start', async (event, { taskId, inputPath, speed, videoCod
     try {
         const info = await probeVideo(inputPath);
         const duration = parseFloat(info.format.duration || 0);
+        // 속도 변환 시 출력 duration = 입력 duration / speed (ffmpeg의 time= 필드는 출력 PTS이므로)
+        const outputDuration = duration / speed;
 
         const hasVideo = (info.streams || []).some(s => s.codec_type === 'video');
 
@@ -490,7 +492,7 @@ ipcMain.handle('speed:start', async (event, { taskId, inputPath, speed, videoCod
         args.push('-c:a', 'aac');
         args.push(outputPath);
 
-        await runFFmpeg(taskId, args, duration, outputPath);
+        await runFFmpeg(taskId, args, outputDuration, outputPath);
         return { success: true, outputPath };
     } catch (err) {
         return { success: false, error: err.message };

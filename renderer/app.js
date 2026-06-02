@@ -595,6 +595,29 @@ async function processSpeedFiles(files) {
     }));
 
     for (const task of tasks) {
+        task.run = async () => {
+            const result = await window.electronAPI.startSpeedChange({
+                taskId: task.taskId,
+                inputPath: task.file.path,
+                speed: state.speed,
+                videoCodec: state.speedCodec,
+                useHw: task.useHw,
+                outputPath: task.outputPath
+            });
+
+            if (result.success) {
+                finishQueueItem(task.taskId, 'done');
+                elements.statDone.textContent = parseInt(elements.statDone.textContent) + 1;
+                const label = task.isAudio
+                    ? `${state.speed.toFixed(2)}x ${t('audio speed change', '오디오 배속')}`
+                    : `${state.speed.toFixed(2)}x, ${task.encoderMeta.label}`;
+                showToast(t('Conversion Complete', '인코딩 완료'), `${task.file.name} -> ${label}`);
+            } else {
+                finishQueueItem(task.taskId, 'error', result.error);
+                showToast(t('Conversion Failed', '인코딩 실패'), `${task.file.name}: ${result.error}`, 'error');
+            }
+            elements.statQueue.textContent = Math.max(0, parseInt(elements.statQueue.textContent) - 1);
+        };
         addQueueItem({
             taskId: task.taskId,
             type: 'Speed Changer',
@@ -603,41 +626,12 @@ async function processSpeedFiles(files) {
             percent: 0,
             speed: '0.0x',
             engineLabel: task.encoderMeta.label,
-            engineName: task.encoderMeta.encoder
+            engineName: task.encoderMeta.encoder,
+            run: task.run
         });
     }
     clearDropReceivedFeedback();
-
-    // 순차적으로 하나씩 running으로 변경하며 처리
-    for (const task of tasks) {
-        const queueItem = state.queue.find(t => t.taskId === task.taskId);
-        if (queueItem) {
-            queueItem.status = 'running';
-            renderQueue();
-        }
-
-        const result = await window.electronAPI.startSpeedChange({
-            taskId: task.taskId,
-            inputPath: task.file.path,
-            speed: state.speed,
-            videoCodec: state.speedCodec,
-            useHw: task.useHw,
-            outputPath: task.outputPath
-        });
-
-        if (result.success) {
-            finishQueueItem(task.taskId, 'done');
-            elements.statDone.textContent = parseInt(elements.statDone.textContent) + 1;
-            const label = task.isAudio
-                ? `${state.speed.toFixed(2)}x ${t('audio speed change', '오디오 배속')}`
-                : `${state.speed.toFixed(2)}x, ${task.encoderMeta.label}`;
-            showToast(t('Conversion Complete', '인코딩 완료'), `${task.file.name} -> ${label}`);
-        } else {
-            finishQueueItem(task.taskId, 'error', result.error);
-            showToast(t('Conversion Failed', '인코딩 실패'), `${task.file.name}: ${result.error}`, 'error');
-        }
-        elements.statQueue.textContent = Math.max(0, parseInt(elements.statQueue.textContent) - 1);
-    }
+    processQueueDispatcher();
 }
 
 function setupCompressor() {
@@ -752,6 +746,24 @@ async function processCompressFiles(files) {
     }));
 
     for (const task of tasks) {
+        task.run = async () => {
+            const result = await window.electronAPI.startCompress({
+                taskId: task.taskId,
+                inputPath: task.file.path,
+                outputPath: task.outputPath,
+                useHw: task.useHw,
+                ...settings
+            });
+
+            if (result.success) {
+                finishQueueItem(task.taskId, 'done');
+                showToast(t('Compression Complete', '용량 최적화 완료'), `${task.file.name} -> ${settings.videoBitrate}k MP4`);
+            } else {
+                finishQueueItem(task.taskId, 'error', result.error);
+                showToast(t('Compression Failed', '용량 최적화 실패'), `${task.file.name}: ${result.error}`, 'error');
+            }
+            elements.statCompressQueue.textContent = Math.max(0, parseInt(elements.statCompressQueue.textContent) - 1);
+        };
         addQueueItem({
             taskId: task.taskId,
             type: 'Size Optimizer',
@@ -760,37 +772,12 @@ async function processCompressFiles(files) {
             percent: 0,
             speed: '0.0x',
             engineLabel: task.encoderMeta.label,
-            engineName: task.encoderMeta.encoder
+            engineName: task.encoderMeta.encoder,
+            run: task.run
         });
     }
     clearDropReceivedFeedback();
-
-    // 순차적으로 하나씩 running으로 변경하며 처리
-    for (const task of tasks) {
-        const queueItem = state.queue.find(t => t.taskId === task.taskId);
-        if (queueItem) {
-            queueItem.status = 'running';
-            renderQueue();
-        }
-
-        const result = await window.electronAPI.startCompress({
-            taskId: task.taskId,
-            inputPath: task.file.path,
-            outputPath: task.outputPath,
-            useHw: task.useHw,
-            ...settings
-        });
-
-        if (result.success) {
-            finishQueueItem(task.taskId, 'done');
-            showToast(t('Compression Complete', '용량 최적화 완료'), `${task.file.name} -> ${settings.videoBitrate}k MP4`);
-        } else {
-            finishQueueItem(task.taskId, 'error', result.error);
-            showToast(t('Compression Failed', '용량 최적화 실패'), `${task.file.name}: ${result.error}`, 'error');
-        }
-
-        elements.statCompressQueue.textContent = Math.max(0, parseInt(elements.statCompressQueue.textContent) - 1);
-    }
+    processQueueDispatcher();
 }
 
 // 3. 도구 2: 오디오 추출기 핸들링
@@ -833,43 +820,39 @@ async function processAudioFiles(files) {
         const basePath = getResolvedOutputPath(file.path, `_audio`, ext);
         const outputPath = await window.electronAPI.resolveUniquePath(basePath);
         tasks.push({ taskId, file, outputPath, ext });
+    }
 
+    for (const task of tasks) {
+        task.run = async () => {
+            const result = await window.electronAPI.startAudioExtract({
+                taskId: task.taskId,
+                inputPath: task.file.path,
+                format: state.audioFormat,
+                outputPath: task.outputPath
+            });
+
+            if (result.success) {
+                finishQueueItem(task.taskId, 'done');
+                showToast(t('Audio Extracted', '오디오 추출 완료'), `${task.file.name} 오디오 파일 저장 완료!`);
+            } else {
+                finishQueueItem(task.taskId, 'error', result.error);
+                showToast(t('Extraction Failed', '오디오 추출 실패'), `${task.file.name}: ${result.error}`, 'error');
+            }
+            elements.statAudioQueue.textContent = Math.max(0, parseInt(elements.statAudioQueue.textContent) - 1);
+        };
         addQueueItem({
-            taskId,
+            taskId: task.taskId,
             type: 'Audio Drop',
-            name: file.name,
+            name: task.file.name,
             status: 'pending',
             percent: 0,
             speed: 'copy',
-            engineLabel: t('Audio extraction', '오디오 추출')
+            engineLabel: t('Audio extraction', '오디오 추출'),
+            run: task.run
         });
     }
     clearDropReceivedFeedback();
-
-    // 순차적으로 하나씩 running으로 변경하며 처리
-    for (const task of tasks) {
-        const queueItem = state.queue.find(t => t.taskId === task.taskId);
-        if (queueItem) {
-            queueItem.status = 'running';
-            renderQueue();
-        }
-
-        const result = await window.electronAPI.startAudioExtract({
-            taskId: task.taskId,
-            inputPath: task.file.path,
-            format: state.audioFormat,
-            outputPath: task.outputPath
-        });
-
-        if (result.success) {
-            finishQueueItem(task.taskId, 'done');
-            showToast(t('Audio Extracted', '오디오 추출 완료'), `${task.file.name} 오디오 파일 저장 완료!`);
-        } else {
-            finishQueueItem(task.taskId, 'error', result.error);
-            showToast(t('Extraction Failed', '오디오 추출 실패'), `${task.file.name}: ${result.error}`, 'error');
-        }
-        elements.statAudioQueue.textContent = Math.max(0, parseInt(elements.statAudioQueue.textContent) - 1);
-    }
+    processQueueDispatcher();
 }
 
 // 4. 도구 3: 장면 및 프레임 캡처 핸들링
@@ -1009,7 +992,7 @@ function setupFrameCapture() {
     elements.captureBatchEnd.addEventListener('change', () => normalizeTimecodeField(elements.captureBatchEnd, updateCaptureTimelineOverlay));
 
     // 배치 캡처 내보내기 실행
-    elements.btnCaptureBatch.addEventListener('click', async () => {
+    elements.btnCaptureBatch.addEventListener('click', () => {
         if (!state.captureFile) return;
 
         const startTime = elements.captureBatchStart.value;
@@ -1025,34 +1008,39 @@ function setupFrameCapture() {
         const taskId = 'batch_' + Date.now();
         const baseName = getFileBaseName(state.captureFile.name);
         const outputDir = getTargetParentDirectory(state.captureFile.path);
+        const captureFile = state.captureFile;
+
+        const run = async () => {
+            const result = await window.electronAPI.captureBatch({
+                taskId,
+                inputPath: captureFile.path,
+                startTime,
+                endTime,
+                interval,
+                format,
+                outputDir,
+                baseName
+            });
+
+            if (result.success) {
+                finishQueueItem(taskId, 'done');
+                showToast(t('Batch Complete', '일괄 캡처 완료'), `지정된 경로로 이미지 프레임들이 저장 완료되었습니다.`);
+            } else {
+                finishQueueItem(taskId, 'error', result.error);
+                showToast(t('Batch Failed', '일괄 캡처 실패'), result.error, 'error');
+            }
+        };
 
         addQueueItem({
             taskId,
             type: 'Batch Capture',
             name: `${baseName} (Batch)`,
-            status: 'running',
+            status: 'pending',
             percent: 0,
-            speed: 'exporting'
+            speed: 'exporting',
+            run
         });
-
-        const result = await window.electronAPI.captureBatch({
-            taskId,
-            inputPath: state.captureFile.path,
-            startTime,
-            endTime,
-            interval,
-            format,
-            outputDir,
-            baseName
-        });
-
-        if (result.success) {
-            finishQueueItem(taskId, 'done');
-            showToast(t('Batch Complete', '일괄 캡처 완료'), `지정된 경로로 이미지 프레임들이 저장 완료되었습니다.`);
-        } else {
-            finishQueueItem(taskId, 'error', result.error);
-            showToast(t('Batch Failed', '일괄 캡처 실패'), result.error, 'error');
-        }
+        processQueueDispatcher();
     });
 
     // 장면 감지 감도 슬라이더 갱신
@@ -1061,82 +1049,93 @@ function setupFrameCapture() {
     });
 
     // 장면 전환 감지 분석 시작
-    elements.btnCaptureSceneDetect.addEventListener('click', async () => {
+    elements.btnCaptureSceneDetect.addEventListener('click', () => {
         if (!state.captureFile) return;
 
         const threshold = parseFloat(elements.captureSceneThreshold.value);
         const taskId = 'scene_detect_' + Date.now();
-        
-        elements.btnCaptureSceneDetect.disabled = true;
-        elements.sceneDetectionResult.style.display = 'none';
+        const captureFile = state.captureFile;
+
+        const run = async () => {
+            elements.btnCaptureSceneDetect.disabled = true;
+            elements.sceneDetectionResult.style.display = 'none';
+
+            const result = await window.electronAPI.detectScenes({
+                taskId,
+                inputPath: captureFile.path,
+                threshold
+            });
+
+            elements.btnCaptureSceneDetect.disabled = false;
+
+            if (result.success) {
+                finishQueueItem(taskId, 'done');
+                state.sceneTimestamps = result.timestamps;
+                elements.sceneCountVal.textContent = result.timestamps.length;
+                elements.sceneDetectionResult.style.display = 'block';
+                showToast(t('Analysis Complete', '분석 완료'), `${result.timestamps.length}개의 장면 전환이 감지되었습니다.`);
+            } else {
+                finishQueueItem(taskId, 'error', result.error);
+                showToast(t('Analysis Failed', '분석 실패'), result.error, 'error');
+            }
+        };
 
         addQueueItem({
             taskId,
             type: 'Scene Detection',
-            name: state.captureFile.name,
-            status: 'running',
+            name: captureFile.name,
+            status: 'pending',
             percent: 0,
-            speed: 'analysing'
+            speed: 'analysing',
+            run
         });
-
-        const result = await window.electronAPI.detectScenes({
-            taskId,
-            inputPath: state.captureFile.path,
-            threshold
-        });
-
-        elements.btnCaptureSceneDetect.disabled = false;
-
-        if (result.success) {
-            finishQueueItem(taskId, 'done');
-            state.sceneTimestamps = result.timestamps;
-            elements.sceneCountVal.textContent = result.timestamps.length;
-            elements.sceneDetectionResult.style.display = 'block';
-            showToast(t('Analysis Complete', '분석 완료'), `${result.timestamps.length}개의 장면 전환이 감지되었습니다.`);
-        } else {
-            finishQueueItem(taskId, 'error', result.error);
-            showToast(t('Analysis Failed', '분석 실패'), result.error, 'error');
-        }
+        processQueueDispatcher();
     });
 
     // 감지된 장면들 일괄 저장
-    elements.btnCaptureSceneExport.addEventListener('click', async () => {
+    elements.btnCaptureSceneExport.addEventListener('click', () => {
         if (!state.captureFile || state.sceneTimestamps.length === 0) return;
 
         const taskId = 'scene_export_' + Date.now();
         const baseName = getFileBaseName(state.captureFile.name);
         const outputDir = getTargetParentDirectory(state.captureFile.path);
         const format = elements.captureFormatSelect.value;
+        const captureFile = state.captureFile;
+        const timestamps = state.sceneTimestamps;
 
-        elements.btnCaptureSceneExport.disabled = true;
+        const run = async () => {
+            elements.btnCaptureSceneExport.disabled = true;
+
+            const result = await window.electronAPI.exportScenes({
+                taskId,
+                inputPath: captureFile.path,
+                timestamps,
+                format,
+                outputDir,
+                baseName
+            });
+
+            elements.btnCaptureSceneExport.disabled = false;
+
+            if (result.success) {
+                finishQueueItem(taskId, 'done');
+                showToast(t('Export Complete', '장면 저장 완료'), `장면 이미지 ${result.count}개가 정상 저장되었습니다.`);
+            } else {
+                finishQueueItem(taskId, 'error', result.error);
+                showToast(t('Export Failed', '장면 저장 실패'), result.error, 'error');
+            }
+        };
 
         addQueueItem({
             taskId,
             type: 'Scene Export',
             name: `${baseName} (Scenes)`,
-            status: 'running',
+            status: 'pending',
             percent: 0,
-            speed: 'exporting'
+            speed: 'exporting',
+            run
         });
-
-        const result = await window.electronAPI.exportScenes({
-            taskId,
-            inputPath: state.captureFile.path,
-            timestamps: state.sceneTimestamps,
-            format,
-            outputDir,
-            baseName
-        });
-
-        elements.btnCaptureSceneExport.disabled = false;
-
-        if (result.success) {
-            finishQueueItem(taskId, 'done');
-            showToast(t('Export Complete', '장면 저장 완료'), `장면 이미지 ${result.count}개가 정상 저장되었습니다.`);
-        } else {
-            finishQueueItem(taskId, 'error', result.error);
-            showToast(t('Export Failed', '장면 저장 실패'), result.error, 'error');
-        }
+        processQueueDispatcher();
     });
 }
 
@@ -1223,39 +1222,33 @@ async function processRemuxFiles(files) {
     }));
 
     for (const task of tasks) {
+        task.run = async () => {
+            const result = await window.electronAPI.startRemux({
+                taskId: task.taskId,
+                inputPath: task.file.path,
+                outputPath: task.outputPath
+            });
+
+            if (result.success) {
+                finishQueueItem(task.taskId, 'done');
+                showToast(t('Remux Complete', '확장자 변환 완료'), `${task.file.name} -> ${state.remuxFormat.toUpperCase()} 저장 완료!`);
+            } else {
+                finishQueueItem(task.taskId, 'error', result.error);
+                showToast(t('Remux Failed', '확장자 변환 실패'), `${task.file.name}: ${result.error}`, 'error');
+            }
+        };
         addQueueItem({
             taskId: task.taskId,
             type: 'Remuxer',
             name: task.file.name,
             status: 'pending',
             percent: 0,
-            speed: 'copy'
+            speed: 'copy',
+            run: task.run
         });
     }
     clearDropReceivedFeedback();
-
-    // 순차적으로 하나씩 running으로 변경하며 처리
-    for (const task of tasks) {
-        const queueItem = state.queue.find(t => t.taskId === task.taskId);
-        if (queueItem) {
-            queueItem.status = 'running';
-            renderQueue();
-        }
-
-        const result = await window.electronAPI.startRemux({
-            taskId: task.taskId,
-            inputPath: task.file.path,
-            outputPath: task.outputPath
-        });
-
-        if (result.success) {
-            finishQueueItem(task.taskId, 'done');
-            showToast(t('Remux Complete', '확장자 변환 완료'), `${task.file.name} -> ${state.remuxFormat.toUpperCase()} 저장 완료!`);
-        } else {
-            finishQueueItem(task.taskId, 'error', result.error);
-            showToast(t('Remux Failed', '확장자 변환 실패'), `${task.file.name}: ${result.error}`, 'error');
-        }
-    }
+    processQueueDispatcher();
 }
 
 // 6. 도구 5: 비디오 분할 도구 (Splitter) 핸들링
@@ -1380,31 +1373,36 @@ function setupSplitter() {
         const ext = getFileExtension(state.splitFile.name);
         const basePath = getResolvedOutputPath(state.splitFile.path, `_trimmed`, ext);
         const outputPath = await window.electronAPI.resolveUniquePath(basePath);
+        const splitFile = state.splitFile;
+
+        const run = async () => {
+            const result = await window.electronAPI.startSplit({
+                taskId,
+                inputPath: splitFile.path,
+                startTime,
+                endTime,
+                outputPath
+            });
+
+            if (result.success) {
+                finishQueueItem(taskId, 'done');
+                showToast(t('Video Split Complete', '비디오 자르기 성공'), `${outputPath}에 무손실 저장되었습니다.`);
+            } else {
+                finishQueueItem(taskId, 'error', result.error);
+                showToast(t('Video Split Failed', '비디오 자르기 실패'), result.error, 'error');
+            }
+        };
 
         addQueueItem({
             taskId,
             type: 'Splitter',
             name: `${baseName} (Trim)`,
-            status: 'running',
+            status: 'pending',
             percent: 0,
-            speed: 'copy'
+            speed: 'copy',
+            run
         });
-
-        const result = await window.electronAPI.startSplit({
-            taskId,
-            inputPath: state.splitFile.path,
-            startTime,
-            endTime,
-            outputPath
-        });
-
-        if (result.success) {
-            finishQueueItem(taskId, 'done');
-            showToast(t('Video Split Complete', '비디오 자르기 성공'), `${outputPath}에 무손실 저장되었습니다.`);
-        } else {
-            finishQueueItem(taskId, 'error', result.error);
-            showToast(t('Video Split Failed', '비디오 자르기 실패'), result.error, 'error');
-        }
+        processQueueDispatcher();
     });
 }
 
@@ -1723,6 +1721,24 @@ function addQueueItem(task) {
     renderQueue();
 }
 
+// 글로벌 작업 디스패처 — 큐의 pending 작업을 순차적으로 실행
+async function processQueueDispatcher() {
+    // 이미 실행 중인 작업이 있으면 리턴
+    if (state.queue.some(t => t.status === 'running')) return;
+    
+    const pending = state.queue.find(t => t.status === 'pending');
+    if (!pending) return;
+    
+    pending.status = 'running';
+    renderQueue();
+    
+    try {
+        await pending.run();
+    } catch (err) {
+        finishQueueItem(pending.taskId, 'error', err.message);
+    }
+}
+
 function updateQueueProgress(taskId, percent, speed) {
     const task = state.queue.find(t => t.taskId === taskId);
     if (task) {
@@ -1750,6 +1766,7 @@ function finishQueueItem(taskId, status, errorMsg = '') {
         if (errorMsg) task.error = errorMsg;
     }
     renderQueue();
+    processQueueDispatcher();
 }
 
 function dismissQueueItem(taskId) {

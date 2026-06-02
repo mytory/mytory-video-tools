@@ -1749,10 +1749,12 @@ function updateQueueProgress(taskId, percent, speed) {
         const itemEl = elements.queueStatus.querySelector(`[data-task-id="${CSS.escape(taskId)}"]`);
         if (itemEl) {
             const fillEl = itemEl.querySelector('.progress-bar-fill');
+            const statusEl = itemEl.querySelector('.task-status');
             const percentEl = itemEl.querySelector('.task-percent');
             const speedEl = itemEl.querySelector('.task-speed');
             
             if (fillEl) fillEl.style.width = `${percent}%`;
+            if (statusEl) statusEl.textContent = `${percent}% (Speed: ${speed})`;
             if (percentEl) percentEl.textContent = `${percent}%`;
             if (speedEl) speedEl.textContent = speed;
         }

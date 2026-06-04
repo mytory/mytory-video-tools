@@ -1,4 +1,0 @@
-# Disable Jekyll processing - static site only
-# This file and .nojekyll both ensure GitHub Pages skips Jekyll build
-plugins: []
-markdown: none

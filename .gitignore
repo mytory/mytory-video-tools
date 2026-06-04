@@ -17,6 +17,9 @@ Thumbs.db
 
 # Environment variables
 .env
+
+# Internal library docs (not for GitHub Pages)
+docs/mytory-i18n/
 /builds
 /cache
 *Zone.Identifier

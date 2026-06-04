@@ -328,6 +328,86 @@ a {
     transform: translateY(0);
 }
 
+/* --- Language Navigator --- */
+.lang-nav {
+    padding: 24px 24px 16px;
+    border-top: 1px solid var(--color-border);
+    background: var(--color-surface);
+}
+
+.lang-nav__inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.lang-nav__label {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-tertiary);
+    font-family: var(--font-mono);
+    white-space: nowrap;
+}
+
+.lang-nav__links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    justify-content: center;
+}
+
+.lang-nav__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 11px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    transition: all 0.2s var(--ease-out-expo);
+    white-space: nowrap;
+}
+
+.lang-nav__link:hover {
+    color: var(--color-text-primary);
+    background: var(--color-accent-muted);
+}
+
+.lang-nav__link--active {
+    color: var(--color-accent);
+    background: var(--color-accent-muted);
+    font-weight: 600;
+}
+
+.lang-nav__flag {
+    font-size: 16px;
+    line-height: 1;
+}
+
+@media (max-width: 768px) {
+    .lang-nav {
+        padding: 16px 16px 12px;
+    }
+    .lang-nav__inner {
+        gap: 10px;
+    }
+    .lang-nav__link {
+        font-size: 12px;
+        padding: 5px 9px;
+    }
+    .lang-nav__flag {
+        font-size: 14px;
+    }
+}
+
 /* --- Trusted / Powered By --- */
 .trusted {
     padding: 48px 24px;

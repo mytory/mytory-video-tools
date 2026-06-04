@@ -209,45 +209,26 @@
                 </div>
             </div>
             <div class="hwaccel__visual">
-                <div class="hwaccel__diagram">
-                    <svg viewBox="0 0 400 280" fill="none" xmlns="http://www.w3.org/2000/svg" class="hwaccel__svg">
-                        <defs>
-                            <linearGradient id="flowGradLight" x1="0" y1="0" x2="1" y2="0">
-                                <stop offset="0%" stop-color="#3b82f6" stop-opacity="0"/>
-                                <stop offset="50%" stop-color="#3b82f6" stop-opacity="0.5"/>
-                                <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
-                            </linearGradient>
-                            <linearGradient id="chipGpu" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stop-color="#eff6ff"/>
-                                <stop offset="100%" stop-color="#fafafa"/>
-                            </linearGradient>
-                            <linearGradient id="chipCpu" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stop-color="#fafafa"/>
-                                <stop offset="100%" stop-color="#f5f5f5"/>
-                            </linearGradient>
-                        </defs>
-                        <!-- GPU chip -->
-                        <rect x="260" y="70" width="120" height="130" rx="14" fill="url(#chipGpu)" stroke="#93c5fd" stroke-width="2"/>
-                        <rect x="276" y="84" width="88" height="22" rx="6" fill="#dbeafe"/>
-                        <text x="320" y="99" font-family="system-ui" font-size="12" fill="#2563eb" text-anchor="middle" font-weight="700">GPU</text>
-                        <text x="320" y="124" font-family="system-ui" font-size="11" fill="#64748b" text-anchor="middle">Hardware Encoder</text>
-                        <rect x="280" y="152" width="80" height="24" rx="6" fill="#dbeafe"/>
-                        <text x="320" y="168" font-family="monospace" font-size="10" fill="#2563eb" text-anchor="middle" font-weight="600">HW ACCEL</text>
-
-                        <!-- CPU chip -->
-                        <rect x="20" y="70" width="120" height="130" rx="14" fill="url(#chipCpu)" stroke="#e2e8f0" stroke-width="1.5"/>
-                        <rect x="36" y="84" width="88" height="22" rx="6" fill="#f1f5f9"/>
-                        <text x="80" y="99" font-family="system-ui" font-size="12" fill="#475569" text-anchor="middle" font-weight="700">CPU</text>
-                        <text x="80" y="124" font-family="system-ui" font-size="11" fill="#94a3b8" text-anchor="middle">Software Fallback</text>
-
-                        <!-- Arrow -->
-                        <path d="M140 135 L260 135" stroke="url(#flowGradLight)" stroke-width="2.5" stroke-dasharray="6 4"/>
-                        <polygon points="254,130 265,135 254,140" fill="#3b82f6" opacity="0.6"/>
-
-                        <!-- Output -->
-                        <rect x="120" y="220" width="160" height="28" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
-                        <text x="200" y="238" font-family="system-ui" font-size="11" fill="#64748b" text-anchor="middle" font-weight="500">Auto-select best encoder</text>
-                    </svg>
+                <div class="diagram">
+                    <div class="diagram__inner">
+                        <div class="diagram__chip diagram__chip--cpu">
+                            <div class="diagram__chip-label">CPU</div>
+                            <div class="diagram__chip-sub">Software Fallback</div>
+                        </div>
+                        <div class="diagram__arrow">
+                            <div class="diagram__arrow-line"></div>
+                            <div class="diagram__arrow-head"></div>
+                        </div>
+                        <div class="diagram__chip diagram__chip--gpu">
+                            <div class="diagram__chip-label">GPU</div>
+                            <div class="diagram__chip-sub">Hardware Encoder</div>
+                            <div class="diagram__chip-badge">HW ACCEL</div>
+                        </div>
+                        <div class="diagram__outcome">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Auto-select best encoder
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -259,28 +240,29 @@
             <div class="languages__header">
                 <div class="languages__eyebrow">Global reach</div>
                 <h2 class="languages__title">
-                    Available in <span class="languages__title--accent">8 languages</span>
+                    Available in <span class="languages__title--accent">9 languages</span>
                 </h2>
                 <p class="languages__sub">The entire interface is translated. Switch languages on the fly from the sidebar. No restart required.</p>
             </div>
 
             <div class="languages__grid">
                 <div class="languages__list">
-                    <div class="languages__item"><span class="languages__flag">&#127472;&#127475;</span> Korean <span class="languages__code">ko</span></div>
-                    <div class="languages__item"><span class="languages__flag">&#127471;&#127477;</span> Japanese <span class="languages__code">ja</span></div>
-                    <div class="languages__item"><span class="languages__flag">&#127464;&#127475;</span> Chinese (Simplified) <span class="languages__code">zh-cn</span></div>
-                    <div class="languages__item"><span class="languages__flag">&#127466;&#127480;</span> Spanish <span class="languages__code">es</span></div>
-                    <div class="languages__item"><span class="languages__flag">&#127477;&#127481;</span> Portuguese <span class="languages__code">pt</span></div>
-                    <div class="languages__item"><span class="languages__flag">&#127467;&#127479;</span> French <span class="languages__code">fr</span></div>
-                    <div class="languages__item"><span class="languages__flag">&#127470;&#127465;</span> Indonesian <span class="languages__code">id</span></div>
-                    <div class="languages__item"><span class="languages__flag">&#127470;&#127475;</span> Hindi <span class="languages__code">hi</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇰🇷</span> Korean <span class="languages__code">ko</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇺🇸</span> English <span class="languages__code">en</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇯🇵</span> Japanese <span class="languages__code">ja</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇨🇳</span> Chinese (Simplified) <span class="languages__code">zh-cn</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇪🇸</span> Spanish <span class="languages__code">es</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇵🇹</span> Portuguese <span class="languages__code">pt</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇫🇷</span> French <span class="languages__code">fr</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇮🇩</span> Indonesian <span class="languages__code">id</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇮🇳</span> Hindi <span class="languages__code">hi</span></div>
                 </div>
                 <figure class="languages__screenshot">
                     <img src="assets/screenshot-2.webp"
                          alt="Mytory Video Tools language selector showing multiple language options"
                          width="1200" height="750"
                          loading="lazy">
-                    <figcaption class="languages__caption">Switch between 8 languages from the sidebar. The UI updates instantly.</figcaption>
+                    <figcaption class="languages__caption">Switch between 9 languages from the sidebar. The UI updates instantly.</figcaption>
                 </figure>
             </div>
         </div>
@@ -291,7 +273,7 @@
         <div class="download__inner">
             <div class="download__header">
                 <div class="download__eyebrow">Get started</div>
-                <h2 class="download__title">Download Mytory Video Tools</h2>
+                <h2 class="download__title">Download <span class="download__title-name">Mytory Video Tools</span></h2>
                 <p class="download__sub">Free and open source. No account required. No data leaves your machine.</p>
             </div>
             <div class="download__platforms">
@@ -325,6 +307,34 @@
                     <p class="platform-card__desc">AppImage portable</p>
                     <span class="platform-card__meta">.AppImage</span>
                 </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Concept -->
+    <section class="concept">
+        <div class="concept__inner">
+            <div class="concept__header">
+                <div class="concept__eyebrow">The idea</div>
+                <h2 class="concept__title">Scratching the <span class="concept__title--accent">itch</span></h2>
+            </div>
+            <div class="concept__body">
+                <p class="concept__text">
+                    Good video tools exist. But finding one that is <strong>optimized for the quick, adjacent tasks</strong> &mdash; cutting without re-encoding, changing speed while preserving voice pitch, instantly extracting audio, switching containers in a click, capturing frames frame-by-frame &mdash; is surprisingly hard.
+                </p>
+                <p class="concept__text">
+                    Mytory Video Tools was built to scratch that itch. It is not another video editor. It is a <strong>swiss-army knife for the moments between edits</strong>: when you need to split a clip, join segments, extract a soundtrack, or convert a format, and you want it done <em>now</em>, losslessly, with hardware acceleration out of the box.
+                </p>
+                <p class="concept__text">
+                    No cloud uploads, no accounts, no subscriptions. Just native code, FFmpeg under the hood, and a clean interface that stays out of your way.
+                </p>
+            </div>
+            <div class="concept__tags">
+                <span class="concept__tag">Lossless by design</span>
+                <span class="concept__tag">Pitch preservation</span>
+                <span class="concept__tag">Hardware accelerated</span>
+                <span class="concept__tag">No re-encode</span>
+                <span class="concept__tag">Batch processing</span>
             </div>
         </div>
     </section>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,12 +9,12 @@
     <meta property="og:description" content="High-speed native video utilities for Windows, macOS, and Linux.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://mytory.github.io/mytory-video-tools/">
-    <meta name="theme-color" content="#0a0a0b">
+    <meta name="theme-color" content="#fafaf9">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233b82f6'/%3E%3Ctext x='16' y='22' font-family='system-ui' font-weight='800' font-size='18' fill='white' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+    <link rel="icon" type="image/webp" href="assets/logo.webp">
 </head>
 <body>
 
@@ -22,17 +22,15 @@
     <nav class="navbar" id="navbar">
         <div class="navbar__inner">
             <a href="#" class="navbar__brand">
-                <svg class="navbar__logo" width="28" height="28" viewBox="0 0 32 32" fill="none">
-                    <rect width="32" height="32" rx="8" fill="#3b82f6"/>
-                    <text x="16" y="22" font-family="system-ui" font-weight="800" font-size="18" fill="white" text-anchor="middle">M</text>
-                </svg>
+                <img src="assets/logo.webp" alt="Mytory" class="navbar__logo" width="28" height="28">
                 <span class="navbar__title">Mytory Video Tools</span>
             </a>
             <div class="navbar__links">
                 <a href="#features" class="navbar__link">Features</a>
+                <a href="#languages" class="navbar__link">Languages</a>
                 <a href="#download" class="navbar__link">Download</a>
                 <a href="https://github.com/mytory/mytory-video-tools" target="_blank" rel="noopener" class="navbar__link navbar__link--external">
-                    <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                         <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
                     </svg>
                     GitHub
@@ -55,11 +53,11 @@
                     <span class="hero__title--accent">Video Tools</span>
                 </h1>
                 <p class="hero__sub">
-                    Seven powerful video utilities in one native desktop app. Speed up, compress, split, join, convert, and capture video with hardware-accelerated encoding.
+                    Seven powerful video utilities in one native desktop app. Speed up, compress, split, join, convert, and capture video with hardware-accelerated encoding. No uploads, no limits.
                 </p>
                 <div class="hero__ctas">
                     <a href="#download" class="btn btn--primary">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                             <polyline points="7 10 12 15 17 10"/>
                             <line x1="12" y1="15" x2="12" y2="3"/>
@@ -68,7 +66,7 @@
                     </a>
                     <a href="#features" class="btn btn--ghost">
                         Explore Features
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="12" y1="5" x2="12" y2="19"/>
                             <polyline points="19 12 12 19 5 12"/>
                         </svg>
@@ -76,141 +74,33 @@
                 </div>
                 <div class="hero__tech">
                     <span>Built with Electron</span>
-                    <span class="hero__tech-dot">&middot;</span>
+                    <span class="hero__sep"></span>
                     <span>Ships FFmpeg</span>
-                    <span class="hero__tech-dot">&middot;</span>
+                    <span class="hero__sep"></span>
                     <span>Windows &middot; macOS &middot; Linux</span>
                 </div>
             </div>
             <div class="hero__visual">
-                <div class="hero__mockup">
-                    <div class="mockup__chrome">
-                        <div class="mockup__dots">
-                            <span class="mockup__dot mockup__dot--red"></span>
-                            <span class="mockup__dot mockup__dot--yellow"></span>
-                            <span class="mockup__dot mockup__dot--green"></span>
-                        </div>
-                        <div class="mockup__title">Mytory Video Tools</div>
-                    </div>
-                    <div class="mockup__body">
-                        <div class="mockup__sidebar">
-                            <div class="mockup__brand">
-                                <div class="mockup__brand-icon"></div>
-                                <div>
-                                    <div class="mockup__brand-sub">Mytory Desktop</div>
-                                    <div class="mockup__brand-title">Video Tools</div>
-                                </div>
-                            </div>
-                            <div class="mockup__nav">
-                                <div class="mockup__nav-item mockup__nav-item--active">
-                                    <span class="mockup__nav-icon">&#9889;</span>
-                                    <span>Speed Changer</span>
-                                </div>
-                                <div class="mockup__nav-item">
-                                    <span class="mockup__nav-icon">&#127925;</span>
-                                    <span>Audio Drop</span>
-                                </div>
-                                <div class="mockup__nav-item">
-                                    <span class="mockup__nav-icon">&#128247;</span>
-                                    <span>Frame Capture</span>
-                                </div>
-                                <div class="mockup__nav-item">
-                                    <span class="mockup__nav-icon">&#128260;</span>
-                                    <span>Remuxer</span>
-                                </div>
-                                <div class="mockup__nav-item">
-                                    <span class="mockup__nav-icon">&#128279;</span>
-                                    <span>Video Joiner</span>
-                                </div>
-                                <div class="mockup__nav-item">
-                                    <span class="mockup__nav-icon">&#9986;</span>
-                                    <span>Splitter</span>
-                                </div>
-                                <div class="mockup__nav-item">
-                                    <span class="mockup__nav-icon">&#128230;</span>
-                                    <span>Compressor</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mockup__main">
-                            <div class="mockup__header">
-                                <div class="mockup__tool-name">&#9889; Speed Changer</div>
-                                <div class="mockup__status">Ready</div>
-                            </div>
-                            <div class="mockup__dropzone">
-                                <div class="mockup__drop-icon">
-                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                                        <polyline points="17 8 12 3 7 8"/>
-                                        <line x1="12" y1="3" x2="12" y2="15"/>
-                                    </svg>
-                                </div>
-                                <div class="mockup__drop-text">Drop video files here</div>
-                            </div>
-                            <div class="mockup__controls">
-                                <div class="mockup__slider">
-                                    <span class="mockup__slider-label">Speed</span>
-                                    <div class="mockup__slider-track">
-                                        <div class="mockup__slider-fill" style="width: 60%"></div>
-                                        <div class="mockup__slider-thumb" style="left: 60%"></div>
-                                    </div>
-                                    <span class="mockup__slider-value">2.0x</span>
-                                </div>
-                                <div class="mockup__bottom-row">
-                                    <div class="mockup__chip">H.264</div>
-                                    <div class="mockup__chip">H.265</div>
-                                    <div class="mockup__chip">VP9</div>
-                                    <div class="mockup__chip">AV1</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="hero__glow"></div>
+                <figure class="hero__screenshot">
+                    <img src="assets/screenshot-1.webp"
+                         alt="Mytory Video Tools main interface showing Speed Changer tool with dark sidebar and control panel"
+                         width="1200" height="750"
+                         loading="eager">
+                </figure>
             </div>
         </div>
     </section>
 
-    <!-- Trusted by / Used by -->
+    <!-- Powered by -->
     <section class="trusted">
         <div class="trusted__inner">
             <p class="trusted__label">Powered by industry standards</p>
             <div class="trusted__logos">
-                <div class="trusted__logo">
-                    <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-                        <rect width="32" height="32" rx="4" fill="#19212a"/>
-                        <text x="16" y="21" font-family="system-ui" font-weight="800" font-size="14" fill="#00d8ff" text-anchor="middle">E</text>
-                    </svg>
-                    Electron
-                </div>
-                <div class="trusted__logo">
-                    <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-                        <rect width="32" height="32" rx="4" fill="#1a3a2a"/>
-                        <text x="16" y="21" font-family="system-ui" font-weight="800" font-size="11" fill="#4caf50" text-anchor="middle">FF</text>
-                    </svg>
-                    FFmpeg
-                </div>
-                <div class="trusted__logo">
-                    <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-                        <rect width="32" height="32" rx="4" fill="#1e1e2e"/>
-                        <text x="16" y="21" font-family="system-ui" font-weight="800" font-size="13" fill="#89b4fa" text-anchor="middle">N</text>
-                    </svg>
-                    Node.js
-                </div>
-                <div class="trusted__logo">
-                    <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-                        <rect width="32" height="32" rx="4" fill="#2d1b2e"/>
-                        <text x="16" y="21" font-family="system-ui" font-weight="800" font-size="10" fill="#cba6f7" text-anchor="middle">NV</text>
-                    </svg>
-                    NVENC
-                </div>
-                <div class="trusted__logo">
-                    <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-                        <rect width="32" height="32" rx="4" fill="#1a2a3a"/>
-                        <text x="16" y="21" font-family="system-ui" font-weight="800" font-size="10" fill="#60a5fa" text-anchor="middle">VT</text>
-                    </svg>
-                    VideoToolbox
-                </div>
+                <span class="trusted__logo">Electron</span>
+                <span class="trusted__logo">FFmpeg</span>
+                <span class="trusted__logo">Node.js</span>
+                <span class="trusted__logo">NVENC</span>
+                <span class="trusted__logo">VideoToolbox</span>
             </div>
         </div>
     </section>
@@ -225,15 +115,15 @@
 
             <div class="features__grid">
                 <!-- Speed Changer -->
-                <article class="feature-card feature-card--span-2">
+                <article class="feature-card feature-card--wide">
                     <div class="feature-card__icon-wrap">
-                        <span class="feature-card__icon">&#9889;</span>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                     </div>
                     <h3 class="feature-card__title">Speed Changer</h3>
-                    <p class="feature-card__desc">Change playback speed from 0.5x to 4.0x with pitch preservation. No more chipmunk voices. Supports H.264, H.265, VP9, and AV1 with hardware acceleration.</p>
-                    <ul class="feature-card__specs">
+                    <p class="feature-card__desc">Change playback speed from 0.5x to 4.0x with pitch preservation. No chipmunk voices. Supports H.264, H.265, VP9, and AV1 with hardware acceleration.</p>
+                    <ul class="feature-card__tags">
                         <li>Pitch-preserved audio</li>
-                        <li>Hardware-accelerated</li>
+                        <li>Hardware accelerated</li>
                         <li>Batch processing</li>
                     </ul>
                 </article>
@@ -241,7 +131,7 @@
                 <!-- Compressor -->
                 <article class="feature-card">
                     <div class="feature-card__icon-wrap">
-                        <span class="feature-card__icon">&#128230;</span>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2"/><path d="M8 16l4-4 4 4"/><line x1="12" y1="12" x2="12" y2="20"/></svg>
                     </div>
                     <h3 class="feature-card__title">Compressor</h3>
                     <p class="feature-card__desc">Compress video to a target file size with your choice of codec, quality, and hardware encoder. Shrink 4K footage for sharing in one click.</p>
@@ -250,7 +140,7 @@
                 <!-- Frame Capture -->
                 <article class="feature-card">
                     <div class="feature-card__icon-wrap">
-                        <span class="feature-card__icon">&#128247;</span>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
                     </div>
                     <h3 class="feature-card__title">Frame Capture</h3>
                     <p class="feature-card__desc">Capture single frames, batch-extract at intervals, or use automatic scene detection with adjustable sensitivity. Perfect for thumbnails and storyboards.</p>
@@ -259,16 +149,16 @@
                 <!-- Remuxer -->
                 <article class="feature-card">
                     <div class="feature-card__icon-wrap">
-                        <span class="feature-card__icon">&#128260;</span>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
                     </div>
                     <h3 class="feature-card__title">Remuxer</h3>
-                    <p class="feature-card__desc">Convert between MP4, MKV, and MOV containers without re-encoding. Lossless, instant, and preserves all streams.</p>
+                    <p class="feature-card__desc">Convert between MP4, MKV, and MOV containers without re-encoding. Lossless and instant. Preserves all streams.</p>
                 </article>
 
                 <!-- Audio Drop -->
                 <article class="feature-card">
                     <div class="feature-card__icon-wrap">
-                        <span class="feature-card__icon">&#127925;</span>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
                     </div>
                     <h3 class="feature-card__title">Audio Drop</h3>
                     <p class="feature-card__desc">Extract audio tracks losslessly or convert to MP3, AAC, OGG, or WAV. Drag a video, get the audio.</p>
@@ -277,23 +167,23 @@
                 <!-- Video Joiner -->
                 <article class="feature-card">
                     <div class="feature-card__icon-wrap">
-                        <span class="feature-card__icon">&#128279;</span>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
                     </div>
                     <h3 class="feature-card__title">Video Joiner</h3>
-                    <p class="feature-card__desc">Losslessly concatenate multiple videos with identical encoding. Reorder by drag-and-drop, check compatibility at a glance, and join in one click.</p>
+                    <p class="feature-card__desc">Losslessly concatenate multiple videos with identical encoding. Reorder by drag-and-drop. Check compatibility at a glance and join in one click.</p>
                 </article>
 
                 <!-- Splitter -->
-                <article class="feature-card feature-card--span-2">
+                <article class="feature-card feature-card--wide">
                     <div class="feature-card__icon-wrap">
-                        <span class="feature-card__icon">&#9986;</span>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
                     </div>
                     <h3 class="feature-card__title">Video Splitter</h3>
                     <p class="feature-card__desc">Cut a segment losslessly by setting start and end points. Extremely fast no-re-encode splitting. Ideal for trimming highlights or preparing clips for assembly.</p>
-                    <ul class="feature-card__specs">
+                    <ul class="feature-card__tags">
                         <li>Lossless cut</li>
-                        <li>Precise keyframe snapping</li>
-                        <li>Part of the Split-Edit-Join workflow</li>
+                        <li>Keyframe snapping</li>
+                        <li>Split-Edit-Join workflow</li>
                     </ul>
                 </article>
             </div>
@@ -320,36 +210,78 @@
             </div>
             <div class="hwaccel__visual">
                 <div class="hwaccel__diagram">
-                    <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg" class="hwaccel__svg">
+                    <svg viewBox="0 0 400 280" fill="none" xmlns="http://www.w3.org/2000/svg" class="hwaccel__svg">
                         <defs>
-                            <linearGradient id="flowGrad" x1="0" y1="0" x2="1" y2="0">
+                            <linearGradient id="flowGradLight" x1="0" y1="0" x2="1" y2="0">
                                 <stop offset="0%" stop-color="#3b82f6" stop-opacity="0"/>
-                                <stop offset="50%" stop-color="#3b82f6" stop-opacity="0.6"/>
+                                <stop offset="50%" stop-color="#3b82f6" stop-opacity="0.5"/>
                                 <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+                            </linearGradient>
+                            <linearGradient id="chipGpu" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#eff6ff"/>
+                                <stop offset="100%" stop-color="#fafafa"/>
+                            </linearGradient>
+                            <linearGradient id="chipCpu" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#fafafa"/>
+                                <stop offset="100%" stop-color="#f5f5f5"/>
                             </linearGradient>
                         </defs>
                         <!-- GPU chip -->
-                        <rect x="270" y="90" width="110" height="120" rx="12" fill="#1e293b" stroke="#3b82f6" stroke-width="2"/>
-                        <text x="325" y="135" font-family="system-ui" font-size="13" fill="#60a5fa" text-anchor="middle" font-weight="600">GPU</text>
-                        <text x="325" y="158" font-family="system-ui" font-size="10" fill="#64748b" text-anchor="middle">Hardware Encoder</text>
-                        <rect x="285" y="174" width="80" height="18" rx="4" fill="#3b82f6" opacity="0.15"/>
-                        <text x="325" y="187" font-family="monospace" font-size="9" fill="#3b82f6" text-anchor="middle">HW ACCEL</text>
+                        <rect x="260" y="70" width="120" height="130" rx="14" fill="url(#chipGpu)" stroke="#93c5fd" stroke-width="2"/>
+                        <rect x="276" y="84" width="88" height="22" rx="6" fill="#dbeafe"/>
+                        <text x="320" y="99" font-family="system-ui" font-size="12" fill="#2563eb" text-anchor="middle" font-weight="700">GPU</text>
+                        <text x="320" y="124" font-family="system-ui" font-size="11" fill="#64748b" text-anchor="middle">Hardware Encoder</text>
+                        <rect x="280" y="152" width="80" height="24" rx="6" fill="#dbeafe"/>
+                        <text x="320" y="168" font-family="monospace" font-size="10" fill="#2563eb" text-anchor="middle" font-weight="600">HW ACCEL</text>
 
                         <!-- CPU chip -->
-                        <rect x="20" y="90" width="110" height="120" rx="12" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
-                        <text x="75" y="135" font-family="system-ui" font-size="13" fill="#94a3b8" text-anchor="middle" font-weight="600">CPU</text>
-                        <text x="75" y="158" font-family="system-ui" font-size="10" fill="#64748b" text-anchor="middle">Fallback</text>
+                        <rect x="20" y="70" width="120" height="130" rx="14" fill="url(#chipCpu)" stroke="#e2e8f0" stroke-width="1.5"/>
+                        <rect x="36" y="84" width="88" height="22" rx="6" fill="#f1f5f9"/>
+                        <text x="80" y="99" font-family="system-ui" font-size="12" fill="#475569" text-anchor="middle" font-weight="700">CPU</text>
+                        <text x="80" y="124" font-family="system-ui" font-size="11" fill="#94a3b8" text-anchor="middle">Software Fallback</text>
 
-                        <!-- Arrow between -->
-                        <path d="M130 150 L270 150" stroke="url(#flowGrad)" stroke-width="2" stroke-dasharray="6 4"/>
-                        <polygon points="265,145 275,150 265,155" fill="#3b82f6" opacity="0.6"/>
+                        <!-- Arrow -->
+                        <path d="M140 135 L260 135" stroke="url(#flowGradLight)" stroke-width="2.5" stroke-dasharray="6 4"/>
+                        <polygon points="254,130 265,135 254,140" fill="#3b82f6" opacity="0.6"/>
 
                         <!-- Output -->
-                        <rect x="150" y="220" width="100" height="32" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
-                        <text x="200" y="240" font-family="system-ui" font-size="10" fill="#64748b" text-anchor="middle">Quick Sync</text>
-                        <text x="200" y="210" font-family="system-ui" font-size="10" fill="#64748b" text-anchor="middle" font-weight="500">Auto-select</text>
+                        <rect x="120" y="220" width="160" height="28" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+                        <text x="200" y="238" font-family="system-ui" font-size="11" fill="#64748b" text-anchor="middle" font-weight="500">Auto-select best encoder</text>
                     </svg>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Language Support -->
+    <section class="languages" id="languages">
+        <div class="languages__inner">
+            <div class="languages__header">
+                <div class="languages__eyebrow">Global reach</div>
+                <h2 class="languages__title">
+                    Available in <span class="languages__title--accent">8 languages</span>
+                </h2>
+                <p class="languages__sub">The entire interface is translated. Switch languages on the fly from the sidebar. No restart required.</p>
+            </div>
+
+            <div class="languages__grid">
+                <div class="languages__list">
+                    <div class="languages__item"><span class="languages__flag">&#127472;&#127475;</span> Korean <span class="languages__code">ko</span></div>
+                    <div class="languages__item"><span class="languages__flag">&#127471;&#127477;</span> Japanese <span class="languages__code">ja</span></div>
+                    <div class="languages__item"><span class="languages__flag">&#127464;&#127475;</span> Chinese (Simplified) <span class="languages__code">zh-cn</span></div>
+                    <div class="languages__item"><span class="languages__flag">&#127466;&#127480;</span> Spanish <span class="languages__code">es</span></div>
+                    <div class="languages__item"><span class="languages__flag">&#127477;&#127481;</span> Portuguese <span class="languages__code">pt</span></div>
+                    <div class="languages__item"><span class="languages__flag">&#127467;&#127479;</span> French <span class="languages__code">fr</span></div>
+                    <div class="languages__item"><span class="languages__flag">&#127470;&#127465;</span> Indonesian <span class="languages__code">id</span></div>
+                    <div class="languages__item"><span class="languages__flag">&#127470;&#127475;</span> Hindi <span class="languages__code">hi</span></div>
+                </div>
+                <figure class="languages__screenshot">
+                    <img src="assets/screenshot-2.webp"
+                         alt="Mytory Video Tools language selector showing multiple language options"
+                         width="1200" height="750"
+                         loading="lazy">
+                    <figcaption class="languages__caption">Switch between 8 languages from the sidebar. The UI updates instantly.</figcaption>
+                </figure>
             </div>
         </div>
     </section>
@@ -376,7 +308,7 @@
                 <a href="https://github.com/mytory/mytory-video-tools/releases" target="_blank" rel="noopener" class="platform-card">
                     <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <rect x="4" y="2" width="16" height="20" rx="2"/>
-                        <line x1="9" y1="2" x2="9" y2="22" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="9" y1="2" x2="9" y2="22"/>
                     </svg>
                     <h3 class="platform-card__title">Windows</h3>
                     <p class="platform-card__desc">64-bit installer</p>
@@ -394,14 +326,6 @@
                     <span class="platform-card__meta">.AppImage</span>
                 </a>
             </div>
-            <div class="download__note">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"/>
-                    <line x1="12" y1="16" x2="12" y2="12"/>
-                    <line x1="12" y1="8" x2="12.01" y2="8"/>
-                </svg>
-                <span>This app is not code-signed. See the README for security guide.</span>
-            </div>
         </div>
     </section>
 
@@ -410,7 +334,7 @@
         <div class="oss__inner">
             <div class="oss__content">
                 <div class="oss__icon">
-                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
                         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
                         <polyline points="22 4 12 14.01 9 11.01"/>
                     </svg>
@@ -418,7 +342,7 @@
                 <h2 class="oss__title">Open Source</h2>
                 <p class="oss__desc">Licensed under GPL-3.0. Built with Electron, FFmpeg, and a lot of determination. Contributions, issues, and feature requests are welcome on GitHub.</p>
                 <a href="https://github.com/mytory/mytory-video-tools" target="_blank" rel="noopener" class="btn btn--ghost">
-                    <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                         <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
                     </svg>
                     View on GitHub
@@ -431,10 +355,7 @@
     <footer class="footer">
         <div class="footer__inner">
             <div class="footer__brand">
-                <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
-                    <rect width="32" height="32" rx="8" fill="#3b82f6"/>
-                    <text x="16" y="22" font-family="system-ui" font-weight="800" font-size="18" fill="white" text-anchor="middle">M</text>
-                </svg>
+                <img src="assets/logo.webp" alt="Mytory" width="20" height="20">
                 <span>Mytory Video Tools</span>
             </div>
             <div class="footer__links">

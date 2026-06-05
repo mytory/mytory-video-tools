@@ -659,14 +659,130 @@ a {
     justify-content: center;
 }
 
-.hwaccel__diagram {
+/* --- Diagram (CPU → GPU) --- */
+.diagram {
     width: 100%;
-    max-width: 400px;
+    max-width: 380px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    padding: 32px 28px;
+    box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.02),
+        0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
-.hwaccel__svg {
+.diagram__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+/* Chip blocks */
+.diagram__chip {
     width: 100%;
-    height: auto;
+    padding: 16px 20px;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+    transition: transform 0.3s var(--ease-out-expo), box-shadow 0.3s var(--ease-out-expo);
+}
+
+.diagram__chip:hover {
+    transform: translateY(-2px);
+}
+
+.diagram__chip--cpu {
+    background: #fafaf9;
+    border: 1px solid var(--color-border);
+}
+
+.diagram__chip--gpu {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.06), rgba(124, 58, 237, 0.05));
+    border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+.diagram__chip-label {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--color-text-primary);
+    line-height: 1.2;
+}
+
+.diagram__chip--gpu .diagram__chip-label {
+    background: linear-gradient(135deg, var(--color-accent), #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.diagram__chip-sub {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-tertiary);
+    margin-top: 4px;
+}
+
+.diagram__chip--gpu .diagram__chip-sub {
+    color: var(--color-text-secondary);
+}
+
+.diagram__chip-badge {
+    position: absolute;
+    top: -10px;
+    right: 16px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 3px 10px;
+    border-radius: 5px;
+    background: var(--color-accent);
+    color: #fff;
+    font-family: var(--font-mono);
+}
+
+/* Arrow connecting chips */
+.diagram__arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+.diagram__arrow-line {
+    width: 2px;
+    height: 20px;
+    background: linear-gradient(180deg, var(--color-border), var(--color-accent));
+    border-radius: 1px;
+}
+
+.diagram__arrow-head {
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid var(--color-accent);
+}
+
+/* Outcome row */
+.diagram__outcome {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-accent);
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: var(--color-accent-muted);
+    border: 1px solid var(--color-accent-light);
+}
+
+.diagram__outcome svg {
+    flex-shrink: 0;
+    color: var(--color-accent);
 }
 
 /* --- Language Support --- */

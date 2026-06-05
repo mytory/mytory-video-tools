@@ -189,8 +189,13 @@ HTML 구조 자체가 언어마다 달라야 할 때 사용합니다. 해당 언
 4. `package.json` 버전을 업데이트합니다.
 5. `docs/`의 소개 웹사이트를 업데이트합니다. 영어 페이지(`docs/index.html`)를 먼저 수정하고, 확정 후 다른 언어 페이지를 동기화합니다.
 6. `README.md`와 `README.{lang}.md` 파일들을 업데이트합니다.
-7. 변경사항을 커밋합니다.
-8. 태그를 만듭니다: `git tag -a vX.Y.Z -m "Release vX.Y.Z"`
+7. `docs/index.html`의 다운로드 섹션(`.download__platforms`)에 있는 모든 `.platform-card`와 `.platform-card__alt`의 `href`를 해당 릴리즈의 실제 asset URL로 업데이트합니다.
+   - macOS ARM: `.../download/vX.Y.Z/...-vX.Y.Z-arm64.dmg`
+   - macOS Intel: `.../download/vX.Y.Z/...-vX.Y.Z-x64.dmg`
+   - Windows: `.../download/vX.Y.Z/...-Setup-vX.Y.Z.exe`
+   - Linux: `.../download/vX.Y.Z/...-vX.Y.Z.AppImage`
+8. 변경사항을 커밋합니다.
+9. 태그를 만듭니다: `git tag -a vX.Y.Z -m "Release vX.Y.Z"`
 9. 사용자에게 `git push origin master --tags` 또는 필요한 브랜치/태그 푸시 명령을 안내합니다.
 
 ## GitHub Pages 웹사이트 업데이트 규칙

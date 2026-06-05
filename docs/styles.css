@@ -844,6 +844,7 @@ a {
     gap: 20px;
     width: 100%;
     max-width: 680px;
+    align-items: start;
 }
 
 .platform-card {
@@ -905,6 +906,34 @@ a {
 .platform-card__desc {
     font-size: 13px;
     color: var(--color-text-secondary);
+}
+
+.platform-card__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.platform-card__wrapper .platform-card {
+    width: 100%;
+}
+
+.platform-card__alt {
+    display: block;
+    text-align: center;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--color-text-tertiary);
+    padding: 8px 12px;
+    border-radius: 10px;
+    transition: all 0.25s var(--ease-out-expo);
+    border: 1px solid transparent;
+}
+
+.platform-card__alt:hover {
+    color: var(--color-accent);
+    background: var(--color-accent-muted);
+    border-color: var(--color-accent-light);
 }
 
 .platform-card__meta {

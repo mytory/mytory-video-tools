@@ -86,10 +86,10 @@ jobs:
             This program is distributed by an individual developer and is not signed with a paid code signing certificate. The security warning you may see is not a defect. Please follow the instructions below to run the application.
 
             *   **Windows:** Click **[More info]** on the red warning screen → Click **[Run anyway]**
-            *   **macOS:** **Right-click (or Control+click)** the app file → Select **[Open]** → Click **[Open]** again
+            *   **macOS:** Double-click the app → When the security alert appears, go to **System Settings → Privacy & Security** → Scroll down to the **Security** section → Click the **[Open Anyway]** button → Confirm in the dialog
 
             **한국어:**
             본 프로그램은 개인 개발자가 배포하는 오픈소스 소프트웨어로, 유료 개발자 인증서 서명이 되어 있지 않습니다. 실행 시 발생하는 보안 경고는 프로그램의 결함이 아니니 아래 방법으로 실행해 주세요.
 
             *   **Windows:** 빨간색 경고창에서 **[추가 정보]** 클릭 → **[실행]** 버튼 클릭
-            *   **macOS:** 앱 파일 위에서 **마우스 오른쪽 버튼(또는 Control+클릭)** → **[열기]** 선택 → 다시 한번 **[열기]** 클릭
+            *   **macOS:** 앱을 더블클릭 → 보안 경고 발생 시 **시스템 설정 → 개인정보 보호 및 보안** → **보안** 섹션 하단의 **[그래도 열기]** 버튼 클릭 → 확인 대화상자에서 확인

@@ -35,6 +35,11 @@ body {
 
 input,
 select,
+textarea {
+    background-color: var(--surface-soft);
+}
+input,
+select,
 textarea,
 button {
     color: var(--text);

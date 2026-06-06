@@ -128,3 +128,11 @@ npm run dist
 *   **Email:** [mail@mytory.net](mailto:mail@mytory.net)
 *   **Blog:** [https://mytory.net](https://mytory.net)
 *   **GitHub:** [@mytory](https://github.com/mytory)
+
+---
+
+## 8. परियोजना को समर्थन दें
+
+गर्व से विज्ञापन-मुक्त और उपयोगकर्ता-समर्थित। हर कॉफ़ी बदलाव लाती है।
+
+☕ [PayPal के माध्यम से समर्थन करें](https://www.paypal.com/ncp/payment/SWKQD7USX8J5U)

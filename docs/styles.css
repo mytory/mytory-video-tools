@@ -1242,6 +1242,26 @@ a {
     margin-top: 8px;
 }
 
+.footer__support {
+    font-size: 13px;
+    color: var(--color-text-tertiary);
+    width: 100%;
+    text-align: center;
+    margin: 0 0 12px 0;
+}
+
+.footer__support a {
+    color: var(--color-text-secondary);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s ease;
+}
+
+.footer__support a:hover {
+    color: var(--color-text-primary);
+}
+
 /* --- Reveal Animation --- */
 .reveal {
     opacity: 0;

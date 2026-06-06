@@ -128,3 +128,11 @@ Copyright (c) 2026 mytory. このプロジェクトは **ISC License** の下で
 *   **Email:** [mail@mytory.net](mailto:mail@mytory.net)
 *   **Blog:** [https://mytory.net](https://mytory.net)
 *   **GitHub:** [@mytory](https://github.com/mytory)
+
+---
+
+## 8. プロジェクトを支援
+
+広告なし、ユーザーの支援で運営しています。一杯のコーヒーが大きな力になります。
+
+☕ [PayPalで支援](https://www.paypal.com/ncp/payment/SWKQD7USX8J5U)

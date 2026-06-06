@@ -661,6 +661,7 @@ const translations = {
         id: 'Gabungkan video',
         hi: 'वीडियो जोड़ें',
     },
+
     'Need at least 2 files': {
         en: 'Need at least 2 files',
         ko: '최소 2개의 파일이 필요합니다',
@@ -677,6 +678,16 @@ const translations = {
 // 패턴 기반 동적 번역을 위한 템플릿 함수들
 // key는 느낌표로 시작하고, 파라미터는 함수 인자로 전달
 const templateTranslations = {
+    '!support_paypal_toast': {
+        en: () => '☕ Love this app? <a href="https://www.paypal.com/ncp/payment/SWKQD7USX8J5U" target="_blank" rel="noopener" style="color:#f59e0b;text-decoration:underline;">Support on PayPal</a>',
+        ja: () => '☕ このアプリが気に入りましたか？ <a href="https://www.paypal.com/ncp/payment/SWKQD7USX8J5U" target="_blank" rel="noopener" style="color:#f59e0b;text-decoration:underline;">PayPalで支援</a>',
+        'zh-cn': () => '☕ 喜欢这个应用？ <a href="https://www.paypal.com/ncp/payment/SWKQD7USX8J5U" target="_blank" rel="noopener" style="color:#f59e0b;text-decoration:underline;">通过PayPal支持</a>',
+        es: () => '☕ ¿Te gusta esta app? <a href="https://www.paypal.com/ncp/payment/SWKQD7USX8J5U" target="_blank" rel="noopener" style="color:#f59e0b;text-decoration:underline;">Apoya vía PayPal</a>',
+        pt: () => '☕ Gostou deste app? <a href="https://www.paypal.com/ncp/payment/SWKQD7USX8J5U" target="_blank" rel="noopener" style="color:#f59e0b;text-decoration:underline;">Apoie via PayPal</a>',
+        fr: () => '☕ Vous aimez cette app ? <a href="https://www.paypal.com/ncp/payment/SWKQD7USX8J5U" target="_blank" rel="noopener" style="color:#f59e0b;text-decoration:underline;">Soutenez via PayPal</a>',
+        id: () => '☕ Suka aplikasi ini? <a href="https://www.paypal.com/ncp/payment/SWKQD7USX8J5U" target="_blank" rel="noopener" style="color:#f59e0b;text-decoration:underline;">Dukung melalui PayPal</a>',
+        hi: () => '☕ यह ऐप पसंद है? <a href="https://www.paypal.com/ncp/payment/SWKQD7USX8J5U" target="_blank" rel="noopener" style="color:#f59e0b;text-decoration:underline;">PayPal के माध्यम से समर्थन करें</a>',
+    },
     '!hardware_encoding': {
         en: (name) => `Using hardware encoding: ${name}`,
         ko: (name) => `하드웨어 인코딩 사용 중: ${name}`,

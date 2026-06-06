@@ -128,3 +128,11 @@ Para preguntas, informes de errores o sugerencias de funciones, comuníquese a t
 *   **Email:** [mail@mytory.net](mailto:mail@mytory.net)
 *   **Blog:** [https://mytory.net](https://mytory.net)
 *   **GitHub:** [@mytory](https://github.com/mytory)
+
+---
+
+## 8. Apoya el Proyecto
+
+Orgullosamente libre de anuncios y apoyado por usuarios. Cada café marca la diferencia.
+
+☕ [Apoya vía PayPal](https://www.paypal.com/ncp/payment/SWKQD7USX8J5U)

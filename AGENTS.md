@@ -156,6 +156,32 @@ HTML 구조 자체가 언어마다 달라야 할 때 사용합니다. 해당 언
 - `renderer/translations.js` — 전체 번역 맵
 - `renderer/app.js`의 `t()` 함수 — 번역 조회 로직
 
+## PayPal 후원 시스템
+
+성공 토스트 메시지와 설정 화면, 웹사이트 footer, README에 PayPal 후원 링크가 표시됩니다.
+
+### 후원 문구
+
+- **영어:** "Proudly ad-free and user-supported. Every coffee makes a difference. ☕ Support via PayPal"
+- **PayPal URL:** `https://www.paypal.com/ncp/payment/SWKQD7USX8J5U`
+
+### 한국어 제외 규칙
+
+한국 사용자는 PayPal로 후원할 수 없으므로, **모든 한국어 버전(README.ko.md, docs/ko/index.html)에서는 후원 문구를 절대 표시하지 않습니다.**
+
+| 위치 | 구현 방식 | 한국어 제외 여부 |
+|---|---|---|
+| 성공/정보 토스트 | `renderer/app.js`의 `showToast()`에서 `type !== 'error'`이고 언어가 `ko`가 아닐 때 `t('!support_paypal_toast')` 렌더링 | ✅ 언어 코드로 조건 분기 |
+| 앱 설정 화면 | `renderer/index.html`의 `<section id="settings">` 하단, `data-mi18n-block="en,ja,zh-cn,es,pt,fr,id,hi"`로 감쌈 | ✅ `data-mi18n-block` 속성 |
+| 웹사이트 footer | `docs/{locale}/index.html`의 `<footer>` 영역 | ✅ `docs/ko/index.html`에는 미추가 |
+| README | `README.{locale}.md`의 Contact 섹션 아래 | ✅ `README.ko.md`에는 미추가 |
+
+### 새 도구/언어 추가 시 주의사항
+
+1. 새 언어를 추가할 때는 위 표의 모든 위치에서 한국어 제외 규칙을 동일하게 적용해야 합니다.
+2. 새 도구를 추가해도 후원 시스템은 건드리지 않습니다. `settings` 탭과 `showToast()`는 공통 시스템입니다.
+3. 토스트 후원 메시지가 필요하면 `translations.js`의 `!support_paypal_toast` 템플릿 번역에 새 언어 항목을 추가하세요.
+
 ## 글로벌 드래그 & 드롭 (화면 전체 드롭)
 
 파일 드롭 공간이 화면 전체로 설정되어 있습니다. 각 도구 탭의 드롭존(`.dropzone`)은 시각적 가이드 역할만 하며, 실제 드래그/드롭 이벤트는 모두 `initApp()`에서 `document`에 등록한 **단일 글로벌 핸들러**로 처리됩니다.

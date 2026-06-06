@@ -128,3 +128,11 @@ Untuk pertanyaan, laporan bug, atau saran fitur, silakan hubungi melalui:
 *   **Email:** [mail@mytory.net](mailto:mail@mytory.net)
 *   **Blog:** [https://mytory.net](https://mytory.net)
 *   **GitHub:** [@mytory](https://github.com/mytory)
+
+---
+
+## 8. Dukung Proyek Ini
+
+Bebas iklan dan didukung oleh pengguna. Setiap kopi membuat perbedaan.
+
+☕ [Dukung melalui PayPal](https://www.paypal.com/ncp/payment/SWKQD7USX8J5U)

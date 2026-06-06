@@ -2336,10 +2336,21 @@ function showToast(title, message, type = 'info') {
     else if (type === 'success') colorStyle = 'border-color: var(--success);';
     
     toast.style = colorStyle;
+    
+    // 후원 링크: 성공/정보 토스트에만, 한국어는 제외
+    let supportHtml = '';
+    if (type !== 'error') {
+        const lang = typeof MytoryI18n !== 'undefined' ? MytoryI18n.getLanguage().toLowerCase() : '';
+        if (!lang.startsWith('ko')) {
+            supportHtml = '<p style="margin:8px 0 0 0; font-size:0.8rem;">' + t('!support_paypal_toast') + '</p>';
+        }
+    }
+    
     toast.innerHTML = `
         <button class="toast-close-btn" type="button" aria-label="${t('Close notification', '알림 닫기')}">&times;</button>
         <h4 style="margin:0; font-size:0.95rem;">${title}</h4>
         <p style="margin:4px 0 0 0; font-size:0.8rem; color:var(--text-muted);">${message}</p>
+        ${supportHtml}
     `;
 
     // 닫기 버튼 클릭 시 토스트 숨김
@@ -2348,12 +2359,19 @@ function showToast(title, message, type = 'info') {
         dismissToast();
     });
 
-    // 토스트 본문을 클릭해도 숨김
-    toast.addEventListener('click', dismissToast, { once: true });
-    
-    toastTimer = setTimeout(() => {
-        toast.hidden = true;
-    }, 4000);
+    // 토스트 본문 클릭 시 숨김 (단, 후원 링크 클릭은 예외)
+    toast.addEventListener('click', (e) => {
+        if (e.target.tagName !== 'A') {
+            dismissToast();
+        }
+    });
+
+    // 성공/정보 토스트는 사용자가 닫을 때까지 유지, 에러는 4초 후 자동 종료
+    if (type === 'error') {
+        toastTimer = setTimeout(() => {
+            toast.hidden = true;
+        }, 4000);
+    }
 }
 
 function dismissToast() {

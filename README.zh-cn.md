@@ -128,3 +128,11 @@ Copyright (c) 2026 mytory. 本项目采用 **ISC License** 许可。详情请参
 *   **Email:** [mail@mytory.net](mailto:mail@mytory.net)
 *   **Blog:** [https://mytory.net](https://mytory.net)
 *   **GitHub:** [@mytory](https://github.com/mytory)
+
+---
+
+## 8. 支持项目
+
+自豪地无广告运营，依靠用户支持。每一杯咖啡都带来改变。
+
+☕ [通过PayPal支持](https://www.paypal.com/ncp/payment/SWKQD7USX8J5U)

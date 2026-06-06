@@ -703,12 +703,24 @@ ipcMain.handle('split:start', async (event, { taskId, inputPath, startTime, endT
         const ffmpegStartTime = secondsToFfmpegTimestamp(startSec);
         const ffmpegEndTime = secondsToFfmpegTimestamp(endSec);
 
+        // 원본의 time_base를 유지 (iPhone MOV의 mebx 데이터 스트림은 자동 제거)
+        // 이렇게 하면 splitter로 자른 파일들끼리 concat할 때 time_base가 통일되어 깨지지 않음
+        const videoStream = (info.streams || []).find(s => s.codec_type === 'video');
+        let timescaleArg = [];
+        if (videoStream && videoStream.time_base) {
+            const parts = videoStream.time_base.split('/');
+            if (parts.length === 2 && parseInt(parts[1]) > 0) {
+                timescaleArg = ['-video_track_timescale', parts[1]];
+            }
+        }
+
         // 무손실 빠른 자르기 (-ss와 -to를 입력파일 앞에 선배치하여 고속 탐색)
         const args = [
             '-ss', ffmpegStartTime,
             '-to', ffmpegEndTime,
             '-i', inputPath,
             '-c', 'copy',
+            ...timescaleArg,
             outputPath
         ];
         
@@ -721,31 +733,58 @@ ipcMain.handle('split:start', async (event, { taskId, inputPath, startTime, endT
 
 // 9. 영상 합치기 (Video Joiner)
 ipcMain.handle('join:start', async (event, { taskId, inputPaths, outputPath, totalDuration }) => {
-    try {
+    const tempDir = app.getPath('temp');
+    const tempFiles = [];
+    const cleanup = () => {
+        for (const f of tempFiles) {
+            try { fs.unlinkSync(f); } catch (_) {}
+        }
+    };
 
-        // Create concat file list
-        const listContent = inputPaths.map(p => {
+    try {
+        // Step 1: 각 입력 파일을 MP4로 정규화
+        //        - time_base 통일 (MOV → MP4 변환 과정에서 자동 정규화됨)
+        //        - 데이터 스트림(mebx 등) 제거 (-map 0:v -map 0:a)
+        //        - 동일한 컨테이너 포맷으로 통일
+        const normPaths = [];
+        for (let i = 0; i < inputPaths.length; i++) {
+            const ip = inputPaths[i];
+            const tempFile = path.join(tempDir, `join_norm_${Date.now()}_${i}.mp4`);
+            tempFiles.push(tempFile);
+
+            await runFFmpeg(
+                taskId + '_norm_' + i,
+                ['-i', ip, '-c', 'copy', '-map', '0:v', '-map', '0:a', '-f', 'mp4', tempFile],
+                0,
+                tempFile
+            );
+            normPaths.push(tempFile);
+        }
+
+        // Step 2: 정규화된 파일들로 concat list 생성
+        const listContent = normPaths.map(p => {
             const escaped = p.replace(/'/g, "'\\''");
             return `file '${escaped}'`;
         }).join('\n');
 
-        const tmpFile = path.join(app.getPath('temp'), `concat_list_${Date.now()}.txt`);
+        const tmpFile = path.join(tempDir, `concat_list_${Date.now()}.txt`);
         fs.writeFileSync(tmpFile, listContent, 'utf-8');
+        tempFiles.push(tmpFile);
 
-        try {
-            await runFFmpeg(taskId, [
-                '-f', 'concat',
-                '-safe', '0',
-                '-i', tmpFile,
-                '-c', 'copy',
-                outputPath
-            ], totalDuration, outputPath);
-            return { success: true, outputPath };
-        } finally {
-            // Clean up temp file
-            try { fs.unlinkSync(tmpFile); } catch (_) {}
-        }
+        // Step 3: concat 실행 (genpts로 PTS 재생성)
+        await runFFmpeg(taskId, [
+            '-f', 'concat',
+            '-safe', '0',
+            '-i', tmpFile,
+            '-c', 'copy',
+            '-fflags', '+genpts',
+            outputPath
+        ], totalDuration, outputPath);
+
+        cleanup();
+        return { success: true, outputPath };
     } catch (err) {
+        cleanup();
         return { success: false, error: err.message };
     }
 });

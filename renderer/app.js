@@ -861,7 +861,7 @@ async function processAudioFiles(files) {
 
             if (result.success) {
                 finishQueueItem(task.taskId, 'done');
-                showToast(t('Audio Extracted', '오디오 추출 완료'), `${task.file.name} 오디오 파일 저장 완료!`);
+                showToast(t('Audio Extracted', '오디오 추출 완료'), t('!audio_file_saved', task.file.name));
             } else {
                 finishQueueItem(task.taskId, 'error', result.error);
                 showToast(t('Extraction Failed', '오디오 추출 실패'), `${task.file.name}: ${result.error}`, 'error');
@@ -999,7 +999,7 @@ function setupFrameCapture() {
         });
 
         if (result.success) {
-            showToast(t('Frame Saved', '프레임 저장 완료'), `${outputPath}에 저장되었습니다.`);
+            showToast(t('Frame Saved', '프레임 저장 완료'), t('!frame_saved', outputPath));
         } else {
             showToast(t('Error Saving Frame', '프레임 저장 실패'), result.error, 'error');
         }
@@ -1052,7 +1052,7 @@ function setupFrameCapture() {
 
             if (result.success) {
                 finishQueueItem(taskId, 'done');
-                showToast(t('Batch Complete', '일괄 캡처 완료'), `지정된 경로로 이미지 프레임들이 저장 완료되었습니다.`);
+                showToast(t('Batch Complete', '일괄 캡처 완료'), t('!batch_frames_saved'));
             } else {
                 finishQueueItem(taskId, 'error', result.error);
                 showToast(t('Batch Failed', '일괄 캡처 실패'), result.error, 'error');
@@ -1101,7 +1101,7 @@ function setupFrameCapture() {
                 state.sceneTimestamps = result.timestamps;
                 elements.sceneCountVal.textContent = result.timestamps.length;
                 elements.sceneDetectionResult.style.display = 'block';
-                showToast(t('Analysis Complete', '분석 완료'), `${result.timestamps.length}개의 장면 전환이 감지되었습니다.`);
+                showToast(t('Analysis Complete', '분석 완료'), t('!scene_transitions_detected', result.timestamps.length));
             } else {
                 finishQueueItem(taskId, 'error', result.error);
                 showToast(t('Analysis Failed', '분석 실패'), result.error, 'error');
@@ -1147,7 +1147,7 @@ function setupFrameCapture() {
 
             if (result.success) {
                 finishQueueItem(taskId, 'done');
-                showToast(t('Export Complete', '장면 저장 완료'), `장면 이미지 ${result.count}개가 정상 저장되었습니다.`);
+                showToast(t('Export Complete', '장면 저장 완료'), t('!scene_frames_exported', result.count));
             } else {
                 finishQueueItem(taskId, 'error', result.error);
                 showToast(t('Export Failed', '장면 저장 실패'), result.error, 'error');
@@ -1259,7 +1259,7 @@ async function processRemuxFiles(files) {
 
             if (result.success) {
                 finishQueueItem(task.taskId, 'done');
-                showToast(t('Remux Complete', '확장자 변환 완료'), `${task.file.name} -> ${state.remuxFormat.toUpperCase()} 저장 완료!`);
+                showToast(t('Remux Complete', '확장자 변환 완료'), t('!remux_file_saved', task.file.name, state.remuxFormat.toUpperCase()));
             } else {
                 finishQueueItem(task.taskId, 'error', result.error);
                 showToast(t('Remux Failed', '확장자 변환 실패'), `${task.file.name}: ${result.error}`, 'error');
@@ -1414,7 +1414,7 @@ function setupSplitter() {
 
             if (result.success) {
                 finishQueueItem(taskId, 'done');
-                showToast(t('Video Split Complete', '비디오 자르기 성공'), `${outputPath}에 무손실 저장되었습니다.`);
+                showToast(t('Video Split Complete', '비디오 자르기 성공'), t('!split_file_saved', outputPath));
             } else {
                 finishQueueItem(taskId, 'error', result.error);
                 showToast(t('Video Split Failed', '비디오 자르기 실패'), result.error, 'error');

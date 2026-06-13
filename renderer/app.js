@@ -1696,6 +1696,12 @@ function setupEditorKeyboardShortcuts() {
             if (event.code === 'KeyO') {
                 event.preventDefault();
                 markCaptureOut();
+                return;
+            }
+            if (event.code === 'KeyC' && !event.isComposing) {
+                event.preventDefault();
+                elements.btnCaptureSingle.click();
+                return;
             }
         }
     });

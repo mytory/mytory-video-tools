@@ -112,6 +112,10 @@ This application uses the following open-source projects and complies with their
     *   This app bundles FFmpeg via `ffmpeg-static`. FFmpeg source code is available from the official website.
 *   **[Pico.css](https://picocss.com/)** (MIT License): Minimal CSS framework for UI styling
 *   **[ffmpeg-static](https://github.com/eugeneware/ffmpeg-static) & [ffprobe-static](https://github.com/eugeneware/ffprobe-static)** (MIT License): FFmpeg/FFprobe binary providers
+*   **[ExifTool](https://exif-tool.com/)** (GPLv1+ or Artistic License 2.0): Metadata reading/writing engine, bundled via `exiftool-vendored`
+    *   ExifTool © 2003-2025 Phil Harvey. Licensed under the GNU General Public License (GPL) version 1 or later, or the Artistic License 2.0.
+*   **[exiftool-vendored](https://github.com/photostructure/exiftool-vendored.js)** (MIT License): Cross-platform ExifTool wrapper
+*   **[sharp](https://sharp.pixelplumbing.com/)** (Apache 2.0 License): High-performance image processing
 
 ---
 

@@ -2,6 +2,8 @@ const { app, BrowserWindow, ipcMain, dialog, nativeImage } = require('electron')
 const path = require('path');
 const fs = require('fs');
 const { spawn } = require('child_process');
+const sharp = require('sharp');
+const { exiftool } = require('exiftool-vendored');
 
 // EPIPE 에러 무시 (console.log 시 stdout/stderr 파이프가 끊어지는 경우 대응)
 process.stdout.on('error', () => {});
@@ -208,6 +210,78 @@ function getCompressQualityArgs(encoder, videoCodec, bitrateKbps, maxrateKbps, b
     return ['-preset', 'medium', '-b:v', bitrate, '-maxrate', maxrate, '-bufsize', bufsize];
 }
 
+// HTML 엔티티 이스케이프 (SVG 텍스트용)
+function escapeXml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+}
+
+// 캡처된 이미지에 텍스트 오버레이(sharp SVG composite)와 EXIF 메타데이터를 적용
+async function applyImageOverlayAndMetadata(imagePath, options) {
+    const { overlayText, metadata } = options;
+    const ext = path.extname(imagePath).toLowerCase();
+    if (!['.jpg', '.jpeg', '.png', '.webp'].includes(ext)) return;
+    if (!overlayText && !metadata) return;
+
+    // 1. 텍스트 오버레이 (sharp SVG composite, 우측 하단)
+    if (overlayText) {
+        const lines = overlayText.split('\\n');
+        const imgInfo = await sharp(imagePath).metadata();
+        const padding = 10;
+        const fontSize = Math.min(18, Math.round(imgInfo.width / 80));
+        const lineHeight = fontSize + 6;
+        const finalSvgWidth = Math.min(imgInfo.width - padding * 2, 600);
+        const finalSvgHeight = Math.min(lines.length * lineHeight + padding * 2, imgInfo.height - padding * 2);
+
+        let svgLines = '';
+        lines.forEach((line, i) => {
+            const y = padding + (i + 1) * lineHeight - 6;
+            svgLines += `<text x="${padding}" y="${y}" fill="white" font-size="${fontSize}" font-family="sans-serif">${escapeXml(line)}</text>\n`;
+        });
+
+        const svg = `<svg width="${finalSvgWidth}" height="${finalSvgHeight}" xmlns="http://www.w3.org/2000/svg">
+            <rect width="100%" height="100%" fill="rgba(0,0,0,0.5)" rx="4"/>
+            ${svgLines}
+        </svg>`;
+
+        const pipeline = sharp(imagePath).composite([{
+            input: Buffer.from(svg),
+            gravity: 'southeast'
+        }]);
+
+        const tempPath = imagePath + '.tmp' + ext;
+        await pipeline.toFile(tempPath);
+        fs.unlinkSync(imagePath);
+        fs.renameSync(tempPath, imagePath);
+    }
+
+    // 2. EXIF/IPTC/XMP 메타데이터 기록 (exiftool-vendored 우선, metadata-writer fallback)
+    if (metadata) {
+        try {
+            const tags = {};
+            if (metadata.artist) {
+                tags.Artist = metadata.artist;          // EXIF Artist (유니코드 OK)
+                tags['XMP-dc:Creator'] = metadata.artist; // XMP Creator (유니코드 OK)
+                // By-line은 ASCII 전용이므로 한글이면 생략
+                if (/^[\x00-\x7F]*$/.test(metadata.artist)) {
+                    tags['By-line'] = metadata.artist;
+                }
+            }
+            if (metadata.description) tags.ImageDescription = metadata.description;
+            if (metadata.dateTimeOriginal) tags.DateTimeOriginal = metadata.dateTimeOriginal;
+            if (metadata.software) tags.Software = metadata.software;
+            await exiftool.write(imagePath, tags, ['-overwrite_original']);
+        } catch (e) {
+            console.error('exiftool-vendored failed:', e.message);
+            try {
+                const { injectImageMetadata } = require('./metadata-writer');
+                injectImageMetadata(imagePath, metadata);
+            } catch (e2) {
+                console.error('metadata-writer fallback failed:', e2.message);
+            }
+        }
+    }
+}
+
 function createWindow() {
     mainWindow = new BrowserWindow({
         width: 1100,
@@ -290,6 +364,9 @@ app.on('window-all-closed', () => {
 });
 
 app.on('before-quit', () => {
+    // exiftool 프로세스 정리
+    exiftool.end().catch(() => {});
+    
     // 앱이 완전히 종료되기 전에 모든 ffmpeg 프로세스를 SIGKILL로 확실히 제거
     // killAllActiveTasks에서 이미 SIGTERM 후 SIGKILL 타이머가 동작 중일 수 있으므로,
     // 여기서는 바로 SIGKILL로 확실히 죽임
@@ -337,6 +414,18 @@ ipcMain.handle('video:probe', async (event, inputPath) => {
         const videoStream = (metadata.streams || []).find(s => s.codec_type === 'video') || {};
         const audioStream = (metadata.streams || []).find(s => s.codec_type === 'audio') || {};
 
+        const formatTags = format.tags || {};
+        const videoStreamTags = videoStream.tags || {};
+
+        // r_frame_rate를 숫자로 변환
+        let fps = 30;
+        if (videoStream.r_frame_rate) {
+            const parts = videoStream.r_frame_rate.split('/');
+            if (parts.length === 2 && parseFloat(parts[1]) > 0) {
+                fps = Math.round(parseFloat(parts[0]) / parseFloat(parts[1]) * 100) / 100;
+            }
+        }
+
         return {
             success: true,
             duration,
@@ -345,7 +434,11 @@ ipcMain.handle('video:probe', async (event, inputPath) => {
             height: videoStream.height || 0,
             videoCodec: videoStream.codec_name || '',
             audioCodec: audioStream.codec_name || '',
-            fps: videoStream.r_frame_rate ? eval(videoStream.r_frame_rate) : 30 // 간이 계산
+            fps,
+            bitRate: format.bit_rate || 0,
+            // 원본 ffprobe tags를 그대로 전달 (EXIF 메타데이터 기록용)
+            formatTags,
+            videoStreamTags
         };
     } catch (err) {
         return { success: false, error: err.message };
@@ -790,7 +883,7 @@ ipcMain.handle('join:start', async (event, { taskId, inputPaths, outputPath, tot
 });
 
 // 10. 프레임 캡처: 단일 프레임
-ipcMain.handle('capture:single', async (event, { inputPath, timestamp, format, outputPath }) => {
+ipcMain.handle('capture:single', async (event, { inputPath, timestamp, format, outputPath, overlayText, metadata }) => {
     try {
         const ext = format === 'image/png' ? 'png' : format === 'image/webp' ? 'webp' : 'jpg';
         const args = [
@@ -807,6 +900,11 @@ ipcMain.handle('capture:single', async (event, { inputPath, timestamp, format, o
             ff.on('error', reject);
         });
 
+        // 오버레이 / 메타데이터 적용
+        if (overlayText || metadata) {
+            await applyImageOverlayAndMetadata(outputPath, { overlayText, metadata });
+        }
+
         return { success: true, outputPath };
     } catch (err) {
         return { success: false, error: err.message };
@@ -814,7 +912,7 @@ ipcMain.handle('capture:single', async (event, { inputPath, timestamp, format, o
 });
 
 // 11. 프레임 캡처: 일정 간격(Batch)
-ipcMain.handle('capture:batch', async (event, { taskId, inputPath, startTime, endTime, interval, format, outputDir, baseName }) => {
+ipcMain.handle('capture:batch', async (event, { taskId, inputPath, startTime, endTime, interval, format, outputDir, baseName, overlayText, metadata }) => {
     try {
         const startSec = timecodeToSeconds(startTime);
         const endSec = timecodeToSeconds(endTime);
@@ -834,6 +932,19 @@ ipcMain.handle('capture:batch', async (event, { taskId, inputPath, startTime, en
         ];
 
         await runFFmpeg(taskId, args, duration, outputPathPattern);
+
+        // 생성된 모든 프레임에 오버레이 / 메타데이터 적용
+        if (overlayText || metadata) {
+            const dir = outputDir;
+            const files = fs.readdirSync(dir)
+                .filter(f => f.startsWith(baseName + '_frame_') && f.endsWith('.' + ext))
+                .sort()
+                .map(f => path.join(dir, f));
+            for (const filePath of files) {
+                await applyImageOverlayAndMetadata(filePath, { overlayText, metadata });
+            }
+        }
+
         return { success: true, outputDir };
     } catch (err) {
         return { success: false, error: err.message };
@@ -938,7 +1049,7 @@ function cleanupSubProcesses(procList) {
 }
 
 // 13. 추출된 장면 프레임들을 개별 이미지로 일괄 내보내기
-ipcMain.handle('capture:export-scenes', async (event, { taskId, inputPath, timestamps, format, outputDir, baseName }) => {
+ipcMain.handle('capture:export-scenes', async (event, { taskId, inputPath, timestamps, format, outputDir, baseName, overlayText, metadata }) => {
     const subProcesses = [];
     let cancelled = false;
 
@@ -988,6 +1099,11 @@ ipcMain.handle('capture:export-scenes', async (event, { taskId, inputPath, times
                 });
                 ff.on('error', reject);
             });
+
+            // 오버레이 / 메타데이터 적용
+            if (overlayText || metadata) {
+                await applyImageOverlayAndMetadata(outputPath, { overlayText, metadata });
+            }
 
             // 진행률 보고
             if (mainWindow) {

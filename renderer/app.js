@@ -109,6 +109,7 @@ const elements = {
     captureSettingScene: document.getElementById('captureSettingScene'),
     captureFormatSelect: document.getElementById('captureFormatSelect'),
     captureOverlayCheck: document.getElementById('captureOverlayCheck'),
+    captureMetadataCheck: document.getElementById('captureMetadataCheck'),
     btnCaptureSingle: document.getElementById('btnCaptureSingle'),
     captureBatchStart: document.getElementById('captureBatchStart'),
     captureBatchEnd: document.getElementById('captureBatchEnd'),
@@ -991,11 +992,16 @@ function setupFrameCapture() {
         const basePath = getResolvedOutputPath(state.captureFile.path, `_frame_${fileTimecode}`, ext);
         const outputPath = await window.electronAPI.resolveUniquePath(basePath);
 
+        const overlayText = buildCaptureOverlayText(timestamp);
+        const metadata = buildCaptureExifData(timestamp);
+
         const result = await window.electronAPI.captureSingle({
             inputPath: state.captureFile.path,
             timestamp,
             format,
-            outputPath
+            outputPath,
+            overlayText,
+            metadata
         });
 
         if (result.success) {
@@ -1038,6 +1044,9 @@ function setupFrameCapture() {
         const outputDir = getTargetParentDirectory(state.captureFile.path);
         const captureFile = state.captureFile;
 
+        const overlayText = buildCaptureOverlayText(null);
+        const metadata = buildCaptureExifData(null);
+
         const run = async () => {
             const result = await window.electronAPI.captureBatch({
                 taskId,
@@ -1047,7 +1056,9 @@ function setupFrameCapture() {
                 interval,
                 format,
                 outputDir,
-                baseName
+                baseName,
+                overlayText,
+                metadata
             });
 
             if (result.success) {
@@ -1130,6 +1141,8 @@ function setupFrameCapture() {
         const format = elements.captureFormatSelect.value;
         const captureFile = state.captureFile;
         const timestamps = state.sceneTimestamps;
+        const overlayText = buildCaptureOverlayText(null);
+        const metadata = buildCaptureExifData(null);
 
         const run = async () => {
             elements.btnCaptureSceneExport.disabled = true;
@@ -1140,7 +1153,9 @@ function setupFrameCapture() {
                 timestamps,
                 format,
                 outputDir,
-                baseName
+                baseName,
+                overlayText,
+                metadata
             });
 
             elements.btnCaptureSceneExport.disabled = false;
@@ -1215,6 +1230,77 @@ function updateCaptureTimelineOverlay() {
     elements.captureTimelineRange.style.left = `${startPct}%`;
     elements.captureTimelineRange.style.width = `${endPct - startPct}%`;
     elements.captureTimelineRange.style.display = 'block';
+}
+
+// 캡처 이미지용 오버레이 텍스트 구성 (타임스탬프 오버레이 체크박스 ON 시)
+function buildCaptureOverlayText(timestamp) {
+    if (!state.captureMetadata || !state.captureFile) return null;
+    if (!elements.captureOverlayCheck.checked) return null;
+    
+    const meta = state.captureMetadata;
+    const resolution = meta.width && meta.height ? `${meta.width}×${meta.height}` : '';
+    const codec = meta.videoCodec || '';
+    const fps = meta.fps ? `${meta.fps} fps` : '';
+    const bitrate = meta.bitRate ? `${Math.round(meta.bitRate / 1000)}kbps` : '';
+    const tc = typeof timestamp === 'number' ? secondsToTimecode(timestamp) : '';
+    const filename = state.captureFile.name;
+    
+    const lines = [filename];
+    const infoLine = [resolution, codec, fps].filter(Boolean).join(' / ');
+    if (infoLine) lines.push(infoLine);
+    if (bitrate) lines.push(bitrate);
+    if (tc) lines.push(tc);
+    
+    return lines.join('\\n');
+}
+
+// 캡처 이미지용 EXIF 메타데이터 구성 (파일 메타데이터 기록 체크박스 ON 시)
+// 비디오 원본의 creation_date를 DateTimeOriginal로 사용
+function buildCaptureExifData(timestamp) {
+    if (!state.captureMetadata || !state.captureFile) return null;
+    if (!elements.captureMetadataCheck.checked) return null;
+    
+    const meta = state.captureMetadata;
+    
+    // video:probe에서 전달한 원본 ffprobe tags
+    const formatTags = meta.formatTags || {};
+    const streamTags = meta.videoStreamTags || {};
+    const rawDate = formatTags['com.apple.quicktime.creationdate']
+        || formatTags.creation_time
+        || streamTags.creation_time
+        || formatTags.date
+        || '';
+    
+    // ISO 8601 → EXIF 형식(YYYY:MM:DD HH:MM:SS)
+    let dateTimeOriginal = '';
+    if (rawDate) {
+        const d = new Date(rawDate);
+        if (!isNaN(d.getTime())) {
+            dateTimeOriginal =
+                d.getFullYear() + ':' +
+                String(d.getMonth() + 1).padStart(2, '0') + ':' +
+                String(d.getDate()).padStart(2, '0') + ' ' +
+                String(d.getHours()).padStart(2, '0') + ':' +
+                String(d.getMinutes()).padStart(2, '0') + ':' +
+                String(d.getSeconds()).padStart(2, '0');
+        }
+    }
+    
+    const resolution = meta.width && meta.height ? `${meta.width}×${meta.height}` : '';
+    const codec = meta.videoCodec || '';
+    const fps = meta.fps ? `${meta.fps} fps` : '';
+    // 비디오 원본의 제작자(artist) 정보 → 없으면 앱 이름으로 fallback
+    const artist = formatTags.artist || streamTags.artist || 'Mytory Video Tools';
+    
+    const tc = typeof timestamp === 'number' ? secondsToTimecode(timestamp) : '';
+    const desc = [state.captureFile.name, resolution, codec, fps, tc].filter(Boolean).join(' | ');
+    
+    return {
+        artist,
+        dateTimeOriginal,
+        description: desc,
+        software: 'Mytory Video Tools'
+    };
 }
 
 // 5. 도구 4: 확장자 변환기 (Remuxer) 핸들링

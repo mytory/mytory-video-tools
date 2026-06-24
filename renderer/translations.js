@@ -639,6 +639,17 @@ const translations = {
         id: 'Semua file kompatibel',
         hi: 'सभी फ़ाइलें संगत हैं',
     },
+    'Audio will be re-encoded to match': {
+        en: 'Video specs match, but audio format differs. Audio will be re-encoded.',
+        ko: '비디오 사양은 일치하지만 오디오 포맷이 달라 오디오가 재인코딩됩니다.',
+        ja: 'ビデオ仕様は一致していますが、オーディオ形式が異なるため、オーディオが再エンコードされます。',
+        'zh-cn': '视频规格一致，但音频格式不同，音频将被重新编码。',
+        es: 'Las especificaciones del video coinciden, pero el formato de audio es diferente. El audio se recodificará.',
+        pt: 'As especificações do vídeo coincidem, mas o formato de áudio é diferente. O áudio será re-codificado.',
+        fr: 'Les spécifications vidéo correspondent, mais le format audio diffère. L\'audio sera réencodé.',
+        id: 'Spesifikasi video cocok, tetapi format audio berbeda. Audio akan di-encode ulang.',
+        hi: 'वीडियो स्पेक्स मेल खाते हैं, लेकिन ऑडियो प्रारूप अलग है। ऑडियो फिर से एन्कोड किया जाएगा।',
+    },
     'Probe Failed': {
         en: 'Probe Failed',
         ko: '파일 분석 실패',

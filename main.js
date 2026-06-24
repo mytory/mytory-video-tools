@@ -386,7 +386,8 @@ app.on('before-quit', () => {
 ipcMain.handle('app:get-config', () => {
     return {
         hwEncoders,
-        defaultOutputDir: app.getPath('downloads')
+        defaultOutputDir: app.getPath('downloads'),
+        version: app.getVersion()
     };
 });
 
@@ -825,7 +826,7 @@ ipcMain.handle('split:start', async (event, { taskId, inputPath, startTime, endT
 });
 
 // 9. 영상 합치기 (Video Joiner)
-ipcMain.handle('join:start', async (event, { taskId, inputPaths, outputPath, totalDuration }) => {
+ipcMain.handle('join:start', async (event, { taskId, inputs, outputPath, totalDuration, reencodeAudio, refAudio }) => {
     const tempDir = app.getPath('temp');
     const tempFiles = [];
     const cleanup = () => {
@@ -840,14 +841,78 @@ ipcMain.handle('join:start', async (event, { taskId, inputPaths, outputPath, tot
         //        - 데이터 스트림(mebx 등) 제거 (-map 0:v -map 0:a)
         //        - 동일한 컨테이너 포맷으로 통일
         const normPaths = [];
-        for (let i = 0; i < inputPaths.length; i++) {
-            const ip = inputPaths[i];
+        for (let i = 0; i < inputs.length; i++) {
+            const input = inputs[i];
+            const ip = input.path;
             const tempFile = path.join(tempDir, `join_norm_${Date.now()}_${i}.mp4`);
             tempFiles.push(tempFile);
 
+            let args = [];
+
+            if (reencodeAudio && refAudio) {
+                // 오디오 재인코딩이 필요한 경우
+                if (input.hasAudio) {
+                    // 오디오 스트림이 존재하는 경우 -> 기준 오디오 스펙에 맞춰 재인코딩
+                    const targetCodec = 'aac';
+                    const targetSampleRate = refAudio.sample_rate ? String(refAudio.sample_rate) : '48000';
+                    const targetChannels = refAudio.channels ? String(refAudio.channels) : '2';
+
+                    args = [
+                        '-i', ip,
+                        '-c:v', 'copy',
+                        '-c:a', targetCodec,
+                        '-ar', targetSampleRate,
+                        '-ac', targetChannels,
+                        '-map', '0:v',
+                        '-map', '0:a',
+                        '-f', 'mp4',
+                        tempFile
+                    ];
+                } else {
+                    // 오디오 스트림이 없는 경우 -> 무음 스트림 합성
+                    const targetSampleRate = refAudio.sample_rate ? String(refAudio.sample_rate) : '48000';
+                    const targetChannels = refAudio.channels ? String(refAudio.channels) : '2';
+                    const layout = targetChannels === '1' ? 'mono' : 'stereo';
+
+                    args = [
+                        '-i', ip,
+                        '-f', 'lavfi',
+                        '-i', `anullsrc=channel_layout=${layout}:sample_rate=${targetSampleRate}`,
+                        '-c:v', 'copy',
+                        '-c:a', 'aac',
+                        '-map', '0:v',
+                        '-map', '1:a',
+                        '-shortest',
+                        '-f', 'mp4',
+                        tempFile
+                    ];
+                }
+            } else {
+                // 일반 복사 방식 (reencodeAudio가 거짓이거나 기준 오디오 정보가 없는 경우)
+                if (input.hasAudio) {
+                    args = [
+                        '-i', ip,
+                        '-c', 'copy',
+                        '-map', '0:v',
+                        '-map', '0:a',
+                        '-f', 'mp4',
+                        tempFile
+                    ];
+                } else {
+                    // 오디오가 없는 경우
+                    args = [
+                        '-i', ip,
+                        '-c', 'copy',
+                        '-map', '0:v',
+                        '-f', 'mp4',
+                        tempFile
+                    ];
+                }
+            }
+
             await runFFmpeg(
                 taskId + '_norm_' + i,
-                ['-i', ip, '-c', 'copy', '-map', '0:v', '-map', '0:a', '-f', 'mp4', tempFile],
+                args,
                 0,
                 tempFile
             );

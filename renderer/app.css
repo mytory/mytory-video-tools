@@ -62,6 +62,15 @@ button {
     padding: 1rem;
     flex-shrink: 0;
 }
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--text-muted, #868e96);
+    border-top: 1px solid var(--border);
+    text-align: center;
+    opacity: 0.6;
+}
 
 .brand {
     display: flex;
@@ -1044,6 +1053,10 @@ body.global-dragover .global-drop-overlay {
 .joiner-compatibility.error {
     color: var(--red, #ff6b6b);
     background-color: rgba(255, 107, 107, 0.08);
+}
+.joiner-compatibility.warning {
+    color: var(--yellow, #fcc419);
+    background-color: rgba(252, 196, 25, 0.08);
 }
 
 /* 단축키 힌트 */

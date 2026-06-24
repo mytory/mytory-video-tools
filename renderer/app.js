@@ -383,6 +383,13 @@ async function initApp() {
         state.config = await window.electronAPI.getConfig();
         elements.customPathInput.value = state.config.defaultOutputDir;
         
+        if (state.config.version) {
+            const versionEl = document.getElementById('appVersion');
+            if (versionEl) {
+                versionEl.textContent = 'v' + state.config.version;
+            }
+        }
+        
         // 하드웨어 가속 리포트
         updateHwStatusText();
     } catch (err) {
@@ -1998,8 +2005,13 @@ function renderJoinerQueue() {
         compatEl.className = 'joiner-compatibility error';
         elements.btnJoinerJoin.disabled = true;
     } else if (canJoin) {
-        compatEl.textContent = '✅ ' + t('All files are compatible', '모든 파일이 조건에 맞습니다');
-        compatEl.className = 'joiner-compatibility ok';
+        if (compatibility.hasAudioIssues) {
+            compatEl.textContent = '⚠️ ' + t('Audio will be re-encoded to match', '비디오 사양은 일치하지만 오디오 포맷이 달라 오디오가 재인코딩됩니다.');
+            compatEl.className = 'joiner-compatibility warning';
+        } else {
+            compatEl.textContent = '✅ ' + t('All files are compatible', '모든 파일이 조건에 맞습니다');
+            compatEl.className = 'joiner-compatibility ok';
+        }
     } else {
         // Show first issue
         const firstIssue = compatibility.issues[0];
@@ -2061,15 +2073,16 @@ function calcFps(video) {
 
 function checkJoinerCompatibility() {
     const files = state.joinerFiles;
-    const issues = [];
+    const videoIssues = [];
+    const audioIssues = [];
 
     if (files.length < 2) {
-        return { ok: false, issues: [] };
+        return { ok: false, hasVideoIssues: false, hasAudioIssues: false, issues: [] };
     }
 
     const ref = files[0].probe;
     if (!ref.video) {
-        return { ok: false, issues: [{ index: 0, field: 'video', message: 'First file has no video stream' }] };
+        return { ok: false, hasVideoIssues: true, hasAudioIssues: false, issues: [{ index: 0, field: 'video', message: 'First file has no video stream' }] };
     }
 
     for (let i = 1; i < files.length; i++) {
@@ -2078,48 +2091,55 @@ function checkJoinerCompatibility() {
 
         // Video checks
         if (!p.video) {
-            issues.push({ index: i, field: 'video', message: `${file.name}: No video stream` });
+            videoIssues.push({ index: i, field: 'video', message: `${file.name}: No video stream` });
             continue;
         }
         if (p.video.codec !== ref.video.codec) {
-            issues.push({ index: i, field: 'video_codec', message: `${file.name}: Video codec mismatch (${p.video.codec} ≠ ${ref.video.codec})` });
+            videoIssues.push({ index: i, field: 'video_codec', message: `${file.name}: Video codec mismatch (${p.video.codec} ≠ ${ref.video.codec})` });
         }
         if (p.video.width !== ref.video.width || p.video.height !== ref.video.height) {
-            issues.push({ index: i, field: 'resolution', message: `${file.name}: Resolution mismatch (${p.video.width}×${p.video.height} ≠ ${ref.video.width}×${ref.video.height})` });
+            videoIssues.push({ index: i, field: 'resolution', message: `${file.name}: Resolution mismatch (${p.video.width}×${p.video.height} ≠ ${ref.video.width}×${ref.video.height})` });
         }
         if (p.video.pix_fmt && ref.video.pix_fmt && p.video.pix_fmt !== ref.video.pix_fmt) {
-            issues.push({ index: i, field: 'pix_fmt', message: `${file.name}: Pixel format mismatch (${p.video.pix_fmt} ≠ ${ref.video.pix_fmt})` });
+            videoIssues.push({ index: i, field: 'pix_fmt', message: `${file.name}: Pixel format mismatch (${p.video.pix_fmt} ≠ ${ref.video.pix_fmt})` });
         }
         // fps를 실수로 변환하여 비교 (r_frame_rate 문자열 직접 비교는
         // 30000/1001 ≈ 30/1 같은 경우를 걸러내기 위해)
         const thisFps = calcFps(p.video);
         const refFps = calcFps(ref.video);
         if (Math.abs(thisFps - refFps) > 0.1) {
-            issues.push({ index: i, field: 'frame_rate', message: `${file.name}: Frame rate mismatch (${thisFps.toFixed(2)} fps ≠ ${refFps.toFixed(2)} fps)` });
+            videoIssues.push({ index: i, field: 'frame_rate', message: `${file.name}: Frame rate mismatch (${thisFps.toFixed(2)} fps ≠ ${refFps.toFixed(2)} fps)` });
         }
 
         // Audio checks (only if both files have audio)
         if (ref.audio && p.audio) {
             if (p.audio.codec !== ref.audio.codec) {
-                issues.push({ index: i, field: 'audio_codec', message: `${file.name}: Audio codec mismatch (${p.audio.codec} ≠ ${ref.audio.codec})` });
+                audioIssues.push({ index: i, field: 'audio_codec', message: `${file.name}: Audio codec mismatch (${p.audio.codec} ≠ ${ref.audio.codec})` });
             }
             if (p.audio.sample_rate && ref.audio.sample_rate && Number(p.audio.sample_rate) !== Number(ref.audio.sample_rate)) {
-                issues.push({ index: i, field: 'sample_rate', message: `${file.name}: Sample rate mismatch (${p.audio.sample_rate} ≠ ${ref.audio.sample_rate})` });
+                audioIssues.push({ index: i, field: 'sample_rate', message: `${file.name}: Sample rate mismatch (${p.audio.sample_rate} ≠ ${ref.audio.sample_rate})` });
             }
             if (p.audio.channels && ref.audio.channels && Number(p.audio.channels) !== Number(ref.audio.channels)) {
-                issues.push({ index: i, field: 'channels', message: `${file.name}: Audio channels mismatch (${p.audio.channels} ≠ ${ref.audio.channels})` });
+                audioIssues.push({ index: i, field: 'channels', message: `${file.name}: Audio channels mismatch (${p.audio.channels} ≠ ${ref.audio.channels})` });
             }
         } else if (ref.audio && !p.audio) {
-            issues.push({ index: i, field: 'audio', message: `${file.name}: Missing audio stream (reference has audio)` });
+            audioIssues.push({ index: i, field: 'audio', message: `${file.name}: Missing audio stream (reference has audio)` });
         } else if (!ref.audio && p.audio) {
-            issues.push({ index: i, field: 'audio', message: `${file.name}: Has extra audio stream (reference has no audio)` });
+            audioIssues.push({ index: i, field: 'audio', message: `${file.name}: Has extra audio stream (reference has no audio)` });
         }
     }
 
-    // If there are issues, also mark the reference as incompatible for display purposes
-    // (so the user can see which field the first file sets as reference)
+    const hasVideoIssues = videoIssues.length > 0;
+    const hasAudioIssues = audioIssues.length > 0;
+    const issues = [...videoIssues, ...audioIssues];
 
-    return { ok: issues.length === 0, issues };
+    // 비디오 이슈가 없으면 일단 합치기는 허용함 (오디오만 재인코딩 처리)
+    return {
+        ok: !hasVideoIssues,
+        hasVideoIssues,
+        hasAudioIssues,
+        issues
+    };
 }
 
 function formatFileSize(bytes) {
@@ -2162,11 +2182,17 @@ async function runJoinerJoin() {
         percent: 0,
         speed: '0.0x',
         run: async () => {
+            const compatibility = checkJoinerCompatibility();
             const result = await window.electronAPI.startJoin({
                 taskId,
-                inputPaths: files.map(f => f.path),
+                inputs: files.map(f => ({
+                    path: f.path,
+                    hasAudio: !!f.probe.audio
+                })),
                 outputPath,
-                totalDuration
+                totalDuration,
+                reencodeAudio: compatibility.hasAudioIssues,
+                refAudio: firstFile.probe.audio
             });
 
             if (result.success) {

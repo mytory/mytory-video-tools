@@ -1,6 +1,6 @@
 {
   "name": "mytory-video-tool",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Unified high-performance native desktop video utilities.",
   "main": "main.js",
   "scripts": {
@@ -26,6 +26,17 @@
   },
   "license": "GPL-3.0-only",
   "type": "commonjs",
+  "supportedArchitectures": {
+    "os": [
+      "darwin",
+      "linux",
+      "win32"
+    ],
+    "cpu": [
+      "x64",
+      "arm64"
+    ]
+  },
   "devDependencies": {
     "dotenv-cli": "^11.0.0",
     "electron": "^42.3.0",
@@ -53,7 +64,8 @@
     "asar": true,
     "asarUnpack": [
       "**/node_modules/ffmpeg-static/**/*",
-      "**/node_modules/ffprobe-static/**/*"
+      "**/node_modules/ffprobe-static/**/*",
+      "**/node_modules/@img/**/*"
     ],
     "mac": {
       "icon": "build/icon.png",

@@ -1,6 +1,6 @@
 {
   "name": "mytory-video-tool",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "Unified high-performance native desktop video utilities.",
   "main": "main.js",
   "scripts": {

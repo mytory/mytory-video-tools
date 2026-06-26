@@ -18,6 +18,7 @@ jobs:
           node-version: 20
           cache: 'npm'
       - run: npm ci
+      - run: npm install @img/sharp-linux-x64@0.34.5 @img/sharp-libvips-linux-x64@1.2.4 --no-save --force
       - run: npm run dist:release -- --linux --publish never
       - uses: actions/upload-artifact@v4
         with:
@@ -32,6 +33,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: npm ci
+      - run: npm install @img/sharp-win32-x64@0.34.5 --no-save --force
       - run: |
           export HOME=/root
           npm run dist:release -- --win --publish never
@@ -50,6 +52,7 @@ jobs:
           node-version: 20
           cache: 'npm'
       - run: npm ci
+      - run: npm install @img/sharp-darwin-arm64@0.34.5 @img/sharp-libvips-darwin-arm64@1.2.4 @img/sharp-darwin-x64@0.34.5 @img/sharp-libvips-darwin-x64@1.2.4 --no-save --force
       - run: npm run dist:release -- --mac --x64 --arm64 --publish never
       - uses: actions/upload-artifact@v4
         with:

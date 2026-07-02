@@ -8,16 +8,17 @@
 
 ## 1. Features
 
-1. **Sidebar Tab Navigation**: Switch between 7 core media utilities within a sleek dark-theme dashboard.
+1. **Sidebar Tab Navigation**: Switch between 8 core media utilities within a sleek dark-theme dashboard.
 2. **Flexible Output Policy**: By default, files are saved alongside the original with a job-specific suffix. Custom output folders can also be configured.
 3. **Auto Hardware Acceleration Detection**: On startup, the app scans your GPU and selects the optimal hardware encoder for your platform (Apple Silicon VideoToolbox, NVIDIA NVENC, Intel QSV, AMD AMF, etc.).
 
-### 7 Core Tools
+### 8 Core Tools
 
 | Tool | Description |
 |---|---|
 | ⚡ **Speed Changer** | Change video playback speed (0.5x ~ 4.0x) with pitch preservation (anti-chipmunk). Supports H.264, H.265/HEVC, VP9, AV1. |
 | 🎵 **Audio Drop** | Extract audio tracks losslessly (Auto) or convert to MP3, AAC, OGG, or WAV. |
+| 🗜️ **Audio Compressor** | Compress lossless audio (WAV, AIFF, FLAC, ALAC) to high-quality MP3 with CBR/VBR encoding. |
 | 📸 **Frame Capture** | Single-frame capture, batch extraction at intervals, and automatic scene detection with sensitivity control. |
 | 🔄 **Remuxer** | Fast container format conversion (MP4, MKV, MOV) without re-encoding. |
 | 🔗 **Video Joiner** | Losslessly concatenate multiple video files with identical encoding parameters. Perfect for re-assembling split segments. |

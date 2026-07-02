@@ -38,6 +38,10 @@
                 <span class="icon">🎵</span>
                 <span class="label" data-mi18n-ko="오디오 추출기" data-mi18n-ja="音声抽出" data-mi18n-zh-cn="音频提取" data-mi18n-es="Extractor de audio" data-mi18n-pt="Extrator de áudio" data-mi18n-fr="Extracteur audio" data-mi18n-id="Ekstraktor audio" data-mi18n-hi="ऑडियो निकालने वाला">Audio Drop</span>
             </button>
+            <button class="nav-item" data-tab="audio-compressor">
+                <span class="icon">🗜️</span>
+                <span class="label" data-mi18n-ko="오디오 압축기" data-mi18n-ja="音声圧縮" data-mi18n-zh-cn="音频压缩" data-mi18n-es="Compresor de audio" data-mi18n-pt="Compressor de áudio" data-mi18n-fr="Compresseur audio" data-mi18n-id="Kompresor audio" data-mi18n-hi="ऑडियो संपीडक">Audio Compressor</span>
+            </button>
             <button class="nav-item" data-tab="frame-capture">
                 <span class="icon">📸</span>
                 <span class="label" data-mi18n-ko="장면 캡처" data-mi18n-ja="フレームキャプチャ" data-mi18n-zh-cn="帧捕获" data-mi18n-es="Captura de fotogramas" data-mi18n-pt="Captura de quadros" data-mi18n-fr="Capture d'image" data-mi18n-id="Tangkapan bingkai" data-mi18n-hi="फ्रेम कैप्चर">Frame Capture</span>
@@ -300,6 +304,76 @@
                     <div>
                         <div class="stat-label" data-mi18n-ko="현재 대기 파일" data-mi18n-ja="待機ファイル数" data-mi18n-zh-cn="队列文件" data-mi18n-es="Archivos en cola" data-mi18n-pt="Arquivos na fila" data-mi18n-fr="Fichiers en file d'attente" data-mi18n-id="File dalam antrean" data-mi18n-hi="कतार में फ़ाइलें">Queue Files</div>
                         <div id="statAudioQueue" class="stat-value">0</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2.2b 오디오 압축기 화면 -->
+        <section id="audio-compressor" class="tab-content">
+            <h2 data-mi18n-ko="오디오 압축기" data-mi18n-ja="音声圧縮" data-mi18n-zh-cn="音频压缩" data-mi18n-es="Compresor de audio" data-mi18n-pt="Compressor de áudio" data-mi18n-fr="Compresseur audio" data-mi18n-id="Kompresor audio" data-mi18n-hi="ऑडियो संपीडक">Audio Compressor</h2>
+            <p class="tab-desc" data-mi18n-ko="WAV, AIFF, FLAC 등 무손실 오디오 파일을 고품질 MP3로 압축합니다." data-mi18n-ja="WAV、AIFF、FLACなどのロスレス音声ファイルを高品質MP3に圧縮します。" data-mi18n-zh-cn="将WAV、AIFF、FLAC等无损音频文件压缩为高质量MP3。" data-mi18n-es="Comprima archivos de audio sin pérdidas como WAV, AIFF y FLAC a MP3 de alta calidad." data-mi18n-pt="Comprima arquivos de áudio sem perdas como WAV, AIFF e FLAC para MP3 de alta qualidade." data-mi18n-fr="Compressez les fichiers audio sans perte tels que WAV, AIFF et FLAC en MP3 de haute qualité." data-mi18n-id="Kompres file audio lossless seperti WAV, AIFF, dan FLAC ke MP3 berkualitas tinggi." data-mi18n-hi="WAV, AIFF, FLAC जैसी लॉसलेस ऑडियो फ़ाइलों को उच्च गुणवत्ता वाले MP3 में संपीड़ित करें।">
+                Compress lossless audio files (WAV, AIFF, FLAC) to high-quality MP3.
+            </p>
+
+            <div class="card card-panel">
+                <div class="control-group">
+                    <label class="control-label" data-mi18n-ko="비트레이트" data-mi18n-ja="ビットレート" data-mi18n-zh-cn="比特率" data-mi18n-es="Tasa de bits" data-mi18n-pt="Taxa de bits" data-mi18n-fr="Débit" data-mi18n-id="Bitrate" data-mi18n-hi="बिटरेट">Bitrate</label>
+                    <div class="format-presets preset-grid--wide" id="audioCompressPresets">
+                        <button class="preset-btn" data-bitrate="128">128 kbps</button>
+                        <button class="preset-btn active" data-bitrate="192">192 kbps</button>
+                        <button class="preset-btn" data-bitrate="256">256 kbps</button>
+                        <button class="preset-btn" data-bitrate="320">320 kbps</button>
+                    </div>
+                </div>
+
+                <details class="advanced-toggle">
+                    <summary class="advanced-toggle__summary"
+                        data-mi18n-ko="고급 설정" data-mi18n-ja="詳細設定" data-mi18n-zh-cn="高级设置" data-mi18n-es="Configuración avanzada" data-mi18n-pt="Configurações avançadas" data-mi18n-fr="Paramètres avancés" data-mi18n-id="Pengaturan lanjutan" data-mi18n-hi="उन्नत सेटिंग्स">
+                        Advanced
+                    </summary>
+                    <div class="settings-grid">
+                        <div>
+                            <label data-mi18n-ko="인코딩 모드" data-mi18n-ja="エンコードモード" data-mi18n-zh-cn="编码模式" data-mi18n-es="Modo de codificación" data-mi18n-pt="Modo de codificação" data-mi18n-fr="Mode d'encodage" data-mi18n-id="Mode encoding" data-mi18n-hi="एन्कोडिंग मोड">Encoding Mode</label>
+                            <select id="audioCompressEncodeMode">
+                                <option value="cbr" data-mi18n-ko="CBR (고정 비트레이트)" data-mi18n-ja="CBR (固定ビットレート)" data-mi18n-zh-cn="CBR (恒定比特率)" data-mi18n-es="CBR (Tasa de bits constante)" data-mi18n-pt="CBR (Taxa de bits constante)" data-mi18n-fr="CBR (Débit constant)" data-mi18n-id="CBR (Bitrate konstan)" data-mi18n-hi="CBR (स्थिर बिटरेट)">CBR</option>
+                                <option value="vbr">VBR</option>
+                            </select>
+                        </div>
+                        <div id="audioCompressVbrQualityRow">
+                            <label data-mi18n-ko="VBR 품질 (0=최고, 9=최저)" data-mi18n-ja="VBR品質 (0=最高, 9=最低)" data-mi18n-zh-cn="VBR质量 (0=最高, 9=最低)" data-mi18n-es="Calidad VBR (0=mejor, 9=peor)" data-mi18n-pt="Qualidade VBR (0=melhor, 9=pior)" data-mi18n-fr="Qualité VBR (0=meilleur, 9=pire)" data-mi18n-id="Kualitas VBR (0=terbaik, 9=terburuk)" data-mi18n-hi="VBR गुणवत्ता (0=सर्वश्रेष्ठ, 9=सबसे खराब)">VBR Quality (0=best, 9=worst)</label>
+                            <input type="range" id="audioCompressVbrQuality" min="0" max="9" value="2" step="1">
+                            <span id="audioCompressVbrQualityValue" style="font-size:0.9rem;color:var(--text-muted);">2</span>
+                        </div>
+                        <div>
+                            <label data-mi18n-ko="샘플레이트" data-mi18n-ja="サンプルレート" data-mi18n-zh-cn="采样率" data-mi18n-es="Frecuencia de muestreo" data-mi18n-pt="Taxa de amostragem" data-mi18n-fr="Taux d'échantillonnage" data-mi18n-id="Sample rate" data-mi18n-hi="सैंपल दर">Sample Rate</label>
+                            <select id="audioCompressSampleRate">
+                                <option value="source" data-mi18n-ko="원본 유지" data-mi18n-ja="ソースを維持" data-mi18n-zh-cn="保持原样" data-mi18n-es="Mantener original" data-mi18n-pt="Manter original" data-mi18n-fr="Conserver la source" data-mi18n-id="Pertahankan asli" data-mi18n-hi="स्रोत बनाए रखें">Keep source</option>
+                                <option value="44100">44100 Hz</option>
+                                <option value="48000">48000 Hz</option>
+                                <option value="96000">96000 Hz</option>
+                            </select>
+                        </div>
+                    </div>
+                </details>
+
+                <div class="dropzone" id="audioCompressDropzone">
+                    <h3 data-mi18n-ko="여기에 오디오 파일을 드롭하세요" data-mi18n-ja="音声ファイルをここにドロップ" data-mi18n-zh-cn="将音频文件拖放到此处" data-mi18n-es="Arrastre archivos de audio aquí" data-mi18n-pt="Arraste arquivos de áudio aqui" data-mi18n-fr="Déposez les fichiers audio ici" data-mi18n-id="Jatuhkan file audio di sini" data-mi18n-hi="ऑडियो फ़ाइलें यहाँ छोड़ें">Drop audio files here</h3>
+                    <p data-mi18n-ko="WAV, AIFF, FLAC 등 무손실 오디오 파일을 MP3로 압축합니다. 여러 파일을 한 번에 처리할 수 있습니다." data-mi18n-ja="WAV、AIFF、FLACなどのロスレス音声をMP3に圧縮。複数ファイルを一括処理可能。" data-mi18n-zh-cn="将WAV、AIFF、FLAC等无损音频压缩为MP3。可一次处理多个文件。" data-mi18n-es="Comprima audio sin pérdidas (WAV, AIFF, FLAC) a MP3. Procese múltiples archivos a la vez." data-mi18n-pt="Comprima áudio sem perdas (WAV, AIFF, FLAC) para MP3. Processe vários arquivos de uma vez." data-mi18n-fr="Compressez l'audio sans perte (WAV, AIFF, FLAC) en MP3. Traitez plusieurs fichiers à la fois." data-mi18n-id="Kompres audio lossless (WAV, AIFF, FLAC) ke MP3. Proses banyak file sekaligus." data-mi18n-hi="लॉसलेस ऑडियो (WAV, AIFF, FLAC) को MP3 में संपीड़ित करें। एक बार में कई फ़ाइलें प्रोसेस करें।">
+                        Compress lossless audio (WAV, AIFF, FLAC) to MP3. Process multiple files at once.
+                    </p>
+                    <label class="btn" for="audioCompressFileInput" data-mi18n-ko="파일 선택" data-mi18n-ja="ファイルを選択" data-mi18n-zh-cn="选择文件" data-mi18n-es="Elegir archivos" data-mi18n-pt="Escolher arquivos" data-mi18n-fr="Choisir des fichiers" data-mi18n-id="Pilih file" data-mi18n-hi="फ़ाइलें चुनें">Choose files</label>
+                    <input type="file" id="audioCompressFileInput" accept=".wav,.aiff,.aif,.flac,.alac,.m4a" multiple hidden>
+                </div>
+
+                <div class="summary-stats">
+                    <div>
+                        <div class="stat-label" data-mi18n-ko="비트레이트" data-mi18n-ja="ビットレート" data-mi18n-zh-cn="比特率" data-mi18n-es="Tasa de bits" data-mi18n-pt="Taxa de bits" data-mi18n-fr="Débit" data-mi18n-id="Bitrate" data-mi18n-hi="बिटरेट">Bitrate</div>
+                        <div id="statAudioCompressBitrate" class="stat-value">192 kbps</div>
+                    </div>
+                    <div>
+                        <div class="stat-label" data-mi18n-ko="현재 대기 파일" data-mi18n-ja="待機ファイル数" data-mi18n-zh-cn="队列文件" data-mi18n-es="Archivos en cola" data-mi18n-pt="Arquivos na fila" data-mi18n-fr="Fichiers en file d'attente" data-mi18n-id="File dalam antrean" data-mi18n-hi="कतार में फ़ाइलें">Queue Files</div>
+                        <div id="statAudioCompressQueue" class="stat-value">0</div>
                     </div>
                 </div>
             </div>

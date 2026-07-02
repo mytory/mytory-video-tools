@@ -840,6 +840,47 @@ label[for="splitEndInput"] {
 }
 
 /* 설정 스위치 */
+.advanced-toggle {
+    margin-bottom: 1rem;
+    background-color: var(--surface-soft);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 0.25rem 0;
+}
+
+.advanced-toggle__summary {
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    user-select: none;
+}
+
+.advanced-toggle__summary:hover {
+    color: var(--text);
+}
+
+.advanced-toggle[open] .advanced-toggle__summary {
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    margin-bottom: 0.5rem;
+}
+
+.advanced-toggle .settings-grid {
+    padding: 0 1rem 0.75rem;
+}
+
+#audioCompressVbrQualityRow {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+#audioCompressVbrQualityRow input[type="range"] {
+    width: 100%;
+    margin: 0;
+}
+
 .toggle-switch {
     display: flex;
     align-items: center;

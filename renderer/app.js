@@ -14,6 +14,11 @@ const state = {
     compressCodec: 'h264',
     // 오디오 추출 상태
     audioFormat: 'auto',
+    // 오디오 압축 상태
+    audioCompressBitrate: 192,
+    audioCompressEncodeMode: 'cbr',
+    audioCompressVbrQuality: 2,
+    audioCompressSampleRate: 'source',
     // 확장자 변환기 상태
     remuxFormat: 'mp4',
     // 장면 캡처 상태
@@ -86,6 +91,17 @@ const elements = {
     audioFileInput: document.getElementById('audioFileInput'),
     statAudioFormat: document.getElementById('statAudioFormat'),
     statAudioQueue: document.getElementById('statAudioQueue'),
+    
+    // 오디오 압축 관련
+    audioCompressPresets: document.getElementById('audioCompressPresets'),
+    audioCompressDropzone: document.getElementById('audioCompressDropzone'),
+    audioCompressFileInput: document.getElementById('audioCompressFileInput'),
+    audioCompressEncodeMode: document.getElementById('audioCompressEncodeMode'),
+    audioCompressVbrQuality: document.getElementById('audioCompressVbrQuality'),
+    audioCompressVbrQualityValue: document.getElementById('audioCompressVbrQualityValue'),
+    audioCompressSampleRate: document.getElementById('audioCompressSampleRate'),
+    statAudioCompressBitrate: document.getElementById('statAudioCompressBitrate'),
+    statAudioCompressQueue: document.getElementById('statAudioCompressQueue'),
     
     // 장면 캡처 관련
     captureDropzone: document.getElementById('captureDropzone'),
@@ -432,6 +448,7 @@ async function initApp() {
     setupSpeedChanger();
     setupCompressor();
     setupAudioExtractor();
+    setupAudioCompressor();
     setupFrameCapture();
     setupRemuxer();
     setupSplitter();
@@ -496,6 +513,7 @@ async function initApp() {
             'speed-changer': elements.speedDropzone,
             'compressor': elements.compressDropzone,
             'audio-drop': elements.audioDropzone,
+            'audio-compressor': elements.audioCompressDropzone,
             'frame-capture': elements.captureDropzone,
             'remuxer': elements.remuxDropzone,
             'splitter': elements.splitDropzone,
@@ -516,6 +534,10 @@ async function initApp() {
             case 'audio-drop':
                 showDropReceivedFeedback(dz, dt.files.length);
                 await processAudioFiles(dt.files);
+                break;
+            case 'audio-compressor':
+                showDropReceivedFeedback(dz, dt.files.length);
+                await processAudioCompressFiles(dt.files);
                 break;
             case 'frame-capture':
                 showDropReceivedFeedback(dz, dt.files.length);
@@ -834,6 +856,118 @@ function setupAudioExtractor() {
             await processAudioFiles(e.target.files);
         }
     });
+}
+
+// 3b. 도구 2b: 오디오 압축기 핸들링
+function setupAudioCompressor() {
+    const presets = elements.audioCompressPresets.querySelectorAll('.preset-btn');
+    
+    // 비트레이트 프리셋 버튼
+    presets.forEach(btn => {
+        btn.addEventListener('click', () => {
+            presets.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            state.audioCompressBitrate = parseInt(btn.getAttribute('data-bitrate'), 10);
+            elements.statAudioCompressBitrate.textContent = state.audioCompressBitrate + ' kbps';
+        });
+    });
+
+    // 인코딩 모드 전환
+    elements.audioCompressEncodeMode.addEventListener('change', () => {
+        state.audioCompressEncodeMode = elements.audioCompressEncodeMode.value;
+        const vbrRow = document.getElementById('audioCompressVbrQualityRow');
+        vbrRow.style.display = state.audioCompressEncodeMode === 'vbr' ? '' : 'none';
+    });
+    // Init VBR row visibility
+    document.getElementById('audioCompressVbrQualityRow').style.display = 'none';
+
+    // VBR 품질 슬라이더
+    elements.audioCompressVbrQuality.addEventListener('input', () => {
+        state.audioCompressVbrQuality = parseInt(elements.audioCompressVbrQuality.value, 10);
+        elements.audioCompressVbrQualityValue.textContent = state.audioCompressVbrQuality;
+    });
+
+    // 샘플레이트
+    elements.audioCompressSampleRate.addEventListener('change', () => {
+        state.audioCompressSampleRate = elements.audioCompressSampleRate.value;
+    });
+
+    // 파일 입력
+    elements.audioCompressFileInput.addEventListener('change', async (e) => {
+        if (e.target.files.length > 0) {
+            await processAudioCompressFiles(e.target.files);
+        }
+    });
+}
+
+// 오디오 압축 실행
+async function processAudioCompressFiles(files) {
+    const list = normalizeNativeFiles(files);
+    if (list.length === 0) return;
+
+    // 지원 포맷 필터링
+    const supportedExts = ['.wav', '.aiff', '.aif', '.flac', '.alac', '.m4a'];
+    const validFiles = list.filter(f => {
+        const ext = '.' + f.name.split('.').pop().toLowerCase();
+        return supportedExts.includes(ext);
+    });
+
+    if (validFiles.length === 0) {
+        showToast(t('Unsupported Format', '지원하지 않는 포맷'),
+            t('Please use lossless audio files (WAV, AIFF, FLAC, ALAC, M4A).', '무손실 오디오 파일(WAV, AIFF, FLAC, ALAC, M4A)만 지원합니다.'), 'error');
+        return;
+    }
+
+    if (validFiles.length !== list.length) {
+        const skipped = list.length - validFiles.length;
+        showToast(t('Skipped Unsupported', '지원하지 않는 파일 건너뜀'),
+            `${skipped} ${t('file(s) skipped (only lossless formats supported).', '개 파일이 건너뛰어졌습니다 (무손실 포맷만 지원).')}`, 'info');
+    }
+
+    elements.statAudioCompressQueue.textContent = parseInt(elements.statAudioCompressQueue.textContent) + validFiles.length;
+
+    const tasks = [];
+    for (const file of validFiles) {
+        const taskId = 'acomp_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
+        const basePath = getResolvedOutputPath(file.path, '_compressed', 'mp3');
+        const outputPath = await window.electronAPI.resolveUniquePath(basePath);
+        tasks.push({ taskId, file, outputPath });
+    }
+
+    for (const task of tasks) {
+        task.run = async () => {
+            const result = await window.electronAPI.startAudioCompress({
+                taskId: task.taskId,
+                inputPath: task.file.path,
+                outputPath: task.outputPath,
+                bitrate: state.audioCompressBitrate,
+                encodeMode: state.audioCompressEncodeMode,
+                vbrQuality: state.audioCompressVbrQuality,
+                sampleRate: state.audioCompressSampleRate
+            });
+
+            if (result.success) {
+                finishQueueItem(task.taskId, 'done');
+                showToast(t('Audio Compressed', '오디오 압축 완료'), t('!audio_compressed_saved', task.file.name));
+            } else {
+                finishQueueItem(task.taskId, 'error', result.error);
+                showToast(t('Audio Compression Failed', '오디오 압축 실패'), `${task.file.name}: ${result.error}`, 'error');
+            }
+            elements.statAudioCompressQueue.textContent = Math.max(0, parseInt(elements.statAudioCompressQueue.textContent) - 1);
+        };
+        addQueueItem({
+            taskId: task.taskId,
+            type: t('Audio Compressor', '오디오 압축기'),
+            name: task.file.name,
+            status: 'pending',
+            percent: 0,
+            speed: '0.0x',
+            engineLabel: 'libmp3lame',
+            run: task.run
+        });
+    }
+    clearDropReceivedFeedback();
+    processQueueDispatcher();
 }
 
 // 오디오 파일 추출 실행

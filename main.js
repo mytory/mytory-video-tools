@@ -722,6 +722,40 @@ ipcMain.handle('audio:start', async (event, { taskId, inputPath, format, outputP
     }
 });
 
+// 6.5 오디오 압축(Audio Compress) 시작 — 무손실 오디오를 MP3로 변환
+ipcMain.handle('audio-compress:start', async (event, { taskId, inputPath, outputPath, bitrate, encodeMode, vbrQuality, sampleRate }) => {
+    try {
+        const info = await probeVideo(inputPath);
+        const duration = parseFloat(info.format.duration || 0);
+
+        const args = ['-i', inputPath, '-vn'];
+
+        // MP3 인코딩 옵션 구성
+        args.push('-c:a', 'libmp3lame');
+
+        if (encodeMode === 'vbr') {
+            args.push('-q:a', String(vbrQuality));
+        } else {
+            // CBR mode
+            args.push('-b:a', `${bitrate}k`);
+        }
+
+        // 샘플레이트 처리
+        if (sampleRate && sampleRate !== 'source') {
+            args.push('-ar', sampleRate);
+        }
+
+        // 음질 최적화: joint-stereo 사용
+        args.push('-joint_stereo', '1');
+
+        args.push(outputPath);
+        await runFFmpeg(taskId, args, duration, outputPath);
+        return { success: true, outputPath };
+    } catch (err) {
+        return { success: false, error: err.message };
+    }
+});
+
 // 7. 확장자 변환(Remuxer) 시작 — 3단계 fallback
 // 1차: 전체 스트림 카피  2차: 오디오만 인코딩  3차: 사용자 확인 후 풀 인코딩
 ipcMain.handle('remux:start', async (event, { taskId, inputPath, outputPath }) => {

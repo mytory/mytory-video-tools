@@ -2241,7 +2241,8 @@ function checkJoinerCompatibility() {
         // 30000/1001 ≈ 30/1 같은 경우를 걸러내기 위해)
         const thisFps = calcFps(p.video);
         const refFps = calcFps(ref.video);
-        if (Math.abs(thisFps - refFps) > 0.1) {
+        // r_frame_rate가 정확히 일치하지 않거나, fps 차이가 0.01 이상이면 이슈
+        if ((p.video.r_frame_rate !== ref.video.r_frame_rate && Math.abs(thisFps - refFps) > 0.01) || Math.abs(thisFps - refFps) > 0.1) {
             videoIssues.push({ index: i, field: 'frame_rate', message: `${file.name}: Frame rate mismatch (${thisFps.toFixed(2)} fps ≠ ${refFps.toFixed(2)} fps)` });
         }
 
@@ -2326,7 +2327,9 @@ async function runJoinerJoin() {
                 outputPath,
                 totalDuration,
                 reencodeAudio: compatibility.hasAudioIssues,
-                refAudio: firstFile.probe.audio
+                refAudio: firstFile.probe.audio,
+                reencodeVideo: compatibility.hasVideoIssues,
+                refVideo: firstFile.probe.video
             });
 
             if (result.success) {

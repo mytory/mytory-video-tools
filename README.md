@@ -21,7 +21,7 @@
 | 🗜️ **Audio Compressor** | Compress lossless audio (WAV, AIFF, FLAC, ALAC) to high-quality MP3 with CBR/VBR encoding. |
 | 📸 **Frame Capture** | Single-frame capture, batch extraction at intervals, and automatic scene detection with sensitivity control. |
 | 🔄 **Remuxer** | Fast container format conversion (MP4, MKV, MOV) without re-encoding. |
-| 🔗 **Video Joiner** | Losslessly concatenate multiple video files with identical encoding parameters. Perfect for re-assembling split segments. |
+| 🔗 **Video Joiner** | Join multiple video files with automatic compatibility handling. Drag to reorder, check compatibility at a glance, and handles differing frame rates with smart re-encoding. Perfect for re-assembling split segments. |
 | ✂️ **Video Splitter** | Losslessly cut a segment by setting start and end points. Extremely fast. |
 | 📦 **Compressor** | Compress video to a target file size with various codec and quality options. |
 

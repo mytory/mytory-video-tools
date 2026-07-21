@@ -860,7 +860,7 @@ ipcMain.handle('split:start', async (event, { taskId, inputPath, startTime, endT
 });
 
 // 9. 영상 합치기 (Video Joiner)
-ipcMain.handle('join:start', async (event, { taskId, inputs, outputPath, totalDuration, reencodeAudio, refAudio }) => {
+ipcMain.handle('join:start', async (event, { taskId, inputs, outputPath, totalDuration, reencodeAudio, refAudio, reencodeVideo, refVideo }) => {
     const tempDir = app.getPath('temp');
     const tempFiles = [];
     const cleanup = () => {
@@ -883,7 +883,78 @@ ipcMain.handle('join:start', async (event, { taskId, inputs, outputPath, totalDu
 
             let args = [];
 
-            if (reencodeAudio && refAudio) {
+            if (reencodeVideo && refVideo) {
+                // 비디오 재인코딩이 필요한 경우 (프레임레이트/해상도 불일치)
+                const targetFps = '30';
+                if (reencodeAudio && refAudio) {
+                    // 비디오 + 오디오 모두 재인코딩
+                    if (input.hasAudio) {
+                        const targetCodec = 'aac';
+                        const targetSampleRate = refAudio.sample_rate ? String(refAudio.sample_rate) : '48000';
+                        const targetChannels = refAudio.channels ? String(refAudio.channels) : '2';
+                        args = [
+                            '-i', ip,
+                            '-vf', `fps=${targetFps}`,
+                            '-c:v', 'libx264',
+                            '-preset', 'fast',
+                            '-crf', '23',
+                            '-c:a', targetCodec,
+                            '-ar', targetSampleRate,
+                            '-ac', targetChannels,
+                            '-map', '0:v',
+                            '-map', '0:a',
+                            '-f', 'mp4',
+                            tempFile
+                        ];
+                    } else {
+                        const targetSampleRate = refAudio.sample_rate ? String(refAudio.sample_rate) : '48000';
+                        const targetChannels = refAudio.channels ? String(refAudio.channels) : '2';
+                        const layout = targetChannels === '1' ? 'mono' : 'stereo';
+                        args = [
+                            '-i', ip,
+                            '-f', 'lavfi',
+                            '-i', `anullsrc=channel_layout=${layout}:sample_rate=${targetSampleRate}`,
+                            '-vf', `fps=${targetFps}`,
+                            '-c:v', 'libx264',
+                            '-preset', 'fast',
+                            '-crf', '23',
+                            '-c:a', 'aac',
+                            '-map', '0:v',
+                            '-map', '1:a',
+                            '-shortest',
+                            '-f', 'mp4',
+                            tempFile
+                        ];
+                    }
+                } else {
+                    // 비디오만 재인코딩, 오디오는 복사
+                    if (input.hasAudio) {
+                        args = [
+                            '-i', ip,
+                            '-vf', `fps=${targetFps}`,
+                            '-c:v', 'libx264',
+                            '-preset', 'fast',
+                            '-crf', '23',
+                            '-c:a', 'copy',
+                            '-map', '0:v',
+                            '-map', '0:a',
+                            '-f', 'mp4',
+                            tempFile
+                        ];
+                    } else {
+                        args = [
+                            '-i', ip,
+                            '-vf', `fps=${targetFps}`,
+                            '-c:v', 'libx264',
+                            '-preset', 'fast',
+                            '-crf', '23',
+                            '-map', '0:v',
+                            '-f', 'mp4',
+                            tempFile
+                        ];
+                    }
+                }
+            } else if (reencodeAudio && refAudio) {
                 // 오디오 재인코딩이 필요한 경우
                 if (input.hasAudio) {
                     // 오디오 스트림이 존재하는 경우 -> 기준 오디오 스펙에 맞춰 재인코딩

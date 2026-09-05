@@ -18,7 +18,7 @@
 |---|---|
 | ⚡ **Cambiador de velocidad** | Cambia la velocidad de reproducción del video (0.5x ~ 4.0x) con preservación de tono (antichipmunk). Compatible con H.264, H.265/HEVC, VP9, AV1. |
 | 🎵 **Extracción de audio** | Extrae pistas de audio sin pérdida (Auto) o convierte a MP3, AAC, OGG o WAV. |
-| 📸 **Captura de fotogramas** | Captura de un solo fotograma, extracción por lotes a intervalos y detección automática de escenas con control de sensibilidad. |
+| 📸 **Captura de fotogramas** | Captura de un solo fotograma, extracción por lotes a intervalos y detección automática de escenas con control de sensibilidad. Las imágenes capturadas conservan su hora real de captura en EXIF. |
 | 🔄 **Remuxer** | Conversión rápida de formato de contenedor (MP4, MKV, MOV) sin recodificación. |
 | 🔗 **Unir videos** | Concatena sin pérdidas múltiples archivos de video con parámetros de codificación idénticos. Perfecto para reensamblar segmentos divididos. |
 | ✂️ **Divisor de video** | Corta un segmento sin pérdidas estableciendo puntos de inicio y fin. Extremadamente rápido. |

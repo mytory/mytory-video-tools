@@ -19,7 +19,7 @@
 | ⚡ **Speed Changer** | Change video playback speed (0.5x ~ 4.0x) with pitch preservation (anti-chipmunk). Supports H.264, H.265/HEVC, VP9, AV1. |
 | 🎵 **Audio Drop** | Extract audio tracks losslessly (Auto) or convert to MP3, AAC, OGG, or WAV. |
 | 🗜️ **Audio Compressor** | Compress lossless audio (WAV, AIFF, FLAC, ALAC) to high-quality MP3 with CBR/VBR encoding. |
-| 📸 **Frame Capture** | Single-frame capture, batch extraction at intervals, and automatic scene detection with sensitivity control. |
+| 📸 **Frame Capture** | Single-frame capture, batch extraction at intervals, and automatic scene detection with sensitivity control. Captured images retain their actual capture time in EXIF. |
 | 🔄 **Remuxer** | Fast container format conversion (MP4, MKV, MOV) without re-encoding. |
 | 🔗 **Video Joiner** | Join multiple video files with automatic compatibility handling. Drag to reorder, check compatibility at a glance, and handles differing frame rates with smart re-encoding. Perfect for re-assembling split segments. |
 | ✂️ **Video Splitter** | Losslessly cut a segment by setting start and end points. Extremely fast. |

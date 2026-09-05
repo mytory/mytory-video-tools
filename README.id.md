@@ -18,7 +18,7 @@
 |---|---|
 | ⚡ **Pengubah Kecepatan** | Ubah kecepatan pemutaran video (0,5x ~ 4,0x) dengan pelestarian nada. Mendukung H.264, H.265/HEVC, VP9, AV1. |
 | 🎵 **Ekstraksi Audio** | Ekstrak trek audio tanpa kehilangan (Otomatis) atau konversi ke MP3, AAC, OGG, atau WAV. |
-| 📸 **Tangkapan Bingkai** | Tangkapan bingkai tunggal, ekstraksi batch pada interval, dan deteksi adegan otomatis dengan kontrol sensitivitas. |
+| 📸 **Tangkapan Bingkai** | Tangkapan bingkai tunggal, ekstraksi batch pada interval, dan deteksi adegan otomatis dengan kontrol sensitivitas. Gambar hasil tangkapan menyimpan waktu tangkap sebenarnya di EXIF. |
 | 🔄 **Remuxer** | Konversi format kontainer cepat (MP4, MKV, MOV) tanpa encoding ulang. |
 | 🔗 **Gabungkan video** | Menggabungkan beberapa file video dengan parameter encoding identik tanpa kehilangan kualitas. Sempurna untuk menyusun ulang segmen yang dipisah. |
 | ✂️ **Pemotong Video** | Potong segmen tanpa kehilangan dengan menetapkan titik awal dan akhir. Sangat cepat. |

@@ -18,7 +18,7 @@
 |---|---|
 | ⚡ **Mudança de velocidade** | Altera a velocidade de reprodução do vídeo (0,5x ~ 4,0x) com preservação de tom (antiesquilo). Suporta H.264, H.265/HEVC, VP9, AV1. |
 | 🎵 **Extração de áudio** | Extrai faixas de áudio sem perdas (Automático) ou converte para MP3, AAC, OGG ou WAV. |
-| 📸 **Captura de quadros** | Captura de quadro único, extração em lote em intervalos e detecção automática de cenas com controle de sensibilidade. |
+| 📸 **Captura de quadros** | Captura de quadro único, extração em lote em intervalos e detecção automática de cenas com controle de sensibilidade. As imagens capturadas preservam a hora real da captura no EXIF. |
 | 🔄 **Remuxer** | Conversão rápida de formato de contêiner (MP4, MKV, MOV) sem recodificação. |
 | 🔗 **Juntar vídeos** | Concatena sem perdas vários arquivos de vídeo com parâmetros de codificação idênticos. Perfeito para remontar segmentos divididos. |
 | ✂️ **Divisor de vídeo** | Corta um segmento sem perdas definindo pontos de início e fim. Extremamente rápido. |

@@ -18,7 +18,7 @@
 |---|---|
 | ⚡ **Changement de vitesse** | Modifie la vitesse de lecture vidéo (0,5x ~ 4,0x) avec préservation du ton. Prend en charge H.264, H.265/HEVC, VP9, AV1. |
 | 🎵 **Extraction audio** | Extrait les pistes audio sans perte (Auto) ou convertit en MP3, AAC, OGG ou WAV. |
-| 📸 **Capture d'image** | Capture d'une seule image, extraction par lots à intervalles réguliers et détection automatique de scènes avec réglage de la sensibilité. |
+| 📸 **Capture d'image** | Capture d'une seule image, extraction par lots à intervalles réguliers et détection automatique de scènes avec réglage de la sensibilité. Les images capturées conservent leur heure réelle de capture dans l'EXIF. |
 | 🔄 **Remuxeur** | Conversion rapide de format de conteneur (MP4, MKV, MOV) sans ré-encodage. |
 | 🔗 **Assembler les vidéos** | Concatène sans perte plusieurs fichiers vidéo avec des paramètres d'encodage identiques. Parfait pour réassembler des segments divisés. |
 | ✂️ **Coupe-vidéo** | Coupe un segment sans perte en définissant les points de début et de fin. Extrêmement rapide. |

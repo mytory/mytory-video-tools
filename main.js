@@ -215,6 +215,48 @@ function escapeXml(str) {
     return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
 }
 
+// EXIF 날짜는 시간대를 보관하지 않으므로, 영상 메타데이터에 적힌 현지 시각을
+// 달력 값으로 취급하고 캡처 시점의 정수 초를 더한다.
+function addCaptureOffsetToExifDate(dateTimeOriginal, timestamp) {
+    if (typeof dateTimeOriginal !== 'string' || !Number.isFinite(timestamp)) return '';
+
+    const match = dateTimeOriginal.match(/^(\d{4}):(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})$/);
+    if (!match) return '';
+
+    const [, year, month, day, hour, minute, second] = match.map(Number);
+    const base = new Date(Date.UTC(year, month - 1, day, hour, minute, second));
+
+    // Date가 잘못된 달력 값을 자동 보정하는 것을 막는다.
+    if (
+        base.getUTCFullYear() !== year ||
+        base.getUTCMonth() !== month - 1 ||
+        base.getUTCDate() !== day ||
+        base.getUTCHours() !== hour ||
+        base.getUTCMinutes() !== minute ||
+        base.getUTCSeconds() !== second
+    ) {
+        return '';
+    }
+
+    base.setUTCSeconds(base.getUTCSeconds() + Math.floor(timestamp));
+    const pad = (value) => String(value).padStart(2, '0');
+    return `${base.getUTCFullYear()}:${pad(base.getUTCMonth() + 1)}:${pad(base.getUTCDate())} ` +
+        `${pad(base.getUTCHours())}:${pad(base.getUTCMinutes())}:${pad(base.getUTCSeconds())}`;
+}
+
+function metadataForCaptureAt(metadata, timestamp) {
+    if (!metadata || !metadata.dateTimeOriginal) return metadata;
+
+    const dateTimeOriginal = addCaptureOffsetToExifDate(metadata.dateTimeOriginal, timestamp);
+    // 기준 날짜가 유효하지 않으면 캡처 이미지에 EXIF를 전혀 기록하지 않는다.
+    if (!dateTimeOriginal) return null;
+
+    return {
+        ...metadata,
+        dateTimeOriginal
+    };
+}
+
 // 캡처된 이미지에 텍스트 오버레이(sharp SVG composite)와 EXIF 메타데이터를 적용
 async function applyImageOverlayAndMetadata(imagePath, options) {
     const { overlayText, metadata } = options;
@@ -1072,7 +1114,10 @@ ipcMain.handle('capture:single', async (event, { inputPath, timestamp, format, o
 
         // 오버레이 / 메타데이터 적용
         if (overlayText || metadata) {
-            await applyImageOverlayAndMetadata(outputPath, { overlayText, metadata });
+            await applyImageOverlayAndMetadata(outputPath, {
+                overlayText,
+                metadata: metadataForCaptureAt(metadata, timestamp)
+            });
         }
 
         return { success: true, outputPath };
@@ -1110,8 +1155,11 @@ ipcMain.handle('capture:batch', async (event, { taskId, inputPath, startTime, en
                 .filter(f => f.startsWith(baseName + '_frame_') && f.endsWith('.' + ext))
                 .sort()
                 .map(f => path.join(dir, f));
-            for (const filePath of files) {
-                await applyImageOverlayAndMetadata(filePath, { overlayText, metadata });
+            for (const [index, filePath] of files.entries()) {
+                await applyImageOverlayAndMetadata(filePath, {
+                    overlayText,
+                    metadata: metadataForCaptureAt(metadata, startSec + index * interval)
+                });
             }
         }
 
@@ -1272,7 +1320,10 @@ ipcMain.handle('capture:export-scenes', async (event, { taskId, inputPath, times
 
             // 오버레이 / 메타데이터 적용
             if (overlayText || metadata) {
-                await applyImageOverlayAndMetadata(outputPath, { overlayText, metadata });
+                await applyImageOverlayAndMetadata(outputPath, {
+                    overlayText,
+                    metadata: metadataForCaptureAt(metadata, ts)
+                });
             }
 
             // 진행률 보고

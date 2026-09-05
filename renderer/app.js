@@ -1134,7 +1134,7 @@ function setupFrameCapture() {
         const outputPath = await window.electronAPI.resolveUniquePath(basePath);
 
         const overlayText = buildCaptureOverlayText(timestamp);
-        const metadata = buildCaptureExifData(timestamp);
+        const metadata = buildCaptureExifData();
 
         const result = await window.electronAPI.captureSingle({
             inputPath: state.captureFile.path,
@@ -1186,7 +1186,7 @@ function setupFrameCapture() {
         const captureFile = state.captureFile;
 
         const overlayText = buildCaptureOverlayText(null);
-        const metadata = buildCaptureExifData(null);
+        const metadata = buildCaptureExifData();
 
         const run = async () => {
             const result = await window.electronAPI.captureBatch({
@@ -1283,7 +1283,7 @@ function setupFrameCapture() {
         const captureFile = state.captureFile;
         const timestamps = state.sceneTimestamps;
         const overlayText = buildCaptureOverlayText(null);
-        const metadata = buildCaptureExifData(null);
+        const metadata = buildCaptureExifData();
 
         const run = async () => {
             elements.btnCaptureSceneExport.disabled = true;
@@ -1396,8 +1396,8 @@ function buildCaptureOverlayText(timestamp) {
 }
 
 // 캡처 이미지용 EXIF 메타데이터 구성 (파일 메타데이터 기록 체크박스 ON 시)
-// 비디오 원본의 creation_date를 DateTimeOriginal로 사용
-function buildCaptureExifData(timestamp) {
+// 비디오 원본의 creation_date를 캡처 시점 계산용 기준 날짜로 사용한다.
+function buildCaptureExifData() {
     if (!state.captureMetadata || !state.captureFile) return null;
     if (!elements.captureMetadataCheck.checked) return null;
     
@@ -1413,19 +1413,19 @@ function buildCaptureExifData(timestamp) {
         || '';
     
     // ISO 8601 → EXIF 형식(YYYY:MM:DD HH:MM:SS)
+    // 시간대가 있어도 원본 메타데이터에 적힌 현지 시각 부분을 유지한다.
+    // 캡처 시점 더하기는 각 이미지의 실제 추출 시점을 아는 main 프로세스에서 한다.
     let dateTimeOriginal = '';
     if (rawDate) {
-        const d = new Date(rawDate);
-        if (!isNaN(d.getTime())) {
-            dateTimeOriginal =
-                d.getFullYear() + ':' +
-                String(d.getMonth() + 1).padStart(2, '0') + ':' +
-                String(d.getDate()).padStart(2, '0') + ' ' +
-                String(d.getHours()).padStart(2, '0') + ':' +
-                String(d.getMinutes()).padStart(2, '0') + ':' +
-                String(d.getSeconds()).padStart(2, '0');
+        const match = String(rawDate).match(/^(\d{4})[-:](\d{2})[-:](\d{2})(?:[T\s](\d{2}):(\d{2})(?::(\d{2}))?)?/);
+        if (match) {
+            const [, year, month, day, hour = '00', minute = '00', second = '00'] = match;
+            dateTimeOriginal = `${year}:${month}:${day} ${hour}:${minute}:${second}`;
         }
     }
+
+    // 원본 영상의 유효한 촬영일을 알 수 없으면 캡처 이미지에 EXIF를 기록하지 않는다.
+    if (!dateTimeOriginal) return null;
     
     const resolution = meta.width && meta.height ? `${meta.width}×${meta.height}` : '';
     const codec = meta.videoCodec || '';

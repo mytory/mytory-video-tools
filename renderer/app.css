@@ -690,9 +690,7 @@ label[for="splitEndInput"] {
 
 /* 5. 큐 리스트 & 토스트 */
 .status-panel {
-    position: sticky;
-    top: 0;
-    z-index: 20;
+    position: static;
     margin: 0 0 1.25rem;
     padding: 0.75rem 1rem;
     border: 1px solid rgba(106, 122, 255, 0.2);

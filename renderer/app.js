@@ -351,7 +351,9 @@ function updateHwStatusText() {
     
     if (availableList.length > 0) {
         elements.hwStatusText.textContent = t('!supported_gpus', availableList.join(', '));
-        elements.hwAccelCheck.checked = true;
+        elements.hwAccelCheck.disabled = false;
+        const savedPreference = localStorage.getItem('mytory-video-use-hw');
+        elements.hwAccelCheck.checked = savedPreference === null ? true : savedPreference === 'true';
     } else {
         elements.hwStatusText.textContent = t(
             "No hardware acceleration detected. Fallback to CPU-based encoders.",
@@ -400,6 +402,10 @@ async function initApp() {
 
     elements.themeSelect.addEventListener('change', (e) => {
         applyTheme(e.target.value);
+    });
+
+    elements.hwAccelCheck.addEventListener('change', (e) => {
+        localStorage.setItem('mytory-video-use-hw', String(e.target.checked));
     });
 
     // 다국어 바인딩 및 선택값 셋팅

@@ -1036,6 +1036,53 @@ button.btn.queue-cancel-btn {
     margin: 0;
 }
 
+.config-panel input[type="checkbox"],
+.config-panel input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    flex: 0 0 1.15rem;
+    width: 1.15rem;
+    height: 1.15rem;
+    margin: 0 0.55rem 0 0;
+    padding: 0;
+    border: 2px solid var(--text-dim);
+    border-radius: 4px;
+    background-color: var(--surface);
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.config-panel input[type="radio"] {
+    border-radius: 50%;
+}
+
+.config-panel input[type="checkbox"]:checked {
+    border-color: var(--brand);
+    background-color: var(--brand);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='m3 8 3.2 3.2L13 4.5' fill='none' stroke='%23fff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-position: center;
+    background-size: 0.8rem;
+    background-repeat: no-repeat;
+}
+
+.config-panel input[type="radio"]:checked {
+    border-color: var(--brand);
+    background-color: var(--brand);
+    background-image: radial-gradient(circle, var(--surface) 0 3px, transparent 3.5px);
+}
+
+.config-panel input[type="checkbox"]:focus-visible,
+.config-panel input[type="radio"]:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 2px;
+}
+
+.config-panel input[type="checkbox"]:disabled,
+.config-panel input[type="radio"]:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
 .policy-options,
 .policy-options label,
 #hwStatusText,
@@ -1047,6 +1094,10 @@ button.btn.queue-cancel-btn {
 .mode-settings-card small,
 .tab-content small {
     color: var(--text-muted);
+}
+
+.policy-options label {
+    cursor: pointer;
 }
 
 .policy-options input + span,

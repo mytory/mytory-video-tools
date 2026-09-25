@@ -581,6 +581,15 @@ ipcMain.handle('app:resolve-unique-path', (event, desiredPath) => {
     }
 });
 
+function uniqueCaptureBaseName(outputDir, baseName, ext) {
+    let candidate = baseName;
+    let counter = 1;
+    while (fs.readdirSync(outputDir).some(name => name.startsWith(`${candidate}_`) && name.endsWith(`.${ext}`))) {
+        candidate = `${baseName}_${counter++}`;
+    }
+    return candidate;
+}
+
 // 5. 배속 변환 태스크 시작
 ipcMain.handle('speed:start', async (event, { taskId, inputPath, speed, videoCodec, useHw, outputPath }) => {
     try {
@@ -1134,8 +1143,8 @@ ipcMain.handle('capture:batch', async (event, { taskId, inputPath, startTime, en
         const duration = Math.max(0.1, endSec - startSec);
         
         const ext = format === 'image/png' ? 'png' : format === 'image/webp' ? 'webp' : 'jpg';
-        // 출력 포맷 형식 설정: outputDir/baseName_frame_%04d.ext
-        const outputPathPattern = path.join(outputDir, `${baseName}_frame_%04d.${ext}`);
+        const uniqueBase = uniqueCaptureBaseName(outputDir, baseName, ext);
+        const outputPathPattern = path.join(outputDir, `${uniqueBase}_%04d.${ext}`);
 
         const args = [
             '-ss', startTime,
@@ -1152,7 +1161,7 @@ ipcMain.handle('capture:batch', async (event, { taskId, inputPath, startTime, en
         if (overlayText || metadata) {
             const dir = outputDir;
             const files = fs.readdirSync(dir)
-                .filter(f => f.startsWith(baseName + '_frame_') && f.endsWith('.' + ext))
+                .filter(f => f.startsWith(uniqueBase + '_') && f.endsWith('.' + ext))
                 .sort()
                 .map(f => path.join(dir, f));
             for (const [index, filePath] of files.entries()) {
@@ -1284,6 +1293,7 @@ ipcMain.handle('capture:export-scenes', async (event, { taskId, inputPath, times
     try {
         const ext = format === 'image/png' ? 'png' : format === 'image/webp' ? 'webp' : 'jpg';
         const total = timestamps.length;
+        const uniqueBase = uniqueCaptureBaseName(outputDir, baseName, ext);
 
         for (let i = 0; i < total; i++) {
             if (cancelled) {
@@ -1292,7 +1302,7 @@ ipcMain.handle('capture:export-scenes', async (event, { taskId, inputPath, times
 
             const ts = timestamps[i];
             const timecode = secondsToTimecode(ts).replace(/:/g, '-');
-            const outputPath = path.join(outputDir, `${baseName}_scene_${timecode}.${ext}`);
+            const outputPath = path.join(outputDir, `${uniqueBase}_${timecode}.${ext}`);
             
             const args = [
                 '-ss', String(ts),

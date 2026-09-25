@@ -7,6 +7,13 @@ const LANG_ORDER = ['en', 'ko', 'ja', 'zh-cn', 'es', 'pt', 'fr', 'id', 'hi'];
 
 const translations = {
     // --- 공통 ---
+    'Invalid filename suffix': {
+        en: 'Invalid filename suffix', ko: '잘못된 파일명 suffix',
+        ja: '無効なファイル名の接尾辞', 'zh-cn': '无效的文件名后缀',
+        es: 'Sufijo de nombre no válido', pt: 'Sufixo de nome inválido',
+        fr: 'Suffixe de nom invalide', id: 'Akhiran nama file tidak valid',
+        hi: 'अमान्य फ़ाइल नाम प्रत्यय',
+    },
     'File path unavailable': {
         en: 'File path unavailable',
         ko: '파일 경로를 가져오지 못했습니다',

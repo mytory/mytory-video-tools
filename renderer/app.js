@@ -7,6 +7,7 @@ const state = {
         defaultOutputDir: ''
     },
     activeTab: 'speed-changer',
+    filenameSources: {},
     // 배속 변환기 상태
     speed: 1.25,
     speedCodec: 'h264',
@@ -428,6 +429,7 @@ async function initApp() {
         localStorage.setItem('mytory-video-lang', savedLang);
     }
     applyLanguage(savedLang);
+    initFilenameControls();
 
     elements.langSelect.addEventListener('change', (e) => {
         applyLanguage(e.target.value);
@@ -666,6 +668,7 @@ function setupSpeedChanger() {
 async function processSpeedFiles(files) {
     const list = normalizeNativeFiles(files);
     if (list.length === 0) return;
+    rememberFilenameSource('speed', list[0].path);
     elements.statQueue.textContent = parseInt(elements.statQueue.textContent) + list.length;
     
     // 모든 파일을 pending 상태로 먼저 큐에 추가
@@ -675,8 +678,8 @@ async function processSpeedFiles(files) {
         const isAudio = isAudioExtension(file.path);
         // 오디오 전용 파일은 m4a로 출력, 비디오는 원본 확장자 유지
         const basePath = isAudio
-            ? getResolvedOutputPath(file.path, `_speed_${state.speed.toFixed(2)}x`, 'm4a')
-            : getResolvedOutputPath(file.path, `_speed_${state.speed.toFixed(2)}x`);
+            ? getResolvedOutputPath(file.path, outputSuffix('speed', file.path, 'm4a', `_speed_${state.speed.toFixed(2)}x`), 'm4a')
+            : getResolvedOutputPath(file.path, outputSuffix('speed', file.path, getFileExtension(file.path), `_speed_${state.speed.toFixed(2)}x`));
         const outputPath = await window.electronAPI.resolveUniquePath(basePath);
         const encoderMeta = isAudio
             ? { label: t('Speed change with pitch preserved (audio)', '음성 피치 유지 배속 변환 (오디오)'), encoder: 'aac' }
@@ -823,6 +826,7 @@ function updateCompressSummary() {
 async function processCompressFiles(files) {
     const list = normalizeNativeFiles(files);
     if (list.length === 0) return;
+    rememberFilenameSource('compress', list[0].path);
     elements.statCompressQueue.textContent = parseInt(elements.statCompressQueue.textContent) + list.length;
 
     // 모든 파일을 pending 상태로 먼저 큐에 추가
@@ -831,7 +835,7 @@ async function processCompressFiles(files) {
         const taskId = 'compress_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
         const useHw = elements.hwAccelCheck.checked;
         const encoderMeta = resolveSpeedEncoderMeta(settings.videoCodec, useHw);
-        const basePath = getResolvedOutputPath(file.path, `_optimized_${settings.videoBitrate}k`, 'mp4');
+        const basePath = getResolvedOutputPath(file.path, outputSuffix('compress', file.path, 'mp4', `_optimized_${settings.videoBitrate}k`), 'mp4');
         const outputPath = await window.electronAPI.resolveUniquePath(basePath);
         return {
             taskId,
@@ -943,6 +947,7 @@ function setupAudioCompressor() {
 async function processAudioCompressFiles(files) {
     const list = normalizeNativeFiles(files);
     if (list.length === 0) return;
+    rememberFilenameSource('audioCompress', list[0].path);
 
     // 지원 포맷 필터링
     const supportedExts = ['.wav', '.aiff', '.aif', '.flac', '.alac', '.m4a'];
@@ -968,7 +973,7 @@ async function processAudioCompressFiles(files) {
     const tasks = [];
     for (const file of validFiles) {
         const taskId = 'acomp_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
-        const basePath = getResolvedOutputPath(file.path, '_compressed', 'mp3');
+        const basePath = getResolvedOutputPath(file.path, outputSuffix('audioCompress', file.path, 'mp3', '_compressed'), 'mp3');
         const outputPath = await window.electronAPI.resolveUniquePath(basePath);
         tasks.push({ taskId, file, outputPath });
     }
@@ -1013,6 +1018,7 @@ async function processAudioCompressFiles(files) {
 async function processAudioFiles(files) {
     const list = normalizeNativeFiles(files);
     if (list.length === 0) return;
+    rememberFilenameSource('audio', list[0].path);
     elements.statAudioQueue.textContent = parseInt(elements.statAudioQueue.textContent) + list.length;
 
     // 모든 파일을 pending 상태로 먼저 큐에 추가 (probe는 각 파일별로 필요)
@@ -1026,7 +1032,9 @@ async function processAudioFiles(files) {
             const mapping = { aac: 'aac', mp3: 'mp3', vorbis: 'ogg', pcm_s16le: 'wav' };
             ext = mapping[codec] || 'aac';
         }
-        const basePath = getResolvedOutputPath(file.path, `_audio`, ext);
+        state.filenameAudioExt = ext;
+        document.dispatchEvent(new Event('filename-source-change'));
+        const basePath = getResolvedOutputPath(file.path, outputSuffix('audio', file.path, ext, '_audio'), ext);
         const outputPath = await window.electronAPI.resolveUniquePath(basePath);
         tasks.push({ taskId, file, outputPath, ext });
     }
@@ -1169,7 +1177,7 @@ function setupFrameCapture() {
         
         const baseName = getFileBaseName(state.captureFile.name);
         const fileTimecode = secondsToTimecode(timestamp).replace(/:/g, '-');
-        const basePath = getResolvedOutputPath(state.captureFile.path, `_frame_${fileTimecode}`, ext);
+        const basePath = getResolvedOutputPath(state.captureFile.path, `${outputSuffix('capture', state.captureFile.path, ext, '_frame')}_${fileTimecode}`, ext);
         const outputPath = await window.electronAPI.resolveUniquePath(basePath);
 
         const overlayText = buildCaptureOverlayText(timestamp);
@@ -1220,7 +1228,7 @@ function setupFrameCapture() {
         }
 
         const taskId = 'batch_' + Date.now();
-        const baseName = getFileBaseName(state.captureFile.name);
+        const baseName = getFileBaseName(state.captureFile.name) + outputSuffix('capture', state.captureFile.path, format.split('/')[1], '_frame');
         const outputDir = getTargetParentDirectory(state.captureFile.path);
         const captureFile = state.captureFile;
 
@@ -1316,7 +1324,7 @@ function setupFrameCapture() {
         if (!state.captureFile || state.sceneTimestamps.length === 0) return;
 
         const taskId = 'scene_export_' + Date.now();
-        const baseName = getFileBaseName(state.captureFile.name);
+        const baseName = getFileBaseName(state.captureFile.name) + outputSuffix('capture', state.captureFile.path, elements.captureFormatSelect.value.split('/')[1], '_frame');
         const outputDir = getTargetParentDirectory(state.captureFile.path);
         const format = elements.captureFormatSelect.value;
         const captureFile = state.captureFile;
@@ -1371,6 +1379,7 @@ async function loadVideoForCapture(file) {
     }
 
     state.captureFile = nativeFile;
+    rememberFilenameSource('capture', nativeFile.path);
     elements.captureDropzone.style.display = 'none';
     elements.captureEditor.style.display = 'flex';
     clearDropReceivedFeedback();
@@ -1506,11 +1515,12 @@ function setupRemuxer() {
 async function processRemuxFiles(files) {
     const list = normalizeNativeFiles(files);
     if (list.length === 0) return;
+    rememberFilenameSource('remux', list[0].path);
 
     // 모든 파일을 pending 상태로 먼저 큐에 추가
     const tasks = await Promise.all(list.map(async file => {
         const taskId = 'remux_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
-        const basePath = getResolvedOutputPath(file.path, `_remuxed`, state.remuxFormat);
+        const basePath = getResolvedOutputPath(file.path, outputSuffix('remux', file.path, state.remuxFormat, '_remuxed'), state.remuxFormat);
         const outputPath = await window.electronAPI.resolveUniquePath(basePath);
         return { taskId, file, outputPath };
     }));
@@ -1665,7 +1675,7 @@ function setupSplitter() {
         const taskId = 'split_' + Date.now();
         const baseName = getFileBaseName(state.splitFile.name);
         const ext = getFileExtension(state.splitFile.name);
-        const basePath = getResolvedOutputPath(state.splitFile.path, `_trimmed`, ext);
+        const basePath = getResolvedOutputPath(state.splitFile.path, outputSuffix('split', state.splitFile.path, ext, '_trimmed'), ext);
         const outputPath = await window.electronAPI.resolveUniquePath(basePath);
         const splitFile = state.splitFile;
 
@@ -1709,6 +1719,7 @@ async function loadVideoForSplit(file) {
     }
 
     state.splitFile = nativeFile;
+    rememberFilenameSource('split', nativeFile.path);
     elements.splitDropzone.style.display = 'none';
     elements.splitEditor.style.display = 'flex';
     clearDropReceivedFeedback();
@@ -1928,6 +1939,68 @@ function getResolvedOutputPath(inputPath, suffix, targetExt = '') {
     const baseName = getFileBaseName(inputPath);
     const ext = targetExt || getFileExtension(inputPath);
     return `${parentDir}/${baseName}${suffix}.${ext}`;
+}
+
+function outputSuffix(tool, inputPath, outputExt, defaultSuffix) {
+    const saved = localStorage.getItem(`mytory-video-suffix-${tool}`);
+    const suffix = saved === null || saved === ''
+        ? (getFileExtension(inputPath).toLowerCase() === outputExt.toLowerCase() ? defaultSuffix : '')
+        : saved;
+    if (/[\/\\<>:"|?*\x00-\x1f]/.test(suffix) || /[. ]$/.test(suffix)) {
+        throw new Error(t('Invalid filename suffix', '잘못된 파일명 suffix'));
+    }
+    return suffix;
+}
+
+function rememberFilenameSource(tool, filePath) {
+    state.filenameSources[tool] = filePath;
+    document.dispatchEvent(new Event('filename-source-change'));
+}
+
+function initFilenameControls() {
+    document.querySelectorAll('[data-filename-tool]').forEach(control => {
+        const tool = control.dataset.filenameTool;
+        const input = control.querySelector('input');
+        const example = control.querySelector('output');
+        const saved = localStorage.getItem(`mytory-video-suffix-${tool}`);
+        if (saved !== null) input.value = saved;
+        const refresh = () => {
+            const sample = {
+                speed: ['sample.mp4', 'mp4', `_speed_${state.speed.toFixed(2)}x`],
+                compress: ['sample.mov', 'mp4', `_optimized_${getCompressSettings().videoBitrate}k`],
+                audio: ['sample.mp4', state.audioFormat === 'auto' ? 'aac' : state.audioFormat, '_audio'],
+                audioCompress: ['sample.wav', 'mp3', '_compressed'],
+                capture: ['sample.mp4', elements.captureFormatSelect.value.split('/')[1], '_frame'],
+                remux: ['sample.mov', state.remuxFormat, '_remuxed'],
+                split: ['sample.mp4', 'mp4', '_trimmed'],
+                join: ['sample.mp4', 'mp4', '_joined']
+            }[tool];
+            const source = state.filenameSources[tool] || sample[0];
+            const ext = tool === 'split' ? getFileExtension(source)
+                : tool === 'speed' && isAudioExtension(source) ? 'm4a'
+                : tool === 'audio' && state.audioFormat === 'auto' && state.filenameAudioExt ? state.filenameAudioExt
+                : tool === 'capture' && state.captureMode !== 'single' && sample[1] === 'jpeg' ? 'jpg'
+                : sample[1];
+            const defaultValue = getFileExtension(source).toLowerCase() === ext.toLowerCase() ? sample[2] : '';
+            if (!localStorage.getItem(`mytory-video-suffix-${tool}`)) input.value = defaultValue;
+            const suffix = input.value;
+            const invalid = /[\/\\<>:"|?*\x00-\x1f]/.test(suffix) || /[. ]$/.test(suffix);
+            input.setCustomValidity(invalid ? t('Invalid filename suffix', '잘못된 파일명 suffix') : '');
+            const name = getFileBaseName(source);
+            const tail = tool === 'capture' ? (state.captureMode === 'batch' ? '_0001' : state.captureMode === 'scene' ? '_00-00-01-00' : '_00-00-01-00') : '';
+            example.textContent = invalid ? '—' : `${name}${suffix}${tail}.${ext}`;
+        };
+        input.addEventListener('input', () => {
+            input.value = input.value.replace(/[\/\\<>:"|?*\x00-\x1f]/g, '').replace(/[. ]+$/, '');
+            localStorage.setItem(`mytory-video-suffix-${tool}`, input.value);
+            refresh();
+        });
+        document.addEventListener('click', () => setTimeout(refresh, 0));
+        document.addEventListener('change', () => setTimeout(refresh, 0));
+        document.addEventListener('input', () => setTimeout(refresh, 0));
+        document.addEventListener('filename-source-change', refresh);
+        refresh();
+    });
 }
 
 // 부모 경로 구하기
@@ -2339,9 +2412,10 @@ async function runJoinerJoin() {
     if (files.length < 2) return;
 
     const firstFile = files[0];
+    rememberFilenameSource('join', firstFile.path);
 
     // Resolve output path: same folder as first file, with _joined suffix
-    const basePath = getResolvedOutputPath(firstFile.path, '_joined', 'mp4');
+    const basePath = getResolvedOutputPath(firstFile.path, outputSuffix('join', firstFile.path, 'mp4', '_joined'), 'mp4');
     const outputPath = await window.electronAPI.resolveUniquePath(basePath);
 
     const taskId = 'join_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);

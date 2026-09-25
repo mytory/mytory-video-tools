@@ -62,6 +62,7 @@ const elements = {
     speedPresets: document.getElementById('speedPresets'),
     speedSlider: document.getElementById('speedSlider'),
     speedDisplay: document.getElementById('speedDisplay'),
+    speedInput: document.getElementById('speedInput'),
     speedCodecSelect: document.getElementById('speedCodecSelect'),
     speedCodecHelp: document.getElementById('speedCodecHelp'),
     speedDropzone: document.getElementById('speedDropzone'),
@@ -623,25 +624,62 @@ function switchTab(tabId) {
 // 2. 도구 1: 배속 변환기 핸들링
 function setupSpeedChanger() {
     const presets = elements.speedPresets.querySelectorAll('.preset-btn');
+
+    function updateSpeedUI(syncInput = true) {
+        const speedText = state.speed.toFixed(2) + 'x';
+        elements.speedDisplay.textContent = speedText;
+        elements.statSpeed.textContent = speedText;
+        elements.speedSlider.value = state.speed;
+        if (syncInput) elements.speedInput.value = state.speed.toFixed(2);
+        presets.forEach(btn => {
+            const isActive = Math.abs(parseFloat(btn.getAttribute('data-speed')) - state.speed) < 0.0001;
+            btn.classList.toggle('active', isActive);
+        });
+    }
+
+    function setSpeed(value, syncInput = true) {
+        state.speed = value;
+        elements.speedInput.setCustomValidity('');
+        updateSpeedUI(syncInput);
+    }
+
+    function restoreSpeedInput() {
+        elements.speedInput.setCustomValidity('');
+        updateSpeedUI();
+    }
     
     // 배속 프리셋 선택
     presets.forEach(btn => {
         btn.addEventListener('click', () => {
-            presets.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
             const val = parseFloat(btn.getAttribute('data-speed'));
-            state.speed = val;
-            elements.speedSlider.value = val;
-            updateSpeedUI();
+            setSpeed(val);
         });
     });
 
     // 슬라이더 변경
     elements.speedSlider.addEventListener('input', (e) => {
-        presets.forEach(b => b.classList.remove('active'));
         const val = parseFloat(e.target.value);
-        state.speed = val;
-        updateSpeedUI();
+        setSpeed(val);
+    });
+
+    // 직접 입력: 유효 범위 안에서만 상태를 반영하고, 입력 완료 시 잘못된 값을 되돌립니다.
+    elements.speedInput.addEventListener('input', (e) => {
+        const input = e.target;
+        input.setCustomValidity('');
+        const val = input.valueAsNumber;
+        if (input.validity.valid && Number.isFinite(val)) {
+            setSpeed(val, false);
+        } else {
+            input.setCustomValidity(t('Enter a value from 0.50x to 4.00x.', '0.50x부터 4.00x 사이의 값을 입력하세요.'));
+        }
+    });
+
+    elements.speedInput.addEventListener('change', () => {
+        if (!elements.speedInput.validity.valid || !Number.isFinite(elements.speedInput.valueAsNumber)) {
+            restoreSpeedInput();
+            return;
+        }
+        setSpeed(elements.speedInput.valueAsNumber);
     });
 
     elements.speedCodecSelect.addEventListener('change', (e) => {
@@ -650,12 +688,8 @@ function setupSpeedChanger() {
     });
     updateSpeedCodecHelp();
 
-    // UI 동기화
-    function updateSpeedUI() {
-        const speedText = state.speed.toFixed(2) + 'x';
-        elements.speedDisplay.textContent = speedText;
-        elements.statSpeed.textContent = speedText;
-    }
+    // UI 초기화 및 동기화
+    updateSpeedUI();
 
     elements.speedFileInput.addEventListener('change', async (e) => {
         if (e.target.files.length > 0) {
@@ -670,6 +704,7 @@ async function processSpeedFiles(files) {
     if (list.length === 0) return;
     rememberFilenameSource('speed', list[0].path);
     elements.statQueue.textContent = parseInt(elements.statQueue.textContent) + list.length;
+    const speed = state.speed;
     
     // 모든 파일을 pending 상태로 먼저 큐에 추가
     const tasks = await Promise.all(list.map(async file => {
@@ -678,8 +713,8 @@ async function processSpeedFiles(files) {
         const isAudio = isAudioExtension(file.path);
         // 오디오 전용 파일은 m4a로 출력, 비디오는 원본 확장자 유지
         const basePath = isAudio
-            ? getResolvedOutputPath(file.path, outputSuffix('speed', file.path, 'm4a', `_speed_${state.speed.toFixed(2)}x`), 'm4a')
-            : getResolvedOutputPath(file.path, outputSuffix('speed', file.path, getFileExtension(file.path), `_speed_${state.speed.toFixed(2)}x`));
+            ? getResolvedOutputPath(file.path, outputSuffix('speed', file.path, 'm4a', `_speed_${speed.toFixed(2)}x`), 'm4a')
+            : getResolvedOutputPath(file.path, outputSuffix('speed', file.path, getFileExtension(file.path), `_speed_${speed.toFixed(2)}x`));
         const outputPath = await window.electronAPI.resolveUniquePath(basePath);
         const encoderMeta = isAudio
             ? { label: t('Speed change with pitch preserved (audio)', '음성 피치 유지 배속 변환 (오디오)'), encoder: 'aac' }
@@ -687,6 +722,7 @@ async function processSpeedFiles(files) {
         return {
             taskId,
             file,
+            speed,
             useHw,
             encoderMeta,
             isAudio,
@@ -699,7 +735,7 @@ async function processSpeedFiles(files) {
             const result = await window.electronAPI.startSpeedChange({
                 taskId: task.taskId,
                 inputPath: task.file.path,
-                speed: state.speed,
+                speed: task.speed,
                 videoCodec: state.speedCodec,
                 useHw: task.useHw,
                 outputPath: task.outputPath
@@ -709,8 +745,8 @@ async function processSpeedFiles(files) {
                 finishQueueItem(task.taskId, 'done');
                 elements.statDone.textContent = parseInt(elements.statDone.textContent) + 1;
                 const label = task.isAudio
-                    ? `${state.speed.toFixed(2)}x ${t('audio speed change', '오디오 배속')}`
-                    : `${state.speed.toFixed(2)}x, ${task.encoderMeta.label}`;
+                    ? `${task.speed.toFixed(2)}x ${t('audio speed change', '오디오 배속')}`
+                    : `${task.speed.toFixed(2)}x, ${task.encoderMeta.label}`;
                 showToast(t('Conversion Complete', '인코딩 완료'), `${task.file.name} -> ${label}`);
             } else {
                 finishQueueItem(task.taskId, 'error', result.error);

@@ -535,6 +535,48 @@ h2 {
     text-align: right;
 }
 
+.speed-manual-control {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 120px;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    margin-top: 0.75rem;
+}
+
+.speed-manual-control .control-label {
+    margin: 0;
+}
+
+.speed-manual-control small {
+    grid-column: 1 / -1;
+    margin-top: -0.25rem;
+    color: var(--text-muted);
+}
+
+.speed-manual-field {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.speed-manual-field input {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 0.45rem 0.55rem;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.speed-manual-field input:invalid {
+    border-color: var(--danger);
+}
+
+.speed-manual-field span {
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
 /* 요약 스탯 */
 .summary-stats {
     display: grid;

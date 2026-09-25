@@ -116,8 +116,16 @@
                         <button class="preset-btn" data-speed="4.0">4.0x</button>
                     </div>
                     <div class="slider-container">
-                        <input type="range" class="speed-slider" id="speedSlider" min="0.5" max="4.0" step="0.05" value="1.25">
+                        <input type="range" class="speed-slider" id="speedSlider" min="0.5" max="4.0" step="0.01" value="1.25">
                         <span class="speed-display" id="speedDisplay">1.25x</span>
+                    </div>
+                    <div class="speed-manual-control">
+                        <label class="control-label" for="speedInput" data-mi18n-ko="배속 직접 입력" data-mi18n-ja="速度を直接入力" data-mi18n-zh-cn="手动输入速度" data-mi18n-es="Introducir velocidad manualmente" data-mi18n-pt="Inserir velocidade manualmente" data-mi18n-fr="Saisir la vitesse manuellement" data-mi18n-id="Masukkan kecepatan secara manual" data-mi18n-hi="गति स्वयं दर्ज करें">Enter speed manually</label>
+                        <div class="speed-manual-field">
+                            <input type="number" id="speedInput" min="0.5" max="4.0" step="0.01" value="1.25" required aria-describedby="speedInputHelp">
+                            <span aria-hidden="true">x</span>
+                        </div>
+                        <small id="speedInputHelp" data-mi18n-ko="0.50x부터 4.00x 사이의 값을 입력하세요." data-mi18n-ja="0.50xから4.00xの間で入力してください。" data-mi18n-zh-cn="请输入 0.50x 到 4.00x 之间的数值。" data-mi18n-es="Ingrese un valor entre 0.50x y 4.00x." data-mi18n-pt="Insira um valor entre 0.50x e 4.00x." data-mi18n-fr="Saisissez une valeur entre 0.50x et 4.00x." data-mi18n-id="Masukkan nilai antara 0.50x dan 4.00x." data-mi18n-hi="0.50x और 4.00x के बीच मान दर्ज करें।">Enter a value from 0.50x to 4.00x.</small>
                     </div>
                 </div>
 

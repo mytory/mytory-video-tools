@@ -156,7 +156,14 @@ function runFFmpeg(taskId, args, duration, outputPath) {
         ff.on('close', (code) => {
             activeTasks.delete(taskId);
             if (code === 0) {
-                resolve(outputPath);
+                try {
+                    if (!/%0?\d*d/.test(path.basename(outputPath)) && fs.statSync(outputPath).size === 0) {
+                        throw new Error('The output file is empty.');
+                    }
+                    resolve(outputPath);
+                } catch (err) {
+                    reject(err);
+                }
             } else {
                 // 취소된 경우(code가 null이고 signal로 종료)와 실제 오류 구분
                 if (ff.killed || code === null) {
@@ -1129,6 +1136,10 @@ ipcMain.handle('capture:single', async (event, { inputPath, timestamp, format, o
             });
         }
 
+        if (!fs.existsSync(outputPath) || fs.statSync(outputPath).size === 0) {
+            throw new Error('The captured frame is missing or empty.');
+        }
+
         return { success: true, outputPath };
     } catch (err) {
         return { success: false, error: err.message };
@@ -1157,6 +1168,13 @@ ipcMain.handle('capture:batch', async (event, { taskId, inputPath, startTime, en
 
         await runFFmpeg(taskId, args, duration, outputPathPattern);
 
+        const outputFiles = fs.readdirSync(outputDir)
+            .filter(f => f.startsWith(uniqueBase + '_') && f.endsWith('.' + ext))
+            .filter(f => fs.statSync(path.join(outputDir, f)).size > 0);
+        if (outputFiles.length === 0) {
+            return { success: false, error: 'No frames were saved.' };
+        }
+
         // 생성된 모든 프레임에 오버레이 / 메타데이터 적용
         if (overlayText || metadata) {
             const dir = outputDir;
@@ -1172,7 +1190,7 @@ ipcMain.handle('capture:batch', async (event, { taskId, inputPath, startTime, en
             }
         }
 
-        return { success: true, outputDir };
+        return { success: true, outputDir, count: outputFiles.length };
     } catch (err) {
         return { success: false, error: err.message };
     }
@@ -1334,6 +1352,10 @@ ipcMain.handle('capture:export-scenes', async (event, { taskId, inputPath, times
                     overlayText,
                     metadata: metadataForCaptureAt(metadata, ts)
                 });
+            }
+
+            if (fs.statSync(outputPath).size === 0) {
+                throw new Error('An exported frame is empty.');
             }
 
             // 진행률 보고

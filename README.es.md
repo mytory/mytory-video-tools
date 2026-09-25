@@ -4,6 +4,10 @@
 
 **Mytory Video Tools** es una aplicación de escritorio multiplataforma (Windows, macOS, Linux) para codificación de video de alta velocidad y diversas tareas de manipulación de medios. Está construida con Electron e incluye archivos binarios FFmpeg/FFprobe integrados.
 
+### Novedades de v1.8.0
+
+Introduce la velocidad directamente y consérvala para cada archivo en cola; configura sufijos de nombre por herramienta; sigue el tema claro u oscuro del sistema; y muestra una tarjeta de apoyo traducida tras guardar un resultado.
+
 ---
 
 ## 1. Características

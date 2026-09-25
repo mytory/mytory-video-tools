@@ -158,31 +158,13 @@ HTML 구조 자체가 언어마다 달라야 할 때 사용합니다. 해당 언
 - `renderer/translations.js` — 전체 번역 맵
 - `renderer/app.js`의 `t()` 함수 — 번역 조회 로직
 
-## PayPal 후원 시스템
+## 후원 시스템
 
-성공 토스트 메시지와 설정 화면, 웹사이트 footer, README에 PayPal 후원 링크가 표시됩니다.
+한국어에는 `https://fairy.hada.io/@mytory-video-tools`, 나머지 언어에는 `https://www.paypal.com/ncp/payment/SWKQD7USX8J5U`를 사용합니다.
 
-### 후원 문구
+앱에서는 결과 파일 저장이 성공하고 비어 있지 않을 때 `renderer/shared/donation-toast.js`의 카드 한 개를 표시합니다. 카드 문구는 앱의 9개 언어로 제공하고, 열린 상태에서 언어가 바뀌면 문구와 링크를 갱신합니다. 분석, 미리보기, 취소, 오류, 빈 출력에는 표시하지 않습니다. 일반 상태 토스트에는 후원 문구를 넣지 않습니다.
 
-- **영어:** "Proudly ad-free and user-supported. Every coffee makes a difference. ☕ Support via PayPal"
-- **PayPal URL:** `https://www.paypal.com/ncp/payment/SWKQD7USX8J5U`
-
-### 한국어 제외 규칙
-
-한국 사용자는 PayPal로 후원할 수 없으므로, **모든 한국어 버전(README.ko.md, docs/ko/index.html)에서는 후원 문구를 절대 표시하지 않습니다.**
-
-| 위치 | 구현 방식 | 한국어 제외 여부 |
-|---|---|---|
-| 성공/정보 토스트 | `renderer/app.js`의 `showToast()`에서 `type !== 'error'`이고 언어가 `ko`가 아닐 때 `t('!support_paypal_toast')` 렌더링 | ✅ 언어 코드로 조건 분기 |
-| 앱 설정 화면 | `renderer/index.html`의 `<section id="settings">` 하단, `data-mi18n-block="en,ja,zh-cn,es,pt,fr,id,hi"`로 감쌈 | ✅ `data-mi18n-block` 속성 |
-| 웹사이트 footer | `docs/{locale}/index.html`의 `<footer>` 영역 | ✅ `docs/ko/index.html`에는 미추가 |
-| README | `README.{locale}.md`의 Contact 섹션 아래 | ✅ `README.ko.md`에는 미추가 |
-
-### 새 도구/언어 추가 시 주의사항
-
-1. 새 언어를 추가할 때는 위 표의 모든 위치에서 한국어 제외 규칙을 동일하게 적용해야 합니다.
-2. 새 도구를 추가해도 후원 시스템은 건드리지 않습니다. `settings` 탭과 `showToast()`는 공통 시스템입니다.
-3. 토스트 후원 메시지가 필요하면 `translations.js`의 `!support_paypal_toast` 템플릿 번역에 새 언어 항목을 추가하세요.
+설정 화면과 웹사이트 footer, README에서도 한국어에는 한국어 후원 링크를, 나머지 언어에는 PayPal 링크를 사용합니다. 새 도구를 추가할 때는 실제 결과 저장 성공 지점에서만 후원 카드를 호출하세요.
 
 ## 글로벌 드래그 & 드롭 (화면 전체 드롭)
 

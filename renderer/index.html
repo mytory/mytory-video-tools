@@ -26,6 +26,7 @@
     </script>
     <link rel="stylesheet" href="./pico.min.css">
     <link rel="stylesheet" href="./app.css">
+    <link rel="stylesheet" href="./shared/donation-toast.css?v=20260925-1">
 </head>
 <body>
 <div class="app-container">
@@ -743,7 +744,7 @@
                 </div>
             </div>
 
-            <!-- 후원 카드 (한국어 제외) -->
+            <!-- 한국어 외 언어의 후원 카드 -->
             <div class="card card-panel config-panel" data-mi18n-block="en,ja,zh-cn,es,pt,fr,id,hi">
                 <div class="control-group" style="border: none; padding: 0; margin: 0;">
                     <label class="control-label">☕ Support the Project</label>
@@ -762,6 +763,13 @@
                     </a>
                 </div>
             </div>
+            <div class="card card-panel config-panel" data-mi18n-block="ko">
+                <div class="control-group" style="border: none; padding: 0; margin: 0;">
+                    <label class="control-label">☕ 프로젝트 후원하기</label>
+                    <p style="margin: 0 0 12px 0; font-size: 0.85rem; color: var(--text-muted);">광고 없이 무료로 운영하는 도구입니다. 개발을 응원해 주세요.</p>
+                    <a href="https://fairy.hada.io/@mytory-video-tools" target="_blank" rel="noopener noreferrer" class="btn btn--primary">후원하기</a>
+                </div>
+            </div>
         </section>
 
     </main>
@@ -776,6 +784,7 @@
     MytoryI18n.init({autoApply:true});
 </script>
 <script src="./translations.js"></script>
+<script src="./shared/donation-toast.js?v=20260925-1"></script>
 <script type="module" src="./app.js"></script>
 <!-- 글로벌 드롭 오버레이 -->
 <div id="globalDropOverlay" class="global-drop-overlay">

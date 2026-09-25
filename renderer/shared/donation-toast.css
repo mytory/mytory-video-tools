@@ -1,0 +1,114 @@
+.mytory-donation-toast {
+    position: fixed;
+    z-index: 1001;
+    left: max(16px, env(safe-area-inset-left));
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(16px, env(safe-area-inset-bottom));
+    width: auto;
+    max-width: 560px;
+    margin-inline: auto;
+    padding: 16px 54px 16px 18px;
+    border: 2px solid var(--brand-fallback, #6a7aff);
+    border-top-width: 5px;
+    border-radius: 16px;
+    background: #f2f4ff;
+    color: #252b45;
+    box-shadow: 0 14px 38px rgba(31, 42, 92, 0.28);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+}
+
+.mytory-donation-toast[hidden] {
+    display: none;
+}
+
+.mytory-donation-toast.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.mytory-donation-toast__layout {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+}
+
+.mytory-donation-toast__icon {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border-radius: 12px;
+    background: var(--brand-fallback, #6a7aff);
+    color: #fff;
+    font-size: 1.35rem;
+}
+
+.mytory-donation-toast__title {
+    margin: 0 0 2px;
+    color: #20264a;
+    font-size: 1rem;
+    font-weight: 750;
+}
+
+.mytory-donation-toast__message {
+    margin: 0 0 11px;
+}
+
+.mytory-donation-toast__cta {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--brand-fallback, #6a7aff);
+    border-radius: 9px;
+    background: var(--brand-fallback, #6a7aff);
+    color: #fff !important;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.mytory-donation-toast__cta:hover {
+    background: #5365e8;
+    border-color: #5365e8;
+}
+
+.mytory-donation-toast__cta:focus-visible,
+.mytory-donation-toast__close:focus-visible {
+    outline: 3px solid #20264a;
+    outline-offset: 3px;
+}
+
+.mytory-donation-toast__close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: grid;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: #343b60;
+    font-size: 1.45rem;
+    line-height: 1;
+}
+
+.mytory-donation-toast__close:hover {
+    background: rgba(64, 78, 180, 0.12);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .mytory-donation-toast {
+        transition: opacity 180ms ease, transform 180ms ease;
+    }
+}

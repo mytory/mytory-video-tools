@@ -42,6 +42,22 @@ const state = {
     queue: [] // { taskId, type, name, status, percent, speed, eta }
 };
 
+const donationMessages = {
+    en: { title: 'Like what you made?', message: 'If this free tool helped, please support its continued development.', cta: 'Support via PayPal', close: 'Dismiss donation message' },
+    ko: { title: '완성한 결과물이 마음에 드셨나요?', message: '이 무료 도구가 도움이 되었다면 개발을 후원해 주세요.', cta: '후원하기', close: '후원 안내 닫기' },
+    ja: { title: '完成した作品はいかがですか？', message: 'この無料ツールがお役に立ちましたら、開発をご支援ください。', cta: 'PayPalで支援', close: '寄付の案内を閉じる' },
+    'zh-cn': { title: '喜欢完成的作品吗？', message: '如果这款免费工具对您有帮助，请支持它的持续开发。', cta: '通过 PayPal 支持', close: '关闭捐助提示' },
+    es: { title: '¿Te gusta el resultado?', message: 'Si esta herramienta gratuita te ayudó, apoya su desarrollo.', cta: 'Apoyar con PayPal', close: 'Cerrar aviso de donación' },
+    pt: { title: 'Gostou do resultado?', message: 'Se esta ferramenta gratuita ajudou você, apoie seu desenvolvimento.', cta: 'Apoiar via PayPal', close: 'Fechar aviso de apoio' },
+    fr: { title: 'Le résultat vous plaît ?', message: 'Si cet outil gratuit vous a aidé, soutenez son développement.', cta: 'Soutenir via PayPal', close: 'Fermer le message de soutien' },
+    id: { title: 'Suka hasilnya?', message: 'Jika alat gratis ini membantu, dukung pengembangannya.', cta: 'Dukung lewat PayPal', close: 'Tutup pesan dukungan' },
+    hi: { title: 'क्या आपको परिणाम पसंद आया?', message: 'अगर इस मुफ़्त टूल से मदद मिली, तो इसके विकास में सहयोग करें।', cta: 'PayPal से सहयोग करें', close: 'सहयोग संदेश बंद करें' }
+};
+const donationToast = window.MytoryDonationToast.create(donationMessages);
+function showDonationToast() {
+    donationToast.show();
+}
+
 // DOM 요소 참조
 const elements = {
     // 탭 이동 관련
@@ -754,6 +770,7 @@ async function processSpeedFiles(files) {
                     ? `${task.speed.toFixed(2)}x ${t('audio speed change', '오디오 배속')}`
                     : `${task.speed.toFixed(2)}x, ${task.encoderMeta.label}`;
                 showToast(t('Conversion Complete', '인코딩 완료'), `${task.file.name} -> ${label}`);
+                showDonationToast();
             } else {
                 finishQueueItem(task.taskId, 'error', result.error);
                 showToast(t('Conversion Failed', '인코딩 실패'), `${task.file.name}: ${result.error}`, 'error');
@@ -901,6 +918,7 @@ async function processCompressFiles(files) {
             if (result.success) {
                 finishQueueItem(task.taskId, 'done');
                 showToast(t('Compression Complete', '용량 최적화 완료'), `${task.file.name} -> ${settings.videoBitrate}k MP4`);
+                showDonationToast();
             } else {
                 finishQueueItem(task.taskId, 'error', result.error);
                 showToast(t('Compression Failed', '용량 최적화 실패'), `${task.file.name}: ${result.error}`, 'error');
@@ -1035,6 +1053,7 @@ async function processAudioCompressFiles(files) {
             if (result.success) {
                 finishQueueItem(task.taskId, 'done');
                 showToast(t('Audio Compressed', '오디오 압축 완료'), t('!audio_compressed_saved', task.file.name));
+                showDonationToast();
             } else {
                 finishQueueItem(task.taskId, 'error', result.error);
                 showToast(t('Audio Compression Failed', '오디오 압축 실패'), `${task.file.name}: ${result.error}`, 'error');
@@ -1093,6 +1112,7 @@ async function processAudioFiles(files) {
             if (result.success) {
                 finishQueueItem(task.taskId, 'done');
                 showToast(t('Audio Extracted', '오디오 추출 완료'), t('!audio_file_saved', task.file.name));
+                showDonationToast();
             } else {
                 finishQueueItem(task.taskId, 'error', result.error);
                 showToast(t('Extraction Failed', '오디오 추출 실패'), `${task.file.name}: ${result.error}`, 'error');
@@ -1236,6 +1256,7 @@ function setupFrameCapture() {
 
         if (result.success) {
             showToast(t('Frame Saved', '프레임 저장 완료'), t('!frame_saved', outputPath));
+            showDonationToast();
         } else {
             showToast(t('Error Saving Frame', '프레임 저장 실패'), result.error, 'error');
         }
@@ -1291,9 +1312,10 @@ function setupFrameCapture() {
                 metadata
             });
 
-            if (result.success) {
+            if (result.success && result.count > 0) {
                 finishQueueItem(taskId, 'done');
                 showToast(t('Batch Complete', '일괄 캡처 완료'), t('!batch_frames_saved'));
+                showDonationToast();
             } else {
                 finishQueueItem(taskId, 'error', result.error);
                 showToast(t('Batch Failed', '일괄 캡처 실패'), result.error, 'error');
@@ -1390,9 +1412,10 @@ function setupFrameCapture() {
 
             elements.btnCaptureSceneExport.disabled = false;
 
-            if (result.success) {
+            if (result.success && result.count > 0) {
                 finishQueueItem(taskId, 'done');
                 showToast(t('Export Complete', '장면 저장 완료'), t('!scene_frames_exported', result.count));
+                showDonationToast();
             } else {
                 finishQueueItem(taskId, 'error', result.error);
                 showToast(t('Export Failed', '장면 저장 실패'), result.error, 'error');
@@ -1578,6 +1601,7 @@ async function processRemuxFiles(files) {
             if (result.success) {
                 finishQueueItem(task.taskId, 'done');
                 showToast(t('Remux Complete', '확장자 변환 완료'), t('!remux_file_saved', task.file.name, state.remuxFormat.toUpperCase()));
+                showDonationToast();
             } else {
                 finishQueueItem(task.taskId, 'error', result.error);
                 showToast(t('Remux Failed', '확장자 변환 실패'), `${task.file.name}: ${result.error}`, 'error');
@@ -1733,6 +1757,7 @@ function setupSplitter() {
             if (result.success) {
                 finishQueueItem(taskId, 'done');
                 showToast(t('Video Split Complete', '비디오 자르기 성공'), t('!split_file_saved', outputPath));
+                showDonationToast();
             } else {
                 finishQueueItem(taskId, 'error', result.error);
                 showToast(t('Video Split Failed', '비디오 자르기 실패'), result.error, 'error');
@@ -2490,6 +2515,7 @@ async function runJoinerJoin() {
             if (result.success) {
                 finishQueueItem(taskId, 'done');
                 showToast(t('Join Complete', '합치기 완료'), outputPath.split(/[\\/]/).pop());
+                showDonationToast();
                 // Clear the joiner queue after successful join
                 state.joinerFiles = [];
                 renderJoinerQueue();
@@ -2747,20 +2773,10 @@ function showToast(title, message, type = 'info') {
     
     toast.style = colorStyle;
     
-    // 후원 링크: 성공/정보 토스트에만, 한국어는 제외
-    let supportHtml = '';
-    if (type !== 'error') {
-        const lang = typeof MytoryI18n !== 'undefined' ? MytoryI18n.getLanguage().toLowerCase() : '';
-        if (!lang.startsWith('ko')) {
-            supportHtml = '<p style="margin:8px 0 0 0; font-size:0.8rem;">' + t('!support_paypal_toast') + '</p>';
-        }
-    }
-    
     toast.innerHTML = `
         <button class="toast-close-btn" type="button" aria-label="${t('Close notification', '알림 닫기')}">&times;</button>
         <h4 style="margin:0; font-size:0.95rem;">${title}</h4>
         <p style="margin:4px 0 0 0; font-size:0.8rem; color:var(--text-muted);">${message}</p>
-        ${supportHtml}
     `;
 
     // 닫기 버튼 클릭 시 토스트 숨김
@@ -2769,7 +2785,7 @@ function showToast(title, message, type = 'info') {
         dismissToast();
     });
 
-    // 토스트 본문 클릭 시 숨김 (단, 후원 링크 클릭은 예외)
+    // 토스트 본문 클릭 시 숨김
     toast.addEventListener('click', (e) => {
         if (e.target.tagName !== 'A') {
             dismissToast();

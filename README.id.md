@@ -4,6 +4,10 @@
 
 **Mytory Video Tools** adalah aplikasi desktop lintas platform (Windows, macOS, Linux) untuk encoding video berkecepatan tinggi dan berbagai tugas manipulasi media. Dibangun dengan Electron dan dilengkapi dengan biner FFmpeg/FFprobe bawaan.
 
+### Yang baru di v1.8.0
+
+Masukkan kecepatan secara langsung dan pertahankan pilihan setiap berkas dalam antrean; atur akhiran nama keluaran per alat; ikuti tema sistem; dan tampilkan kartu dukungan sesuai bahasa setelah hasil berhasil disimpan.
+
 ---
 
 ## 1. Fitur

@@ -4,6 +4,10 @@
 
 **Mytory Video Tools**는 대용량 비디오의 배속 인코딩 및 다양한 미디어 조작을 지원하는 크로스 플랫폼(Windows, macOS, Linux) 데스크톱 애플리케이션입니다. Electron으로 제작되었으며 FFmpeg/FFprobe 바이너리를 내장하고 있습니다.
 
+### v1.8.0 새 기능
+
+배속 직접 입력과 파일별 배속 고정, 도구별 출력 파일명 접미사 설정, 시스템 밝기 모드 연동을 추가했습니다. 결과 저장에 성공하면 현재 언어의 후원 카드가 표시됩니다.
+
 ---
 
 ## 1. 주요 특징
@@ -129,3 +133,5 @@ Copyright (c) 2026 mytory. 본 프로젝트는 **ISC License**에 따라 자유�
 *   **Email:** [mail@mytory.net](mailto:mail@mytory.net)
 *   **Blog:** [https://mytory.net](https://mytory.net)
 *   **GitHub:** [@mytory](https://github.com/mytory)
+
+광고 없이 무료로 운영하는 도구입니다. ☕ [개발 후원하기](https://fairy.hada.io/@mytory-video-tools)

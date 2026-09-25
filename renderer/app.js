@@ -55,6 +55,7 @@ const elements = {
     hwAccelCheck: document.getElementById('hwAccelCheck'),
     hwStatusText: document.getElementById('hwStatusText'),
     langSelect: document.getElementById('langSelect'),
+    themeSelect: document.getElementById('themeSelect'),
     
     // 배속 변환기 관련
     speedPresets: document.getElementById('speedPresets'),
@@ -361,6 +362,44 @@ function updateHwStatusText() {
 
 // 1. 초기 로드 및 설정 연동
 async function initApp() {
+    const systemThemeMedia = typeof window.matchMedia === 'function'
+        ? window.matchMedia('(prefers-color-scheme: dark)')
+        : null;
+
+    function applyTheme(mode) {
+        const supportedThemes = ['system', 'light', 'dark'];
+        const themeMode = supportedThemes.includes(mode) ? mode : 'system';
+        const effectiveTheme = themeMode === 'system'
+            ? (systemThemeMedia ? (systemThemeMedia.matches ? 'dark' : 'light') : 'dark')
+            : themeMode;
+
+        document.documentElement.dataset.themeMode = themeMode;
+        document.documentElement.dataset.theme = effectiveTheme;
+        localStorage.setItem('mytory-video-theme', themeMode);
+        elements.themeSelect.value = themeMode;
+    }
+
+    // 저장된 테마를 복원하고, 시스템 모드에서는 OS 변경을 실시간 반영합니다.
+    applyTheme(localStorage.getItem('mytory-video-theme') || 'system');
+
+    if (systemThemeMedia) {
+        const updateSystemTheme = () => {
+            if (document.documentElement.dataset.themeMode === 'system') {
+                document.documentElement.dataset.theme = systemThemeMedia.matches ? 'dark' : 'light';
+            }
+        };
+
+        if (typeof systemThemeMedia.addEventListener === 'function') {
+            systemThemeMedia.addEventListener('change', updateSystemTheme);
+        } else if (typeof systemThemeMedia.addListener === 'function') {
+            systemThemeMedia.addListener(updateSystemTheme);
+        }
+    }
+
+    elements.themeSelect.addEventListener('change', (e) => {
+        applyTheme(e.target.value);
+    });
+
     // 다국어 바인딩 및 선택값 셋팅
     function applyLanguage(lang) {
         if (typeof MytoryI18n !== 'undefined') {

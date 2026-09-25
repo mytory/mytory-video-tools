@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark" data-theme-mode="system">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +11,19 @@
            data-mi18n-fr="Mytory Video Tools - Utilitaires vidéo natifs haute vitesse"
            data-mi18n-id="Mytory Video Tools - Utilitas Video Asli Berkecepatan Tinggi"
            data-mi18n-hi="Mytory वीडियो टूल्स - हाई-स्पीड नेटिव वीडियो उपयोगिताएँ">Mytory Video Tools - High-Speed Native Video Utilities</title>
+    <script>
+        (() => {
+            try {
+                const savedTheme = localStorage.getItem('mytory-video-theme');
+                const themeMode = ['system', 'light', 'dark'].includes(savedTheme) ? savedTheme : 'system';
+                const systemTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+                document.documentElement.dataset.themeMode = themeMode;
+                document.documentElement.dataset.theme = themeMode === 'system' ? systemTheme : themeMode;
+            } catch (error) {
+                // 저장소를 사용할 수 없으면 렌더러 초기화 중 테마를 적용합니다.
+            }
+        })();
+    </script>
     <link rel="stylesheet" href="./pico.min.css">
     <link rel="stylesheet" href="./app.css">
 </head>
@@ -655,6 +668,15 @@
                     <div id="hwStatusText" style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-muted);">
                         Checking hardware capabilities...
                     </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="themeSelect" data-mi18n-ko="테마" data-mi18n-ja="テーマ" data-mi18n-zh-cn="主题" data-mi18n-es="Tema" data-mi18n-pt="Tema" data-mi18n-fr="Thème" data-mi18n-id="Tema" data-mi18n-hi="थीम">Theme</label>
+                    <select id="themeSelect" style="width: auto; min-width: 150px;">
+                        <option value="system" data-mi18n-ko="시스템 설정 따르기" data-mi18n-ja="システム設定に合わせる" data-mi18n-zh-cn="跟随系统设置" data-mi18n-es="Seguir el sistema" data-mi18n-pt="Seguir o sistema" data-mi18n-fr="Suivre le système" data-mi18n-id="Ikuti sistem" data-mi18n-hi="सिस्टम सेटिंग का उपयोग करें">System</option>
+                        <option value="light" data-mi18n-ko="라이트" data-mi18n-ja="ライト" data-mi18n-zh-cn="浅色" data-mi18n-es="Claro" data-mi18n-pt="Claro" data-mi18n-fr="Clair" data-mi18n-id="Terang" data-mi18n-hi="हल्का">Light</option>
+                        <option value="dark" data-mi18n-ko="다크" data-mi18n-ja="ダーク" data-mi18n-zh-cn="深色" data-mi18n-es="Oscuro" data-mi18n-pt="Escuro" data-mi18n-fr="Sombre" data-mi18n-id="Gelap" data-mi18n-hi="गहरा">Dark</option>
+                    </select>
                 </div>
 
                 <div class="control-group">

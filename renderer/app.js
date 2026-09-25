@@ -2630,10 +2630,10 @@ function renderQueue() {
             </div>
             <div style="display:flex; gap:6px; align-items:center;">
                 ${task.status === 'pending' ? `
-                <button class="btn queue-runnow-btn" type="button" data-task-id="${task.taskId}" style="margin:0; padding:4px 10px; font-size:0.75rem; background:rgba(100,200,100,0.2); border-color:rgba(100,200,100,0.3);">${t('Run Now', '병렬 실행')}</button>
+                <button class="btn queue-runnow-btn" type="button" data-task-id="${task.taskId}" style="margin:0; padding:4px 10px; font-size:0.75rem;">${t('Run Now', '병렬 실행')}</button>
                 ` : ''}
                 ${task.status === 'running' ? `
-                <button class="btn queue-cancel-btn" type="button" data-task-id="${task.taskId}" style="margin:0; padding:6px 12px; font-size:0.8rem; background:rgba(255,255,255,0.06);">${t('Cancel', '취소')}</button>
+                <button class="btn queue-cancel-btn" type="button" data-task-id="${task.taskId}" style="margin:0; padding:6px 12px; font-size:0.8rem;">${t('Cancel', '취소')}</button>
                 ` : `
                 <button class="queue-dismiss-btn" type="button" data-task-id="${task.taskId}" aria-label="${t('Remove from queue', '대기열에서 지우기')}" title="${t('Remove from queue', '대기열에서 지우기')}">&times;</button>
                 `}

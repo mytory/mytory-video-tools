@@ -1,12 +1,12 @@
 :root {
     color-scheme: dark;
-    --brand: lch(71% 35% 258deg);
-    --brand-hover: lch(78% 40% 258deg);
+    --brand: #1d4ed8;
+    --brand-hover: #1e40af;
     --brand-alpha: rgba(106, 122, 255, 0.15);
     --brand-wash: rgba(106, 122, 255, 0.05);
     --brand-border: rgba(106, 122, 255, 0.25);
     --brand-ink: #a5b4fc;
-    --on-brand: #15112f;
+    --on-brand: #ffffff;
     --bg-app: #0e121a;
     --bg-sidebar: #151a24;
     --surface: #1e2533;
@@ -49,6 +49,14 @@
     --shadow-raised: 0 2px 8px rgba(0, 0, 0, 0.15);
     font-size: 16px;
     color: var(--text);
+}
+
+:root[data-theme="dark"] {
+    --pico-primary-background: var(--brand);
+    --pico-primary-border: var(--brand);
+    --pico-primary-hover-background: var(--brand-hover);
+    --pico-primary-hover-border: var(--brand-hover);
+    --pico-primary-inverse: #ffffff;
 }
 
 :root[data-theme="light"] {
@@ -121,9 +129,12 @@ textarea {
 }
 input,
 select,
-textarea,
-button {
+textarea {
     color: var(--text);
+}
+
+button.btn {
+    color: var(--on-brand);
 }
 
 /* 1. 레이아웃 구조 */
@@ -820,6 +831,18 @@ label[for="splitEndInput"] {
 .status-item.error {
     border-color: var(--danger-border);
     background-color: var(--danger-soft);
+}
+
+button.btn.queue-runnow-btn {
+    background-color: var(--success-soft);
+    border-color: var(--success-border);
+    color: var(--success-ink);
+}
+
+button.btn.queue-cancel-btn {
+    background-color: var(--surface-soft);
+    border-color: var(--border-strong);
+    color: var(--text);
 }
 
 .status-item.idle {

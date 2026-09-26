@@ -995,84 +995,102 @@ function setupAudioCompressor() {
         state.audioCompressSampleRate = elements.audioCompressSampleRate.value;
     });
 
-    // 파일 입력
-    elements.audioCompressFileInput.addEventListener('change', async (e) => {
-        if (e.target.files.length > 0) {
+    // 드롭 피드백이 dropzone의 내용을 교체하므로, 파일 입력 이벤트는 유지되는 탭 요소에 위임합니다.
+    document.getElementById('audio-compressor').addEventListener('change', async (e) => {
+        if (e.target.id === 'audioCompressFileInput' && e.target.files.length > 0) {
             await processAudioCompressFiles(e.target.files);
+            e.target.value = '';
         }
     });
 }
 
 // 오디오 압축 실행
 async function processAudioCompressFiles(files) {
-    const list = normalizeNativeFiles(files);
-    if (list.length === 0) return;
-    rememberFilenameSource('audioCompress', list[0].path);
+    try {
+        const list = normalizeNativeFiles(files);
+        if (list.length === 0) return;
 
-    // 지원 포맷 필터링
-    const supportedExts = ['.wav', '.aiff', '.aif', '.flac', '.alac', '.m4a'];
-    const validFiles = list.filter(f => {
-        const ext = '.' + f.name.split('.').pop().toLowerCase();
-        return supportedExts.includes(ext);
-    });
-
-    if (validFiles.length === 0) {
-        showToast(t('Unsupported Format', '지원하지 않는 포맷'),
-            t('Please use lossless audio files (WAV, AIFF, FLAC, ALAC, M4A).', '무손실 오디오 파일(WAV, AIFF, FLAC, ALAC, M4A)만 지원합니다.'), 'error');
-        return;
-    }
-
-    if (validFiles.length !== list.length) {
-        const skipped = list.length - validFiles.length;
-        showToast(t('Skipped Unsupported', '지원하지 않는 파일 건너뜀'),
-            `${skipped} ${t('file(s) skipped (only lossless formats supported).', '개 파일이 건너뛰어졌습니다 (무손실 포맷만 지원).')}`, 'info');
-    }
-
-    elements.statAudioCompressQueue.textContent = parseInt(elements.statAudioCompressQueue.textContent) + validFiles.length;
-
-    const tasks = [];
-    for (const file of validFiles) {
-        const taskId = 'acomp_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
-        const basePath = getResolvedOutputPath(file.path, outputSuffix('audioCompress', file.path, 'mp3', '_compressed'), 'mp3');
-        const outputPath = await window.electronAPI.resolveUniquePath(basePath);
-        tasks.push({ taskId, file, outputPath });
-    }
-
-    for (const task of tasks) {
-        task.run = async () => {
-            const result = await window.electronAPI.startAudioCompress({
-                taskId: task.taskId,
-                inputPath: task.file.path,
-                outputPath: task.outputPath,
-                bitrate: state.audioCompressBitrate,
-                encodeMode: state.audioCompressEncodeMode,
-                vbrQuality: state.audioCompressVbrQuality,
-                sampleRate: state.audioCompressSampleRate
-            });
-
-            if (result.success) {
-                finishQueueItem(task.taskId, 'done');
-                showToast(t('Audio Compressed', '오디오 압축 완료'), t('!audio_compressed_saved', task.file.name));
-                showDonationToast();
-            } else {
-                finishQueueItem(task.taskId, 'error', result.error);
-                showToast(t('Audio Compression Failed', '오디오 압축 실패'), `${task.file.name}: ${result.error}`, 'error');
+        // 확장자 목록으로 제한하지 않고 FFprobe가 실제 오디오 스트림을 읽는지 확인합니다.
+        const validFiles = [];
+        let skipped = 0;
+        for (const file of list) {
+            try {
+                const probe = await window.electronAPI.probeVideo(file.path);
+                if (probe && probe.success && probe.audioCodec) {
+                    validFiles.push(file);
+                } else {
+                    skipped++;
+                }
+            } catch (err) {
+                skipped++;
             }
-            elements.statAudioCompressQueue.textContent = Math.max(0, parseInt(elements.statAudioCompressQueue.textContent) - 1);
-        };
-        addQueueItem({
-            taskId: task.taskId,
-            type: t('Audio Compressor', '오디오 압축기'),
-            name: task.file.name,
-            status: 'pending',
-            percent: 0,
-            speed: '0.0x',
-            engineLabel: 'libmp3lame',
-            run: task.run
-        });
+        }
+
+        if (validFiles.length === 0) {
+            showToast(t('Unsupported Format', '지원하지 않는 포맷'),
+                t('Please choose an audio file that FFmpeg can read.', 'FFmpeg에서 읽을 수 있는 오디오 파일을 선택해 주세요.'), 'error');
+            return;
+        }
+
+        if (skipped > 0) {
+            showToast(t('Skipped Unsupported', '지원하지 않는 파일 건너뜀'),
+                `${skipped} ${t('file(s) skipped because no readable audio stream was found.', '개 파일을 건너뛰었습니다 (읽을 수 있는 오디오 스트림이 없음).')}`, 'info');
+        }
+
+        rememberFilenameSource('audioCompress', validFiles[0].path);
+        const tasks = await Promise.all(validFiles.map(async file => {
+            const taskId = 'acomp_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
+            const basePath = getResolvedOutputPath(file.path, outputSuffix('audioCompress', file.path, 'mp3', '_compressed'), 'mp3');
+            const outputPath = await window.electronAPI.resolveUniquePath(basePath);
+            return { taskId, file, outputPath };
+        }));
+
+        elements.statAudioCompressQueue.textContent = parseInt(elements.statAudioCompressQueue.textContent) + tasks.length;
+        for (const task of tasks) {
+            task.run = async () => {
+                try {
+                    const result = await window.electronAPI.startAudioCompress({
+                        taskId: task.taskId,
+                        inputPath: task.file.path,
+                        outputPath: task.outputPath,
+                        bitrate: state.audioCompressBitrate,
+                        encodeMode: state.audioCompressEncodeMode,
+                        vbrQuality: state.audioCompressVbrQuality,
+                        sampleRate: state.audioCompressSampleRate
+                    });
+
+                    if (!result || !result.success) {
+                        throw new Error(result?.error || t('Audio Compression Failed', '오디오 압축 실패'));
+                    }
+
+                    finishQueueItem(task.taskId, 'done');
+                    showToast(t('Audio Compressed', '오디오 압축 완료'), t('!audio_compressed_saved', task.file.name));
+                    showDonationToast();
+                } catch (err) {
+                    const message = err?.message || String(err);
+                    finishQueueItem(task.taskId, 'error', message);
+                    showToast(t('Audio Compression Failed', '오디오 압축 실패'), `${task.file.name}: ${message}`, 'error');
+                } finally {
+                    elements.statAudioCompressQueue.textContent = Math.max(0, parseInt(elements.statAudioCompressQueue.textContent) - 1);
+                }
+            };
+            addQueueItem({
+                taskId: task.taskId,
+                type: t('Audio Compressor', '오디오 압축기'),
+                name: task.file.name,
+                status: 'pending',
+                percent: 0,
+                speed: '0.0x',
+                engineLabel: 'libmp3lame',
+                run: task.run
+            });
+        }
+        processQueueDispatcher();
+    } catch (err) {
+        showToast(t('Audio Compression Failed', '오디오 압축 실패'), err?.message || String(err), 'error');
+    } finally {
+        clearDropReceivedFeedback();
     }
-    clearDropReceivedFeedback();
-    processQueueDispatcher();
 }
 
 // 오디오 파일 추출 실행

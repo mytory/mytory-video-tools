@@ -780,10 +780,13 @@ ipcMain.handle('audio:start', async (event, { taskId, inputPath, format, outputP
     }
 });
 
-// 6.5 오디오 압축(Audio Compress) 시작 — 무손실 오디오를 MP3로 변환
+// 6.5 오디오 압축(Audio Compress) 시작 — FFmpeg가 읽을 수 있는 오디오를 MP3로 변환
 ipcMain.handle('audio-compress:start', async (event, { taskId, inputPath, outputPath, bitrate, encodeMode, vbrQuality, sampleRate }) => {
     try {
         const info = await probeVideo(inputPath);
+        if (!(info.streams || []).some(stream => stream.codec_type === 'audio')) {
+            throw new Error('No audio stream found in input.');
+        }
         const duration = parseFloat(info.format.duration || 0);
 
         const args = ['-i', inputPath, '-vn'];

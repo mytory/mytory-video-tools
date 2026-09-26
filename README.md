@@ -4,9 +4,9 @@
 
 **Mytory Video Tools** is a cross-platform (Windows, macOS, Linux) desktop application for high-speed video encoding and various media manipulation tasks. It is built with Electron and ships with embedded FFmpeg/FFprobe binaries.
 
-### What’s new in v1.8.0
+### What’s new in v1.8.1
 
-Enter a playback speed directly and keep each queued file’s speed; choose output filename suffixes per tool; follow your system’s light or dark theme; see a localized support card after a result is saved successfully.
+The Audio Compressor now accepts all audio formats supported by FFmpeg, including AAC and Opus. Invalid files show an error and restore the drop area; choosing files again works after an error.
 
 ---
 
@@ -22,7 +22,7 @@ Enter a playback speed directly and keep each queued file’s speed; choose outp
 |---|---|
 | ⚡ **Speed Changer** | Change video playback speed (0.5x ~ 4.0x) with pitch preservation (anti-chipmunk). Supports H.264, H.265/HEVC, VP9, AV1. |
 | 🎵 **Audio Drop** | Extract audio tracks losslessly (Auto) or convert to MP3, AAC, OGG, or WAV. |
-| 🗜️ **Audio Compressor** | Compress lossless audio (WAV, AIFF, FLAC, ALAC) to high-quality MP3 with CBR/VBR encoding. |
+| 🗜️ **Audio Compressor** | Convert audio files in any format supported by FFmpeg to high-quality MP3 with CBR/VBR encoding. |
 | 📸 **Frame Capture** | Single-frame capture, batch extraction at intervals, and automatic scene detection with sensitivity control. Captured images retain their actual capture time in EXIF. |
 | 🔄 **Remuxer** | Fast container format conversion (MP4, MKV, MOV) without re-encoding. |
 | 🔗 **Video Joiner** | Join multiple video files with automatic compatibility handling. Drag to reorder, check compatibility at a glance, and handles differing frame rates with smart re-encoding. Perfect for re-assembling split segments. |

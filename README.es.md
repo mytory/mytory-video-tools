@@ -4,24 +4,25 @@
 
 **Mytory Video Tools** es una aplicación de escritorio multiplataforma (Windows, macOS, Linux) para codificación de video de alta velocidad y diversas tareas de manipulación de medios. Está construida con Electron e incluye archivos binarios FFmpeg/FFprobe integrados.
 
-### Novedades de v1.8.0
+### Novedades de v1.8.1
 
-Introduce la velocidad directamente y consérvala para cada archivo en cola; configura sufijos de nombre por herramienta; sigue el tema claro u oscuro del sistema; y muestra una tarjeta de apoyo traducida tras guardar un resultado.
+El compresor de audio ahora acepta todos los formatos de audio compatibles con FFmpeg, incluidos AAC y Opus. Si se elige un archivo ilegible, se muestra un error y se restaura el área de arrastre; después del error, se pueden volver a elegir archivos.
 
 ---
 
 ## 1. Características
 
-1. **Navegación por pestañas en la barra lateral**: Cambia entre 7 herramientas multimedia principales en un elegante panel con tema oscuro.
+1. **Navegación por pestañas en la barra lateral**: Cambia entre 8 herramientas multimedia principales en un elegante panel con tema oscuro.
 2. **Política de salida flexible**: Por defecto, los archivos se guardan junto al original con un sufijo específico de la tarea. También se pueden configurar carpetas de salida personalizadas.
 3. **Detección automática de aceleración por hardware**: Al iniciar, la aplicación escanea tu GPU y selecciona el codificador de hardware óptimo para tu plataforma (Apple Silicon VideoToolbox, NVIDIA NVENC, Intel QSV, AMD AMF, etc.).
 
-### 7 Herramientas Principales
+### 8 Herramientas Principales
 
 | Herramienta | Descripción |
 |---|---|
 | ⚡ **Cambiador de velocidad** | Cambia la velocidad de reproducción del video (0.5x ~ 4.0x) con preservación de tono (antichipmunk). Compatible con H.264, H.265/HEVC, VP9, AV1. |
 | 🎵 **Extracción de audio** | Extrae pistas de audio sin pérdida (Auto) o convierte a MP3, AAC, OGG o WAV. |
+| 🗜️ **Compresor de audio** | Convierte archivos de audio en cualquier formato compatible con FFmpeg a MP3 de alta calidad con codificación CBR/VBR. |
 | 📸 **Captura de fotogramas** | Captura de un solo fotograma, extracción por lotes a intervalos y detección automática de escenas con control de sensibilidad. Las imágenes capturadas conservan su hora real de captura en EXIF. |
 | 🔄 **Remuxer** | Conversión rápida de formato de contenedor (MP4, MKV, MOV) sin recodificación. |
 | 🔗 **Unir videos** | Concatena sin pérdidas múltiples archivos de video con parámetros de codificación idénticos. Perfecto para reensamblar segmentos divididos. |

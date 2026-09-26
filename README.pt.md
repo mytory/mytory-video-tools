@@ -4,24 +4,25 @@
 
 **Mytory Video Tools** é um aplicativo de desktop multiplataforma (Windows, macOS, Linux) para codificação de vídeo de alta velocidade e várias tarefas de manipulação de mídia. É construído com Electron e vem com binários FFmpeg/FFprobe integrados.
 
-### Novidades da v1.8.0
+### Novidades da v1.8.1
 
-Digite a velocidade e mantenha a escolha de cada arquivo na fila; configure sufixos de nome por ferramenta; acompanhe o tema claro ou escuro do sistema; e veja um cartão de apoio traduzido após salvar um resultado.
+O compressor de áudio agora aceita todos os formatos de áudio compatíveis com FFmpeg, incluindo AAC e Opus. Ao selecionar um arquivo ilegível, o app exibe um erro e restaura a área de arrastar; é possível escolher arquivos novamente após um erro.
 
 ---
 
 ## 1. Recursos
 
-1. **Navegação por abas na barra lateral**: Alterne entre 7 utilitários de mídia principais em um painel elegante com tema escuro.
+1. **Navegação por abas na barra lateral**: Alterne entre 8 utilitários de mídia principais em um painel elegante com tema escuro.
 2. **Política de saída flexível**: Por padrão, os arquivos são salvos junto ao original com um sufixo específico da tarefa. Pastas de saída personalizadas também podem ser configuradas.
 3. **Detecção automática de aceleração de hardware**: Na inicialização, o aplicativo escaneia sua GPU e seleciona o codificador de hardware ideal para sua plataforma (Apple Silicon VideoToolbox, NVIDIA NVENC, Intel QSV, AMD AMF, etc.).
 
-### 7 Ferramentas Principais
+### 8 Ferramentas Principais
 
 | Ferramenta | Descrição |
 |---|---|
 | ⚡ **Mudança de velocidade** | Altera a velocidade de reprodução do vídeo (0,5x ~ 4,0x) com preservação de tom (antiesquilo). Suporta H.264, H.265/HEVC, VP9, AV1. |
 | 🎵 **Extração de áudio** | Extrai faixas de áudio sem perdas (Automático) ou converte para MP3, AAC, OGG ou WAV. |
+| 🗜️ **Compressor de áudio** | Converte arquivos de áudio em qualquer formato compatível com FFmpeg para MP3 de alta qualidade com codificação CBR/VBR. |
 | 📸 **Captura de quadros** | Captura de quadro único, extração em lote em intervalos e detecção automática de cenas com controle de sensibilidade. As imagens capturadas preservam a hora real da captura no EXIF. |
 | 🔄 **Remuxer** | Conversão rápida de formato de contêiner (MP4, MKV, MOV) sem recodificação. |
 | 🔗 **Juntar vídeos** | Concatena sem perdas vários arquivos de vídeo com parâmetros de codificação idênticos. Perfeito para remontar segmentos divididos. |

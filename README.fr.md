@@ -4,24 +4,25 @@
 
 **Mytory Video Tools** est une application de bureau multiplateforme (Windows, macOS, Linux) pour le codage vidéo à haute vitesse et diverses tâches de manipulation multimédia. Elle est construite avec Electron et intègre les binaires FFmpeg/FFprobe.
 
-### Nouveautés de la v1.8.0
+### Nouveautés de la v1.8.1
 
-Saisissez directement la vitesse et conservez celle de chaque fichier en attente ; définissez les suffixes des noms de sortie par outil ; suivez le thème du système ; et affichez une carte de soutien traduite après un enregistrement réussi.
+Le compresseur audio accepte désormais tous les formats audio pris en charge par FFmpeg, y compris AAC et Opus. Si un fichier illisible est sélectionné, une erreur s’affiche et la zone de dépôt est rétablie ; les fichiers peuvent être sélectionnés à nouveau après l’erreur.
 
 ---
 
 ## 1. Fonctionnalités
 
-1. **Navigation par onglets latéraux** : Basculez entre 7 utilitaires multimédia principaux dans un tableau de bord élégant au thème sombre.
+1. **Navigation par onglets latéraux** : Basculez entre 8 utilitaires multimédia principaux dans un tableau de bord élégant au thème sombre.
 2. **Politique de sortie flexible** : Par défaut, les fichiers sont sauvegardés à côté de l'original avec un suffixe spécifique à la tâche. Des dossiers de sortie personnalisés peuvent également être configurés.
 3. **Détection automatique de l'accélération matérielle** : Au démarrage, l'application analyse votre GPU et sélectionne l'encodeur matériel optimal pour votre plateforme (Apple Silicon VideoToolbox, NVIDIA NVENC, Intel QSV, AMD AMF, etc.).
 
-### 7 Outils Principaux
+### 8 Outils Principaux
 
 | Outil | Description |
 |---|---|
 | ⚡ **Changement de vitesse** | Modifie la vitesse de lecture vidéo (0,5x ~ 4,0x) avec préservation du ton. Prend en charge H.264, H.265/HEVC, VP9, AV1. |
 | 🎵 **Extraction audio** | Extrait les pistes audio sans perte (Auto) ou convertit en MP3, AAC, OGG ou WAV. |
+| 🗜️ **Compresseur audio** | Convertit les fichiers audio de tout format pris en charge par FFmpeg en MP3 de haute qualité avec encodage CBR/VBR. |
 | 📸 **Capture d'image** | Capture d'une seule image, extraction par lots à intervalles réguliers et détection automatique de scènes avec réglage de la sensibilité. Les images capturées conservent leur heure réelle de capture dans l'EXIF. |
 | 🔄 **Remuxeur** | Conversion rapide de format de conteneur (MP4, MKV, MOV) sans ré-encodage. |
 | 🔗 **Assembler les vidéos** | Concatène sans perte plusieurs fichiers vidéo avec des paramètres d'encodage identiques. Parfait pour réassembler des segments divisés. |

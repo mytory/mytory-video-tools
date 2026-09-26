@@ -4,24 +4,25 @@
 
 **Mytory Video Tools** adalah aplikasi desktop lintas platform (Windows, macOS, Linux) untuk encoding video berkecepatan tinggi dan berbagai tugas manipulasi media. Dibangun dengan Electron dan dilengkapi dengan biner FFmpeg/FFprobe bawaan.
 
-### Yang baru di v1.8.0
+### Yang baru di v1.8.1
 
-Masukkan kecepatan secara langsung dan pertahankan pilihan setiap berkas dalam antrean; atur akhiran nama keluaran per alat; ikuti tema sistem; dan tampilkan kartu dukungan sesuai bahasa setelah hasil berhasil disimpan.
+Kompresor audio kini menerima semua format audio yang didukung FFmpeg, termasuk AAC dan Opus. Jika file yang tidak dapat dibaca dipilih, pesan kesalahan ditampilkan dan area seret dipulihkan; file dapat dipilih kembali setelah terjadi kesalahan.
 
 ---
 
 ## 1. Fitur
 
-1. **Navigasi Tab Sidebar**: Beralih di antara 7 utilitas media inti dalam dasbor tema gelap yang ramping.
+1. **Navigasi Tab Sidebar**: Beralih di antara 8 utilitas media inti dalam dasbor tema gelap yang ramping.
 2. **Kebijakan Output Fleksibel**: Secara default, file disimpan di samping file asli dengan sufiks khusus tugas. Folder output kustom juga dapat dikonfigurasi.
 3. **Deteksi Akselerasi Perangkat Keras Otomatis**: Saat startup, aplikasi memindai GPU Anda dan memilih encoder perangkat keras optimal untuk platform Anda (Apple Silicon VideoToolbox, NVIDIA NVENC, Intel QSV, AMD AMF, dll.).
 
-### 7 Alat Inti
+### 8 Alat Inti
 
 | Alat | Deskripsi |
 |---|---|
 | ⚡ **Pengubah Kecepatan** | Ubah kecepatan pemutaran video (0,5x ~ 4,0x) dengan pelestarian nada. Mendukung H.264, H.265/HEVC, VP9, AV1. |
 | 🎵 **Ekstraksi Audio** | Ekstrak trek audio tanpa kehilangan (Otomatis) atau konversi ke MP3, AAC, OGG, atau WAV. |
+| 🗜️ **Kompresor Audio** | Konversi file audio dalam format apa pun yang didukung FFmpeg menjadi MP3 berkualitas tinggi dengan encoding CBR/VBR. |
 | 📸 **Tangkapan Bingkai** | Tangkapan bingkai tunggal, ekstraksi batch pada interval, dan deteksi adegan otomatis dengan kontrol sensitivitas. Gambar hasil tangkapan menyimpan waktu tangkap sebenarnya di EXIF. |
 | 🔄 **Remuxer** | Konversi format kontainer cepat (MP4, MKV, MOV) tanpa encoding ulang. |
 | 🔗 **Gabungkan video** | Menggabungkan beberapa file video dengan parameter encoding identik tanpa kehilangan kualitas. Sempurna untuk menyusun ulang segmen yang dipisah. |

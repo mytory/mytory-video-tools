@@ -74,6 +74,9 @@ npm start
 npm run dist
 ```
 
+### Microsoft Store AppX 包
+在 Windows x64 上运行 `npm run dist:store:appx`，即可在 `dist/` 中生成用于提交到 Store 的 `.appx`。此构建使用 `build/electron-builder.store-appx.cjs` 中配置的应用 Partner Center identity。
+
 ### macOS 代码签名 / CI 构建说明
 
 * `npm run dist` 通过 `dotenv` 从 `.env` 加载环境变量。

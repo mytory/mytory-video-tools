@@ -122,7 +122,7 @@ npm run dist
 
 ## 6. ライセンス
 
-Copyright (c) 2026 mytory. このプロジェクトは **ISC License** の下でライセンスされています。詳細は [LICENSE](./LICENSE) ファイルを参照してください。
+Copyright (c) 2026 mytory. このプロジェクトは **GPL-3.0-only** の下でライセンスされています。詳細は [LICENSE](./LICENSE) ファイルを参照してください。
 
 ---
 

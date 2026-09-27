@@ -122,7 +122,7 @@ Aplikasi ini menggunakan proyek sumber terbuka berikut dan mematuhi ketentuan li
 
 ## 6. Lisensi
 
-Hak Cipta (c) 2026 mytory. Proyek ini dilisensikan di bawah **ISC License**. Lihat file [LICENSE](./LICENSE) untuk detailnya.
+Hak Cipta (c) 2026 mytory. Proyek ini dilisensikan di bawah **GPL-3.0-only**. Lihat file [LICENSE](./LICENSE) untuk detailnya.
 
 ---
 

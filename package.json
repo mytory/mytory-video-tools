@@ -9,6 +9,7 @@
     "dist": "npm run dist:release",
     "dist:test": "dotenv -- electron-builder --dir -c.mac.identity=-",
     "dist:release": "dotenv -- electron-builder",
+    "dist:store:appx": "electron-builder --config build/electron-builder.store-appx.cjs --win appx --x64 --publish never",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

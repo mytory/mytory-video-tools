@@ -122,7 +122,7 @@ Esta aplicación utiliza los siguientes proyectos de código abierto y cumple co
 
 ## 6. Licencia
 
-Copyright (c) 2026 mytory. Este proyecto está licenciado bajo **ISC License**. Consulte el archivo [LICENSE](./LICENSE) para obtener más detalles.
+Copyright (c) 2026 mytory. Este proyecto está licenciado bajo **GPL-3.0-only**. Consulte el archivo [LICENSE](./LICENSE) para obtener más detalles.
 
 ---
 

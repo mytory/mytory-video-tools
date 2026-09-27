@@ -122,7 +122,7 @@ npm run dist
 
 ## 6. 许可证
 
-Copyright (c) 2026 mytory. 本项目采用 **ISC License** 许可。详情请参阅 [LICENSE](./LICENSE) 文件。
+Copyright (c) 2026 mytory. 本项目采用 **GPL-3.0-only** 许可。详情请参阅 [LICENSE](./LICENSE) 文件。
 
 ---
 

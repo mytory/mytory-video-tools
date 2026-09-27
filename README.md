@@ -126,7 +126,7 @@ This application uses the following open-source projects and complies with their
 
 ## 6. License
 
-Copyright (c) 2026 mytory. This project is licensed under the **ISC License**. See the [LICENSE](./LICENSE) file for details.
+Copyright (c) 2026 mytory. This project is licensed under **GPL-3.0-only**. See the [LICENSE](./LICENSE) file for details.
 
 ---
 

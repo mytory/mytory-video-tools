@@ -1,0 +1,35 @@
+name: Microsoft Store AppX package
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-store-appx:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Store AppX package
+        run: npm run dist:store:appx
+
+      - name: Verify package identity and runtime binaries
+        shell: pwsh
+        run: ./build/verify-store-appx.ps1 -PackagePath (Get-ChildItem dist\*.appx | Select-Object -First 1 -ExpandProperty FullName)
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: microsoft-store-appx-x64-${{ github.run_number }}
+          path: dist/*.appx
+          if-no-files-found: error

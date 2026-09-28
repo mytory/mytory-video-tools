@@ -122,7 +122,7 @@ body {
     overflow: hidden;
 }
 
-input,
+input:not([type="checkbox"]):not([type="radio"]),
 select,
 textarea {
     background-color: var(--surface-soft);
@@ -477,7 +477,7 @@ h2 {
 .help-tip:focus-within .help-tip__bubble {
     display: block;
 }
-.settings-grid input,
+.settings-grid input:not([type="checkbox"]):not([type="radio"]),
 .settings-grid select {
     margin-top: 0.35rem;
     color: var(--text);
@@ -727,7 +727,7 @@ h2 {
     border: 1px solid var(--border);
 }
 
-.btn-mode {
+button.btn-mode {
     flex: 1;
     background: transparent;
     border: none;

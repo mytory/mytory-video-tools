@@ -1161,8 +1161,8 @@ ipcMain.handle('capture:batch', async (event, { taskId, inputPath, startTime, en
         const outputPathPattern = path.join(outputDir, `${uniqueBase}_%04d.${ext}`);
 
         const args = [
-            '-ss', startTime,
-            '-to', endTime,
+            '-ss', String(startSec),
+            '-to', String(endSec),
             '-i', inputPath,
             '-vf', `fps=1/${interval}`,
             '-q:v', '2',

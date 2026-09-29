@@ -485,6 +485,8 @@ ipcMain.handle('video:probe', async (event, inputPath) => {
             videoCodec: videoStream.codec_name || '',
             audioCodec: audioStream.codec_name || '',
             fps,
+            avgFrameRate: videoStream.avg_frame_rate || videoStream.r_frame_rate || '30/1',
+            timeBase: videoStream.time_base || '',
             bitRate: format.bit_rate || 0,
             // 원본 ffprobe tags를 그대로 전달 (EXIF 메타데이터 기록용)
             formatTags,
@@ -493,6 +495,71 @@ ipcMain.handle('video:probe', async (event, inputPath) => {
     } catch (err) {
         return { success: false, error: err.message };
     }
+});
+
+ipcMain.handle('capture:analyze-timing', async (event, { inputPath, timeBase }) => {
+    const [timeBaseNumerator, timeBaseDenominator] = String(timeBase || '').split('/').map(Number);
+    if (!timeBaseNumerator || !timeBaseDenominator) {
+        return { success: false, error: 'Video time base is unavailable.' };
+    }
+
+    return await new Promise((resolve) => {
+        const ff = spawn(ffprobePath, [
+            '-v', 'error',
+            '-select_streams', 'v:0',
+            '-show_frames',
+            '-show_entries', 'frame=best_effort_timestamp',
+            '-of', 'csv=p=0',
+            inputPath
+        ]);
+        let buffer = '';
+        let previousTimestamp = null;
+        let minInterval = Infinity;
+        let maxInterval = -Infinity;
+        let intervalCount = 0;
+        let hasNonPositiveInterval = false;
+        let error = '';
+
+        const processLine = (line) => {
+            const timestamp = Number.parseInt(line.trim(), 10);
+            if (!Number.isFinite(timestamp)) return;
+            if (previousTimestamp !== null) {
+                const interval = timestamp - previousTimestamp;
+                if (interval > 0) {
+                    minInterval = Math.min(minInterval, interval);
+                    maxInterval = Math.max(maxInterval, interval);
+                    intervalCount++;
+                } else hasNonPositiveInterval = true;
+            }
+            previousTimestamp = timestamp;
+        };
+
+        ff.stdout.on('data', (data) => {
+            buffer += data.toString();
+            const lines = buffer.split(/\r?\n/);
+            buffer = lines.pop();
+            lines.forEach(processLine);
+        });
+        ff.stderr.on('data', (data) => { error += data.toString(); });
+        ff.on('error', (err) => resolve({ success: false, error: err.message }));
+        ff.on('close', (code) => {
+            if (buffer) processLine(buffer);
+            if (code !== 0 || intervalCount === 0) {
+                resolve({ success: false, error: error.trim() || `ffprobe exited with code ${code}` });
+                return;
+            }
+
+            resolve({
+                success: true,
+                variableFrameRate: hasNonPositiveInterval || hasVariableFrameRate(
+                    minInterval,
+                    maxInterval,
+                    timeBaseNumerator,
+                    timeBaseDenominator
+                )
+            });
+        });
+    });
 });
 
 // 3-2. 조이너 전용 상세 프로브 (원시 ffprobe JSON 반환)
@@ -570,8 +637,7 @@ ipcMain.handle('task:cancel', async (event, taskId) => {
     return true;
 });
 
-// 4-2. 출력 경로 중복 확인 후 유니크 경로 반환
-ipcMain.handle('app:resolve-unique-path', (event, desiredPath) => {
+function resolveUniqueOutputPath(desiredPath) {
     if (!fs.existsSync(desiredPath)) {
         return desiredPath;
     }
@@ -586,7 +652,10 @@ ipcMain.handle('app:resolve-unique-path', (event, desiredPath) => {
         }
         counter++;
     }
-});
+}
+
+// 4-2. 출력 경로 중복 확인 후 유니크 경로 반환
+ipcMain.handle('app:resolve-unique-path', (event, desiredPath) => resolveUniqueOutputPath(desiredPath));
 
 function uniqueCaptureBaseName(outputDir, baseName, ext) {
     let candidate = baseName;
@@ -595,6 +664,38 @@ function uniqueCaptureBaseName(outputDir, baseName, ext) {
         candidate = `${baseName}_${counter++}`;
     }
     return candidate;
+}
+
+function captureTimeSuffix(timestamp, duration, frameRate, variableFrameRate) {
+    const pad2 = (value) => String(value).padStart(2, '0');
+    const totalMilliseconds = Math.max(0, Math.round(timestamp * 1000));
+    const wholeSeconds = Math.floor(Math.max(0, timestamp));
+    const hours = Math.floor(wholeSeconds / 3600);
+    const minutes = Math.floor((wholeSeconds % 3600) / 60);
+    const seconds = wholeSeconds % 60;
+    const includeHours = duration >= 3600;
+    const parts = includeHours ? [pad2(hours), pad2(minutes), pad2(seconds)] : [pad2(Math.floor(wholeSeconds / 60)), pad2(seconds)];
+
+    const [numerator, denominator] = String(frameRate || '').split('/').map(Number);
+    const fps = denominator > 0 ? numerator / denominator : Number(frameRate);
+    if (variableFrameRate || !Number.isFinite(fps) || fps <= 0) {
+        const roundedSeconds = Math.floor(totalMilliseconds / 1000);
+        const roundedHours = Math.floor(roundedSeconds / 3600);
+        const roundedMinutes = Math.floor((roundedSeconds % 3600) / 60);
+        const roundedSecondsPart = roundedSeconds % 60;
+        const timeParts = includeHours
+            ? [pad2(roundedHours), pad2(roundedMinutes), pad2(roundedSecondsPart)]
+            : [pad2(Math.floor(roundedSeconds / 60)), pad2(roundedSecondsPart)];
+        return `${timeParts.join('_')}_${String(totalMilliseconds % 1000).padStart(3, '0')}`;
+    }
+
+    const frame = Math.floor((Math.max(0, timestamp) - wholeSeconds) * fps + 1e-7);
+    return `${parts.join('_')}_${pad2(frame)}`;
+}
+
+function hasVariableFrameRate(minInterval, maxInterval, timeBaseNumerator, timeBaseDenominator) {
+    const intervalSpread = maxInterval - minInterval;
+    return intervalSpread > 2 || intervalSpread * timeBaseNumerator * 1000 > timeBaseDenominator;
 }
 
 // 5. 배속 변환 태스크 시작
@@ -1114,9 +1215,11 @@ ipcMain.handle('join:start', async (event, { taskId, inputs, outputPath, totalDu
 });
 
 // 10. 프레임 캡처: 단일 프레임
-ipcMain.handle('capture:single', async (event, { inputPath, timestamp, format, outputPath, overlayText, metadata }) => {
+ipcMain.handle('capture:single', async (event, { inputPath, timestamp, format, outputDir, baseName, duration, frameRate, variableFrameRate, overlayText, metadata }) => {
     try {
-        const ext = format === 'image/png' ? 'png' : format === 'image/webp' ? 'webp' : 'jpg';
+        const ext = format === 'image/png' ? 'png' : format === 'image/webp' ? 'webp' : 'jpeg';
+        const desiredPath = path.join(outputDir, `${baseName}_${captureTimeSuffix(timestamp, duration, frameRate, variableFrameRate)}.${ext}`);
+        const outputPath = resolveUniqueOutputPath(desiredPath);
         const args = [
             '-ss', String(timestamp),
             '-i', inputPath,
@@ -1150,50 +1253,56 @@ ipcMain.handle('capture:single', async (event, { inputPath, timestamp, format, o
 });
 
 // 11. 프레임 캡처: 일정 간격(Batch)
-ipcMain.handle('capture:batch', async (event, { taskId, inputPath, startTime, endTime, interval, format, outputDir, baseName, overlayText, metadata }) => {
+ipcMain.handle('capture:batch', async (event, { taskId, inputPath, startTime, endTime, interval, format, outputDir, baseName, duration: sourceDuration, frameRate, variableFrameRate, overlayText, metadata }) => {
     try {
         const startSec = timecodeToSeconds(startTime);
         const endSec = timecodeToSeconds(endTime);
         const duration = Math.max(0.1, endSec - startSec);
-        
+
         const ext = format === 'image/png' ? 'png' : format === 'image/webp' ? 'webp' : 'jpg';
         const uniqueBase = uniqueCaptureBaseName(outputDir, baseName, ext);
-        const outputPathPattern = path.join(outputDir, `${uniqueBase}_%04d.${ext}`);
+        const numberWidth = Math.max(4, String(Math.ceil(duration / interval)).length);
+        const tempDir = fs.mkdtempSync(path.join(outputDir, '.capture-'));
+        const outputPathPattern = path.join(tempDir, `frame_%0${numberWidth}d.${ext}`);
 
         const args = [
-            '-ss', startTime,
-            '-to', endTime,
+            '-ss', String(startSec),
+            '-to', String(endSec),
             '-i', inputPath,
             '-vf', `fps=1/${interval}`,
             '-q:v', '2',
             outputPathPattern
         ];
 
-        await runFFmpeg(taskId, args, duration, outputPathPattern);
+        try {
+            await runFFmpeg(taskId, args, duration, outputPathPattern);
 
-        const outputFiles = fs.readdirSync(outputDir)
-            .filter(f => f.startsWith(uniqueBase + '_') && f.endsWith('.' + ext))
-            .filter(f => fs.statSync(path.join(outputDir, f)).size > 0);
-        if (outputFiles.length === 0) {
-            return { success: false, error: 'No frames were saved.' };
-        }
-
-        // 생성된 모든 프레임에 오버레이 / 메타데이터 적용
-        if (overlayText || metadata) {
-            const dir = outputDir;
-            const files = fs.readdirSync(dir)
-                .filter(f => f.startsWith(uniqueBase + '_') && f.endsWith('.' + ext))
-                .sort()
-                .map(f => path.join(dir, f));
-            for (const [index, filePath] of files.entries()) {
-                await applyImageOverlayAndMetadata(filePath, {
-                    overlayText,
-                    metadata: metadataForCaptureAt(metadata, startSec + index * interval)
-                });
+            const files = fs.readdirSync(tempDir)
+                .filter(f => f.endsWith('.' + ext))
+                .sort((a, b) => Number(a.slice(6, -(ext.length + 1))) - Number(b.slice(6, -(ext.length + 1))))
+                .map(f => path.join(tempDir, f))
+                .filter(filePath => fs.statSync(filePath).size > 0);
+            if (files.length === 0) {
+                return { success: false, error: 'No frames were saved.' };
             }
-        }
 
-        return { success: true, outputDir, count: outputFiles.length };
+            for (const [index, filePath] of files.entries()) {
+                const timestamp = startSec + index * interval;
+                if (overlayText || metadata) {
+                    await applyImageOverlayAndMetadata(filePath, {
+                        overlayText,
+                        metadata: metadataForCaptureAt(metadata, timestamp)
+                    });
+                }
+
+                const desiredPath = path.join(outputDir, `${uniqueBase}_${captureTimeSuffix(timestamp, sourceDuration, frameRate, variableFrameRate)}.${ext}`);
+                fs.renameSync(filePath, resolveUniqueOutputPath(desiredPath));
+            }
+
+            return { success: true, outputDir, count: files.length };
+        } finally {
+            fs.rmSync(tempDir, { recursive: true, force: true });
+        }
     } catch (err) {
         return { success: false, error: err.message };
     }
@@ -1297,7 +1406,7 @@ function cleanupSubProcesses(procList) {
 }
 
 // 13. 추출된 장면 프레임들을 개별 이미지로 일괄 내보내기
-ipcMain.handle('capture:export-scenes', async (event, { taskId, inputPath, timestamps, format, outputDir, baseName, overlayText, metadata }) => {
+ipcMain.handle('capture:export-scenes', async (event, { taskId, inputPath, timestamps, format, outputDir, baseName, duration, frameRate, variableFrameRate, overlayText, metadata }) => {
     const subProcesses = [];
     let cancelled = false;
 
@@ -1322,8 +1431,8 @@ ipcMain.handle('capture:export-scenes', async (event, { taskId, inputPath, times
             }
 
             const ts = timestamps[i];
-            const timecode = secondsToTimecode(ts).replace(/:/g, '-');
-            const outputPath = path.join(outputDir, `${uniqueBase}_${timecode}.${ext}`);
+            const desiredPath = path.join(outputDir, `${uniqueBase}_${captureTimeSuffix(ts, duration, frameRate, variableFrameRate)}.${ext}`);
+            const outputPath = resolveUniqueOutputPath(desiredPath);
             
             const args = [
                 '-ss', String(ts),

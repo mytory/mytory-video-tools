@@ -4,9 +4,9 @@
 
 **Mytory Video Tools** é um aplicativo de desktop multiplataforma (Windows, macOS, Linux) para codificação de vídeo de alta velocidade e várias tarefas de manipulação de mídia. É construído com Electron e vem com binários FFmpeg/FFprobe integrados.
 
-### Novidades da v1.8.1
+### Novidades da v1.9.0
 
-O compressor de áudio agora aceita todos os formatos de áudio compatíveis com FFmpeg, incluindo AAC e Opus. Ao selecionar um arquivo ilegível, o app exibe um erro e restaura a área de arrastar; é possível escolher arquivos novamente após um erro.
+Agora é possível escolher uma pasta para salvar ou voltar para a pasta do vídeo. Os nomes dos arquivos mostram o tempo do vídeo com precisão de quadro para taxa de quadros constante e de milissegundos para taxa variável; vídeos com menos de uma hora omitem o campo das horas. Também corrigimos a classificação da taxa de quadros em vídeos com timestamps imprecisos e alinhamos a altura dos botões.
 
 ---
 
@@ -23,7 +23,7 @@ O compressor de áudio agora aceita todos os formatos de áudio compatíveis com
 | ⚡ **Mudança de velocidade** | Altera a velocidade de reprodução do vídeo (0,5x ~ 4,0x) com preservação de tom (antiesquilo). Suporta H.264, H.265/HEVC, VP9, AV1. |
 | 🎵 **Extração de áudio** | Extrai faixas de áudio sem perdas (Automático) ou converte para MP3, AAC, OGG ou WAV. |
 | 🗜️ **Compressor de áudio** | Converte arquivos de áudio em qualquer formato compatível com FFmpeg para MP3 de alta qualidade com codificação CBR/VBR. |
-| 📸 **Captura de quadros** | Captura de quadro único, extração em lote em intervalos e detecção automática de cenas com controle de sensibilidade. As imagens capturadas preservam a hora real da captura no EXIF. |
+| 📸 **Captura de quadros** | Captura de quadro único, extração em lote em intervalos e detecção automática de cenas com controle de sensibilidade. Escolha uma pasta para salvar ou volte para a pasta do vídeo. Os nomes dos arquivos mostram o tempo do vídeo com precisão de quadro para taxa de quadros constante e de milissegundos para taxa variável; vídeos com menos de uma hora omitem o campo das horas. As imagens capturadas preservam a hora real da captura no EXIF. |
 | 🔄 **Remuxer** | Conversão rápida de formato de contêiner (MP4, MKV, MOV) sem recodificação. |
 | 🔗 **Juntar vídeos** | Concatena sem perdas vários arquivos de vídeo com parâmetros de codificação idênticos. Perfeito para remontar segmentos divididos. |
 | ✂️ **Divisor de vídeo** | Corta um segmento sem perdas definindo pontos de início e fim. Extremamente rápido. |

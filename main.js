@@ -503,64 +503,50 @@ ipcMain.handle('capture:analyze-timing', async (event, { inputPath, timeBase }) 
         return { success: false, error: 'Video time base is unavailable.' };
     }
 
-    return await new Promise((resolve) => {
+    const result = await collectVideoPacketTimestamps(inputPath);
+    if (!result.success) return { success: false, error: result.error };
+
+    return summarizeCaptureTiming(result.timestamps, timeBaseNumerator, timeBaseDenominator);
+});
+
+// 패킷 타임스탬프만 읽는다. 프레임(-show_frames)과 달리 디코딩을 하지 않아 긴 영상에서도 빠르다.
+function collectVideoPacketTimestamps(inputPath) {
+    return new Promise((resolve) => {
         const ff = spawn(ffprobePath, [
             '-v', 'error',
             '-select_streams', 'v:0',
-            '-show_frames',
-            '-show_entries', 'frame=best_effort_timestamp',
+            '-show_packets',
+            '-show_entries', 'packet=pts',
             '-of', 'csv=p=0',
             inputPath
         ]);
+        const timestamps = [];
         let buffer = '';
-        let previousTimestamp = null;
-        let minInterval = Infinity;
-        let maxInterval = -Infinity;
-        let intervalCount = 0;
-        let hasNonPositiveInterval = false;
         let error = '';
 
-        const processLine = (line) => {
+        const collect = (line) => {
             const timestamp = Number.parseInt(line.trim(), 10);
-            if (!Number.isFinite(timestamp)) return;
-            if (previousTimestamp !== null) {
-                const interval = timestamp - previousTimestamp;
-                if (interval > 0) {
-                    minInterval = Math.min(minInterval, interval);
-                    maxInterval = Math.max(maxInterval, interval);
-                    intervalCount++;
-                } else hasNonPositiveInterval = true;
-            }
-            previousTimestamp = timestamp;
+            if (Number.isFinite(timestamp)) timestamps.push(timestamp);
         };
 
         ff.stdout.on('data', (data) => {
             buffer += data.toString();
             const lines = buffer.split(/\r?\n/);
             buffer = lines.pop();
-            lines.forEach(processLine);
+            lines.forEach(collect);
         });
         ff.stderr.on('data', (data) => { error += data.toString(); });
         ff.on('error', (err) => resolve({ success: false, error: err.message }));
         ff.on('close', (code) => {
-            if (buffer) processLine(buffer);
-            if (code !== 0 || intervalCount === 0) {
+            if (buffer) collect(buffer);
+            if (code !== 0) {
                 resolve({ success: false, error: error.trim() || `ffprobe exited with code ${code}` });
                 return;
             }
-
-            resolve({
-                success: true,
-                variableFrameRate: hasNonPositiveInterval || hasVariableFrameRate(
-                    minInterval,
-                    maxInterval,
-                    timeBaseNumerator,
-                    timeBaseDenominator
-                )
-            });
+            resolve({ success: true, timestamps });
         });
     });
-});
+}
 
 // 3-2. 조이너 전용 상세 프로브 (원시 ffprobe JSON 반환)
 ipcMain.handle('joiner:probe', async (event, inputPath) => {
@@ -696,6 +682,41 @@ function captureTimeSuffix(timestamp, duration, frameRate, variableFrameRate) {
 function hasVariableFrameRate(minInterval, maxInterval, timeBaseNumerator, timeBaseDenominator) {
     const intervalSpread = maxInterval - minInterval;
     return intervalSpread > 2 || intervalSpread * timeBaseNumerator * 1000 > timeBaseDenominator;
+}
+
+// 패킷 PTS는 B프레임 때문에 디코딩 순서로 뒤섞여 나오므로 정렬 후 간격을 본다.
+function summarizeCaptureTiming(timestamps, timeBaseNumerator, timeBaseDenominator) {
+    let previousTimestamp = null;
+    let minInterval = Infinity;
+    let maxInterval = -Infinity;
+    let intervalCount = 0;
+    let hasNonPositiveInterval = false;
+
+    for (const timestamp of timestamps.slice().sort((a, b) => a - b)) {
+        if (previousTimestamp !== null) {
+            const interval = timestamp - previousTimestamp;
+            if (interval > 0) {
+                minInterval = Math.min(minInterval, interval);
+                maxInterval = Math.max(maxInterval, interval);
+                intervalCount++;
+            } else hasNonPositiveInterval = true;
+        }
+        previousTimestamp = timestamp;
+    }
+
+    if (intervalCount === 0) {
+        return { success: false, error: 'Not enough frame timestamps were found.' };
+    }
+
+    return {
+        success: true,
+        variableFrameRate: hasNonPositiveInterval || hasVariableFrameRate(
+            minInterval,
+            maxInterval,
+            timeBaseNumerator,
+            timeBaseDenominator
+        )
+    };
 }
 
 // 5. 배속 변환 태스크 시작

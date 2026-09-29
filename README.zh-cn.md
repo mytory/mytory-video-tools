@@ -4,9 +4,9 @@
 
 **Mytory Video Tools** 是一款跨平台（Windows、macOS、Linux）桌面应用程序，用于高速视频编码和各种媒体处理任务。它基于 Electron 构建，并内嵌了 FFmpeg/FFprobe 二进制文件。
 
-### v1.9.0 新功能
+### v1.9.1 新功能
 
-帧捕获现在支持选择保存文件夹，也可返回视频所在文件夹。文件名中的视频时间在恒定帧率视频中精确到帧，在可变帧率视频中精确到毫秒；不足一小时则省略小时字段。修正了时间戳精度较低的视频帧率分类，并统一按钮高度。
+帧捕获现在能更快地分析视频时间信息，减少保存当前帧时的等待。分析期间，保存按钮会禁用并显示“正在分析”。说明文字也更加简洁。
 
 ---
 
@@ -74,6 +74,9 @@ npm start
 npm run dist
 ```
 
+### Microsoft Store AppX 包
+在 Windows x64 上运行 `npm run dist:store:appx`，即可在 `dist/` 中生成用于提交到 Store 的 `.appx`。此构建使用 `build/electron-builder.store-appx.cjs` 中配置的应用 Partner Center identity。
+
 ### macOS 代码签名 / CI 构建说明
 
 * `npm run dist` 通过 `dotenv` 从 `.env` 加载环境变量。
@@ -122,7 +125,7 @@ npm run dist
 
 ## 6. 许可证
 
-Copyright (c) 2026 mytory. 本项目采用 **ISC License** 许可。详情请参阅 [LICENSE](./LICENSE) 文件。
+Copyright (c) 2026 mytory. 本项目采用 **GPL-3.0-only** 许可。详情请参阅 [LICENSE](./LICENSE) 文件。
 
 ---
 

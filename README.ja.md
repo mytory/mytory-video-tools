@@ -4,9 +4,9 @@
 
 **Mytory Video Tools** は、高速ビデオエンコードおよびさまざまなメディア操作タスクのためのクロスプラットフォーム（Windows、macOS、Linux）デスクトップアプリケーションです。Electron で構築され、FFmpeg/FFprobe バイナリを内蔵しています。
 
-### v1.9.0 の新機能
+### v1.9.1 の新機能
 
-フレームキャプチャで保存先フォルダーを選択し、動画のフォルダーに戻せるようになりました。ファイル名では固定フレームレート動画の時刻をフレーム単位、可変フレームレート動画の時刻をミリ秒単位で表示し、1時間未満では時の項目を省略します。タイムスタンプの精度が粗い動画でのフレームレート判定を修正し、ボタンの高さを揃えました。
+フレームキャプチャの動画タイミング分析を高速化し、現在のフレームを保存する際の待ち時間を短縮しました。分析中は保存ボタンが無効になり、「分析中」と表示されます。案内文も簡潔にしました。
 
 ---
 
@@ -74,6 +74,9 @@ npm start
 npm run dist
 ```
 
+### Microsoft Store 用 AppX パッケージ
+Windows x64 で `npm run dist:store:appx` を実行すると、Store 提出用の `.appx` が `dist/` に作成されます。このアプリの Partner Center identity は `build/electron-builder.store-appx.cjs` で設定されています。
+
 ### macOS コードサイニング / CI ビルドについて
 
 * `npm run dist` は `dotenv` を介して `.env` から環境変数を読み込みます。
@@ -122,7 +125,7 @@ npm run dist
 
 ## 6. ライセンス
 
-Copyright (c) 2026 mytory. このプロジェクトは **ISC License** の下でライセンスされています。詳細は [LICENSE](./LICENSE) ファイルを参照してください。
+Copyright (c) 2026 mytory. このプロジェクトは **GPL-3.0-only** の下でライセンスされています。詳細は [LICENSE](./LICENSE) ファイルを参照してください。
 
 ---
 

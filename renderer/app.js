@@ -28,6 +28,9 @@ const state = {
     captureMetadata: null,
     captureTiming: null,
     captureTimingPromise: null,
+    captureTimingPending: false,
+    captureLoadToken: null,
+    captureSceneExportRunning: false,
     captureMode: 'single', // single, batch, scene
     captureTimelineDragging: false,
     sceneTimestamps: [],
@@ -437,6 +440,7 @@ async function initApp() {
         }
         localStorage.setItem('mytory-video-lang', lang);
         elements.langSelect.value = lang;
+        updateCaptureTimingControls(lang);
         
         // 언어 변경 후 동적 UI 텍스트 업데이트
         updateSpeedCodecHelp();
@@ -1159,7 +1163,22 @@ async function processAudioFiles(files) {
 }
 
 // 4. 도구 3: 장면 및 프레임 캡처 핸들링
+function updateCaptureTimingControls(lang) {
+    const locale = lang || (typeof MytoryI18n !== 'undefined'
+        ? MytoryI18n.getLanguage()
+        : elements.langSelect.value || 'en');
+    const ready = Boolean(state.captureFile && state.captureMetadata && state.captureTiming && !state.captureTimingPending);
+    elements.btnCaptureSingle.disabled = !ready;
+    elements.btnCaptureSingle.textContent = state.captureTimingPending
+        ? t('Analyzing…')
+        : elements.btnCaptureSingle.getAttribute(`data-mi18n-${locale}`) || 'Save Current Frame';
+    elements.btnCaptureBatch.disabled = !ready;
+    elements.btnCaptureSceneExport.disabled = !ready || state.captureSceneExportRunning;
+}
+
 function setupFrameCapture() {
+    updateCaptureTimingControls();
+
     elements.btnCaptureSelectFolder.addEventListener('click', async () => {
         const dir = await window.electronAPI.selectDirectory();
         if (dir) {
@@ -1268,13 +1287,13 @@ function setupFrameCapture() {
 
     // 단일 프레임 저장
     elements.btnCaptureSingle.addEventListener('click', async () => {
-        if (!state.captureFile || !state.captureMetadata || !state.captureTimingPromise) return;
+        if (!state.captureFile || !state.captureMetadata || !state.captureTiming || state.captureTimingPending) return;
 
         const captureFile = state.captureFile;
         const captureMetadata = state.captureMetadata;
-        const captureTimingPromise = state.captureTimingPromise;
-        const captureTiming = await captureTimingPromise;
-        if (!captureTiming || state.captureFile?.path !== captureFile.path) return;
+        const captureLoadToken = state.captureLoadToken;
+        const captureTiming = await state.captureTimingPromise;
+        if (!captureTiming || state.captureLoadToken !== captureLoadToken) return;
         
         const timestamp = elements.captureVideo.currentTime;
         const format = elements.captureFormatSelect.value;
@@ -1323,7 +1342,7 @@ function setupFrameCapture() {
 
     // 배치 캡처 내보내기 실행
     elements.btnCaptureBatch.addEventListener('click', () => {
-        if (!state.captureFile || !state.captureMetadata || !state.captureTimingPromise) return;
+        if (!state.captureFile || !state.captureMetadata || !state.captureTiming || state.captureTimingPending) return;
 
         const startTime = elements.captureBatchStart.value;
         const endTime = elements.captureBatchEnd.value;
@@ -1436,7 +1455,7 @@ function setupFrameCapture() {
 
     // 감지된 장면들 일괄 저장
     elements.btnCaptureSceneExport.addEventListener('click', () => {
-        if (!state.captureFile || !state.captureMetadata || !state.captureTimingPromise || state.sceneTimestamps.length === 0) return;
+        if (!state.captureFile || !state.captureMetadata || !state.captureTiming || state.captureTimingPending || state.sceneTimestamps.length === 0) return;
 
         const taskId = 'scene_export_' + Date.now();
         const baseName = getFileBaseName(state.captureFile.name) + outputSuffix('capture', state.captureFile.path, elements.captureFormatSelect.value.split('/')[1], '_frame');
@@ -1450,24 +1469,28 @@ function setupFrameCapture() {
         const metadata = buildCaptureExifData();
 
         const run = async () => {
+            state.captureSceneExportRunning = true;
             elements.btnCaptureSceneExport.disabled = true;
             const captureTiming = await captureTimingPromise;
-
-            const result = await window.electronAPI.exportScenes({
-                taskId,
-                inputPath: captureFile.path,
-                timestamps,
-                format,
-                outputDir,
-                baseName,
-                duration: captureMetadata.duration,
-                frameRate: captureMetadata.avgFrameRate || `${captureMetadata.fps}/1`,
-                variableFrameRate: captureTiming.variableFrameRate,
-                overlayText,
-                metadata
-            });
-
-            elements.btnCaptureSceneExport.disabled = false;
+            let result;
+            try {
+                result = await window.electronAPI.exportScenes({
+                    taskId,
+                    inputPath: captureFile.path,
+                    timestamps,
+                    format,
+                    outputDir,
+                    baseName,
+                    duration: captureMetadata.duration,
+                    frameRate: captureMetadata.avgFrameRate || `${captureMetadata.fps}/1`,
+                    variableFrameRate: captureTiming.variableFrameRate,
+                    overlayText,
+                    metadata
+                });
+            } finally {
+                state.captureSceneExportRunning = false;
+                updateCaptureTimingControls();
+            }
 
             if (result.success && result.count > 0) {
                 finishQueueItem(taskId, 'done');
@@ -1500,10 +1523,16 @@ async function loadVideoForCapture(file) {
         return;
     }
 
+    const captureLoadToken = {};
+    state.captureLoadToken = captureLoadToken;
     state.captureFile = nativeFile;
     state.captureMetadata = null;
     state.captureTiming = null;
     state.captureTimingPromise = null;
+    state.captureTimingPending = true;
+    state.sceneTimestamps = [];
+    elements.sceneDetectionResult.style.display = 'none';
+    updateCaptureTimingControls();
     rememberFilenameSource('capture', nativeFile.path);
     elements.captureDropzone.style.display = 'none';
     elements.captureEditor.style.display = 'flex';
@@ -1514,7 +1543,7 @@ async function loadVideoForCapture(file) {
     
     try {
         const metadata = await window.electronAPI.probeVideo(nativeFile.path);
-        if (state.captureFile?.path !== nativeFile.path) return;
+        if (state.captureLoadToken !== captureLoadToken) return;
         state.captureMetadata = metadata;
         
         elements.captureBatchStart.value = '00:00:00:00';
@@ -1522,10 +1551,6 @@ async function loadVideoForCapture(file) {
         elements.captureTimecode.value = '00:00:00:00';
         elements.btnCapturePlayPause.textContent = t('Play', '재생');
 
-        showToast(
-            t('Analyzing frame timing'),
-            t('Checking frame timestamps to determine whether the video uses a variable frame rate. Long videos may take longer.')
-        );
         state.captureTimingPromise = window.electronAPI.analyzeCaptureTiming({
             inputPath: nativeFile.path,
             timeBase: metadata.timeBase
@@ -1533,19 +1558,19 @@ async function loadVideoForCapture(file) {
             const timing = {
                 variableFrameRate: result.success ? result.variableFrameRate : true
             };
-            if (state.captureFile?.path === nativeFile.path) {
+            if (state.captureLoadToken === captureLoadToken) {
                 state.captureTiming = timing;
                 document.dispatchEvent(new Event('filename-source-change'));
             }
             if (!result.success) {
-                if (state.captureFile?.path === nativeFile.path) {
+                if (state.captureLoadToken === captureLoadToken) {
                     showToast(
                         t('Analysis Failed'),
                         t('Frame timing could not be checked. Millisecond timestamps will be used in filenames.'),
                         'error'
                     );
                 }
-            } else if (state.captureFile?.path === nativeFile.path) {
+            } else if (state.captureLoadToken === captureLoadToken) {
                 showToast(
                     t('Analysis Complete'),
                     t(result.variableFrameRate
@@ -1556,7 +1581,7 @@ async function loadVideoForCapture(file) {
             return timing;
         }).catch(() => {
             const timing = { variableFrameRate: true };
-            if (state.captureFile?.path === nativeFile.path) {
+            if (state.captureLoadToken === captureLoadToken) {
                 state.captureTiming = timing;
                 document.dispatchEvent(new Event('filename-source-change'));
                 showToast(
@@ -1566,10 +1591,19 @@ async function loadVideoForCapture(file) {
                 );
             }
             return timing;
+        }).finally(() => {
+            if (state.captureLoadToken === captureLoadToken) {
+                state.captureTimingPending = false;
+                updateCaptureTimingControls();
+            }
         });
 
         updateCaptureTimelineOverlay();
     } catch (err) {
+        if (state.captureLoadToken === captureLoadToken) {
+            state.captureTimingPending = false;
+            updateCaptureTimingControls();
+        }
         console.error('Failed to probe video file:', err);
     }
 }

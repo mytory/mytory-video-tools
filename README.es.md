@@ -4,9 +4,9 @@
 
 **Mytory Video Tools** es una aplicación de escritorio multiplataforma (Windows, macOS, Linux) para codificación de video de alta velocidad y diversas tareas de manipulación de medios. Está construida con Electron e incluye archivos binarios FFmpeg/FFprobe integrados.
 
-### Novedades de v1.9.0
+### Novedades de v1.9.1
 
-Ahora puede elegir una carpeta de guardado o volver a la carpeta del video. Los nombres de archivo muestran el tiempo del video con precisión de fotograma en videos con frecuencia de fotogramas constante y de milisegundos en los de frecuencia variable; si dura menos de una hora, se omite el campo de horas. Se corrigió la clasificación de la frecuencia de fotogramas en videos con marcas de tiempo poco precisas y se igualó la altura de los botones.
+Frame Capture analiza el tiempo del video mucho más rápido, lo que reduce la espera al guardar el fotograma actual. Mientras se realiza el análisis, el botón de guardado permanece desactivado y muestra «Analizando». También se han simplificado las instrucciones.
 
 ---
 
@@ -74,6 +74,9 @@ npm start
 npm run dist
 ```
 
+### Paquete AppX de Microsoft Store
+En Windows x64, ejecuta `npm run dist:store:appx` para crear en `dist/` un `.appx` preparado para Microsoft Store. La compilación usa la identidad de Partner Center de esta aplicación, configurada en `build/electron-builder.store-appx.cjs`.
+
 ### Notas sobre firma de código macOS / compilación CI
 
 * `npm run dist` carga variables de entorno desde `.env` a través de `dotenv`.
@@ -122,7 +125,7 @@ Esta aplicación utiliza los siguientes proyectos de código abierto y cumple co
 
 ## 6. Licencia
 
-Copyright (c) 2026 mytory. Este proyecto está licenciado bajo **ISC License**. Consulte el archivo [LICENSE](./LICENSE) para obtener más detalles.
+Copyright (c) 2026 mytory. Este proyecto está licenciado bajo **GPL-3.0-only**. Consulte el archivo [LICENSE](./LICENSE) para obtener más detalles.
 
 ---
 

@@ -4,9 +4,9 @@
 
 **Mytory Video Tools** adalah aplikasi desktop lintas platform (Windows, macOS, Linux) untuk encoding video berkecepatan tinggi dan berbagai tugas manipulasi media. Dibangun dengan Electron dan dilengkapi dengan biner FFmpeg/FFprobe bawaan.
 
-### Yang baru di v1.9.0
+### Yang baru di v1.9.1
 
-Kini Anda dapat memilih folder penyimpanan atau kembali ke folder video. Nama file menampilkan waktu video dengan presisi frame untuk frame rate konstan atau milidetik untuk frame rate variabel; kolom jam dihilangkan jika durasi di bawah satu jam. Klasifikasi frame rate untuk video dengan timestamp kurang presisi telah diperbaiki, dan tinggi tombol telah diseragamkan.
+Frame Capture kini menganalisis waktu video jauh lebih cepat sehingga mengurangi waktu tunggu saat menyimpan frame saat ini. Selama analisis berlangsung, tombol simpan dinonaktifkan dan menampilkan “Menganalisis”. Petunjuk juga dibuat lebih ringkas.
 
 ---
 
@@ -74,6 +74,9 @@ npm start
 npm run dist
 ```
 
+### Paket AppX Microsoft Store
+Di Windows x64, jalankan `npm run dist:store:appx` untuk membuat `.appx` yang ditujukan ke Store di folder `dist/`. Build menggunakan identitas Partner Center aplikasi ini yang dikonfigurasi di `build/electron-builder.store-appx.cjs`.
+
 ### Catatan Penandatanganan Kode macOS / Build CI
 
 * `npm run dist` memuat variabel lingkungan dari `.env` melalui `dotenv`.
@@ -122,7 +125,7 @@ Aplikasi ini menggunakan proyek sumber terbuka berikut dan mematuhi ketentuan li
 
 ## 6. Lisensi
 
-Hak Cipta (c) 2026 mytory. Proyek ini dilisensikan di bawah **ISC License**. Lihat file [LICENSE](./LICENSE) untuk detailnya.
+Hak Cipta (c) 2026 mytory. Proyek ini dilisensikan di bawah **GPL-3.0-only**. Lihat file [LICENSE](./LICENSE) untuk detailnya.
 
 ---
 

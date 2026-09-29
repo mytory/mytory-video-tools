@@ -6,12 +6,13 @@ const { test } = require('node:test');
 
 const source = fs.readFileSync(path.join(__dirname, '..', 'main.js'), 'utf8');
 const formatterSource = source.slice(source.indexOf('function captureTimeSuffix('), source.indexOf('// 5. 배속'));
-const { captureTimeSuffix, hasVariableFrameRate } = (() => {
+const { captureTimeSuffix, hasVariableFrameRate, summarizeCaptureTiming } = (() => {
     const context = {};
     vm.runInNewContext(formatterSource, context);
     return {
         captureTimeSuffix: context.captureTimeSuffix,
-        hasVariableFrameRate: context.hasVariableFrameRate
+        hasVariableFrameRate: context.hasVariableFrameRate,
+        summarizeCaptureTiming: context.summarizeCaptureTiming
     };
 })();
 
@@ -41,4 +42,23 @@ test('VFR PTS intervals use real-time tolerance for low-resolution time bases', 
 
 test('CFR intervals allow one millisecond of PTS quantization spread', () => {
     assert.equal(hasVariableFrameRate(33, 34, 1, 1000), false);
+});
+
+test('packet timestamps arrive in decode order and still report a constant frame rate', () => {
+    // B프레임이 섞인 H.264에서 packet PTS는 디코딩 순서라 뒤섞여 나온다.
+    const shuffled = [0, 4, 2, 1, 3, 8, 6, 5, 7].map(frame => frame * 1000);
+    const result = summarizeCaptureTiming(shuffled, 1, 30000);
+    assert.equal(result.success, true);
+    assert.equal(result.variableFrameRate, false);
+});
+
+test('irregular packet intervals report a variable frame rate', () => {
+    const result = summarizeCaptureTiming([0, 1000, 4000, 5000, 12000], 1, 30000);
+    assert.equal(result.success, true);
+    assert.equal(result.variableFrameRate, true);
+});
+
+test('timing analysis needs at least two timestamps', () => {
+    assert.equal(summarizeCaptureTiming([1000], 1, 30000).success, false);
+    assert.equal(summarizeCaptureTiming([], 1, 30000).success, false);
 });

@@ -4,9 +4,9 @@
 
 **Mytory Video Tools** is a cross-platform (Windows, macOS, Linux) desktop application for high-speed video encoding and various media manipulation tasks. It is built with Electron and ships with embedded FFmpeg/FFprobe binaries.
 
-### What’s new in v1.8.2
+### What’s new in v1.9.0
 
-Fixed an error that prevented batch frame capture when start and end times included frames (HH:MM:SS:FF). Capturing frames at one-second intervals now works.
+Frame Capture now lets you choose a save folder or return to the video's folder. Filenames show constant-frame-rate video times at frame precision or variable-frame-rate times in milliseconds; times under one hour omit the hour field. This release also corrects frame-rate classification for videos with coarse timestamps and aligns button heights.
 
 ---
 
@@ -23,7 +23,7 @@ Fixed an error that prevented batch frame capture when start and end times inclu
 | ⚡ **Speed Changer** | Change video playback speed (0.5x ~ 4.0x) with pitch preservation (anti-chipmunk). Supports H.264, H.265/HEVC, VP9, AV1. |
 | 🎵 **Audio Drop** | Extract audio tracks losslessly (Auto) or convert to MP3, AAC, OGG, or WAV. |
 | 🗜️ **Audio Compressor** | Convert audio files in any format supported by FFmpeg to high-quality MP3 with CBR/VBR encoding. |
-| 📸 **Frame Capture** | Single-frame capture, batch extraction at intervals, and automatic scene detection with sensitivity control. Captured images retain their actual capture time in EXIF. |
+| 📸 **Frame Capture** | Single-frame capture, batch extraction at intervals, and automatic scene detection with sensitivity control. Choose a save folder or reset to the video's folder. Filenames show constant-frame-rate video times at frame precision or variable-frame-rate times in milliseconds; times under one hour omit the hour field. Captured images retain their actual capture time in EXIF. |
 | 🔄 **Remuxer** | Fast container format conversion (MP4, MKV, MOV) without re-encoding. |
 | 🔗 **Video Joiner** | Join multiple video files with automatic compatibility handling. Drag to reorder, check compatibility at a glance, and handles differing frame rates with smart re-encoding. Perfect for re-assembling split segments. |
 | ✂️ **Video Splitter** | Losslessly cut a segment by setting start and end points. Extremely fast. |

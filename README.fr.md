@@ -4,9 +4,9 @@
 
 **Mytory Video Tools** est une application de bureau multiplateforme (Windows, macOS, Linux) pour le codage vidéo à haute vitesse et diverses tâches de manipulation multimédia. Elle est construite avec Electron et intègre les binaires FFmpeg/FFprobe.
 
-### Nouveautés de la v1.8.2
+### Nouveautés de la v1.9.0
 
-Correction d’une erreur qui empêchait la capture par lots lorsque les heures de début et de fin incluaient des images (HH:MM:SS:FF). La capture à intervalles d’une seconde fonctionne désormais.
+La capture d’image permet désormais de choisir un dossier d’enregistrement ou de revenir au dossier de la vidéo. Les noms de fichiers indiquent le temps vidéo à l’image près pour une fréquence d’images constante et à la milliseconde près pour une fréquence variable ; le champ des heures est omis pour les vidéos de moins d’une heure. La classification de la fréquence d’images des vidéos aux horodatages imprécis a également été corrigée et la hauteur des boutons uniformisée.
 
 ---
 
@@ -23,7 +23,7 @@ Correction d’une erreur qui empêchait la capture par lots lorsque les heures 
 | ⚡ **Changement de vitesse** | Modifie la vitesse de lecture vidéo (0,5x ~ 4,0x) avec préservation du ton. Prend en charge H.264, H.265/HEVC, VP9, AV1. |
 | 🎵 **Extraction audio** | Extrait les pistes audio sans perte (Auto) ou convertit en MP3, AAC, OGG ou WAV. |
 | 🗜️ **Compresseur audio** | Convertit les fichiers audio de tout format pris en charge par FFmpeg en MP3 de haute qualité avec encodage CBR/VBR. |
-| 📸 **Capture d'image** | Capture d'une seule image, extraction par lots à intervalles réguliers et détection automatique de scènes avec réglage de la sensibilité. Les images capturées conservent leur heure réelle de capture dans l'EXIF. |
+| 📸 **Capture d'image** | Capture d'une seule image, extraction par lots à intervalles réguliers et détection automatique de scènes avec réglage de la sensibilité. Choisissez un dossier d’enregistrement ou revenez au dossier de la vidéo. Les noms de fichiers indiquent le temps vidéo à l’image près pour une fréquence d’images constante et à la milliseconde près pour une fréquence variable ; le champ des heures est omis pour les vidéos de moins d’une heure. Les images capturées conservent leur heure réelle de capture dans l'EXIF. |
 | 🔄 **Remuxeur** | Conversion rapide de format de conteneur (MP4, MKV, MOV) sans ré-encodage. |
 | 🔗 **Assembler les vidéos** | Concatène sans perte plusieurs fichiers vidéo avec des paramètres d'encodage identiques. Parfait pour réassembler des segments divisés. |
 | ✂️ **Coupe-vidéo** | Coupe un segment sans perte en définissant les points de début et de fin. Extrêmement rapide. |

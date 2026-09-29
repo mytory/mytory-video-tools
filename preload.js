@@ -5,6 +5,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     selectDirectory: () => ipcRenderer.invoke('app:select-directory'),
     getPathForFile: (file) => webUtils.getPathForFile(file),
     probeVideo: (inputPath) => ipcRenderer.invoke('video:probe', inputPath),
+    analyzeCaptureTiming: (params) => ipcRenderer.invoke('capture:analyze-timing', params),
     cancelTask: (taskId) => ipcRenderer.invoke('task:cancel', taskId),
     
     startSpeedChange: (params) => ipcRenderer.invoke('speed:start', params),

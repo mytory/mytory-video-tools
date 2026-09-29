@@ -755,6 +755,14 @@ button.btn-mode {
     border-radius: 12px;
 }
 
+.capture-folder-options {
+    align-items: flex-end;
+}
+
+.capture-folder-options input {
+    margin-bottom: 0;
+}
+
 .option-item {
     display: flex;
     flex-direction: column;

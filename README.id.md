@@ -4,9 +4,9 @@
 
 **Mytory Video Tools** adalah aplikasi desktop lintas platform (Windows, macOS, Linux) untuk encoding video berkecepatan tinggi dan berbagai tugas manipulasi media. Dibangun dengan Electron dan dilengkapi dengan biner FFmpeg/FFprobe bawaan.
 
-### Yang baru di v1.9.0
+### Yang baru di v1.9.1
 
-Kini Anda dapat memilih folder penyimpanan atau kembali ke folder video. Nama file menampilkan waktu video dengan presisi frame untuk frame rate konstan atau milidetik untuk frame rate variabel; kolom jam dihilangkan jika durasi di bawah satu jam. Klasifikasi frame rate untuk video dengan timestamp kurang presisi telah diperbaiki, dan tinggi tombol telah diseragamkan.
+Frame Capture kini menganalisis waktu video jauh lebih cepat sehingga mengurangi waktu tunggu saat menyimpan frame saat ini. Selama analisis berlangsung, tombol simpan dinonaktifkan dan menampilkan “Menganalisis”. Petunjuk juga dibuat lebih ringkas.
 
 ---
 

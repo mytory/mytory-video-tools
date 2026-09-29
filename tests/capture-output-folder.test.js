@@ -5,6 +5,7 @@ const vm = require('node:vm');
 const { test } = require('node:test');
 
 const source = fs.readFileSync(path.join(__dirname, '..', 'renderer', 'app.js'), 'utf8');
+const controlsSource = source.slice(source.indexOf('function updateCaptureTimingControls('), source.indexOf('function setupFrameCapture()'));
 const setupSource = source.slice(source.indexOf('function setupFrameCapture()'), source.indexOf('async function loadVideoForCapture'));
 const directorySource = source.slice(source.indexOf('function getCaptureOutputDirectory('), source.indexOf('function getTargetParentDirectory('));
 
@@ -13,7 +14,8 @@ function createCapture() {
     const nodes = {};
     const elements = new Proxy(nodes, {
         get: (target, key) => target[key] ||= {
-            value: '', disabled: false, style: {}, classList: { add() {}, remove() {} },
+            value: '', textContent: '', disabled: false, style: {}, classList: { add() {}, remove() {} },
+            getAttribute: () => null,
             addEventListener: (event, callback) => { handlers[`${key}:${event}`] = callback; }
         }
     });
@@ -25,12 +27,14 @@ function createCapture() {
     const state = {
         captureOutputDir: '', captureFile: { path: '/videos/movie.mp4', name: 'movie.mp4' }, sceneTimestamps: [2],
         captureMetadata: { duration: 10, fps: 30, avgFrameRate: '30/1' },
-        captureTimingPromise: Promise.resolve({ variableFrameRate: false })
+        captureTiming: { variableFrameRate: false }, captureTimingPromise: Promise.resolve({ variableFrameRate: false }),
+        captureTimingPending: false, captureLoadToken: {}, captureSceneExportRunning: false
     };
     const calls = [];
     let selectedDirectory;
     const context = {
         state, elements,
+        MytoryI18n: { getLanguage: () => 'en' },
         window: { electronAPI: {
             selectDirectory: async () => selectedDirectory,
             resolveUniquePath: async outputPath => outputPath,
@@ -45,7 +49,7 @@ function createCapture() {
         t: key => key, processQueueDispatcher() {},
         addQueueItem: item => { context.queued = item.run; }
     };
-    vm.runInNewContext(directorySource + setupSource + '\nsetupFrameCapture();', context);
+    vm.runInNewContext(controlsSource + directorySource + setupSource + '\nsetupFrameCapture();', context);
     return { state, elements, context, calls, handlers, select: dir => { selectedDirectory = dir; } };
 }
 

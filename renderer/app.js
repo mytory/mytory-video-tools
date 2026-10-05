@@ -1167,11 +1167,9 @@ function updateCaptureTimingControls(lang) {
     const locale = lang || (typeof MytoryI18n !== 'undefined'
         ? MytoryI18n.getLanguage()
         : elements.langSelect.value || 'en');
-    const ready = Boolean(state.captureFile && state.captureMetadata && state.captureTiming && !state.captureTimingPending);
+    const ready = Boolean(state.captureFile && state.captureMetadata);
     elements.btnCaptureSingle.disabled = !ready;
-    elements.btnCaptureSingle.textContent = state.captureTimingPending
-        ? t('Analyzing…')
-        : elements.btnCaptureSingle.getAttribute(`data-mi18n-${locale}`) || 'Save Current Frame';
+    elements.btnCaptureSingle.textContent = elements.btnCaptureSingle.getAttribute(`data-mi18n-${locale}`) || 'Save Current Frame';
     elements.btnCaptureBatch.disabled = !ready;
     elements.btnCaptureSceneExport.disabled = !ready || state.captureSceneExportRunning;
 }
@@ -1287,13 +1285,11 @@ function setupFrameCapture() {
 
     // 단일 프레임 저장
     elements.btnCaptureSingle.addEventListener('click', async () => {
-        if (!state.captureFile || !state.captureMetadata || !state.captureTiming || state.captureTimingPending) return;
+        if (!state.captureFile || !state.captureMetadata) return;
 
         const captureFile = state.captureFile;
         const captureMetadata = state.captureMetadata;
-        const captureLoadToken = state.captureLoadToken;
-        const captureTiming = await state.captureTimingPromise;
-        if (!captureTiming || state.captureLoadToken !== captureLoadToken) return;
+        const captureTiming = state.captureTiming || { variableFrameRate: true };
         
         const timestamp = elements.captureVideo.currentTime;
         const format = elements.captureFormatSelect.value;
@@ -1342,7 +1338,7 @@ function setupFrameCapture() {
 
     // 배치 캡처 내보내기 실행
     elements.btnCaptureBatch.addEventListener('click', () => {
-        if (!state.captureFile || !state.captureMetadata || !state.captureTiming || state.captureTimingPending) return;
+        if (!state.captureFile || !state.captureMetadata) return;
 
         const startTime = elements.captureBatchStart.value;
         const endTime = elements.captureBatchEnd.value;
@@ -1359,13 +1355,12 @@ function setupFrameCapture() {
         const outputDir = getCaptureOutputDirectory(state.captureFile.path);
         const captureFile = state.captureFile;
         const captureMetadata = state.captureMetadata;
-        const captureTimingPromise = state.captureTimingPromise;
+        const captureTiming = state.captureTiming || { variableFrameRate: true };
 
         const overlayText = buildCaptureOverlayText(null);
         const metadata = buildCaptureExifData();
 
         const run = async () => {
-            const captureTiming = await captureTimingPromise;
             const result = await window.electronAPI.captureBatch({
                 taskId,
                 inputPath: captureFile.path,
@@ -1455,7 +1450,7 @@ function setupFrameCapture() {
 
     // 감지된 장면들 일괄 저장
     elements.btnCaptureSceneExport.addEventListener('click', () => {
-        if (!state.captureFile || !state.captureMetadata || !state.captureTiming || state.captureTimingPending || state.sceneTimestamps.length === 0) return;
+        if (!state.captureFile || !state.captureMetadata || state.sceneTimestamps.length === 0) return;
 
         const taskId = 'scene_export_' + Date.now();
         const baseName = getFileBaseName(state.captureFile.name) + outputSuffix('capture', state.captureFile.path, elements.captureFormatSelect.value.split('/')[1], '_frame');
@@ -1463,7 +1458,7 @@ function setupFrameCapture() {
         const format = elements.captureFormatSelect.value;
         const captureFile = state.captureFile;
         const captureMetadata = state.captureMetadata;
-        const captureTimingPromise = state.captureTimingPromise;
+        const captureTiming = state.captureTiming || { variableFrameRate: true };
         const timestamps = state.sceneTimestamps;
         const overlayText = buildCaptureOverlayText(null);
         const metadata = buildCaptureExifData();
@@ -1471,7 +1466,6 @@ function setupFrameCapture() {
         const run = async () => {
             state.captureSceneExportRunning = true;
             elements.btnCaptureSceneExport.disabled = true;
-            const captureTiming = await captureTimingPromise;
             let result;
             try {
                 result = await window.electronAPI.exportScenes({
@@ -1545,6 +1539,7 @@ async function loadVideoForCapture(file) {
         const metadata = await window.electronAPI.probeVideo(nativeFile.path);
         if (state.captureLoadToken !== captureLoadToken) return;
         state.captureMetadata = metadata;
+        updateCaptureTimingControls();
         
         elements.captureBatchStart.value = '00:00:00:00';
         elements.captureBatchEnd.value = secondsToTimecode(metadata.duration);

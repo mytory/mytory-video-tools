@@ -92,3 +92,32 @@ for (const folder of ['', '/captures']) {
         assert.equal(capture.calls[2][1].outputDir, outputDir);
     });
 }
+
+test('all capture modes start before timing analysis resolves and keep timestamp naming for that request', async () => {
+    const capture = createCapture();
+    capture.state.captureTiming = null;
+    capture.state.captureTimingPending = true;
+    capture.state.captureTimingPromise = new Promise(() => {});
+
+    await capture.handlers['btnCaptureSingle:click']();
+    capture.handlers['btnCaptureBatch:click']();
+    const batch = capture.context.queued;
+    capture.handlers['btnCaptureSceneExport:click']();
+    const scene = capture.context.queued;
+    capture.state.captureTiming = { variableFrameRate: false };
+    capture.state.captureTimingPending = false;
+    await batch();
+    await scene();
+
+    assert.deepEqual(capture.calls.map(([mode, options]) => [mode, options.variableFrameRate]), [
+        ['single', true], ['batch', true], ['scene', true]
+    ]);
+    await capture.handlers['btnCaptureSingle:click']();
+    capture.handlers['btnCaptureBatch:click']();
+    await capture.context.queued();
+    capture.handlers['btnCaptureSceneExport:click']();
+    await capture.context.queued();
+    assert.deepEqual(capture.calls.slice(3).map(([mode, options]) => [mode, options.variableFrameRate]), [
+        ['single', false], ['batch', false], ['scene', false]
+    ]);
+});

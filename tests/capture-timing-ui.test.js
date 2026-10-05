@@ -66,16 +66,16 @@ function createCaptureHarness() {
     return { api, state, elements, pendingAnalyses, toasts, dispatchedEvents };
 }
 
-test('save buttons stay disabled and show localized analysis status until the current video finishes', async () => {
+test('save buttons are available during analysis and ignore stale video analysis', async () => {
     const capture = createCaptureHarness();
 
     await capture.api.loadVideoForCapture({ path: '/videos/first.mp4', name: 'first.mp4' });
     const firstAnalysis = capture.state.captureTimingPromise;
     assert.equal(capture.state.captureTimingPending, true);
-    assert.equal(capture.elements.btnCaptureSingle.disabled, true);
-    assert.equal(capture.elements.btnCaptureSingle.textContent, '분석 중…');
-    assert.equal(capture.elements.btnCaptureBatch.disabled, true);
-    assert.equal(capture.elements.btnCaptureSceneExport.disabled, true);
+    assert.equal(capture.elements.btnCaptureSingle.disabled, false);
+    assert.equal(capture.elements.btnCaptureSingle.textContent, '현재 프레임 저장');
+    assert.equal(capture.elements.btnCaptureBatch.disabled, false);
+    assert.equal(capture.elements.btnCaptureSceneExport.disabled, false);
 
     await capture.api.loadVideoForCapture({ path: '/videos/second.mp4', name: 'second.mp4' });
     const currentAnalysis = capture.state.captureTimingPromise;
@@ -85,7 +85,7 @@ test('save buttons stay disabled and show localized analysis status until the cu
     assert.equal(capture.state.captureFile.path, '/videos/second.mp4');
     assert.equal(capture.state.captureTiming, null);
     assert.equal(capture.state.captureTimingPending, true);
-    assert.equal(capture.elements.btnCaptureSingle.disabled, true);
+    assert.equal(capture.elements.btnCaptureSingle.disabled, false);
     assert.equal(capture.elements.sceneDetectionResult.style.display, 'none');
 
     capture.pendingAnalyses.get('/videos/second.mp4')({ success: true, variableFrameRate: false });

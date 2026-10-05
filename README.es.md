@@ -4,9 +4,9 @@
 
 **Mytory Video Tools** es una aplicación de escritorio multiplataforma (Windows, macOS, Linux) para codificación de video de alta velocidad y diversas tareas de manipulación de medios. Está construida con Electron e incluye archivos binarios FFmpeg/FFprobe integrados.
 
-### Novedades de v1.9.1
+### Novedades de v1.9.2
 
-Frame Capture analiza el tiempo del video mucho más rápido, lo que reduce la espera al guardar el fotograma actual. Mientras se realiza el análisis, el botón de guardado permanece desactivado y muestra «Analizando». También se han simplificado las instrucciones.
+Frame Capture ahora guarda inmediatamente mientras se analiza la frecuencia de fotogramas. Los nombres de archivo usan milisegundos antes de terminar el análisis; las nuevas capturas usan precisión de fotograma una vez confirmada una frecuencia constante. Los videos de frecuencia variable mantienen los milisegundos. Esto se aplica a capturas individuales, por intervalos y por escenas.
 
 ---
 
@@ -23,7 +23,7 @@ Frame Capture analiza el tiempo del video mucho más rápido, lo que reduce la e
 | ⚡ **Cambiador de velocidad** | Cambia la velocidad de reproducción del video (0.5x ~ 4.0x) con preservación de tono (antichipmunk). Compatible con H.264, H.265/HEVC, VP9, AV1. |
 | 🎵 **Extracción de audio** | Extrae pistas de audio sin pérdida (Auto) o convierte a MP3, AAC, OGG o WAV. |
 | 🗜️ **Compresor de audio** | Convierte archivos de audio en cualquier formato compatible con FFmpeg a MP3 de alta calidad con codificación CBR/VBR. |
-| 📸 **Captura de fotogramas** | Captura de un solo fotograma, extracción por lotes a intervalos y detección automática de escenas con control de sensibilidad. Elija una carpeta de destino o vuelva a la carpeta del video. Los nombres de archivo muestran el tiempo del video con precisión de fotograma en videos con frecuencia de fotogramas constante y de milisegundos en los de frecuencia variable; si dura menos de una hora, se omite el campo de horas. Las imágenes capturadas conservan su hora real de captura en EXIF. |
+| 📸 **Captura de fotogramas** | Captura de un solo fotograma, extracción por lotes a intervalos y detección automática de escenas con control de sensibilidad. Elija una carpeta de destino o vuelva a la carpeta del video. Capture inmediatamente mientras se analiza la frecuencia de fotogramas: los nombres de archivo usan milisegundos hasta confirmar una frecuencia constante; las nuevas capturas usan entonces precisión de fotograma. Los videos de frecuencia variable mantienen los milisegundos; si dura menos de una hora, se omite el campo de horas. Las imágenes capturadas conservan su hora real de captura en EXIF. |
 | 🔄 **Remuxer** | Conversión rápida de formato de contenedor (MP4, MKV, MOV) sin recodificación. |
 | 🔗 **Unir videos** | Concatena sin pérdidas múltiples archivos de video con parámetros de codificación idénticos. Perfecto para reensamblar segmentos divididos. |
 | ✂️ **Divisor de video** | Corta un segmento sin pérdidas estableciendo puntos de inicio y fin. Extremadamente rápido. |

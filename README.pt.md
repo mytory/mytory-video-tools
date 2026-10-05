@@ -4,9 +4,9 @@
 
 **Mytory Video Tools** é um aplicativo de desktop multiplataforma (Windows, macOS, Linux) para codificação de vídeo de alta velocidade e várias tarefas de manipulação de mídia. É construído com Electron e vem com binários FFmpeg/FFprobe integrados.
 
-### Novidades da v1.9.1
+### Novidades da v1.9.2
 
-O Frame Capture agora analisa o tempo do vídeo muito mais rápido, reduzindo a espera ao salvar o quadro atual. Durante a análise, o botão de salvar fica desativado e exibe “Analisando”. As instruções também foram simplificadas.
+O Frame Capture agora salva imediatamente durante a análise da taxa de quadros. Os nomes dos arquivos usam milissegundos antes do fim da análise; as novas capturas usam precisão de quadro após a confirmação de uma taxa constante. Vídeos com taxa variável mantêm os milissegundos. Isso se aplica a capturas individuais, por intervalos e por cenas.
 
 ---
 
@@ -23,7 +23,7 @@ O Frame Capture agora analisa o tempo do vídeo muito mais rápido, reduzindo a 
 | ⚡ **Mudança de velocidade** | Altera a velocidade de reprodução do vídeo (0,5x ~ 4,0x) com preservação de tom (antiesquilo). Suporta H.264, H.265/HEVC, VP9, AV1. |
 | 🎵 **Extração de áudio** | Extrai faixas de áudio sem perdas (Automático) ou converte para MP3, AAC, OGG ou WAV. |
 | 🗜️ **Compressor de áudio** | Converte arquivos de áudio em qualquer formato compatível com FFmpeg para MP3 de alta qualidade com codificação CBR/VBR. |
-| 📸 **Captura de quadros** | Captura de quadro único, extração em lote em intervalos e detecção automática de cenas com controle de sensibilidade. Escolha uma pasta para salvar ou volte para a pasta do vídeo. Os nomes dos arquivos mostram o tempo do vídeo com precisão de quadro para taxa de quadros constante e de milissegundos para taxa variável; vídeos com menos de uma hora omitem o campo das horas. As imagens capturadas preservam a hora real da captura no EXIF. |
+| 📸 **Captura de quadros** | Captura de quadro único, extração em lote em intervalos e detecção automática de cenas com controle de sensibilidade. Escolha uma pasta para salvar ou volte para a pasta do vídeo. Capture imediatamente durante a análise da taxa de quadros: os nomes dos arquivos usam milissegundos até que uma taxa constante seja confirmada; as novas capturas passam então a usar precisão de quadro. Vídeos com taxa variável mantêm os milissegundos; vídeos com menos de uma hora omitem o campo das horas. As imagens capturadas preservam a hora real da captura no EXIF. |
 | 🔄 **Remuxer** | Conversão rápida de formato de contêiner (MP4, MKV, MOV) sem recodificação. |
 | 🔗 **Juntar vídeos** | Concatena sem perdas vários arquivos de vídeo com parâmetros de codificação idênticos. Perfeito para remontar segmentos divididos. |
 | ✂️ **Divisor de vídeo** | Corta um segmento sem perdas definindo pontos de início e fim. Extremamente rápido. |

@@ -4,9 +4,9 @@
 
 **Mytory Video Tools** adalah aplikasi desktop lintas platform (Windows, macOS, Linux) untuk encoding video berkecepatan tinggi dan berbagai tugas manipulasi media. Dibangun dengan Electron dan dilengkapi dengan biner FFmpeg/FFprobe bawaan.
 
-### Yang baru di v1.9.1
+### Yang baru di v1.9.2
 
-Frame Capture kini menganalisis waktu video jauh lebih cepat sehingga mengurangi waktu tunggu saat menyimpan frame saat ini. Selama analisis berlangsung, tombol simpan dinonaktifkan dan menampilkan “Menganalisis”. Petunjuk juga dibuat lebih ringkas.
+Frame Capture kini langsung menyimpan saat analisis frame rate berlangsung. Nama file menggunakan milidetik sebelum analisis selesai; tangkapan baru menggunakan presisi frame setelah frame rate konstan dikonfirmasi. Video dengan frame rate variabel tetap menggunakan milidetik. Ini berlaku untuk tangkapan tunggal, per interval, dan per adegan.
 
 ---
 
@@ -23,7 +23,7 @@ Frame Capture kini menganalisis waktu video jauh lebih cepat sehingga mengurangi
 | ⚡ **Pengubah Kecepatan** | Ubah kecepatan pemutaran video (0,5x ~ 4,0x) dengan pelestarian nada. Mendukung H.264, H.265/HEVC, VP9, AV1. |
 | 🎵 **Ekstraksi Audio** | Ekstrak trek audio tanpa kehilangan (Otomatis) atau konversi ke MP3, AAC, OGG, atau WAV. |
 | 🗜️ **Kompresor Audio** | Konversi file audio dalam format apa pun yang didukung FFmpeg menjadi MP3 berkualitas tinggi dengan encoding CBR/VBR. |
-| 📸 **Tangkapan Bingkai** | Tangkapan bingkai tunggal, ekstraksi batch pada interval, dan deteksi adegan otomatis dengan kontrol sensitivitas. Pilih folder penyimpanan atau kembali ke folder video. Nama file menampilkan waktu video dengan presisi frame untuk frame rate konstan atau milidetik untuk frame rate variabel; kolom jam dihilangkan jika durasi di bawah satu jam. Gambar hasil tangkapan menyimpan waktu tangkap sebenarnya di EXIF. |
+| 📸 **Tangkapan Bingkai** | Tangkapan bingkai tunggal, ekstraksi batch pada interval, dan deteksi adegan otomatis dengan kontrol sensitivitas. Pilih folder penyimpanan atau kembali ke folder video. Tangkap segera saat analisis frame rate berlangsung: nama file menggunakan milidetik hingga frame rate konstan dikonfirmasi, lalu tangkapan baru menggunakan presisi frame. Video dengan frame rate variabel tetap menggunakan milidetik; kolom jam dihilangkan jika durasi di bawah satu jam. Gambar hasil tangkapan menyimpan waktu tangkap sebenarnya di EXIF. |
 | 🔄 **Remuxer** | Konversi format kontainer cepat (MP4, MKV, MOV) tanpa encoding ulang. |
 | 🔗 **Gabungkan video** | Menggabungkan beberapa file video dengan parameter encoding identik tanpa kehilangan kualitas. Sempurna untuk menyusun ulang segmen yang dipisah. |
 | ✂️ **Pemotong Video** | Potong segmen tanpa kehilangan dengan menetapkan titik awal dan akhir. Sangat cepat. |

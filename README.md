@@ -4,9 +4,9 @@
 
 **Mytory Video Tools** is a cross-platform (Windows, macOS, Linux) desktop application for high-speed video encoding and various media manipulation tasks. It is built with Electron and ships with embedded FFmpeg/FFprobe binaries.
 
-### What’s new in v1.9.1
+### What’s new in v1.9.2
 
-Frame Capture now analyzes video timing much faster, reducing delays when saving the current frame. The save button is disabled while analysis runs and displays “Analyzing.” Guidance text is shorter.
+Frame Capture now saves immediately while frame-rate analysis runs. Filenames use milliseconds before analysis completes; new captures use frame precision once a constant frame rate is confirmed. Variable-frame-rate videos keep millisecond filenames. This applies to single-frame, interval, and scene captures.
 
 ---
 
@@ -23,7 +23,7 @@ Frame Capture now analyzes video timing much faster, reducing delays when saving
 | ⚡ **Speed Changer** | Change video playback speed (0.5x ~ 4.0x) with pitch preservation (anti-chipmunk). Supports H.264, H.265/HEVC, VP9, AV1. |
 | 🎵 **Audio Drop** | Extract audio tracks losslessly (Auto) or convert to MP3, AAC, OGG, or WAV. |
 | 🗜️ **Audio Compressor** | Convert audio files in any format supported by FFmpeg to high-quality MP3 with CBR/VBR encoding. |
-| 📸 **Frame Capture** | Single-frame capture, batch extraction at intervals, and automatic scene detection with sensitivity control. Choose a save folder or reset to the video's folder. Filenames show constant-frame-rate video times at frame precision or variable-frame-rate times in milliseconds; times under one hour omit the hour field. Captured images retain their actual capture time in EXIF. |
+| 📸 **Frame Capture** | Single-frame capture, batch extraction at intervals, and automatic scene detection with sensitivity control. Choose a save folder or reset to the video's folder. Capture immediately while frame-rate analysis runs: filenames use milliseconds until analysis confirms a constant frame rate, then use frame precision for new captures. Variable-frame-rate videos keep millisecond filenames; times under one hour omit the hour field. Captured images retain their actual capture time in EXIF. |
 | 🔄 **Remuxer** | Fast container format conversion (MP4, MKV, MOV) without re-encoding. |
 | 🔗 **Video Joiner** | Join multiple video files with automatic compatibility handling. Drag to reorder, check compatibility at a glance, and handles differing frame rates with smart re-encoding. Perfect for re-assembling split segments. |
 | ✂️ **Video Splitter** | Losslessly cut a segment by setting start and end points. Extremely fast. |

@@ -14,7 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mytory Video Tools — 명령줄 없이 빠르게 FFmpeg 작업</title>
     <meta name="description" content="명령줄 없이 빠르게 FFmpeg 영상 작업을 하세요. 자르기, 리먹스, 압축, 변환, 프레임 캡처를 지원하는 Windows·macOS·Linux용 무료 Electron 데스크톱 앱입니다.">
-    <meta property="og:title" content="Mytory Video Tools">
+    <meta property="og:title" content="Mytory Video Tools — 명령줄 없이 빠르게 FFmpeg 작업">
     <meta property="og:description" content="간편한 데스크톱 앱에서 FFmpeg로 영상을 자르고, 리먹스하고, 압축하고, 변환하고, 프레임을 캡처하세요.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://video-tools.mytory.net/ko/">
@@ -27,7 +27,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles.css?h=10203a0793696e1b7537558bf8050b34">
+    <link rel="stylesheet" href="../styles.css?h=331a22122b81f6ff6ec9a500ce1b043e">
     <link rel="icon" type="image/webp" href="../assets/logo.webp">
 </head>
 <body>
@@ -99,7 +99,7 @@
             <div class="hero__visual">
                 <figure class="hero__screenshot">
                     <img src="../assets/screenshot-1.webp"
-                         alt="Mytory Video Tools 메인 화면 — Speed Changer 도구와 다크 사이드바, 컨트롤 패널"
+                         alt="Mytory Video Tools 메인 화면 — 배속 변환기와 다크 사이드바, 컨트롤 패널"
                          width="1200" height="750"
                          loading="eager">
                 </figure>
@@ -285,7 +285,7 @@
                         <div class="diagram__chip diagram__chip--gpu">
                             <div class="diagram__chip-label">GPU</div>
                             <div class="diagram__chip-sub">하드웨어 인코더</div>
-                            <div class="diagram__chip-badge">HW ACCEL</div>
+                            <div class="diagram__chip-badge">하드웨어 가속</div>
                         </div>
                         <div class="diagram__outcome">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
@@ -331,34 +331,6 @@
         </div>
     </section>
 
-    <!-- Concept -->
-    <section class="concept" id="concept">
-        <div class="concept__inner">
-            <div class="concept__header">
-                <div class="concept__eyebrow">아이디어</div>
-                <h2 class="concept__title">가려운 곳을 <span class="concept__title--accent">긁어주는</span></h2>
-            </div>
-            <div class="concept__body">
-                <p class="concept__text">
-                    좋은 비디오 도구는 많습니다. 하지만 <strong>빠른 부가 작업에 최적화된</strong> 도구 &mdash; 인코딩 없이 자르고, 음성 피치는 유지한 채 배속 변환하고, 소리만 초고속으로 분리하고, 확장자만 즉시 변경하고, 프레임 단위로 캡처하는 &mdash; 그런 도구는 찾기 어렵습니다.
-                </p>
-                <p class="concept__text">
-                    Mytory Video Tools는 그 가려운 곳을 긁으려고 만들었습니다. 또 다른 비디오 편집기가 아닙니다. <strong>편집과 편집 사이의 순간들을 위한 스위스 아미 나이프</strong>입니다: 클립을 자르고, 구간을 합치고, 사운드트랙을 추출하고, 포맷을 변환할 때 명령줄 없이 빠르게 작업할 수 있습니다.
-                </p>
-                <p class="concept__text">
-                    클라우드 업로드도, 계정도, 구독도 없습니다. FFmpeg를 포함한 Electron 데스크톱 앱과 사용자를 방해하지 않는 깔끔한 인터페이스를 제공합니다. 빠른 컷과 리먹스는 파일 형식이 허용할 때 재인코딩을 피하고, 그 밖의 작업에는 화질과 하드웨어 가속을 위한 <strong>적절한 기본값</strong>을 사용합니다.
-                </p>
-            </div>
-            <div class="concept__tags">
-                <span class="concept__tag">컷·리먹스 재인코딩 생략</span>
-                <span class="concept__tag">피치 유지</span>
-                <span class="concept__tag">하드웨어 가속</span>
-                <span class="concept__tag">로컬 처리</span>
-                <span class="concept__tag">일괄 처리</span>
-            </div>
-        </div>
-    </section>
-
     <!-- Download -->
     <section class="download" id="download">
         <div class="download__inner">
@@ -380,7 +352,7 @@
                         <span class="platform-card__meta">.dmg</span>
                     </a>
                     <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2-x64.dmg" class="platform-card__alt" target="_blank" rel="noopener">
-                        Intel (x64) variant →
+                        Intel (x64) 버전 →
                     </a>
                 </div>
                 <a href="https://apps.microsoft.com/detail/9nkrwrkmlgmw" target="_blank" rel="noopener" class="platform-card">
@@ -403,6 +375,34 @@
                     <p class="platform-card__desc">AppImage 포터블</p>
                     <span class="platform-card__meta">.AppImage</span>
                 </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Concept -->
+    <section class="concept" id="concept">
+        <div class="concept__inner">
+            <div class="concept__header">
+                <div class="concept__eyebrow">아이디어</div>
+                <h2 class="concept__title">가려운 곳을 <span class="concept__title--accent">긁어주는</span></h2>
+            </div>
+            <div class="concept__body">
+                <p class="concept__text">
+                    좋은 비디오 도구는 많습니다. 하지만 <strong>빠른 부가 작업에 최적화된</strong> 도구 &mdash; 인코딩 없이 자르고, 음성 피치는 유지한 채 배속 변환하고, 소리만 초고속으로 분리하고, 컨테이너를 한 번에 변경하고, 프레임 단위로 캡처하는 &mdash; 그런 도구는 찾기 어렵습니다.
+                </p>
+                <p class="concept__text">
+                    Mytory Video Tools는 그 가려운 곳을 긁으려고 만들었습니다. 또 다른 비디오 편집기가 아닙니다. <strong>편집과 편집 사이의 순간들을 위한 스위스 아미 나이프</strong>입니다: 클립을 자르고, 구간을 합치고, 사운드트랙을 추출하고, 포맷을 변환할 때 명령줄 없이 <em>지금</em> 빠르게 작업할 수 있습니다.
+                </p>
+                <p class="concept__text">
+                    클라우드 업로드도, 계정도, 구독도 없습니다. FFmpeg를 포함한 Electron 데스크톱 앱과 사용자를 방해하지 않는 깔끔한 인터페이스를 제공합니다. 빠른 컷과 리먹스는 파일 형식이 허용할 때 재인코딩을 피하고, 그 밖의 작업에는 화질과 하드웨어 가속을 위한 <strong>적절한 기본값</strong>을 사용합니다.
+                </p>
+            </div>
+            <div class="concept__tags">
+                <span class="concept__tag">컷·리먹스 재인코딩 생략</span>
+                <span class="concept__tag">피치 유지</span>
+                <span class="concept__tag">하드웨어 가속</span>
+                <span class="concept__tag">로컬 처리</span>
+                <span class="concept__tag">일괄 처리</span>
             </div>
         </div>
     </section>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>बिना री-एन्कोडिंग के वीडियो कैसे काटें | Mytory Video Tools</title>
+    <meta name="description" content="जानें कि बिना री-एन्कोडिंग के वीडियो कट कैसे काम करते हैं, कीफ़्रेम कट की सटीकता को कैसे प्रभावित करते हैं और Mytory Video Tools से क्लिप जल्दी कैसे काटें।">
+    <link rel="canonical" href="https://video-tools.mytory.net/hi/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="en" href="https://video-tools.mytory.net/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="ko" href="https://video-tools.mytory.net/ko/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="ja" href="https://video-tools.mytory.net/ja/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="zh-cn" href="https://video-tools.mytory.net/zh-cn/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="es" href="https://video-tools.mytory.net/es/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="pt" href="https://video-tools.mytory.net/pt/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="fr" href="https://video-tools.mytory.net/fr/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="id" href="https://video-tools.mytory.net/id/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="hi" href="https://video-tools.mytory.net/hi/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="x-default" href="https://video-tools.mytory.net/guides/lossless-video-cut/">
+    <link rel="stylesheet" href="../../../styles.css?h=331a22122b81f6ff6ec9a500ce1b043e">
+    <link rel="icon" type="image/webp" href="../../../assets/logo.webp">
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="navbar__inner">
+            <a href="../../" class="navbar__brand"><img src="../../../assets/logo.webp" alt="Mytory" class="navbar__logo" width="28" height="28"><span class="navbar__title">Mytory Video Tools</span></a>
+            <div class="navbar__links"><a href="../../#guides" class="navbar__link">गाइड</a><a href="../../#download" class="navbar__link">डाउनलोड</a></div>
+        </div>
+    </nav>
+    <main class="features">
+        <div class="features__inner">
+            <article class="concept__body">
+                <p class="features__eyebrow">वीडियो गाइड</p>
+                <h1 class="features__title">बिना री-एन्कोडिंग के वीडियो कैसे काटें</h1>
+                <p class="features__sub">बिना री-एन्कोडिंग वाला कट मौजूदा वीडियो और ऑडियो स्ट्रीम की प्रतिलिपि बनाता है। इसलिए यह तेज़ होता है और संपीड़न की एक और पीढ़ी नहीं जोड़ता।</p>
+                <img src="../../../assets/screenshot-1.webp" alt="Mytory Video Tools डेस्कटॉप ऐप का इंटरफ़ेस" width="1200" height="750" loading="lazy" style="max-width: 100%; height: auto;">
+                <h2>कट ठीक उसी समय पर क्यों नहीं हो सकता</h2>
+                <p>संपीड़ित वीडियो फ़्रेमों के समूहों में संग्रहीत होता है। कीफ़्रेम को अकेले डिकोड किया जा सकता है; कई दूसरे फ़्रेम पहले के फ़्रेमों पर निर्भर होते हैं। जब FFmpeg इनपुट से पहले के टाइमस्टैम्प पर खोजता है, तो वह उस समय से पहले के सबसे नज़दीकी खोज बिंदु से शुरू करता है। इसलिए स्ट्रीम कॉपी करते समय वास्तविक शुरुआत आपके दिए समय से अलग हो सकती है, खासकर जब कीफ़्रेम के बीच लंबा अंतर हो।</p>
+                <p>यह तरीका एन्कोड की गई स्ट्रीम को ज्यों का त्यों रखता है, लेकिन हर स्रोत में माँगे गए सटीक कट समय की गारंटी नहीं दे सकता। री-एन्कोडिंग से कट अधिक सटीक हो सकता है, लेकिन इसमें अधिक समय लगता है और एक बार फिर एन्कोड करना पड़ता है।</p>
+                <h2>जल्दी से कट बनाएँ</h2>
+                <ol>
+                    <li>Mytory Video Tools खोलें और वीडियो विभाजक चुनें।</li>
+                    <li>वीडियो लोड करें और शुरुआत तथा अंत का समय सेट करें।</li>
+                    <li>सेगमेंट निर्यात करें। ऐप री-एन्कोडिंग के बिना स्ट्रीम कॉपी करता है; समय सटीक होना ज़रूरी हो तो शुरुआत की सीमा जाँचें।</li>
+                </ol>
+                <p>Mytory Video Tools एक मुफ़्त Electron डेस्कटॉप ऐप है जिसमें FFmpeg शामिल है। यह Windows, macOS और Linux पर स्थानीय रूप से चलता है और कमांड लाइन की ज़रूरत नहीं पड़ती।</p>
+                <p><a class="btn btn--primary" href="../../#download">Mytory Video Tools डाउनलोड करें</a></p>
+                <p><a href="../remux-video/">अगला: बिना री-एन्कोडिंग के MKV को MP4 में रीमक्स करें</a></p>
+            </article>
+        </div>
+    </main>
+    <nav class="lang-nav" aria-label="भाषा चुनें">
+        <div class="lang-nav__inner">
+            <span class="lang-nav__label">यह पृष्ठ इन भाषाओं में:</span>
+            <div class="lang-nav__links">
+                <a href="../../../guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇺🇸</span> English</a>
+                <a href="../../../ko/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇰🇷</span> 한국어</a>
+                <a href="../../../ja/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇯🇵</span> 日本語</a>
+                <a href="../../../zh-cn/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇨🇳</span> 简体中文</a>
+                <a href="../../../es/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇪🇸</span> Español</a>
+                <a href="../../../pt/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇵🇹</span> Português</a>
+                <a href="../../../fr/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇫🇷</span> Français</a>
+                <a href="../../../id/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇮🇩</span> Indonesia</a>
+                <a href="./" class="lang-nav__link lang-nav__link--active" aria-current="page"><span class="lang-nav__flag">🇮🇳</span> हिन्दी</a>
+            </div>
+        </div>
+    </nav>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comment couper une vidéo sans réencodage | Mytory Video Tools</title>
+    <meta name="description" content="Découvrez comment fonctionnent les coupes vidéo sans réencodage, pourquoi les images clés influent sur leur précision et comment découper rapidement un clip avec Mytory Video Tools.">
+    <link rel="canonical" href="https://video-tools.mytory.net/fr/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="en" href="https://video-tools.mytory.net/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="ko" href="https://video-tools.mytory.net/ko/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="ja" href="https://video-tools.mytory.net/ja/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="zh-cn" href="https://video-tools.mytory.net/zh-cn/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="es" href="https://video-tools.mytory.net/es/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="pt" href="https://video-tools.mytory.net/pt/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="fr" href="https://video-tools.mytory.net/fr/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="id" href="https://video-tools.mytory.net/id/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="hi" href="https://video-tools.mytory.net/hi/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="x-default" href="https://video-tools.mytory.net/guides/lossless-video-cut/">
+    <link rel="stylesheet" href="../../../styles.css?h=331a22122b81f6ff6ec9a500ce1b043e">
+    <link rel="icon" type="image/webp" href="../../../assets/logo.webp">
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="navbar__inner">
+            <a href="../../../fr/" class="navbar__brand"><img src="../../../assets/logo.webp" alt="Mytory" class="navbar__logo" width="28" height="28"><span class="navbar__title">Mytory Video Tools</span></a>
+            <div class="navbar__links"><a href="../../../fr/#guides" class="navbar__link">Guides</a><a href="../../../fr/#download" class="navbar__link">Télécharger</a></div>
+        </div>
+    </nav>
+    <main class="features">
+        <div class="features__inner">
+            <article class="concept__body">
+                <p class="features__eyebrow">Guide vidéo</p>
+                <h1 class="features__title">Comment couper une vidéo sans réencodage</h1>
+                <p class="features__sub">Une coupe sans réencodage copie les flux vidéo et audio existants. Elle est donc rapide et n’ajoute pas une nouvelle génération de compression.</p>
+                <img src="../../../assets/screenshot-1.webp" alt="Interface de l’application de bureau Mytory Video Tools" width="1200" height="750" loading="lazy" style="max-width: 100%; height: auto;">
+                <h2>Pourquoi la coupe peut ne pas tomber au moment exact</h2>
+                <p>La vidéo compressée est stockée par groupes d’images. Une image clé peut être décodée seule ; de nombreuses autres dépendent des images précédentes. Lorsque FFmpeg recherche un horodatage à partir du début du fichier, il commence au point de recherche le plus proche avant cet instant. Avec la copie des flux, le début réel peut donc différer du temps indiqué, surtout lorsque les images clés sont très espacées.</p>
+                <p>Cette méthode conserve les flux encodés tels quels, mais ne peut pas garantir l’instant de coupe demandé pour chaque fichier. Le réencodage permet des coupes plus précises, au prix d’un traitement plus long et d’un nouvel encodage.</p>
+                <h2>Effectuer une coupe rapide</h2>
+                <ol>
+                    <li>Ouvrez Mytory Video Tools et choisissez Diviseur vidéo.</li>
+                    <li>Chargez une vidéo et définissez les heures de début et de fin.</li>
+                    <li>Exportez le segment. L’application copie les flux sans les réencoder ; vérifiez le point de départ si la précision du minutage est importante.</li>
+                </ol>
+                <p>Mytory Video Tools est une application de bureau Electron gratuite qui inclut FFmpeg. Elle s’exécute localement sous Windows, macOS et Linux, sans ligne de commande.</p>
+                <p><a class="btn btn--primary" href="../../../fr/#download">Télécharger Mytory Video Tools</a></p>
+                <p><a href="../remux-video/">Suivant : remuxer un MKV en MP4 sans réencodage</a></p>
+            </article>
+        </div>
+    </main>
+    <nav class="lang-nav" aria-label="Sélecteur de langue">
+        <div class="lang-nav__inner">
+            <span class="lang-nav__label">Cette page en :</span>
+            <div class="lang-nav__links">
+                <a href="../../../guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇺🇸</span> English</a>
+                <a href="../../../ko/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇰🇷</span> 한국어</a>
+                <a href="../../../ja/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇯🇵</span> 日本語</a>
+                <a href="../../../zh-cn/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇨🇳</span> 简体中文</a>
+                <a href="../../../es/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇪🇸</span> Español</a>
+                <a href="../../../pt/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇵🇹</span> Português</a>
+                <a href="./" class="lang-nav__link lang-nav__link--active" aria-current="page"><span class="lang-nav__flag">🇫🇷</span> Français</a>
+                <a href="../../../id/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇮🇩</span> Indonesia</a>
+                <a href="../../../hi/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇮🇳</span> हिन्दी</a>
+            </div>
+        </div>
+    </nav>
+</body>
+</html>

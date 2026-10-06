@@ -10,6 +10,11 @@
     box-sizing: border-box;
 }
 
+:root:lang(ja),
+:root:lang(zh) {
+    word-break: normal;
+}
+
 :root {
     --color-bg: #fafaf9;
     word-break: keep-all;

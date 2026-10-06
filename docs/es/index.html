@@ -12,12 +12,13 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mytory Video Tools — Utilidades de video nativas de alta velocidad</title>
-    <meta name="description" content="Herramientas de video de escritorio multiplataforma construidas con Electron y FFmpeg. Cambiador de velocidad, compresor, captura de fotogramas, remux, unir, divisor y extracción de audio.">
-    <meta property="og:title" content="Mytory Video Tools">
-    <meta property="og:description" content="Utilidades de video nativas de alta velocidad para Windows, macOS y Linux.">
+    <title>Mytory Video Tools — Tareas rápidas con FFmpeg, sin línea de comandos</title>
+    <meta name="description" content="Realiza tareas rápidas de video con FFmpeg sin usar la línea de comandos. Recorta, remuxea, comprime, convierte y captura fotogramas en una aplicación Electron gratuita para Windows, macOS y Linux.">
+    <meta property="og:title" content="Mytory Video Tools — Tareas rápidas con FFmpeg, sin línea de comandos">
+    <meta property="og:description" content="Recorta, remuxea, comprime, convierte y captura video con FFmpeg en una aplicación de escritorio sencilla.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mytory.github.io/mytory-video-tools/">
+    <meta property="og:url" content="https://video-tools.mytory.net/es/">
+    <link rel="canonical" href="https://video-tools.mytory.net/es/">
     <meta property="og:image" content="https://video-tools.mytory.net/assets/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="800">
@@ -40,6 +41,7 @@
             </a>
             <div class="navbar__links">
                 <a href="#features" class="navbar__link">Funciones</a>
+                <a href="#guides" class="navbar__link">Guías</a>
                 <a href="#languages" class="navbar__link">Idiomas</a>
                 <a href="#concept" class="navbar__link">Concepto</a>
                 <a href="#download" class="navbar__link">Descargar</a>
@@ -67,7 +69,7 @@
                     <span class="hero__title--accent">Video rápidas</span>
                 </h1>
                 <p class="hero__sub">
-                    Ocho herramientas de video y audio en una aplicación de escritorio. Acelera, comprime, divide, une, convierte y captura con codificación acelerada por hardware. Sin subidas ni límites.
+                    Tareas de video rápidas con FFmpeg en una aplicación de escritorio Electron sencilla, sin línea de comandos. Recorta, remuxe, comprime, convierte y captura fotogramas; tus archivos permanecen en tu equipo.
                 </p>
                 <div class="hero__ctas">
                     <a href="#download" class="btn btn--primary">
@@ -142,7 +144,7 @@
         <div class="features__inner">
             <div class="features__header">
                 <h2 class="features__title">Siete herramientas, una aplicación</h2>
-                <p class="features__sub">Cada tarea de video que necesitas, desde ajuste de velocidad hasta concatenación sin pérdida. Sin suscripción, sin carga en la nube, sin límites.</p>
+                <p class="features__sub">Tareas cotidianas de video y audio: ajuste de velocidad, compresión, remux de contenedores y conversión de audio. Sin suscripción, sin carga en la nube, sin límites.</p>
             </div>
 
             <div class="features__grid">
@@ -184,7 +186,7 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
                     </div>
                     <h3 class="feature-card__title">Remux</h3>
-                    <p class="feature-card__desc">Convierta entre contenedores MP4, MKV y MOV sin recodificar. Sin pérdida e instantáneo. Conserva todas las pistas.</p>
+                    <p class="feature-card__desc">Mueve pistas compatibles entre contenedores MP4, MKV y MOV sin recodificar. La reproducción depende de que el contenedor y el reproductor admitan cada códec.</p>
                 </article>
 
                 <!-- Extracción de audio -->
@@ -220,12 +222,32 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
                     </div>
                     <h3 class="feature-card__title">Divisor de video</h3>
-                    <p class="feature-card__desc">Corte un segmento sin pérdida estableciendo puntos de inicio y fin. División extremadamente rápida sin recodificación. Ideal para recortar momentos destacados o preparar clips para montaje.</p>
+                    <p class="feature-card__desc">Corta un segmento sin recodificar, aunque no se puede garantizar el tiempo exacto; el punto inicial depende especialmente de la ubicación de los fotogramas clave. Ideal para recortar momentos destacados o preparar clips.</p>
                     <ul class="feature-card__tags">
-                        <li>Corte sin pérdida</li>
-                        <li>Ajuste a fotogramas clave</li>
+                        <li>Sin recodificación</li>
+                        <li>Copia rápida de flujos</li>
                         <li>Flujo dividir-editar-unir</li>
                     </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guides -->
+    <section class="features" id="guides">
+        <div class="features__inner">
+            <div class="features__header">
+                <h2 class="features__title">Guías de video (en inglés)</h2>
+                <p class="features__sub">Descubre los flujos rápidos y los límites de los fotogramas clave y los contenedores.</p>
+            </div>
+            <div class="features__grid">
+                <article class="feature-card">
+                    <h3 class="feature-card__title"><a href="../guides/lossless-video-cut/">Cómo cortar video sin recodificar</a></h3>
+                    <p class="feature-card__desc">Explica los límites de los fotogramas clave y cómo hacer cortes rápidos.</p>
+                </article>
+                <article class="feature-card">
+                    <h3 class="feature-card__title"><a href="../guides/remux-video/">Cómo remuxear MKV a MP4</a></h3>
+                    <p class="feature-card__desc">Cambia el contenedor sin transcodificar y comprueba la compatibilidad de códecs.</p>
                 </article>
             </div>
         </div>
@@ -333,7 +355,7 @@
                         Intel (x64) variant →
                     </a>
                 </div>
-                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-Setup-v1.9.2.exe" target="_blank" rel="noopener" class="platform-card">
+                <a href="https://apps.microsoft.com/detail/9nkrwrkmlgmw" target="_blank" rel="noopener" class="platform-card">
                     <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <rect x="4" y="2" width="16" height="20" rx="2"/>
                         <line x1="9" y1="2" x2="9" y2="22"/>
@@ -369,17 +391,17 @@
                     Existen buenas herramientas de video. Pero encontrar una que esté <strong>optimizada para las tareas rápidas y adyacentes</strong> —cortar sin recodificar, cambiar la velocidad preservando el tono de voz, extraer audio al instante, cambiar de contenedor en un clic, capturar fotograma a fotograma— es sorprendentemente difícil.
                 </p>
                 <p class="concept__text">
-                    Mytory Video Tools fue creado para rascar esa picazón. No es otro editor de video. Es una <strong>navaja suiza para los momentos entre ediciones</strong>: cuando necesitas dividir un clip, unir segmentos, extraer una banda sonora o convertir un formato, y quieres que se haga <em>ya</em>, sin pérdida, con aceleración de hardware lista para usar.
+                    Mytory Video Tools fue creado para rascar esa picazón. No es otro editor de video. Es una <strong>navaja suiza para los momentos entre ediciones</strong>: cuando necesitas dividir un clip, unir segmentos, extraer una banda sonora o convertir un formato, y quieres hacerlo rápido, sin usar la línea de comandos.
                 </p>
                 <p class="concept__text">
-                    Sin cargas en la nube, sin cuentas, sin suscripciones. Solo código nativo, FFmpeg bajo el capó y una interfaz limpia que no se interpone en su camino. Cada operación utiliza <strong>valores predeterminados sensatos</strong>: la aceleración de hardware se detecta automáticamente, los formatos de salida están preoptimizados y rara vez necesitará tocar una configuración para hacer el trabajo.
+                    Sin cargas en la nube, sin cuentas, sin suscripciones. Es una aplicación de escritorio Electron con FFmpeg y una interfaz sencilla. Los cortes y remux rápidos evitan la recodificación cuando el formato lo permite.
                 </p>
             </div>
             <div class="concept__tags">
-                <span class="concept__tag">Sin pérdida por diseño</span>
+                <span class="concept__tag">Cortes y remux sin recodificar</span>
                 <span class="concept__tag">Preservación del tono</span>
                 <span class="concept__tag">Acelerado por hardware</span>
-                <span class="concept__tag">Sin recodificar</span>
+                <span class="concept__tag">Procesamiento local</span>
                 <span class="concept__tag">Procesamiento por lotes</span>
             </div>
         </div>

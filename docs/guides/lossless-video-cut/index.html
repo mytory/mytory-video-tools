@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Cut Video Without Re-encoding | Mytory Video Tools</title>
+    <meta name="description" content="Learn how no-re-encode video cuts work, why keyframes affect cut accuracy, and how to trim a clip quickly with Mytory Video Tools.">
+    <link rel="canonical" href="https://video-tools.mytory.net/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="en" href="https://video-tools.mytory.net/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="ko" href="https://video-tools.mytory.net/ko/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="x-default" href="https://video-tools.mytory.net/guides/lossless-video-cut/">
+    <link rel="stylesheet" href="../../styles.css?h=10203a0793696e1b7537558bf8050b34">
+    <link rel="icon" type="image/webp" href="../../assets/logo.webp">
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="navbar__inner">
+            <a href="../../" class="navbar__brand"><img src="../../assets/logo.webp" alt="Mytory" class="navbar__logo" width="28" height="28"><span class="navbar__title">Mytory Video Tools</span></a>
+            <div class="navbar__links"><a href="../../#guides" class="navbar__link">Guides</a><a href="../../#download" class="navbar__link">Download</a></div>
+        </div>
+    </nav>
+    <main class="features">
+        <div class="features__inner">
+            <article class="concept__body">
+                <p class="features__eyebrow">Video guide</p>
+                <h1 class="features__title">How to cut video without re-encoding</h1>
+                <p class="features__sub">A no-re-encode cut copies the existing video and audio streams, so it is fast and does not introduce another generation of compression.</p>
+                <img src="../../assets/screenshot-1.webp" alt="Mytory Video Tools desktop app interface" width="1200" height="750" loading="lazy" style="max-width: 100%; height: auto;">
+                <h2>Why the cut may not land on the exact time</h2>
+                <p>Compressed video is stored in groups of frames. A keyframe can be decoded on its own; many other frames depend on earlier frames. When FFmpeg seeks to a timestamp before the input, it starts at the closest seek point before that time. With stream copying, the actual start can therefore differ from the time you entered, especially when keyframes are far apart.</p>
+                <p>This method keeps the encoded streams unchanged, but it cannot guarantee an exact requested cut time for every source. Re-encoding can make more precise cuts, at the cost of processing time and another encode.</p>
+                <h2>Make a quick cut</h2>
+                <ol>
+                    <li>Open Mytory Video Tools and choose Video Splitter.</li>
+                    <li>Load a video and set the start and end times.</li>
+                    <li>Export the segment. The app copies the streams without re-encoding; check the start boundary if timing matters.</li>
+                </ol>
+                <p>Mytory Video Tools is a free Electron desktop app with FFmpeg included. It runs locally on Windows, macOS, and Linux, with no command line required.</p>
+                <p><a class="btn btn--primary" href="../../#download">Download Mytory Video Tools</a></p>
+                <p><a href="../remux-video/">Next: remux MKV to MP4 without re-encoding</a></p>
+            </article>
+        </div>
+    </main>
+</body>
+</html>

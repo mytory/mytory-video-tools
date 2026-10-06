@@ -2,7 +2,11 @@
 
 > **🇬🇧 English:** [README.md](./README.md) · **🇰🇷 한국어:** [README.ko.md](./README.ko.md) · **🇯🇵 日本語:** [README.ja.md](./README.ja.md) · **🇪🇸 Español:** [README.es.md](./README.es.md) · **🇧🇷 Português:** [README.pt.md](./README.pt.md) · **🇫🇷 Français:** [README.fr.md](./README.fr.md) · **🇮🇩 Bahasa Indonesia:** [README.id.md](./README.id.md) · **🇮🇳 हिन्दी:** [README.hi.md](./README.hi.md)
 
-**Mytory Video Tools** 是一款跨平台（Windows、macOS、Linux）桌面应用程序，用于高速视频编码和各种媒体处理任务。它基于 Electron 构建，并内嵌了 FFmpeg/FFprobe 二进制文件。
+**Mytory Video Tools** 是一款桌面 FFmpeg 图形界面工具，适合快速处理那些没必要打开完整视频编辑器、又懒得记 FFmpeg 命令的媒体任务。
+
+[⬇️ 下载 Windows、macOS 或 Linux 版本](https://github.com/mytory/mytory-video-tools/releases)
+
+![Mytory Video Tools 桌面应用截图](./screenshots/screenshot-1.png)
 
 ### v1.9.2 新功能
 
@@ -26,7 +30,7 @@
 | 📸 **帧捕获 (Frame Capture)** | 单帧捕获、按间隔批量提取、灵敏度可调的自动场景检测。可选择保存文件夹，也可重置为视频所在文件夹。帧率分析期间也可立即捕获。分析完成前，文件名精确到毫秒；确认恒定帧率后，新捕获的文件名精确到帧。可变帧率视频继续使用毫秒文件名；不足一小时则省略小时字段。捕获图像的 EXIF 会记录实际捕获时刻。 |
 | 🔄 **格式转换 (Remuxer)** | 无需重新编码即可快速转换容器格式（MP4、MKV、MOV）。 |
 | 🔗 **视频合并 (Video Joiner)** | 将编码参数相同的多个视频文件无损合并为一个。适合重新组装分割的片段。 |
-| ✂️ **视频分割 (Video Splitter)** | 通过设置起始点和结束点无损剪切片段。速度极快。 |
+| ✂️ **视频分割 (Video Splitter)** | 通过设置起点和终点剪切视频片段。精确剪切位置可能受关键帧位置和编码格式兼容性影响。 |
 | 📦 **压缩 (Compressor)** | 使用多种编码器和质量选项将视频压缩到目标文件大小。 |
 
 > **🖱️ 全局拖放**：将文件拖放到应用程序窗口的任何位置，即可立即添加到当前活动的工具中。
@@ -122,7 +126,7 @@ npm run dist
 
 ## 6. 许可证
 
-Copyright (c) 2026 mytory. 本项目采用 **ISC License** 许可。详情请参阅 [LICENSE](./LICENSE) 文件。
+Copyright (c) 2026 mytory. 本项目采用 **GNU General Public License v3.0** 许可。详情请参阅 [LICENSE](./LICENSE) 文件。
 
 ---
 

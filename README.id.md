@@ -2,7 +2,11 @@
 
 > **🇬🇧 English:** [README.md](./README.md) · **🇰🇷 한국어:** [README.ko.md](./README.ko.md) · **🇯🇵 日本語:** [README.ja.md](./README.ja.md) · **🇨🇳 简体中文:** [README.zh-cn.md](./README.zh-cn.md) · **🇪🇸 Español:** [README.es.md](./README.es.md) · **🇧🇷 Português:** [README.pt.md](./README.pt.md) · **🇫🇷 Français:** [README.fr.md](./README.fr.md) · **🇮🇳 हिन्दी:** [README.hi.md](./README.hi.md)
 
-**Mytory Video Tools** adalah aplikasi desktop lintas platform (Windows, macOS, Linux) untuk encoding video berkecepatan tinggi dan berbagai tugas manipulasi media. Dibangun dengan Electron dan dilengkapi dengan biner FFmpeg/FFprobe bawaan.
+**Mytory Video Tools** adalah GUI FFmpeg untuk desktop yang mempercepat tugas media kecil yang tak perlu membuka editor lengkap, tetapi merepotkan jika harus menghafal perintah FFmpeg.
+
+[⬇️ Unduh untuk Windows, macOS, atau Linux](https://github.com/mytory/mytory-video-tools/releases)
+
+![Tangkapan layar aplikasi desktop Mytory Video Tools](./screenshots/screenshot-1.png)
 
 ### Yang baru di v1.9.2
 
@@ -122,7 +126,7 @@ Aplikasi ini menggunakan proyek sumber terbuka berikut dan mematuhi ketentuan li
 
 ## 6. Lisensi
 
-Hak Cipta (c) 2026 mytory. Proyek ini dilisensikan di bawah **ISC License**. Lihat file [LICENSE](./LICENSE) untuk detailnya.
+Hak Cipta (c) 2026 mytory. Proyek ini dilisensikan di bawah **GNU General Public License v3.0**. Lihat file [LICENSE](./LICENSE) untuk detailnya.
 
 ---
 

@@ -2,7 +2,11 @@
 
 > **🇬🇧 English:** [README.md](./README.md) · **🇰🇷 한국어:** [README.ko.md](./README.ko.md) · **🇨🇳 简体中文:** [README.zh-cn.md](./README.zh-cn.md) · **🇪🇸 Español:** [README.es.md](./README.es.md) · **🇧🇷 Português:** [README.pt.md](./README.pt.md) · **🇫🇷 Français:** [README.fr.md](./README.fr.md) · **🇮🇩 Bahasa Indonesia:** [README.id.md](./README.id.md) · **🇮🇳 हिन्दी:** [README.hi.md](./README.hi.md)
 
-**Mytory Video Tools** は、高速ビデオエンコードおよびさまざまなメディア操作タスクのためのクロスプラットフォーム（Windows、macOS、Linux）デスクトップアプリケーションです。Electron で構築され、FFmpeg/FFprobe バイナリを内蔵しています。
+**Mytory Video Tools** は、動画編集ソフトを起動するほどではないけれど、FFmpeg のコマンドを覚えるのは面倒なメディア作業を手早く行えるデスクトップ FFmpeg GUI です。
+
+[⬇️ Windows・macOS・Linux 版をダウンロード](https://github.com/mytory/mytory-video-tools/releases)
+
+![Mytory Video Tools デスクトップアプリのスクリーンショット](./screenshots/screenshot-1.png)
 
 ### v1.9.2 の新機能
 
@@ -26,7 +30,7 @@
 | 📸 **フレームキャプチャ (Frame Capture)** | 単一フレームキャプチャ、間隔を指定した一括抽出、感度調整可能な自動シーン検出。保存先フォルダーを選択でき、動画と同じフォルダーに戻すこともできます。フレームレートの分析中もすぐにキャプチャできます。分析が完了するまではミリ秒単位のファイル名を使い、固定フレームレートが確認された後のキャプチャではフレーム単位に切り替わります。可変フレームレート動画ではミリ秒単位を維持し、1時間未満では時の項目を省略します。キャプチャ画像のEXIFには実際のキャプチャ時刻を記録。 |
 | 🔄 **リマックス (Remuxer)** | 再エンコードなしでコンテナフォーマット（MP4、MKV、MOV）を高速変換。 |
 | 🔗 **動画結合 (Video Joiner)** | 同一エンコードパラメータの複数の動画ファイルを無劣化で結合。分割したセグメントの再結合に最適。 |
-| ✂️ **動画分割 (Video Splitter)** | 開始点と終了点を設定してセグメントをロスレスでカット。非常に高速。 |
+| ✂️ **動画分割 (Video Splitter)** | 開始点と終了点を指定して動画の一部を切り出します。正確なカット位置はキーフレームとコーデックの互換性によって異なる場合があります。 |
 | 📦 **圧縮 (Compressor)** | さまざまなコーデックと品質オプションで動画を目標ファイルサイズに圧縮。 |
 
 > **🖱️ グローバルドラッグ＆ドロップ**: アプリウィンドウのどこにでもファイルをドラッグして、現在アクティブなツールに即座に追加できます。
@@ -122,7 +126,7 @@ npm run dist
 
 ## 6. ライセンス
 
-Copyright (c) 2026 mytory. このプロジェクトは **ISC License** の下でライセンスされています。詳細は [LICENSE](./LICENSE) ファイルを参照してください。
+Copyright (c) 2026 mytory. このプロジェクトは **GNU General Public License v3.0** の下でライセンスされています。詳細は [LICENSE](./LICENSE) ファイルを参照してください。
 
 ---
 

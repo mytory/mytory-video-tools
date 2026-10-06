@@ -2,7 +2,11 @@
 
 > **🇬🇧 English:** [README.md](./README.md) · **🇰🇷 한국어:** [README.ko.md](./README.ko.md) · **🇯🇵 日本語:** [README.ja.md](./README.ja.md) · **🇨🇳 简体中文:** [README.zh-cn.md](./README.zh-cn.md) · **🇪🇸 Español:** [README.es.md](./README.es.md) · **🇧🇷 Português:** [README.pt.md](./README.pt.md) · **🇮🇩 Bahasa Indonesia:** [README.id.md](./README.id.md) · **🇮🇳 हिन्दी:** [README.hi.md](./README.hi.md)
 
-**Mytory Video Tools** est une application de bureau multiplateforme (Windows, macOS, Linux) pour le codage vidéo à haute vitesse et diverses tâches de manipulation multimédia. Elle est construite avec Electron et intègre les binaires FFmpeg/FFprobe.
+**Mytory Video Tools** est une interface graphique FFmpeg pour ordinateur, conçue pour traiter rapidement les tâches multimédias trop petites pour ouvrir un éditeur complet et trop fastidieuses pour mémoriser des commandes FFmpeg.
+
+[⬇️ Télécharger pour Windows, macOS ou Linux](https://github.com/mytory/mytory-video-tools/releases)
+
+![Capture d’écran de l’application de bureau Mytory Video Tools](./screenshots/screenshot-1.png)
 
 ### Nouveautés de la v1.9.2
 
@@ -122,7 +126,7 @@ Cette application utilise les projets open source suivants et respecte les terme
 
 ## 6. Licence
 
-Copyright (c) 2026 mytory. Ce projet est sous licence **ISC License**. Voir le fichier [LICENSE](./LICENSE) pour plus de détails.
+Copyright (c) 2026 mytory. Ce projet est sous licence **GNU General Public License v3.0**. Voir le fichier [LICENSE](./LICENSE) pour plus de détails.
 
 ---
 

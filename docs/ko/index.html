@@ -12,12 +12,13 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mytory Video Tools — 초고속 네이티브 비디오 유틸리티</title>
-    <meta name="description" content="Electron과 FFmpeg 기반의 크로스플랫폼 데스크톱 비디오 도구. 배속 변환기, 용량 줄이기, 프레임 캡처, 확장자 변환, 영상 합치기, 분할기, 오디오 추출기.">
+    <title>Mytory Video Tools — 명령줄 없이 빠르게 FFmpeg 작업</title>
+    <meta name="description" content="명령줄 없이 빠르게 FFmpeg 영상 작업을 하세요. 자르기, 리먹스, 압축, 변환, 프레임 캡처를 지원하는 Windows·macOS·Linux용 무료 Electron 데스크톱 앱입니다.">
     <meta property="og:title" content="Mytory Video Tools">
-    <meta property="og:description" content="Windows, macOS, Linux용 초고속 네이티브 비디오 유틸리티.">
+    <meta property="og:description" content="간편한 데스크톱 앱에서 FFmpeg로 영상을 자르고, 리먹스하고, 압축하고, 변환하고, 프레임을 캡처하세요.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mytory.github.io/mytory-video-tools/ko/">
+    <meta property="og:url" content="https://video-tools.mytory.net/ko/">
+    <link rel="canonical" href="https://video-tools.mytory.net/ko/">
     <meta property="og:image" content="https://video-tools.mytory.net/assets/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="800">
@@ -40,6 +41,7 @@
             </a>
             <div class="navbar__links">
                 <a href="#features" class="navbar__link">기능</a>
+                <a href="#guides" class="navbar__link">가이드</a>
                 <a href="#languages" class="navbar__link">언어</a>
                 <a href="#concept" class="navbar__link">아이디어</a>
                 <a href="#download" class="navbar__link">다운로드</a>
@@ -67,7 +69,7 @@
                     <span class="hero__title--accent">비디오 도구</span>
                 </h1>
                 <p class="hero__sub">
-                    여덟 가지 강력한 비디오·오디오 도구를 하나의 데스크톱 앱에 담았습니다. 배속 변환, 압축, 분할, 합치기, 변환, 캡처를 하드웨어 가속 인코딩으로 처리합니다. 업로드 불필요, 제한 없음.
+                    명령줄 없이 간편한 Electron 데스크톱 앱에서 빠르게 FFmpeg 영상 작업을 하세요. 자르기, 리먹스, 압축, 변환, 프레임 캡처를 지원하며 파일은 내 컴퓨터에 남습니다.
                 </p>
                 <div class="hero__ctas">
                     <a href="#download" class="btn btn--primary">
@@ -142,7 +144,7 @@
         <div class="features__inner">
             <div class="features__header">
                 <h2 class="features__title">여덟 가지 도구, 하나의 앱</h2>
-                <p class="features__sub">배속 조정부터 무손실 영상 합치기까지. 구독 불필요, 클라우드 업로드 불필요, 제한 없음.</p>
+                <p class="features__sub">배속 조정과 압축부터 컨테이너 리먹스와 오디오 변환까지. 구독 불필요, 클라우드 업로드 불필요, 제한 없음.</p>
             </div>
 
             <div class="features__grid">
@@ -184,7 +186,7 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
                     </div>
                     <h3 class="feature-card__title">확장자 변환기</h3>
-                    <p class="feature-card__desc">재인코딩 없이 MP4, MKV, MOV 컨테이너 포맷을 변환합니다. 무손실, 초고속, 모든 스트림 보존.</p>
+                    <p class="feature-card__desc">호환되는 스트림을 재인코딩 없이 MP4, MKV, MOV 컨테이너 사이에서 옮깁니다. 재생 여부는 대상 컨테이너와 플레이어가 각 코덱을 지원하는지에 따라 달라집니다.</p>
                 </article>
 
                 <!-- Audio Drop -->
@@ -220,12 +222,32 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
                     </div>
                     <h3 class="feature-card__title">비디오 분할기</h3>
-                    <p class="feature-card__desc">시작점과 종료점을 설정하여 원하는 구간을 무손실로 자릅니다. 재인코딩 없이 초고속 분할. 하이라이트 편집이나 클립 준비에 이상적입니다.</p>
+                    <p class="feature-card__desc">재인코딩 없이 구간을 자르지만 요청한 시각에 정확히 잘린다는 보장은 없습니다. 특히 시작 지점은 키프레임 위치의 영향을 받습니다. 하이라이트를 빠르게 자르거나 클립을 준비할 때 유용합니다.</p>
                     <ul class="feature-card__tags">
-                        <li>무손실 컷</li>
-                        <li>키프레임 스냅</li>
+                        <li>재인코딩 없음</li>
+                        <li>빠른 스트림 복사</li>
                         <li>분할-편집-결합 워크플로우</li>
                     </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guides -->
+    <section class="features" id="guides">
+        <div class="features__inner">
+            <div class="features__header">
+                <h2 class="features__title">실용적인 영상 가이드</h2>
+                <p class="features__sub">재인코딩 없는 빠른 작업 방식과 키프레임·컨테이너의 한계를 알아보세요.</p>
+            </div>
+            <div class="features__grid">
+                <article class="feature-card">
+                    <h3 class="feature-card__title"><a href="guides/lossless-video-cut/">재인코딩 없이 영상 자르기</a></h3>
+                    <p class="feature-card__desc">키프레임 경계와 주의점을 이해하고 빠르게 컷을 내보내는 방법을 알아봅니다.</p>
+                </article>
+                <article class="feature-card">
+                    <h3 class="feature-card__title"><a href="guides/remux-video/">MKV를 MP4로 리먹스하기</a></h3>
+                    <p class="feature-card__desc">트랜스코딩 없이 컨테이너를 바꾸고 코덱 호환성을 확인하는 방법을 알아봅니다.</p>
                 </article>
             </div>
         </div>
@@ -321,17 +343,17 @@
                     좋은 비디오 도구는 많습니다. 하지만 <strong>빠른 부가 작업에 최적화된</strong> 도구 &mdash; 인코딩 없이 자르고, 음성 피치는 유지한 채 배속 변환하고, 소리만 초고속으로 분리하고, 확장자만 즉시 변경하고, 프레임 단위로 캡처하는 &mdash; 그런 도구는 찾기 어렵습니다.
                 </p>
                 <p class="concept__text">
-                    Mytory Video Tools는 그 가려운 곳을 긁으려고 만들었습니다. 또 다른 비디오 편집기가 아닙니다. <strong>편집과 편집 사이의 순간들을 위한 스위스 아미 나이프</strong>입니다: 클립을 자르고, 구간을 합치고, 사운드트랙을 추출하고, 포맷을 변환할 때 &mdash; 지금, 무손실로, 하드웨어 가속을 기본으로 사용하고 싶다면 이 앱입니다.
+                    Mytory Video Tools는 그 가려운 곳을 긁으려고 만들었습니다. 또 다른 비디오 편집기가 아닙니다. <strong>편집과 편집 사이의 순간들을 위한 스위스 아미 나이프</strong>입니다: 클립을 자르고, 구간을 합치고, 사운드트랙을 추출하고, 포맷을 변환할 때 명령줄 없이 빠르게 작업할 수 있습니다.
                 </p>
                 <p class="concept__text">
-                    클라우드 업로드도, 계정도, 구독도 없습니다. 그냥 네이티브 코드와 FFmpeg, 그리고 사용자를 방해하지 않는 깔끔한 인터페이스뿐입니다. 모든 작업에는 <strong>적절한 기본값</strong>이 적용됩니다 &mdash; 하드웨어 가속은 자동 감지되고, 출력 포맷은 미리 최적화되어 있어 설정을 건드릴 일이 거의 없습니다.
+                    클라우드 업로드도, 계정도, 구독도 없습니다. FFmpeg를 포함한 Electron 데스크톱 앱과 사용자를 방해하지 않는 깔끔한 인터페이스를 제공합니다. 빠른 컷과 리먹스는 파일 형식이 허용할 때 재인코딩을 피하고, 그 밖의 작업에는 화질과 하드웨어 가속을 위한 <strong>적절한 기본값</strong>을 사용합니다.
                 </p>
             </div>
             <div class="concept__tags">
-                <span class="concept__tag">무손실</span>
+                <span class="concept__tag">컷·리먹스 재인코딩 생략</span>
                 <span class="concept__tag">피치 유지</span>
                 <span class="concept__tag">하드웨어 가속</span>
-                <span class="concept__tag">재인코딩 불필요</span>
+                <span class="concept__tag">로컬 처리</span>
                 <span class="concept__tag">일괄 처리</span>
             </div>
         </div>
@@ -361,7 +383,7 @@
                         Intel (x64) variant →
                     </a>
                 </div>
-                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-Setup-v1.9.2.exe" target="_blank" rel="noopener" class="platform-card">
+                <a href="https://apps.microsoft.com/detail/9nkrwrkmlgmw" target="_blank" rel="noopener" class="platform-card">
                     <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <rect x="4" y="2" width="16" height="20" rx="2"/>
                         <line x1="9" y1="2" x2="9" y2="22"/>

@@ -12,12 +12,13 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mytory Video Tools — High-Speed Native Video Utilities</title>
-    <meta name="description" content="Cross-platform desktop video tools built with Electron and FFmpeg. Speed changer, compressor, audio compressor, frame capture, remuxer, splitter, joiner, and audio extractor.">
-    <meta property="og:title" content="Mytory Video Tools">
-    <meta property="og:description" content="High-speed native video utilities for Windows, macOS, and Linux.">
+    <title>Mytory Video Tools — Quick FFmpeg Jobs, No Command Line</title>
+    <meta name="description" content="Run quick FFmpeg video jobs without the command line. Trim, remux, compress, convert, and capture frames in a free Electron desktop app for Windows, macOS, and Linux.">
+    <meta property="og:title" content="Mytory Video Tools — Quick FFmpeg Jobs, No Command Line">
+    <meta property="og:description" content="Trim, remux, compress, convert, and capture video with FFmpeg through a simple desktop app.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mytory.github.io/mytory-video-tools/">
+    <meta property="og:url" content="https://video-tools.mytory.net/">
+    <link rel="canonical" href="https://video-tools.mytory.net/">
     <meta property="og:image" content="https://video-tools.mytory.net/assets/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="800">
@@ -40,6 +41,7 @@
             </a>
             <div class="navbar__links">
                 <a href="#features" class="navbar__link">Features</a>
+                <a href="#guides" class="navbar__link">Guides</a>
                 <a href="#languages" class="navbar__link">Languages</a>
                 <a href="#concept" class="navbar__link">Concept</a>
                 <a href="#download" class="navbar__link">Download</a>
@@ -67,7 +69,7 @@
                     <span class="hero__title--accent">Video Tools</span>
                 </h1>
                 <p class="hero__sub">
-                    Eight powerful video and audio utilities in one native desktop app. Speed up, compress, split, join, convert, and capture with hardware-accelerated encoding. No uploads, no limits.
+                    Quick FFmpeg video jobs in a simple Electron desktop app. Trim, remux, compress, convert, and capture frames without the command line. Your files stay on your computer.
                 </p>
                 <div class="hero__ctas">
                     <a href="#download" class="btn btn--primary">
@@ -142,7 +144,7 @@
         <div class="features__inner">
             <div class="features__header">
                 <h2 class="features__title">Eight tools, one app</h2>
-                <p class="features__sub">Every video and audio task you need, from speed adjustment to lossless compression and audio conversion. No subscription, no cloud uploads, no limits.</p>
+                <p class="features__sub">Everyday video and audio tasks, from speed adjustment and compression to container remuxing and audio conversion. No subscription, no cloud uploads, no limits.</p>
             </div>
 
             <div class="features__grid">
@@ -184,7 +186,7 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
                     </div>
                     <h3 class="feature-card__title">Remuxer</h3>
-                    <p class="feature-card__desc">Convert between MP4, MKV, and MOV containers without re-encoding. Lossless and instant. Preserves all streams.</p>
+                    <p class="feature-card__desc">Move compatible streams between MP4, MKV, and MOV containers without re-encoding. Playback depends on whether the target container and player support each codec.</p>
                 </article>
 
                 <!-- Audio Drop -->
@@ -220,12 +222,32 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
                     </div>
                     <h3 class="feature-card__title">Video Splitter</h3>
-                    <p class="feature-card__desc">Cut a segment losslessly by setting start and end points. Extremely fast no-re-encode splitting. Ideal for trimming highlights or preparing clips for assembly.</p>
+                    <p class="feature-card__desc">Cut a segment without re-encoding, but exact cut times are not guaranteed; the start point is especially affected by keyframe placement. Ideal for quickly trimming highlights or preparing clips for assembly.</p>
                     <ul class="feature-card__tags">
-                        <li>Lossless cut</li>
-                        <li>Keyframe snapping</li>
+                        <li>No re-encoding</li>
+                        <li>Fast stream copy</li>
                         <li>Split-Edit-Join workflow</li>
                     </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guides -->
+    <section class="features" id="guides">
+        <div class="features__inner">
+            <div class="features__header">
+                <h2 class="features__title">Practical video guides</h2>
+                <p class="features__sub">Learn what fast, no-re-encode workflows can do and where container or keyframe limits apply.</p>
+            </div>
+            <div class="features__grid">
+                <article class="feature-card">
+                    <h3 class="feature-card__title"><a href="guides/lossless-video-cut/">How to cut video without re-encoding</a></h3>
+                    <p class="feature-card__desc">Understand keyframe boundaries, trade-offs, and how to make a quick lossless cut.</p>
+                </article>
+                <article class="feature-card">
+                    <h3 class="feature-card__title"><a href="guides/remux-video/">How to remux video from MKV to MP4</a></h3>
+                    <p class="feature-card__desc">Change containers without transcoding, and check codec compatibility before sharing.</p>
                 </article>
             </div>
         </div>
@@ -333,7 +355,7 @@
                         Intel (x64) variant →
                     </a>
                 </div>
-                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-Setup-v1.9.2.exe" target="_blank" rel="noopener" class="platform-card">
+                <a href="https://apps.microsoft.com/detail/9nkrwrkmlgmw" target="_blank" rel="noopener" class="platform-card">
                     <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <rect x="4" y="2" width="16" height="20" rx="2"/>
                         <line x1="9" y1="2" x2="9" y2="22"/>
@@ -369,17 +391,17 @@
                     Good video tools exist. But finding one that is <strong>optimized for the quick, adjacent tasks</strong> &mdash; cutting without re-encoding, changing speed while preserving voice pitch, instantly extracting audio, switching containers in a click, capturing frames frame-by-frame &mdash; is surprisingly hard.
                 </p>
                 <p class="concept__text">
-                    Mytory Video Tools was built to scratch that itch. It is not another video editor. It is a <strong>swiss-army knife for the moments between edits</strong>: when you need to split a clip, join segments, extract a soundtrack, or convert a format, and you want it done <em>now</em>, losslessly, with hardware acceleration out of the box.
+                    Mytory Video Tools was built to scratch that itch. It is not another video editor. It is a <strong>swiss-army knife for the moments between edits</strong>: when you need to split a clip, join segments, extract a soundtrack, or convert a format, and you want it done <em>now</em>, without a command line.
                 </p>
                 <p class="concept__text">
-                    No cloud uploads, no accounts, no subscriptions. Just native code, FFmpeg under the hood, and a clean interface that stays out of your way. Every operation uses <strong>sensible defaults</strong> &mdash; hardware acceleration is auto-detected, output formats are pre-optimized, and you rarely need to touch a setting to get the job done.
+                    No cloud uploads, no accounts, no subscriptions. Just an Electron desktop app with FFmpeg under the hood and a clean interface that stays out of your way. Quick cuts and remuxes avoid re-encoding when the file format allows it; other tasks use <strong>sensible defaults</strong> for quality and hardware acceleration.
                 </p>
             </div>
             <div class="concept__tags">
-                <span class="concept__tag">Lossless by design</span>
+                <span class="concept__tag">No re-encode for cuts and remuxes</span>
                 <span class="concept__tag">Pitch preservation</span>
                 <span class="concept__tag">Hardware accelerated</span>
-                <span class="concept__tag">No re-encode</span>
+                <span class="concept__tag">Local processing</span>
                 <span class="concept__tag">Batch processing</span>
             </div>
         </div>

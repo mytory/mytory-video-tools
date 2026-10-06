@@ -12,12 +12,13 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mytory Video Tools — Utilitas Video Native Berkecepatan Tinggi</title>
-    <meta name="description" content="Alat video desktop multiplatform yang dibangun dengan Electron dan FFmpeg. Pengubah kecepatan, kompresor, tangkapan bingkai, remuxer, penggabung, pemisah, dan ekstraksi audio.">
-    <meta property="og:title" content="Mytory Video Tools">
-    <meta property="og:description" content="Utilitas video native berkecepatan tinggi untuk Windows, macOS, dan Linux.">
+    <title>Mytory Video Tools — Tugas FFmpeg cepat, tanpa baris perintah</title>
+    <meta name="description" content="Jalankan tugas video FFmpeg dengan cepat tanpa baris perintah. Potong, remux, kompres, konversi, dan tangkap bingkai dengan aplikasi Electron gratis untuk Windows, macOS, dan Linux.">
+    <meta property="og:title" content="Mytory Video Tools — Tugas FFmpeg cepat, tanpa baris perintah">
+    <meta property="og:description" content="Potong, remux, kompres, konversi, dan tangkap video dengan FFmpeg melalui aplikasi desktop yang sederhana.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mytory.github.io/mytory-video-tools/">
+    <meta property="og:url" content="https://video-tools.mytory.net/id/">
+    <link rel="canonical" href="https://video-tools.mytory.net/id/">
     <meta property="og:image" content="https://video-tools.mytory.net/assets/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="800">
@@ -40,6 +41,7 @@
             </a>
             <div class="navbar__links">
                 <a href="#features" class="navbar__link">Fitur</a>
+                <a href="#guides" class="navbar__link">Panduan</a>
                 <a href="#languages" class="navbar__link">Bahasa</a>
                 <a href="#concept" class="navbar__link">Konsep</a>
                 <a href="#download" class="navbar__link">Unduh</a>
@@ -67,7 +69,7 @@
                     <span class="hero__title--accent">Video Cepat</span>
                 </h1>
                 <p class="hero__sub">
-                    Delapan alat video dan audio dalam satu aplikasi desktop. Percepat, kompres, pisah, gabung, konversi, dan tangkap dengan encoding yang dipercepat perangkat keras. Tanpa unggahan atau batasan.
+                    Jalankan tugas video FFmpeg dengan cepat di aplikasi desktop Electron yang sederhana, tanpa baris perintah. Potong, remux, kompres, konversi, dan tangkap bingkai; file tetap di komputer Anda.
                 </p>
                 <div class="hero__ctas">
                     <a href="#download" class="btn btn--primary">
@@ -142,7 +144,7 @@
         <div class="features__inner">
             <div class="features__header">
                 <h2 class="features__title">Tujuh alat, satu aplikasi</h2>
-                <p class="features__sub">Semua tugas video yang Anda butuhkan, dari penyesuaian kecepatan hingga penggabungan lossless. Tanpa langganan, tanpa unggahan cloud, tanpa batas.</p>
+                <p class="features__sub">Tugas video dan audio sehari-hari: mengatur kecepatan, kompresi, remux kontainer, dan konversi audio. Tanpa langganan, tanpa unggahan cloud, tanpa batas.</p>
             </div>
 
             <div class="features__grid">
@@ -184,7 +186,7 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
                     </div>
                     <h3 class="feature-card__title">Remuxer</h3>
-                    <p class="feature-card__desc">Konversi antar kontainer MP4, MKV, dan MOV tanpa re-encoding. Lossless dan instan. Menjaga semua aliran data.</p>
+                    <p class="feature-card__desc">Pindahkan aliran media yang kompatibel antar kontainer MP4, MKV, dan MOV tanpa re-encoding. Pemutaran bergantung pada dukungan kontainer dan pemutar terhadap tiap codec.</p>
                 </article>
 
                 <!-- Ekstrak Audio -->
@@ -220,12 +222,32 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
                     </div>
                     <h3 class="feature-card__title">Pemisah Video</h3>
-                    <p class="feature-card__desc">Potong segmen secara lossless dengan mengatur titik awal dan akhir. Pemotongan sangat cepat tanpa re-encoding. Ideal untuk memotong sorotan atau menyiapkan klip untuk perakitan.</p>
+                    <p class="feature-card__desc">Potong segmen tanpa re-encoding, tetapi waktu potong persis tidak dijamin; titik awal terutama dipengaruhi posisi keyframe. Cocok untuk memotong sorotan atau menyiapkan klip.</p>
                     <ul class="feature-card__tags">
-                        <li>Potongan lossless</li>
-                        <li>Snap ke keyframe</li>
+                        <li>Tanpa re-encoding</li>
+                        <li>Salin aliran dengan cepat</li>
                         <li>Alur pisah-edit-gabung</li>
                     </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guides -->
+    <section class="features" id="guides">
+        <div class="features__inner">
+            <div class="features__header">
+                <h2 class="features__title">Panduan video (bahasa Inggris)</h2>
+                <p class="features__sub">Pelajari alur cepat serta batas keyframe dan kontainer.</p>
+            </div>
+            <div class="features__grid">
+                <article class="feature-card">
+                    <h3 class="feature-card__title"><a href="../guides/lossless-video-cut/">Cara memotong video tanpa encoding ulang</a></h3>
+                    <p class="feature-card__desc">Pahami batas keyframe dan hal yang perlu diperhatikan saat memotong cepat.</p>
+                </article>
+                <article class="feature-card">
+                    <h3 class="feature-card__title"><a href="../guides/remux-video/">Cara me-remux MKV ke MP4</a></h3>
+                    <p class="feature-card__desc">Ubah kontainer tanpa transcoding dan periksa kompatibilitas codec.</p>
                 </article>
             </div>
         </div>
@@ -333,7 +355,7 @@
                         Intel (x64) variant →
                     </a>
                 </div>
-                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-Setup-v1.9.2.exe" target="_blank" rel="noopener" class="platform-card">
+                <a href="https://apps.microsoft.com/detail/9nkrwrkmlgmw" target="_blank" rel="noopener" class="platform-card">
                     <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <rect x="4" y="2" width="16" height="20" rx="2"/>
                         <line x1="9" y1="2" x2="9" y2="22"/>
@@ -369,17 +391,17 @@
                     Alat video yang bagus sudah banyak. Tapi menemukan yang <strong>dioptimalkan untuk tugas-tugas cepat dan tambahan</strong> —memotong tanpa re-encoding, mengubah kecepatan sambil menjaga nada suara, mengekstrak audio secara instan, mengganti kontainer dalam satu klik, menangkap bingkai demi bingkai— ternyata sangat sulit.
                 </p>
                 <p class="concept__text">
-                    Mytory Video Tools dibuat untuk menggaruk yang gatal itu. Ini bukan editor video biasa. Ini adalah <strong>pisau swiss army untuk momen-momen di antara editing</strong>: saat Anda perlu memisahkan klip, menggabungkan segmen, mengekstrak soundtrack, atau mengonversi format, dan Anda ingin selesai <em>sekarang</em>, secara lossless, dengan akselerasi hardware siap pakai.
+                    Mytory Video Tools dibuat untuk menggaruk yang gatal itu. Ini bukan editor video biasa. Ini adalah <strong>pisau swiss army untuk momen-momen di antara editing</strong>: saat Anda perlu memisahkan klip, menggabungkan segmen, mengekstrak soundtrack, atau mengonversi format dengan cepat, tanpa baris perintah.
                 </p>
                 <p class="concept__text">
-                    Tanpa unggahan cloud, tanpa akun, tanpa langganan. Hanya kode native, FFmpeg di balik layar, dan antarmuka bersih yang tidak mengganggu. Setiap operasi menggunakan <strong>default yang masuk akal</strong> — akselerasi hardware terdeteksi otomatis, format output sudah pra-optimasi, dan Anda jarang perlu menyentuh pengaturan untuk menyelesaikan pekerjaan.
+                    Tanpa unggahan cloud, tanpa akun, tanpa langganan. Ini adalah aplikasi desktop Electron dengan FFmpeg dan antarmuka sederhana. Pemotongan dan remux cepat menghindari encoding ulang jika format file mendukungnya.
                 </p>
             </div>
             <div class="concept__tags">
-                <span class="concept__tag">Lossless sejak awal</span>
+                <span class="concept__tag">Potongan dan remux tanpa re-encoding</span>
                 <span class="concept__tag">Preservasi nada</span>
                 <span class="concept__tag">Percepatan hardware</span>
-                <span class="concept__tag">Tanpa re-encode</span>
+                <span class="concept__tag">Pemrosesan lokal</span>
                 <span class="concept__tag">Pemrosesan batch</span>
             </div>
         </div>

@@ -2,7 +2,11 @@
 
 > **🇬🇧 English:** [README.md](./README.md) · **🇰🇷 한국어:** [README.ko.md](./README.ko.md) · **🇯🇵 日本語:** [README.ja.md](./README.ja.md) · **🇨🇳 简体中文:** [README.zh-cn.md](./README.zh-cn.md) · **🇧🇷 Português:** [README.pt.md](./README.pt.md) · **🇫🇷 Français:** [README.fr.md](./README.fr.md) · **🇮🇩 Bahasa Indonesia:** [README.id.md](./README.id.md) · **🇮🇳 हिन्दी:** [README.hi.md](./README.hi.md)
 
-**Mytory Video Tools** es una aplicación de escritorio multiplataforma (Windows, macOS, Linux) para codificación de video de alta velocidad y diversas tareas de manipulación de medios. Está construida con Electron e incluye archivos binarios FFmpeg/FFprobe integrados.
+**Mytory Video Tools** es una interfaz gráfica de FFmpeg para escritorio que agiliza tareas multimedia demasiado pequeñas para abrir un editor completo y demasiado tediosas para memorizar comandos de FFmpeg.
+
+[⬇️ Descargar para Windows, macOS o Linux](https://github.com/mytory/mytory-video-tools/releases)
+
+![Captura de la aplicación de escritorio Mytory Video Tools](./screenshots/screenshot-1.png)
 
 ### Novedades de v1.9.2
 
@@ -26,7 +30,7 @@ Frame Capture ahora guarda inmediatamente mientras se analiza la frecuencia de f
 | 📸 **Captura de fotogramas** | Captura de un solo fotograma, extracción por lotes a intervalos y detección automática de escenas con control de sensibilidad. Elija una carpeta de destino o vuelva a la carpeta del video. Capture inmediatamente mientras se analiza la frecuencia de fotogramas: los nombres de archivo usan milisegundos hasta confirmar una frecuencia constante; las nuevas capturas usan entonces precisión de fotograma. Los videos de frecuencia variable mantienen los milisegundos; si dura menos de una hora, se omite el campo de horas. Las imágenes capturadas conservan su hora real de captura en EXIF. |
 | 🔄 **Remuxer** | Conversión rápida de formato de contenedor (MP4, MKV, MOV) sin recodificación. |
 | 🔗 **Unir videos** | Concatena sin pérdidas múltiples archivos de video con parámetros de codificación idénticos. Perfecto para reensamblar segmentos divididos. |
-| ✂️ **Divisor de video** | Corta un segmento sin pérdidas estableciendo puntos de inicio y fin. Extremadamente rápido. |
+| ✂️ **Divisor de video** | Recorta un segmento estableciendo los puntos de inicio y fin. La precisión del corte puede depender de la posición de los fotogramas clave y de la compatibilidad del códec. |
 | 📦 **Compresor** | Comprime video a un tamaño de archivo objetivo con varias opciones de códec y calidad. |
 
 > **🖱️ Arrastrar y soltar global**: Arrastra archivos a cualquier parte de la ventana de la aplicación para agregarlos instantáneamente a la herramienta activa actual.
@@ -122,7 +126,7 @@ Esta aplicación utiliza los siguientes proyectos de código abierto y cumple co
 
 ## 6. Licencia
 
-Copyright (c) 2026 mytory. Este proyecto está licenciado bajo **ISC License**. Consulte el archivo [LICENSE](./LICENSE) para obtener más detalles.
+Copyright (c) 2026 mytory. Este proyecto está licenciado bajo **GNU General Public License v3.0**. Consulte el archivo [LICENSE](./LICENSE) para obtener más detalles.
 
 ---
 

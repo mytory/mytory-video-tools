@@ -12,12 +12,13 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mytory Video Tools — 高速原生视频工具</title>
-    <meta name="description" content="基于 Electron 和 FFmpeg 的跨平台桌面视频工具。速度调整、压缩、帧捕获、格式转换、视频合并、分割、音频提取。">
-    <meta property="og:title" content="Mytory Video Tools">
-    <meta property="og:description" content="适用于 Windows、macOS 和 Linux 的高速原生视频工具。">
+    <title>Mytory Video Tools — 快速 FFmpeg 处理，无需命令行</title>
+    <meta name="description" content="无需命令行即可快速完成 FFmpeg 视频处理。这款免费的 Electron 桌面应用支持 Windows、macOS 和 Linux，可剪切、重新封装、压缩、转换和截取视频帧。">
+    <meta property="og:title" content="Mytory Video Tools — 快速 FFmpeg 处理，无需命令行">
+    <meta property="og:description" content="通过简单的桌面应用使用 FFmpeg 剪切、重新封装、压缩、转换视频并截取帧。">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mytory.github.io/mytory-video-tools/">
+    <meta property="og:url" content="https://video-tools.mytory.net/zh-cn/">
+    <link rel="canonical" href="https://video-tools.mytory.net/zh-cn/">
     <meta property="og:image" content="https://video-tools.mytory.net/assets/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="800">
@@ -40,6 +41,7 @@
             </a>
             <div class="navbar__links">
                 <a href="#features" class="navbar__link">功能</a>
+                <a href="#guides" class="navbar__link">指南</a>
                 <a href="#languages" class="navbar__link">语言</a>
                 <a href="#concept" class="navbar__link">理念</a>
                 <a href="#download" class="navbar__link">下载</a>
@@ -67,7 +69,7 @@
                     <span class="hero__title--accent">视频工具</span>
                 </h1>
                 <p class="hero__sub">
-                    八款视频和音频工具集于一款桌面应用。借助硬件加速完成变速、压缩、分割、合并、转换和截帧。无需上传，没有限制。
+                    在简单易用的 Electron 桌面应用中快速完成 FFmpeg 视频处理，无需命令行。支持剪切、重新封装、压缩、转换和截帧，文件保留在本机。
                 </p>
                 <div class="hero__ctas">
                     <a href="#download" class="btn btn--primary">
@@ -142,7 +144,7 @@
         <div class="features__inner">
             <div class="features__header">
                 <h2 class="features__title">七个工具，一个应用</h2>
-                <p class="features__sub">从速度调整到无损拼接，满足您所有的视频处理需求。无需订阅，无需云上传，没有限制。</p>
+                <p class="features__sub">涵盖速度调整、压缩、容器重新封装和音频转换等常用任务。无需订阅，无需云端上传，没有限制。</p>
             </div>
 
             <div class="features__grid">
@@ -184,7 +186,7 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
                     </div>
                     <h3 class="feature-card__title">格式转换</h3>
-                    <p class="feature-card__desc">无需重新编码即可在MP4、MKV、MOV容器之间转换。无损、即时，保留所有流。</p>
+                    <p class="feature-card__desc">在 MP4、MKV 和 MOV 容器间移动兼容的媒体流，无需重新编码。能否播放取决于目标容器和播放器对各编解码器的支持。</p>
                 </article>
 
                 <!-- 音频提取 -->
@@ -220,12 +222,32 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
                     </div>
                     <h3 class="feature-card__title">视频分割</h3>
-                    <p class="feature-card__desc">通过设置开始和结束点无损剪切片段。无需重新编码，极其快速。非常适合截取精彩片段或准备剪辑素材。</p>
+                    <p class="feature-card__desc">无需重新编码即可剪切片段，但无法保证剪切时间与指定时间完全一致，尤其是起始位置会受关键帧分布影响。适合快速剪辑精彩片段或准备素材。</p>
                     <ul class="feature-card__tags">
-                        <li>无损剪切</li>
-                        <li>关键帧吸附</li>
+                        <li>无需重新编码</li>
+                        <li>快速复制媒体流</li>
                         <li>分割-编辑-合并工作流</li>
                     </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guides -->
+    <section class="features" id="guides">
+        <div class="features__inner">
+            <div class="features__header">
+                <h2 class="features__title">视频指南（英文）</h2>
+                <p class="features__sub">了解快速视频处理方式，以及关键帧和容器格式的限制。</p>
+            </div>
+            <div class="features__grid">
+                <article class="feature-card">
+                    <h3 class="feature-card__title"><a href="../guides/lossless-video-cut/">如何在不重新编码的情况下剪切视频</a></h3>
+                    <p class="feature-card__desc">了解关键帧边界和快速剪切时需要注意的事项。</p>
+                </article>
+                <article class="feature-card">
+                    <h3 class="feature-card__title"><a href="../guides/remux-video/">如何将 MKV 重新封装为 MP4</a></h3>
+                    <p class="feature-card__desc">无需转码即可更改容器，并检查编解码器兼容性。</p>
                 </article>
             </div>
         </div>
@@ -333,7 +355,7 @@
                         Intel (x64) variant →
                     </a>
                 </div>
-                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-Setup-v1.9.2.exe" target="_blank" rel="noopener" class="platform-card">
+                <a href="https://apps.microsoft.com/detail/9nkrwrkmlgmw" target="_blank" rel="noopener" class="platform-card">
                     <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <rect x="4" y="2" width="16" height="20" rx="2"/>
                         <line x1="9" y1="2" x2="9" y2="22"/>
@@ -369,17 +391,17 @@
                     好的视频工具很多。但要找到一个<strong>针对快速辅助任务优化</strong>的工具——无需重新编码即可剪切、在保持音调的同时改变速度、即时提取音频、一键转换容器、逐帧捕获画面——却出奇地困难。
                 </p>
                 <p class="concept__text">
-                    Mytory Video Tools 正是为了解决这一痛点而生。它不是又一个视频编辑器，而是<strong>编辑间隙的瑞士军刀</strong>：当你需要分割片段、合并段落、提取音轨或转换格式时，你想要<em>立即</em>完成——无损地、开箱即用地享受硬件加速。
+                    Mytory Video Tools 正是为了解决这一痛点而生。它不是又一个视频编辑器，而是<strong>编辑间隙的瑞士军刀</strong>：当你需要分割片段、合并段落、提取音轨或转换格式时，无需命令行就能快速完成。
                 </p>
                 <p class="concept__text">
-                    无需云上传、无需账户、无需订阅。只有原生代码、底层的FFmpeg，以及简洁不干扰的界面。每项操作都采用<strong>合理的默认值</strong>——硬件加速自动检测，输出格式预优化，几乎不需要调整任何设置即可完成任务。
+                    无需云上传、无需账户、无需订阅。这是一款内置 FFmpeg、界面简洁的 Electron 桌面应用。文件格式允许时，快速剪切和重新封装无需重新编码。
                 </p>
             </div>
             <div class="concept__tags">
-                <span class="concept__tag">无损设计</span>
+                <span class="concept__tag">剪切与重新封装无需重新编码</span>
                 <span class="concept__tag">音调保持</span>
                 <span class="concept__tag">硬件加速</span>
-                <span class="concept__tag">无需重新编码</span>
+                <span class="concept__tag">本地处理</span>
                 <span class="concept__tag">批量处理</span>
             </div>
         </div>

@@ -1044,6 +1044,11 @@ button.btn.queue-cancel-btn {
     margin: 0;
 }
 
+#splitSmartCut:checked {
+    background-color: var(--brand);
+    border-color: var(--brand);
+}
+
 .config-panel input[type="checkbox"],
 .config-panel input[type="radio"] {
     appearance: none;

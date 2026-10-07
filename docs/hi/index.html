@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-VYX4Q1S9LK"></script>
@@ -12,12 +12,13 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mytory Video Tools — हाई-स्पीड नेटिव वीडियो उपयोगिताएँ</title>
-    <meta name="description" content="Electron और FFmpeg के साथ निर्मित क्रॉस-प्लेटफ़ॉर्म डेस्कटॉप वीडियो टूल। स्पीड चेंजर, कंप्रेसर, फ्रेम कैप्चर, रीमक्सर, जॉइनर, स्प्लिटर और ऑडियो निष्कर्षण।">
-    <meta property="og:title" content="Mytory Video Tools">
-    <meta property="og:description" content="Windows, macOS और Linux के लिए हाई-स्पीड नेटिव वीडियो उपयोगिताएँ।">
+    <title>Mytory Video Tools — तेज़ FFmpeg काम, कमांड लाइन के बिना</title>
+    <meta name="description" content="कमांड लाइन के बिना FFmpeg वीडियो काम तेज़ी से करें। Windows, macOS और Linux के लिए मुफ़्त Electron डेस्कटॉप ऐप में वीडियो काटें, रीमक्स करें, संपीड़ित करें, बदलें और फ़्रेम कैप्चर करें।">
+    <meta property="og:title" content="Mytory Video Tools — तेज़ FFmpeg काम, कमांड लाइन के बिना">
+    <meta property="og:description" content="सरल डेस्कटॉप ऐप में FFmpeg से वीडियो काटें, रीमक्स करें, संपीड़ित करें, बदलें और फ़्रेम कैप्चर करें।">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mytory.github.io/mytory-video-tools/">
+    <meta property="og:url" content="https://video-tools.mytory.net/hi/">
+    <link rel="canonical" href="https://video-tools.mytory.net/hi/">
     <meta property="og:image" content="https://video-tools.mytory.net/assets/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="800">
@@ -26,7 +27,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles.css?h=10203a0793696e1b7537558bf8050b34">
+    <link rel="stylesheet" href="../styles.css?h=331a22122b81f6ff6ec9a500ce1b043e">
     <link rel="icon" type="image/webp" href="../assets/logo.webp">
 </head>
 <body>
@@ -40,6 +41,7 @@
             </a>
             <div class="navbar__links">
                 <a href="#features" class="navbar__link">सुविधाएँ</a>
+                <a href="#guides" class="navbar__link">गाइड</a>
                 <a href="#languages" class="navbar__link">भाषाएँ</a>
                 <a href="#concept" class="navbar__link">अवधारणा</a>
                 <a href="#download" class="navbar__link">डाउनलोड</a>
@@ -50,7 +52,7 @@
                     GitHub
                 </a>
             </div>
-            <button class="navbar__toggle" aria-label="Toggle menu">
+            <button class="navbar__toggle" aria-label="मेन्यू टॉगल करें">
                 <span></span><span></span><span></span>
             </button>
         </div>
@@ -61,13 +63,13 @@
         <div class="hero__bg"></div>
         <div class="hero__inner">
             <div class="hero__content">
-                <div class="hero__eyebrow">v1.9.2 &middot; Cross-platform Desktop App</div>
+                <div class="hero__eyebrow">v1.10.0 &middot; बहु-प्लेटफ़ॉर्म डेस्कटॉप ऐप</div>
                 <h1 class="hero__title">
                     हाई-स्पीड<br>
                     <span class="hero__title--accent">वीडियो टूल्स</span>
                 </h1>
                 <p class="hero__sub">
-                    आठ वीडियो और ऑडियो टूल एक डेस्कटॉप ऐप में। हार्डवेयर त्वरण के साथ गति बदलें, संपीड़ित करें, विभाजित करें, जोड़ें, रूपांतरित करें और फ़्रेम कैप्चर करें। कोई अपलोड या सीमा नहीं।
+                    सरल Electron डेस्कटॉप ऐप में FFmpeg वीडियो काम तेज़ी से करें, कमांड लाइन की ज़रूरत नहीं। वीडियो काटें, रीमक्स करें, संपीड़ित करें, बदलें और फ़्रेम कैप्चर करें; फ़ाइलें आपके कंप्यूटर पर रहती हैं।
                 </p>
                 <div class="hero__ctas">
                     <a href="#download" class="btn btn--primary">
@@ -79,7 +81,7 @@
                         डाउनलोड
                     </a>
                     <a href="#features" class="btn btn--ghost">
-                        Explore सुविधाएँ
+                        सुविधाएँ देखें
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="12" y1="5" x2="12" y2="19"/>
                             <polyline points="19 12 12 19 5 12"/>
@@ -97,7 +99,7 @@
             <div class="hero__visual">
                 <figure class="hero__screenshot">
                     <img src="../assets/screenshot-1.webp"
-                         alt="Mytory Video Tools main interface showing स्पीड चेंजर tool with dark sidebar and control panel"
+                         alt="Mytory Video Tools का मुख्य इंटरफ़ेस, जिसमें गहरे साइडबार और कंट्रोल पैनल के साथ स्पीड चेंजर टूल दिखता है"
                          width="1200" height="750"
                          loading="eager">
                 </figure>
@@ -106,9 +108,9 @@
     </section>
 
     <!-- Language Selector -->
-    <nav class="lang-nav" aria-label="Language selector">
+    <nav class="lang-nav" aria-label="भाषा चुनें">
         <div class="lang-nav__inner">
-            <span class="lang-nav__label">This page in:</span>
+            <span class="lang-nav__label">यह पृष्ठ इन भाषाओं में:</span>
             <div class="lang-nav__links">
                 <a href="../" class="lang-nav__link"><span class="lang-nav__flag">🇺🇸</span> English</a>
                 <a href="../ko/" class="lang-nav__link"><span class="lang-nav__flag">🇰🇷</span> 한국어</a>
@@ -141,8 +143,8 @@
     <section class="features" id="features">
         <div class="features__inner">
             <div class="features__header">
-                <h2 class="features__title">सात उपकरण, एक ऐप</h2>
-                <p class="features__sub">गति समायोजन से लेकर लॉसलेस कॉन्केटनेशन तक, आपको ज़रूरत का हर वीडियो कार्य। कोई सब्सक्रिप्शन नहीं, कोई क्लाउड अपलोड नहीं, कोई सीमा नहीं।</p>
+                <h2 class="features__title">आठ उपकरण, एक ऐप</h2>
+                <p class="features__sub">रोज़मर्रा के वीडियो और ऑडियो काम: गति समायोजन, संपीड़न, कंटेनर रीमक्स और ऑडियो रूपांतरण। कोई सब्सक्रिप्शन नहीं, कोई क्लाउड अपलोड नहीं, कोई सीमा नहीं।</p>
             </div>
 
             <div class="features__grid">
@@ -184,7 +186,7 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
                     </div>
                     <h3 class="feature-card__title">रीमक्सर</h3>
-                    <p class="feature-card__desc">बिना री-एन्कोडिंग के MP4, MKV और MOV कंटेनरों के बीच रूपांतरण। लॉसलेस और तुरंत। सभी स्ट्रीम संरक्षित रहती हैं।</p>
+                    <p class="feature-card__desc">संगत स्ट्रीम को MP4, MKV और MOV कंटेनरों के बीच बिना री-एन्कोडिंग के ले जाएँ। प्लेबैक हर कोडेक के लिए लक्ष्य कंटेनर और प्लेयर के समर्थन पर निर्भर करता है।</p>
                 </article>
 
                 <!-- ऑडियो ड्रॉप -->
@@ -220,12 +222,32 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
                     </div>
                     <h3 class="feature-card__title">वीडियो स्प्लिटर</h3>
-                    <p class="feature-card__desc">आरंभ और अंत बिंदु निर्धारित करके एक खंड को लॉसलेस काटें। बिना री-एन्कोड के अत्यंत तेज़ विभाजन। हाइलाइट्स को ट्रिम करने या असेंबली के लिए क्लिप तैयार करने के लिए आदर्श।</p>
+                    <p class="feature-card__desc">डिफ़ॉल्ट रूप से तेज़, बिना गुणवत्ता खोए stream copy से कट करें; शुरुआत पिछले keyframe तक खिसक सकती है। वैकल्पिक Smart Cut चुने गए फ़्रेमों के अनुसार कट करता है: समर्थित inter-frame वीडियो में किनारों को दोबारा encode करके बीच के सुरक्षित हिस्से की कॉपी करता है, जबकि intra-frame वीडियो को पूरी तरह कॉपी करता है। Smart Cut ऑडियो को दोबारा encode करता है; codec, profile, container, bit depth और frame timing की सीमाएँ लागू होती हैं।</p>
                     <ul class="feature-card__tags">
-                        <li>लॉसलेस कट</li>
-                        <li>कीफ्रेम स्नैपिंग</li>
+                        <li>डिफ़ॉल्ट रूप से गुणवत्ता बरकरार रखने वाली कॉपी</li>
+                        <li>वैकल्पिक Smart Cut</li>
                         <li>विभाजन-संपादन-जोड़ कार्यप्रवाह</li>
                     </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guides -->
+    <section class="features" id="guides">
+        <div class="features__inner">
+            <div class="features__header">
+                <h2 class="features__title">काम की वीडियो गाइड (अंग्रेज़ी)</h2>
+                <p class="features__sub">बिना दोबारा encode किए तेज़ वर्कफ़्लो की क्षमताएँ और कंटेनर या कीफ़्रेम की सीमाएँ जानें।</p>
+            </div>
+            <div class="features__grid">
+                <article class="feature-card">
+                    <h3 class="feature-card__title"><a href="guides/lossless-video-cut/">बिना री-एन्कोडिंग के वीडियो कैसे काटें</a></h3>
+                    <p class="feature-card__desc">कीफ़्रेम सीमाएँ और अलग-अलग तरीकों के फ़ायदे-नुकसान समझें, फिर तेज़ी से बिना गुणवत्ता खोए कट करना सीखें।</p>
+                </article>
+                <article class="feature-card">
+                    <h3 class="feature-card__title"><a href="guides/remux-video/">MKV को MP4 में रीमक्स कैसे करें</a></h3>
+                    <p class="feature-card__desc">ट्रांसकोडिंग के बिना कंटेनर बदलें और साझा करने से पहले codec संगतता जाँचें।</p>
                 </article>
             </div>
         </div>
@@ -240,7 +262,7 @@
                     हार्डवेयर<br>
                     <span class="hwaccel__title--accent">त्वरण</span>
                 </h2>
-                <p class="hwaccel__desc">No knobs to tweak. Mytory Video Tools picks sensible defaults for every task &mdash; from hardware encoder selection to output quality &mdash; so you get great results without digging through menus. Apple Silicon, NVIDIA, Intel, AMD &mdash; it just works.</p>
+                <p class="hwaccel__desc">सेटिंग बदलने की ज़रूरत नहीं। Mytory Video Tools हर काम के लिए सही डिफ़ॉल्ट चुनता है — हार्डवेयर एन्कोडर के चयन से लेकर आउटपुट की गुणवत्ता तक — ताकि मेन्यू में खोजे बिना अच्छे नतीजे मिलें। Apple Silicon, NVIDIA, Intel, AMD — सब आसानी से काम करते हैं।</p>
                 <div class="hwaccel__chips">
                     <span class="hwaccel__chip">Apple VideoToolbox</span>
                     <span class="hwaccel__chip">NVIDIA NVENC</span>
@@ -288,19 +310,19 @@
 
             <div class="languages__grid">
                 <div class="languages__list">
-                    <div class="languages__item"><span class="languages__flag">🇰🇷</span> Korean <span class="languages__code">ko</span></div>
-                    <div class="languages__item"><span class="languages__flag">🇺🇸</span> English <span class="languages__code">en</span></div>
-                    <div class="languages__item"><span class="languages__flag">🇯🇵</span> Japanese <span class="languages__code">ja</span></div>
-                    <div class="languages__item"><span class="languages__flag">🇨🇳</span> Chinese (Simplified) <span class="languages__code">zh-cn</span></div>
-                    <div class="languages__item"><span class="languages__flag">🇪🇸</span> Spanish <span class="languages__code">es</span></div>
-                    <div class="languages__item"><span class="languages__flag">🇵🇹</span> Portuguese <span class="languages__code">pt</span></div>
-                    <div class="languages__item"><span class="languages__flag">🇫🇷</span> French <span class="languages__code">fr</span></div>
-                    <div class="languages__item"><span class="languages__flag">🇮🇩</span> Indonesian <span class="languages__code">id</span></div>
-                    <div class="languages__item"><span class="languages__flag">🇮🇳</span> Hindi <span class="languages__code">hi</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇰🇷</span> कोरियाई <span class="languages__code">ko</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇺🇸</span> अंग्रेज़ी <span class="languages__code">en</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇯🇵</span> जापानी <span class="languages__code">ja</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇨🇳</span> सरलीकृत चीनी <span class="languages__code">zh-cn</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇪🇸</span> स्पैनिश <span class="languages__code">es</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇵🇹</span> पुर्तगाली <span class="languages__code">pt</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇫🇷</span> फ़्रेंच <span class="languages__code">fr</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇮🇩</span> इंडोनेशियाई <span class="languages__code">id</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇮🇳</span> हिन्दी <span class="languages__code">hi</span></div>
                 </div>
                 <figure class="languages__screenshot">
                     <img src="../assets/screenshot-2.webp"
-                         alt="Mytory Video Tools language selector showing multiple language options"
+                         alt="Mytory Video Tools का भाषा चयनक, जिसमें कई भाषाओं के विकल्प दिखते हैं"
                          width="1200" height="750"
                          loading="lazy">
                     <figcaption class="languages__caption">साइडबार से 9 भाषाओं के बीच स्विच करें। UI तुरंत अपडेट होता है।</figcaption>
@@ -319,7 +341,7 @@
             </div>
             <div class="download__platforms">
                 <div class="platform-card__wrapper">
-                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2-arm64.dmg" target="_blank" rel="noopener" class="platform-card">
+                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0-arm64.dmg" target="_blank" rel="noopener" class="platform-card">
                         <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <rect x="2" y="3" width="20" height="14" rx="2"/>
                             <path d="M8 21h8"/>
@@ -329,20 +351,20 @@
                         <p class="platform-card__desc">Apple Silicon (ARM)</p>
                         <span class="platform-card__meta">.dmg</span>
                     </a>
-                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2-x64.dmg" class="platform-card__alt" target="_blank" rel="noopener">
-                        Intel (x64) variant →
+                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0-x64.dmg" class="platform-card__alt" target="_blank" rel="noopener">
+                        Intel (x64) संस्करण →
                     </a>
                 </div>
-                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-Setup-v1.9.2.exe" target="_blank" rel="noopener" class="platform-card">
+                <a href="https://apps.microsoft.com/detail/9nkrwrkmlgmw" target="_blank" rel="noopener" class="platform-card">
                     <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <rect x="4" y="2" width="16" height="20" rx="2"/>
                         <line x1="9" y1="2" x2="9" y2="22"/>
                     </svg>
                     <h3 class="platform-card__title">Windows</h3>
-                    <p class="platform-card__desc">64-बिट इंस्टॉलर</p>
-                    <span class="platform-card__meta">.exe</span>
+                    <p class="platform-card__desc">Microsoft Store से इंस्टॉल करें</p>
+                    <span class="platform-card__meta">Microsoft Store</span>
                 </a>
-                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2.AppImage" target="_blank" rel="noopener" class="platform-card">
+                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0.AppImage" target="_blank" rel="noopener" class="platform-card">
                     <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/>
                         <line x1="12" y1="22" x2="12" y2="12"/>
@@ -362,24 +384,24 @@
         <div class="concept__inner">
             <div class="concept__header">
                 <div class="concept__eyebrow">विचार</div>
-                <h2 class="concept__title">खुजली <span class="concept__title--accent">खरोंचना</span></h2>
+                <h2 class="concept__title">ज़रूरत <span class="concept__title--accent">पूरी करना</span></h2>
             </div>
             <div class="concept__body">
                 <p class="concept__text">
-                    अच्छे वीडियो टूल्स मौजूद हैं। लेकिन एक ऐसा टूल ढूँढना जो <strong>त्वरित, आसन्न कार्यों के लिए अनुकूलित हो</strong> — बिना री-एन्कोडिंग के काटना, आवाज़ की पिच बनाए रखते हुए गति बदलना, तुरंत ऑडियो निकालना, एक क्लिक में कंटेनर बदलना, फ्रेम-दर-फ्रेम कैप्चर करना — आश्चर्यजनक रूप से कठिन है।
+                    अच्छे वीडियो टूल्स मौजूद हैं। लेकिन <strong>एडिटिंग के बीच किए जाने वाले छोटे और तेज़ कामों के लिए बना</strong> टूल ढूँढना आश्चर्यजनक रूप से कठिन है — जैसे बिना री-एन्कोडिंग के काटना, आवाज़ की पिच बनाए रखते हुए गति बदलना, तुरंत ऑडियो निकालना, एक क्लिक में कंटेनर बदलना और फ़्रेम-दर-फ़्रेम कैप्चर करना।
                 </p>
                 <p class="concept__text">
-                    Mytory Video Tools उस खुजली को खरोंचने के लिए बनाया गया था। यह कोई और वीडियो एडिटर नहीं है। यह <strong>एडिटिंग के बीच के पलों के लिए एक स्विस-आर्मी चाकू</strong> है: जब आपको एक क्लिप को विभाजित करना हो, सेगमेंट जोड़ने हों, साउंडट्रैक निकालना हो, या फ़ॉर्मेट बदलना हो, और आप चाहते हों कि यह <em>अभी</em> हो, लॉसलेस, हार्डवेयर त्वरण के साथ।
+                    Mytory Video Tools इसी ज़रूरत को पूरा करने के लिए बनाया गया है। यह कोई और वीडियो एडिटर नहीं है। यह <strong>एडिटिंग के बीच के कामों का एक बहुउपयोगी टूल</strong> है: जब आपको क्लिप काटनी हो, सेगमेंट जोड़ने हों, ऑडियो निकालना हो या फ़ॉर्मेट बदलना हो और यह काम कमांड लाइन के बिना <em>तुरंत</em> करना हो।
                 </p>
                 <p class="concept__text">
-                    कोई क्लाउड अपलोड नहीं, कोई खाता नहीं, कोई सब्सक्रिप्शन नहीं। बस नेटिव कोड, हुड के नीचे FFmpeg, और एक साफ़ इंटरफ़ेस जो आपके रास्ते में नहीं आता। हर ऑपरेशन <strong>समझदार डिफ़ॉल्ट</strong> का उपयोग करता है — हार्डवेयर त्वरण स्वचालित रूप से पहचाना जाता है, आउटपुट फ़ॉर्मेट पूर्व-अनुकूलित होते हैं, और काम पूरा करने के लिए आपको शायद ही कभी किसी सेटिंग को छूने की ज़रूरत पड़ती है।
+                    कोई क्लाउड अपलोड नहीं, कोई खाता नहीं, कोई सब्सक्रिप्शन नहीं। यह FFmpeg वाला Electron डेस्कटॉप ऐप है, जिसका साफ़ इंटरफ़ेस काम में बाधा नहीं डालता। फ़ाइल फ़ॉर्मेट अनुमति दे तो तेज़ कट और रीमक्स में री-एन्कोडिंग नहीं होती; दूसरे कामों में गुणवत्ता और हार्डवेयर त्वरण के लिए <strong>उपयुक्त डिफ़ॉल्ट सेटिंग्स</strong> चुनी जाती हैं।
                 </p>
             </div>
             <div class="concept__tags">
-                <span class="concept__tag">डिज़ाइन द्वारा लॉसलेस</span>
+                <span class="concept__tag">कट और रीमक्स बिना री-एन्कोडिंग</span>
                 <span class="concept__tag">पिच संरक्षण</span>
                 <span class="concept__tag">हार्डवेयर त्वरित</span>
-                <span class="concept__tag">बिना री-एन्कोड</span>
+                <span class="concept__tag">स्थानीय प्रोसेसिंग</span>
                 <span class="concept__tag">बैच प्रोसेसिंग</span>
             </div>
         </div>
@@ -396,7 +418,7 @@
                     </svg>
                 </div>
                 <h2 class="oss__title">ओपन सोर्स</h2>
-                <p class="oss__desc">लाइसेंसd under GPL-3.0. Electron, FFmpeg, और असंख्य प्रयास और गलतियाँ पर निर्मित। Contributions, issues, and feature requests are welcome on GitHub.</p>
+                <p class="oss__desc">GPL-3.0 लाइसेंस के तहत। Electron, FFmpeg और कई दौर के प्रयासों से बना। GitHub पर योगदान, समस्याओं की रिपोर्ट और फ़ीचर अनुरोधों का स्वागत है।</p>
                 <a href="https://github.com/mytory/mytory-video-tools" target="_blank" rel="noopener" class="btn btn--ghost">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                         <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
@@ -421,7 +443,7 @@
                 <a href="https://mytory.net" target="_blank" rel="noopener">mytory.net</a>
             </div>
             <p class="footer__support">गर्व से विज्ञापन-मुक्त और उपयोगकर्ता-समर्थित। हर कॉफ़ी बदलाव लाती है। ☕ <a href="https://www.paypal.com/ncp/payment/SWKQD7USX8J5U" target="_blank" rel="noopener">PayPal के माध्यम से समर्थन करें</a></p>
-            <p class="footer__copy">Made with &hearts; by mytory &middot; GPL-3.0</p>
+            <p class="footer__copy">mytory द्वारा &hearts; से बनाया गया &middot; GPL-3.0</p>
         </div>
     </footer>
 

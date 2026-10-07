@@ -12,12 +12,13 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mytory Video Tools — 高速ネイティブビデオユーティリティ</title>
-    <meta name="description" content="ElectronとFFmpegを内蔵したクロスプラットフォームデスクトップビデオツール。速度変換、圧縮、フレームキャプチャ、リマックス、結合、分割、音声抽出。">
-    <meta property="og:title" content="Mytory Video Tools">
-    <meta property="og:description" content="Windows、macOS、Linux向けの高速ネイティブビデオユーティリティ。">
+    <title>Mytory Video Tools — FFmpegの作業をすばやく、コマンドライン不要</title>
+    <meta name="description" content="コマンドラインなしでFFmpegの動画処理をすばやく実行。Windows、macOS、Linux向けの無料Electronデスクトップアプリでカット、リマックス、圧縮、変換、フレームキャプチャができます。">
+    <meta property="og:title" content="Mytory Video Tools — FFmpegの作業をすばやく、コマンドライン不要">
+    <meta property="og:description" content="シンプルなデスクトップアプリでFFmpegを使って動画のカット、リマックス、圧縮、変換、フレームキャプチャ。">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mytory.github.io/mytory-video-tools/ja/">
+    <meta property="og:url" content="https://video-tools.mytory.net/ja/">
+    <link rel="canonical" href="https://video-tools.mytory.net/ja/">
     <meta property="og:image" content="https://video-tools.mytory.net/assets/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="800">
@@ -26,7 +27,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles.css?h=10203a0793696e1b7537558bf8050b34">
+    <link rel="stylesheet" href="../styles.css?h=331a22122b81f6ff6ec9a500ce1b043e">
     <link rel="icon" type="image/webp" href="../assets/logo.webp">
 </head>
 <body>
@@ -40,6 +41,7 @@
             </a>
             <div class="navbar__links">
                 <a href="#features" class="navbar__link">機能</a>
+                <a href="#guides" class="navbar__link">ガイド</a>
                 <a href="#languages" class="navbar__link">言語</a>
                 <a href="#concept" class="navbar__link">コンセプト</a>
                 <a href="#download" class="navbar__link">ダウンロード</a>
@@ -61,13 +63,13 @@
         <div class="hero__bg"></div>
         <div class="hero__inner">
             <div class="hero__content">
-                <div class="hero__eyebrow">v1.9.2 &middot; クロスプラットフォームデスクトップアプリ</div>
+                <div class="hero__eyebrow">v1.10.0 &middot; クロスプラットフォームデスクトップアプリ</div>
                 <h1 class="hero__title">
                     高速<br>
                     <span class="hero__title--accent">ビデオツール</span>
                 </h1>
                 <p class="hero__sub">
-                    8つの動画・音声ツールを1つのデスクトップアプリに統合。速度変更、圧縮、分割、結合、変換、キャプチャをハードウェアアクセラレーションで処理します。アップロード不要、制限なし。
+                    コマンドライン不要のシンプルなElectronデスクトップアプリで、FFmpegの動画処理をすばやく実行。カット、リマックス、圧縮、変換、フレームキャプチャに対応。ファイルはPC内に保存されます。
                 </p>
                 <div class="hero__ctas">
                     <a href="#download" class="btn btn--primary">
@@ -97,7 +99,7 @@
             <div class="hero__visual">
                 <figure class="hero__screenshot">
                     <img src="../assets/screenshot-1.webp"
-                         alt="Mytory Video Tools メイン画面 — Speed Changerツールとダークサイドバー、コントロールパネル"
+                         alt="Mytory Video Toolsのメイン画面 — 速度変換ツール、ダークサイドバー、コントロールパネル"
                          width="1200" height="750"
                          loading="eager">
                 </figure>
@@ -141,8 +143,8 @@
     <section class="features" id="features">
         <div class="features__inner">
             <div class="features__header">
-                <h2 class="features__title">7つのツール、1つのアプリ</h2>
-                <p class="features__sub">速度調整からロスレス結合まで。サブスクリプション不要、クラウドアップロード不要、制限なし。</p>
+                <h2 class="features__title">8つのツール、1つのアプリ</h2>
+                <p class="features__sub">速度調整や圧縮から、コンテナのリマックスや音声変換まで。サブスクリプション不要、クラウドアップロード不要、制限なし。</p>
             </div>
 
             <div class="features__grid">
@@ -184,7 +186,7 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
                     </div>
                     <h3 class="feature-card__title">リマックス</h3>
-                    <p class="feature-card__desc">再エンコードなしでMP4、MKV、MOVコンテナを高速変換。ロスレス、瞬時、全ストリームを保持。</p>
+                    <p class="feature-card__desc">互換性のあるストリームを再エンコードせずにMP4、MKV、MOVコンテナ間で移動します。再生できるかは対象コンテナとプレーヤーのコーデック対応状況によります。</p>
                 </article>
 
                 <!-- Audio Drop -->
@@ -220,12 +222,32 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
                     </div>
                     <h3 class="feature-card__title">動画分割</h3>
-                    <p class="feature-card__desc">開始点と終了点を設定してセグメントをロスレスでカット。再エンコード不要の超高速分割。ハイライト編集やクリップ準備に最適。</p>
+                    <p class="feature-card__desc">標準では、高速でロスレスなストリームコピーでカットします。開始位置は直前のキーフレームまでずれる場合があります。オプションのSmart Cutは選択したフレームに合わせてカットします。対応するフレーム間予測動画では境界を再エンコードして安全な中間部分をコピーし、イントラフレーム動画は全体をコピーします。Smart Cutでは音声も再エンコードされ、コーデック、プロファイル、コンテナ、ビット深度、フレームタイミングに制限があります。</p>
                     <ul class="feature-card__tags">
-                        <li>ロスレスカット</li>
-                        <li>キーフレームスナップ</li>
-                        <li>分割-編集-結合フロー</li>
+                        <li>標準はロスレスコピー</li>
+                        <li>オプションのSmart Cut</li>
+                        <li>分割・編集・結合のワークフロー</li>
                     </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guides -->
+    <section class="features" id="guides">
+        <div class="features__inner">
+            <div class="features__header">
+                <h2 class="features__title">実用的な動画ガイド（英語）</h2>
+                <p class="features__sub">再エンコードなしの高速な処理でできることと、コンテナやキーフレームによる制約を紹介します。</p>
+            </div>
+            <div class="features__grid">
+                <article class="feature-card">
+                    <h3 class="feature-card__title"><a href="guides/lossless-video-cut/">動画を再エンコードせずにカットする方法</a></h3>
+                    <p class="feature-card__desc">キーフレーム境界と各方式の違いを理解し、すばやくロスレスカットする方法を紹介します。</p>
+                </article>
+                <article class="feature-card">
+                    <h3 class="feature-card__title"><a href="guides/remux-video/">MKVをMP4にリマックスする方法</a></h3>
+                    <p class="feature-card__desc">トランスコードせずにコンテナを変更し、共有前にコーデックの互換性を確認する方法を紹介します。</p>
                 </article>
             </div>
         </div>
@@ -263,7 +285,7 @@
                         <div class="diagram__chip diagram__chip--gpu">
                             <div class="diagram__chip-label">GPU</div>
                             <div class="diagram__chip-sub">ハードウェアエンコーダー</div>
-                            <div class="diagram__chip-badge">HW ACCEL</div>
+                            <div class="diagram__chip-badge">ハードウェア加速</div>
                         </div>
                         <div class="diagram__outcome">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
@@ -309,6 +331,54 @@
         </div>
     </section>
 
+    <!-- Download -->
+    <section class="download" id="download">
+        <div class="download__inner">
+            <div class="download__header">
+                <div class="download__eyebrow">はじめよう</div>
+                <h2 class="download__title"><span class="download__title-name">Mytory Video Tools</span> ダウンロード</h2>
+                <p class="download__sub">フリーでオープンソース。アカウント不要。データが端末から離れることはありません。</p>
+            </div>
+            <div class="download__platforms">
+                <div class="platform-card__wrapper">
+                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0-arm64.dmg" target="_blank" rel="noopener" class="platform-card">
+                        <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="2" y="3" width="20" height="14" rx="2"/>
+                            <path d="M8 21h8"/>
+                            <path d="M12 17v4"/>
+                        </svg>
+                        <h3 class="platform-card__title">macOS</h3>
+                        <p class="platform-card__desc">Apple Silicon (ARM)</p>
+                        <span class="platform-card__meta">.dmg</span>
+                    </a>
+                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0-x64.dmg" class="platform-card__alt" target="_blank" rel="noopener">
+                        Intel（x64）版 →
+                    </a>
+                </div>
+                <a href="https://apps.microsoft.com/detail/9nkrwrkmlgmw" target="_blank" rel="noopener" class="platform-card">
+                    <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="4" y="2" width="16" height="20" rx="2"/>
+                        <line x1="9" y1="2" x2="9" y2="22"/>
+                    </svg>
+                    <h3 class="platform-card__title">Windows</h3>
+                    <p class="platform-card__desc">Microsoft Storeからインストール</p>
+                    <span class="platform-card__meta">Microsoft Store</span>
+                </a>
+                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0.AppImage" target="_blank" rel="noopener" class="platform-card">
+                    <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/>
+                        <line x1="12" y1="22" x2="12" y2="12"/>
+                        <line x1="2" y1="8.5" x2="12" y2="12"/>
+                        <line x1="12" y1="12" x2="22" y2="8.5"/>
+                    </svg>
+                    <h3 class="platform-card__title">Linux</h3>
+                    <p class="platform-card__desc">AppImage ポータブル</p>
+                    <span class="platform-card__meta">.AppImage</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- Concept -->
     <section class="concept" id="concept">
         <div class="concept__inner">
@@ -321,66 +391,18 @@
                     優れたビデオツールは数多く存在します。しかし、<strong>ちょっとした作業に最適化された</strong>ツール — 再エンコードせずにカット、ピッチを保ったまま速度変換、音声だけを高速抽出、コンテナ形式だけを即座に変更、フレーム単位でキャプチャ — そういったツールを見つけるのは驚くほど難しいものです。
                 </p>
                 <p class="concept__text">
-                    Mytory Video Toolsは、そのかゆいところに手が届くように作られました。これはまた別のビデオエディターではありません。<strong>編集と編集の合間の瞬間のためのスイスアーミーナイフ</strong>です：クリップを切り、セグメントを結合し、サウンドトラックを抽出し、フォーマットを変換する — 今すぐ、ロスレスで、ハードウェアアクセラレーションを標準で。
+                    Mytory Video Toolsは、そのかゆいところに手が届くように作られました。これはまた別のビデオエディターではありません。<strong>編集と編集の合間の瞬間のためのスイスアーミーナイフ</strong>です：クリップを切り、セグメントを結合し、サウンドトラックを抽出し、フォーマットを変換する — コマンドラインを使わず<em>今すぐ</em>作業できます。
                 </p>
                 <p class="concept__text">
-                    クラウドアップロードも、アカウントも、サブスクリプションもありません。ネイティブコードとFFmpeg、そしてユーザーの邪魔をしないクリーンなインターフェースだけです。すべての操作は<strong>適切なデフォルト値</strong>で動作します — ハードウェアアクセラレーションは自動検出され、出力フォーマットは最適化済みで、設定を触る必要はほとんどありません。
+                    クラウドアップロードも、アカウントも、サブスクリプションもありません。FFmpegを搭載したElectronデスクトップアプリと、使いやすいインターフェースを備えています。高速カットとリマックスでは、ファイル形式が許す場合に再エンコードを避けます。それ以外の作業でも、画質とハードウェア加速に適した<strong>合理的なデフォルト設定</strong>を使用します。
                 </p>
             </div>
             <div class="concept__tags">
-                <span class="concept__tag">ロスレス</span>
+                <span class="concept__tag">カット・リマックスは再エンコードなし</span>
                 <span class="concept__tag">ピッチ保持</span>
                 <span class="concept__tag">ハードウェア加速</span>
-                <span class="concept__tag">再エンコード不要</span>
+                <span class="concept__tag">ローカル処理</span>
                 <span class="concept__tag">一括処理</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Download -->
-    <section class="download" id="download">
-        <div class="download__inner">
-            <div class="download__header">
-                <div class="download__eyebrow">はじめよう</div>
-                <h2 class="download__title"><span class="download__title-name">Mytory Video Tools</span> ダウンロード</h2>
-                <p class="download__sub">フリーでオープンソース。アカウント不要。データが端末から離れることはありません。</p>
-            </div>
-            <div class="download__platforms">
-                <div class="platform-card__wrapper">
-                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2-arm64.dmg" target="_blank" rel="noopener" class="platform-card">
-                        <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <rect x="2" y="3" width="20" height="14" rx="2"/>
-                            <path d="M8 21h8"/>
-                            <path d="M12 17v4"/>
-                        </svg>
-                        <h3 class="platform-card__title">macOS</h3>
-                        <p class="platform-card__desc">Apple Silicon (ARM)</p>
-                        <span class="platform-card__meta">.dmg</span>
-                    </a>
-                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2-x64.dmg" class="platform-card__alt" target="_blank" rel="noopener">
-                        Intel (x64) variant →
-                    </a>
-                </div>
-                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-Setup-v1.9.2.exe" target="_blank" rel="noopener" class="platform-card">
-                    <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <rect x="4" y="2" width="16" height="20" rx="2"/>
-                        <line x1="9" y1="2" x2="9" y2="22"/>
-                    </svg>
-                    <h3 class="platform-card__title">Windows</h3>
-                    <p class="platform-card__desc">64-bit インストーラー</p>
-                    <span class="platform-card__meta">.exe</span>
-                </a>
-                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2.AppImage" target="_blank" rel="noopener" class="platform-card">
-                    <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/>
-                        <line x1="12" y1="22" x2="12" y2="12"/>
-                        <line x1="2" y1="8.5" x2="12" y2="12"/>
-                        <line x1="12" y1="12" x2="22" y2="8.5"/>
-                    </svg>
-                    <h3 class="platform-card__title">Linux</h3>
-                    <p class="platform-card__desc">AppImage ポータブル</p>
-                    <span class="platform-card__meta">.AppImage</span>
-                </a>
             </div>
         </div>
     </section>

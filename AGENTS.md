@@ -216,7 +216,8 @@ HTML 구조 자체가 언어마다 달라야 할 때 사용합니다. 해당 언
    - Linux: `.../download/vX.Y.Z/...-vX.Y.Z.AppImage`
 8. 변경사항을 커밋합니다.
 9. 태그를 만듭니다: `git tag -a vX.Y.Z -m "Release vX.Y.Z"`
-9. 사용자에게 `git push origin master --tags` 또는 필요한 브랜치/태그 푸시 명령을 안내합니다.
+10. 사용자에게 `git push origin master vX.Y.Z` 등 필요한 브랜치/태그 푸시 명령을 안내합니다.
+11. 푸시 후 GitHub Release의 공개 상태와 산출물, 실제 웹사이트의 다운로드 링크를 각각 확인합니다. 태그 빌드 성공만으로 웹사이트까지 갱신됐다고 판단하지 않습니다.
 
 ## GitHub Pages 웹사이트 업데이트 규칙
 
@@ -227,6 +228,13 @@ HTML 구조 자체가 언어마다 달라야 할 때 사용합니다. 해당 언
 1. **항상 영어(`docs/index.html`)를 먼저 수정합니다.**
 2. 영어 페이지의 수정이 완전히 확정된 후에야 다른 언어 페이지를 업데이트합니다.
 3. 웹사이트를 출시(배포)하기 전에 모든 언어 페이지가 영어 페이지와 동기화되었는지 확인합니다.
+
+### 배포 확인과 재배포
+
+- v1.9.2 출시 때 릴리즈는 성공했지만 Pages의 마지막 배포는 이전 커밋에 머물렀습니다. 원인을 확인하지 않은 채 브라우저 캐시 문제로 단정하지 않습니다.
+- `rtk proxy gh api repos/mytory/mytory-video-tools/pages/builds/latest --jq '{status,commit,error}'`로 배포 커밋이 출시 커밋인지 확인합니다. Pages 설정은 `rtk proxy gh api repos/mytory/mytory-video-tools/pages`로 조회합니다.
+- 배포가 누락됐다면 `rtk proxy gh api --method POST repos/mytory/mytory-video-tools/pages/builds`로 재배포를 요청하고 성공 여부와 커밋을 다시 확인합니다. 재배포만을 위해 빈 커밋을 만들거나 태그를 이동하지 않습니다.
+- 배포 후 `https://video-tools.mytory.net/`와 8개 번역 페이지를 실제로 요청해 각 페이지의 다운로드 링크 4종이 출시 버전의 asset URL인지 확인합니다. 저장소 HTML이나 CI 성공만으로 확인을 끝내지 않습니다.
 
 ### 번역 페이지 관리
 

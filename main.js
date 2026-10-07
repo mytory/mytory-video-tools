@@ -4,6 +4,7 @@ const fs = require('fs');
 const { spawn } = require('child_process');
 const sharp = require('sharp');
 const { exiftool } = require('exiftool-vendored');
+const { runSmartCut } = require('./renderer/shared/smart-cut');
 
 // EPIPE 에러 무시 (console.log 시 stdout/stderr 파이프가 끊어지는 경우 대응)
 process.stdout.on('error', () => {});
@@ -22,6 +23,7 @@ const appIconPath = path.join(__dirname, 'renderer', 'logo.webp');
 
 let mainWindow = null;
 const activeTasks = new Map(); // taskId -> childProcess
+const activeSmartCutTasks = new Map(); // taskId -> { cancelled }
 let hwEncoders = { h264: null, hevc: null, av1: null };
 
 // 1. 하드웨어 가속 인코더 탐지 기능
@@ -177,6 +179,42 @@ function runFFmpeg(taskId, args, duration, outputPath) {
         ff.on('error', (err) => {
             activeTasks.delete(taskId);
             reject(err);
+        });
+    });
+}
+
+function runSmartCutCommand(taskId, commandPath, args, onStderrLine, onStdoutChunk) {
+    return new Promise((resolve, reject) => {
+        const child = spawn(commandPath, args);
+        activeTasks.set(taskId, child);
+        let stdout = '';
+        let stderrTail = '';
+        let pendingLine = '';
+
+        child.stdout.on('data', (data) => {
+            if (onStdoutChunk) onStdoutChunk(data);
+            else stdout += data.toString();
+        });
+        child.stderr.on('data', (data) => {
+            const text = pendingLine + data.toString();
+            const lines = text.split(/\r?\n/);
+            pendingLine = lines.pop() || '';
+            for (const line of lines) {
+                if (onStderrLine) onStderrLine(line);
+            }
+            stderrTail = (stderrTail + text).slice(-2000);
+        });
+        child.on('error', (err) => {
+            if (activeTasks.get(taskId) === child) activeTasks.delete(taskId);
+            reject(err);
+        });
+        child.on('close', (code) => {
+            if (activeTasks.get(taskId) === child) activeTasks.delete(taskId);
+            if (pendingLine && onStderrLine) onStderrLine(pendingLine);
+            if (code === 0) resolve({ stdout, stderr: stderrTail });
+            else reject(new Error(child.killed || code === null
+                ? 'Task was cancelled by user.'
+                : `Command exited with code ${code}. ${stderrTail.slice(-500)}`));
         });
     });
 }
@@ -548,6 +586,74 @@ function collectVideoPacketTimestamps(inputPath) {
     });
 }
 
+// Splitter에서 실제 프레임 경계로 이동할 때만 호출하는 읽기 전용 PTS 조회입니다.
+ipcMain.handle('splitter:frame-timestamps', async (event, inputPath) => {
+    if (typeof inputPath !== 'string' || !inputPath.trim()) {
+        return { success: false, error: 'Invalid input path.' };
+    }
+
+    try {
+        const stat = await fs.promises.stat(inputPath);
+        if (!stat.isFile()) return { success: false, error: 'Input path is not a file.' };
+
+        const timestamps = await new Promise((resolve, reject) => {
+            const ff = spawn(ffprobePath, [
+                '-v', 'error',
+                '-select_streams', 'v:0',
+                '-show_frames',
+                '-show_entries', 'frame=best_effort_timestamp_time',
+                '-of', 'csv=p=0',
+                inputPath
+            ]);
+            const values = [];
+            const maxFrameCount = 1_500_000;
+            let pending = '';
+            let limitExceeded = false;
+            let settled = false;
+
+            const readLines = (chunk, final = false) => {
+                pending += chunk;
+                const lines = pending.split(/\r?\n/);
+                pending = final ? '' : lines.pop();
+                if (final && lines.length === 1 && lines[0] === '') return;
+                for (const line of lines) {
+                    const timestamp = Number.parseFloat(line.trim());
+                    if (!Number.isFinite(timestamp)) continue;
+                    if (values.length >= maxFrameCount) {
+                        limitExceeded = true;
+                        ff.kill();
+                        return;
+                    }
+                    values.push(timestamp);
+                }
+            };
+
+            ff.stdout.on('data', (data) => readLines(data.toString()));
+            ff.stderr.on('data', () => {});
+            ff.on('error', (error) => {
+                if (!settled) {
+                    settled = true;
+                    reject(error);
+                }
+            });
+            ff.on('close', (code) => {
+                if (settled) return;
+                settled = true;
+                if (limitExceeded) return reject(new Error('Video has too many frames for precise navigation.'));
+                readLines('', true);
+                if (code !== 0) return reject(new Error(`ffprobe failed with exit code ${code}`));
+                if (values.length === 0) return reject(new Error('No frame timestamps found.'));
+                values.sort((a, b) => a - b);
+                resolve(values);
+            });
+        });
+
+        return { success: true, timestamps };
+    } catch (err) {
+        return { success: false, error: err.message };
+    }
+});
+
 // 3-2. 조이너 전용 상세 프로브 (원시 ffprobe JSON 반환)
 ipcMain.handle('joiner:probe', async (event, inputPath) => {
     try {
@@ -590,8 +696,10 @@ ipcMain.handle('joiner:probe', async (event, inputPath) => {
 
 // 4. 태스크 취소 — SIGTERM 후 일정 시간 내 종료되지 않으면 SIGKILL
 ipcMain.handle('task:cancel', async (event, taskId) => {
+    const smartCutTask = activeSmartCutTasks.get(taskId);
+    if (smartCutTask) smartCutTask.cancelled = true;
     const proc = activeTasks.get(taskId);
-    if (!proc) return false;
+    if (!proc) return Boolean(smartCutTask);
 
     // 먼저 SIGTERM 전송
     proc.kill('SIGTERM');
@@ -1003,8 +1111,25 @@ ipcMain.handle('remux:start', async (event, { taskId, inputPath, outputPath }) =
 });
 
 // 8. 비디오 자르기(Splitter) 시작
-ipcMain.handle('split:start', async (event, { taskId, inputPath, startTime, endTime, outputPath }) => {
+ipcMain.handle('split:start', async (event, { taskId, inputPath, startTime, endTime, outputPath, smartCut = false }) => {
+    const smartCutTask = smartCut ? { cancelled: false } : null;
+    if (smartCutTask) activeSmartCutTasks.set(taskId, smartCutTask);
     try {
+        if (smartCut) {
+            return await runSmartCut({
+                taskId,
+                inputPath,
+                outputPath,
+                startTime: typeof startTime === 'number' ? startTime : timecodeToSeconds(startTime),
+                endTime: typeof endTime === 'number' ? endTime : timecodeToSeconds(endTime),
+                ffmpegPath,
+                ffprobePath,
+                runCommand: runSmartCutCommand,
+                runFFmpeg,
+                isCancelled: () => smartCutTask.cancelled
+            });
+        }
+
         const info = await probeVideo(inputPath);
         
         // 시작 및 종료 지점을 이용해 잘라낼 가상 길이 계산
@@ -1038,7 +1163,13 @@ ipcMain.handle('split:start', async (event, { taskId, inputPath, startTime, endT
         await runFFmpeg(taskId, args, duration, outputPath);
         return { success: true, outputPath };
     } catch (err) {
-        return { success: false, error: err.message };
+        return {
+            success: false,
+            ...(err.code === 'SMART_CUT_UNSUPPORTED' ? { errorCode: err.code } : {}),
+            error: err.message
+        };
+    } finally {
+        if (smartCutTask) activeSmartCutTasks.delete(taskId);
     }
 });
 

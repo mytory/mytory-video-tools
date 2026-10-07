@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>如何在不重新编码的情况下剪切视频 | Mytory Video Tools</title>
+    <meta name="description" content="了解默认无重新编码剪切的工作原理和关键帧对精度的影响，以及如何使用 Smart Cut 对受支持的视频进行逐帧剪切。">
+    <link rel="canonical" href="https://video-tools.mytory.net/zh-cn/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="en" href="https://video-tools.mytory.net/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="ko" href="https://video-tools.mytory.net/ko/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="ja" href="https://video-tools.mytory.net/ja/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="zh-cn" href="https://video-tools.mytory.net/zh-cn/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="es" href="https://video-tools.mytory.net/es/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="pt" href="https://video-tools.mytory.net/pt/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="fr" href="https://video-tools.mytory.net/fr/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="id" href="https://video-tools.mytory.net/id/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="hi" href="https://video-tools.mytory.net/hi/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="x-default" href="https://video-tools.mytory.net/guides/lossless-video-cut/">
+    <link rel="stylesheet" href="../../../styles.css?h=331a22122b81f6ff6ec9a500ce1b043e">
+    <link rel="icon" type="image/webp" href="../../../assets/logo.webp">
+</head>
+<body>
+    <nav class="navbar" id="navbar"><div class="navbar__inner"><a href="../../../zh-cn/" class="navbar__brand"><img src="../../../assets/logo.webp" alt="Mytory" class="navbar__logo" width="28" height="28"><span class="navbar__title">Mytory Video Tools</span></a><div class="navbar__links"><a href="../../../zh-cn/#guides" class="navbar__link">指南</a><a href="../../../zh-cn/#download" class="navbar__link">下载</a></div></div></nav>
+    <main class="features"><div class="features__inner"><article class="concept__body">
+        <p class="features__eyebrow">视频指南</p>
+        <h1 class="features__title">如何在不重新编码的情况下剪切视频</h1>
+        <p class="features__sub">默认剪切会复制现有流，因此速度很快，而且不会再次压缩视频。可选的 Smart Cut 会在受支持的视频中按照选定的帧边界剪切。</p>
+        <img src="../../../assets/screenshot-1.webp" alt="Mytory Video Tools 桌面应用界面" width="1200" height="750" loading="lazy" style="max-width: 100%; height: auto;">
+        <h2>为什么实际剪切位置可能与指定时间不同</h2>
+        <p>压缩视频以帧组的形式存储。关键帧可以独立解码，许多其他帧则依赖前面的帧。FFmpeg 从输入前方查找时间戳时，会从该时间之前最近的定位点开始处理。因此，使用流复制时，实际起点可能与输入的时间不同，尤其是在关键帧间隔较长时。</p>
+        <p>默认的流复制会保留已编码的视频，但无法保证从指定的开始时间精确剪切；实际起点可能落在前一个关键帧。可选的 Smart Cut 会在选定帧处剪切。对于受支持的帧间压缩视频，它会重新编码剪切边界，并在存在安全随机访问点时复制中间部分；某些选定片段可能需要整体重新编码，不安全的 GOP 布局会被拒绝。受支持的帧内压缩视频会全程复制。若含有音频，Smart Cut 会重新编码音频。</p>
+        <h2>Smart Cut 的支持范围</h2>
+        <p>Smart Cut 支持 MP4 或 MOV 中的 H.264 和 HEVC、MP4 中的 AV1、MP4 或 WebM 中的 VP9、MKV 或 WebM 中的 VP8，以及 MP4 或 MOV 中的 MPEG-4 和 MPEG-2。帧内编码的编解码器与容器组合如下：MJPEG 和 PNG 可用于 MP4、MOV、MKV 或 AVI；Ut Video 和 HuffYUV 可用于 MOV、MKV 或 AVI；FFV1 可用于 MKV、AVI 或 MOV；rawvideo 可用于 MKV；TIFF 可用于 MOV 或 MKV；HAP 和 DNxHD 可用于 MOV、MKV 或 AVI；ProRes 可用于 MOV。除 H.264 和 HEVC 外，输入和输出容器必须相同。</p>
+        <p>H.264 支持 8-bit 4:2:0 的 Constrained Baseline、Baseline、Main、High 或 High 10 配置文件；10-bit 仅支持 High 10 配置文件的 4:2:0、High 4:2:2 配置文件的 4:2:2 或 High 4:4:4 Predictive 配置文件的 4:4:4。HEVC 支持 Main 8-bit 4:2:0、Main 10 10-bit 4:2:0 或 RExt 10-bit 4:2:2/4:4:4。AV1 支持 Main 8-bit 或 10-bit 4:2:0；VP9 支持 Profile 0 8-bit 4:2:0、Profile 2 10-bit 4:2:0 或 Profile 3 10-bit 4:2:2/4:4:4。VP8 和 MPEG-4/MPEG-2 仅支持 8-bit 4:2:0。帧内编码格式支持 8-bit 或部分 10-bit 4:2:0/4:2:2 格式。可变帧率视频在帧时间戳有效且递增时受支持。Smart Cut 还要求视频为逐行扫描、方形像素、起始偏移为 0（短暂的 WebM Opus 预卷除外），且只能有一个视频流和至多一个音频流。不支持的组合会被拒绝。</p>
+        <h2>快速剪切片段</h2>
+        <ol><li>打开 Mytory Video Tools 并选择“视频分割”。</li><li>载入视频并设置开始和结束时间。</li><li>要快速无损复制，请保持 Smart Cut 关闭后导出，起点可能会移到关键帧。若要在受支持的视频中按选定帧剪切，请开启 Smart Cut，以小数秒输入时间，然后导出。</li></ol>
+        <p>Mytory Video Tools 是一款免费、内置 FFmpeg 的 Electron 桌面应用，可在 Windows、macOS 和 Linux 上本地运行，无需使用命令行。</p>
+        <p><a class="btn btn--primary" href="../../../zh-cn/#download">下载 Mytory Video Tools</a></p>
+        <p><a href="../remux-video/">下一篇：不重新编码，将 MKV 重新封装为 MP4</a></p>
+    </article></div></main>
+    <nav class="lang-nav" aria-label="语言选择"><div class="lang-nav__inner"><span class="lang-nav__label">本页面语言：</span><div class="lang-nav__links">
+        <a href="../../../guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇺🇸</span> English</a><a href="../../../ko/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇰🇷</span> 한국어</a><a href="../../../ja/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇯🇵</span> 日本語</a><a href="./" class="lang-nav__link lang-nav__link--active" aria-current="page"><span class="lang-nav__flag">🇨🇳</span> 简体中文</a><a href="../../../es/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇪🇸</span> Español</a><a href="../../../pt/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇵🇹</span> Português</a><a href="../../../fr/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇫🇷</span> Français</a><a href="../../../id/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇮🇩</span> Indonesia</a><a href="../../../hi/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇮🇳</span> हिन्दी</a>
+    </div></div></nav>
+</body>
+</html>

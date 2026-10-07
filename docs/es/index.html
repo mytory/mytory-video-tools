@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-VYX4Q1S9LK"></script>
@@ -12,12 +12,13 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mytory Video Tools — Utilidades de video nativas de alta velocidad</title>
-    <meta name="description" content="Herramientas de video de escritorio multiplataforma construidas con Electron y FFmpeg. Cambiador de velocidad, compresor, captura de fotogramas, remux, unir, divisor y extracción de audio.">
-    <meta property="og:title" content="Mytory Video Tools">
-    <meta property="og:description" content="Utilidades de video nativas de alta velocidad para Windows, macOS y Linux.">
+    <title>Mytory Video Tools — Tareas rápidas con FFmpeg, sin línea de comandos</title>
+    <meta name="description" content="Realiza tareas rápidas de video con FFmpeg sin usar la línea de comandos. Recorta, remuxea, comprime, convierte y captura fotogramas en una aplicación Electron gratuita para Windows, macOS y Linux.">
+    <meta property="og:title" content="Mytory Video Tools — Tareas rápidas con FFmpeg, sin línea de comandos">
+    <meta property="og:description" content="Recorta, remuxea, comprime, convierte y captura video con FFmpeg en una aplicación de escritorio sencilla.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mytory.github.io/mytory-video-tools/">
+    <meta property="og:url" content="https://video-tools.mytory.net/es/">
+    <link rel="canonical" href="https://video-tools.mytory.net/es/">
     <meta property="og:image" content="https://video-tools.mytory.net/assets/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="800">
@@ -26,7 +27,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles.css?h=10203a0793696e1b7537558bf8050b34">
+    <link rel="stylesheet" href="../styles.css?h=331a22122b81f6ff6ec9a500ce1b043e">
     <link rel="icon" type="image/webp" href="../assets/logo.webp">
 </head>
 <body>
@@ -34,12 +35,13 @@
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="navbar__inner">
-            <a href="../" class="navbar__brand">
+            <a href="./" class="navbar__brand">
                 <img src="../assets/logo.webp" alt="Mytory" class="navbar__logo" width="28" height="28">
                 <span class="navbar__title">Mytory Video Tools</span>
             </a>
             <div class="navbar__links">
                 <a href="#features" class="navbar__link">Funciones</a>
+                <a href="#guides" class="navbar__link">Guías</a>
                 <a href="#languages" class="navbar__link">Idiomas</a>
                 <a href="#concept" class="navbar__link">Concepto</a>
                 <a href="#download" class="navbar__link">Descargar</a>
@@ -50,7 +52,7 @@
                     GitHub
                 </a>
             </div>
-            <button class="navbar__toggle" aria-label="Toggle menu">
+            <button class="navbar__toggle" aria-label="Abrir o cerrar el menú">
                 <span></span><span></span><span></span>
             </button>
         </div>
@@ -61,13 +63,13 @@
         <div class="hero__bg"></div>
         <div class="hero__inner">
             <div class="hero__content">
-                <div class="hero__eyebrow">v1.9.2 &middot; Cross-platform Desktop App</div>
+                <div class="hero__eyebrow">v1.10.0 &middot; Aplicación de escritorio multiplataforma</div>
                 <h1 class="hero__title">
                     Herramientas de<br>
                     <span class="hero__title--accent">Video rápidas</span>
                 </h1>
                 <p class="hero__sub">
-                    Ocho herramientas de video y audio en una aplicación de escritorio. Acelera, comprime, divide, une, convierte y captura con codificación acelerada por hardware. Sin subidas ni límites.
+                    Tareas de video rápidas con FFmpeg en una aplicación de escritorio Electron sencilla, sin línea de comandos. Recorta, remuxe, comprime, convierte y captura fotogramas; tus archivos permanecen en tu equipo.
                 </p>
                 <div class="hero__ctas">
                     <a href="#download" class="btn btn--primary">
@@ -79,7 +81,7 @@
                         Descargar
                     </a>
                     <a href="#features" class="btn btn--ghost">
-                        Explore Funciones
+                        Explorar funciones
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="12" y1="5" x2="12" y2="19"/>
                             <polyline points="19 12 12 19 5 12"/>
@@ -97,7 +99,7 @@
             <div class="hero__visual">
                 <figure class="hero__screenshot">
                     <img src="../assets/screenshot-1.webp"
-                         alt="Mytory Video Tools main interface showing Cambiador de velocidad tool with dark sidebar and control panel"
+                         alt="Interfaz principal de Mytory Video Tools con Cambiador de velocidad, una barra lateral oscura y un panel de control"
                          width="1200" height="750"
                          loading="eager">
                 </figure>
@@ -106,9 +108,9 @@
     </section>
 
     <!-- Language Selector -->
-    <nav class="lang-nav" aria-label="Language selector">
+    <nav class="lang-nav" aria-label="Selector de idioma">
         <div class="lang-nav__inner">
-            <span class="lang-nav__label">This page in:</span>
+            <span class="lang-nav__label">Esta página en:</span>
             <div class="lang-nav__links">
                 <a href="../" class="lang-nav__link"><span class="lang-nav__flag">🇺🇸</span> English</a>
                 <a href="../ko/" class="lang-nav__link"><span class="lang-nav__flag">🇰🇷</span> 한국어</a>
@@ -141,8 +143,8 @@
     <section class="features" id="features">
         <div class="features__inner">
             <div class="features__header">
-                <h2 class="features__title">Siete herramientas, una aplicación</h2>
-                <p class="features__sub">Cada tarea de video que necesitas, desde ajuste de velocidad hasta concatenación sin pérdida. Sin suscripción, sin carga en la nube, sin límites.</p>
+                <h2 class="features__title">Ocho herramientas, una aplicación</h2>
+                <p class="features__sub">Tareas cotidianas de video y audio: ajuste de velocidad, compresión, remux de contenedores y conversión de audio. Sin suscripción, sin carga en la nube, sin límites.</p>
             </div>
 
             <div class="features__grid">
@@ -184,7 +186,7 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
                     </div>
                     <h3 class="feature-card__title">Remux</h3>
-                    <p class="feature-card__desc">Convierta entre contenedores MP4, MKV y MOV sin recodificar. Sin pérdida e instantáneo. Conserva todas las pistas.</p>
+                    <p class="feature-card__desc">Mueve pistas compatibles entre contenedores MP4, MKV y MOV sin recodificar. La reproducción depende de que el contenedor y el reproductor admitan cada códec.</p>
                 </article>
 
                 <!-- Extracción de audio -->
@@ -220,12 +222,32 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
                     </div>
                     <h3 class="feature-card__title">Divisor de video</h3>
-                    <p class="feature-card__desc">Corte un segmento sin pérdida estableciendo puntos de inicio y fin. División extremadamente rápida sin recodificación. Ideal para recortar momentos destacados o preparar clips para montaje.</p>
+                    <p class="feature-card__desc">De forma predeterminada, corta con una copia rápida y sin pérdidas del flujo; el inicio puede desplazarse hasta un fotograma clave anterior. Smart Cut es opcional y respeta los fotogramas seleccionados: en videos inter-frame compatibles, recodifica los límites y copia un tramo central seguro; en videos intra-frame, copia todo el contenido. Smart Cut recodifica el audio; hay límites de códec, perfil, contenedor, profundidad de bits y temporización de fotogramas.</p>
                     <ul class="feature-card__tags">
-                        <li>Corte sin pérdida</li>
-                        <li>Ajuste a fotogramas clave</li>
-                        <li>Flujo dividir-editar-unir</li>
+                        <li>Copia sin pérdidas predeterminada</li>
+                        <li>Smart Cut opcional</li>
+                        <li>Flujo de dividir, editar y unir</li>
                     </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guides -->
+    <section class="features" id="guides">
+        <div class="features__inner">
+            <div class="features__header">
+                <h2 class="features__title">Guías prácticas de video</h2>
+                <p class="features__sub">Descubre lo que permiten los flujos rápidos sin recodificación y los límites de los contenedores y los fotogramas clave.</p>
+            </div>
+            <div class="features__grid">
+                <article class="feature-card">
+                    <h3 class="feature-card__title"><a href="guides/lossless-video-cut/">Cómo cortar video sin recodificar</a></h3>
+                    <p class="feature-card__desc">Conoce los límites de los fotogramas clave y las diferencias entre métodos para hacer un corte rápido sin pérdidas.</p>
+                </article>
+                <article class="feature-card">
+                    <h3 class="feature-card__title"><a href="guides/remux-video/">Cómo remuxear MKV a MP4</a></h3>
+                    <p class="feature-card__desc">Cambia el contenedor sin transcodificar y comprueba la compatibilidad del códec antes de compartir.</p>
                 </article>
             </div>
         </div>
@@ -240,7 +262,7 @@
                     Aceleración por<br>
                     <span class="hwaccel__title--accent">Hardware</span>
                 </h2>
-                <p class="hwaccel__desc">No knobs to tweak. Mytory Video Tools picks sensible defaults for every task &mdash; from hardware encoder selection to output quality &mdash; so you get great results without digging through menus. Apple Silicon, NVIDIA, Intel, AMD &mdash; it just works.</p>
+                <p class="hwaccel__desc">No hace falta ajustar parámetros. Mytory Video Tools elige valores predeterminados adecuados para cada tarea &mdash; desde el codificador de hardware hasta la calidad de salida &mdash; para ofrecer buenos resultados sin buscar en los menús. Apple Silicon, NVIDIA, Intel y AMD: todo funciona automáticamente.</p>
                 <div class="hwaccel__chips">
                     <span class="hwaccel__chip">Apple VideoToolbox</span>
                     <span class="hwaccel__chip">NVIDIA NVENC</span>
@@ -288,19 +310,19 @@
 
             <div class="languages__grid">
                 <div class="languages__list">
-                    <div class="languages__item"><span class="languages__flag">🇰🇷</span> Korean <span class="languages__code">ko</span></div>
-                    <div class="languages__item"><span class="languages__flag">🇺🇸</span> English <span class="languages__code">en</span></div>
-                    <div class="languages__item"><span class="languages__flag">🇯🇵</span> Japanese <span class="languages__code">ja</span></div>
-                    <div class="languages__item"><span class="languages__flag">🇨🇳</span> Chinese (Simplified) <span class="languages__code">zh-cn</span></div>
-                    <div class="languages__item"><span class="languages__flag">🇪🇸</span> Spanish <span class="languages__code">es</span></div>
-                    <div class="languages__item"><span class="languages__flag">🇵🇹</span> Portuguese <span class="languages__code">pt</span></div>
-                    <div class="languages__item"><span class="languages__flag">🇫🇷</span> French <span class="languages__code">fr</span></div>
-                    <div class="languages__item"><span class="languages__flag">🇮🇩</span> Indonesian <span class="languages__code">id</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇰🇷</span> Coreano <span class="languages__code">ko</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇺🇸</span> Inglés <span class="languages__code">en</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇯🇵</span> Japonés <span class="languages__code">ja</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇨🇳</span> Chino simplificado <span class="languages__code">zh-cn</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇪🇸</span> Español <span class="languages__code">es</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇵🇹</span> Portugués <span class="languages__code">pt</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇫🇷</span> Francés <span class="languages__code">fr</span></div>
+                    <div class="languages__item"><span class="languages__flag">🇮🇩</span> Indonesio <span class="languages__code">id</span></div>
                     <div class="languages__item"><span class="languages__flag">🇮🇳</span> Hindi <span class="languages__code">hi</span></div>
                 </div>
                 <figure class="languages__screenshot">
                     <img src="../assets/screenshot-2.webp"
-                         alt="Mytory Video Tools language selector showing multiple language options"
+                         alt="Selector de idioma de Mytory Video Tools con varias opciones de idioma"
                          width="1200" height="750"
                          loading="lazy">
                     <figcaption class="languages__caption">Cambie entre 9 idiomas desde la barra lateral. La interfaz se actualiza al instante.</figcaption>
@@ -319,7 +341,7 @@
             </div>
             <div class="download__platforms">
                 <div class="platform-card__wrapper">
-                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2-arm64.dmg" target="_blank" rel="noopener" class="platform-card">
+                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0-arm64.dmg" target="_blank" rel="noopener" class="platform-card">
                         <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <rect x="2" y="3" width="20" height="14" rx="2"/>
                             <path d="M8 21h8"/>
@@ -329,20 +351,20 @@
                         <p class="platform-card__desc">Apple Silicon (ARM)</p>
                         <span class="platform-card__meta">.dmg</span>
                     </a>
-                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2-x64.dmg" class="platform-card__alt" target="_blank" rel="noopener">
+                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0-x64.dmg" class="platform-card__alt" target="_blank" rel="noopener">
                         Intel (x64) variant →
                     </a>
                 </div>
-                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-Setup-v1.9.2.exe" target="_blank" rel="noopener" class="platform-card">
+                <a href="https://apps.microsoft.com/detail/9nkrwrkmlgmw" target="_blank" rel="noopener" class="platform-card">
                     <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <rect x="4" y="2" width="16" height="20" rx="2"/>
                         <line x1="9" y1="2" x2="9" y2="22"/>
                     </svg>
                     <h3 class="platform-card__title">Windows</h3>
-                    <p class="platform-card__desc">Instalador de 64 bits</p>
-                    <span class="platform-card__meta">.exe</span>
+                    <p class="platform-card__desc">Instalar desde Microsoft Store</p>
+                    <span class="platform-card__meta">Microsoft Store</span>
                 </a>
-                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2.AppImage" target="_blank" rel="noopener" class="platform-card">
+                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0.AppImage" target="_blank" rel="noopener" class="platform-card">
                     <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/>
                         <line x1="12" y1="22" x2="12" y2="12"/>
@@ -369,17 +391,17 @@
                     Existen buenas herramientas de video. Pero encontrar una que esté <strong>optimizada para las tareas rápidas y adyacentes</strong> —cortar sin recodificar, cambiar la velocidad preservando el tono de voz, extraer audio al instante, cambiar de contenedor en un clic, capturar fotograma a fotograma— es sorprendentemente difícil.
                 </p>
                 <p class="concept__text">
-                    Mytory Video Tools fue creado para rascar esa picazón. No es otro editor de video. Es una <strong>navaja suiza para los momentos entre ediciones</strong>: cuando necesitas dividir un clip, unir segmentos, extraer una banda sonora o convertir un formato, y quieres que se haga <em>ya</em>, sin pérdida, con aceleración de hardware lista para usar.
+                    Mytory Video Tools se creó para responder a esa necesidad. No es otro editor de video. Es una <strong>navaja suiza para los momentos entre ediciones</strong>: cuando necesitas dividir un clip, unir segmentos, extraer una banda sonora o convertir un formato, y quieres hacerlo <em>ahora</em>, sin usar la línea de comandos.
                 </p>
                 <p class="concept__text">
-                    Sin cargas en la nube, sin cuentas, sin suscripciones. Solo código nativo, FFmpeg bajo el capó y una interfaz limpia que no se interpone en su camino. Cada operación utiliza <strong>valores predeterminados sensatos</strong>: la aceleración de hardware se detecta automáticamente, los formatos de salida están preoptimizados y rara vez necesitará tocar una configuración para hacer el trabajo.
+                    Sin cargas en la nube, sin cuentas, sin suscripciones. Es una aplicación de escritorio Electron con FFmpeg y una interfaz sencilla que no estorba. Los cortes y remux rápidos evitan la recodificación cuando el formato lo permite; las demás tareas usan <strong>valores predeterminados adecuados</strong> para la calidad y la aceleración por hardware.
                 </p>
             </div>
             <div class="concept__tags">
-                <span class="concept__tag">Sin pérdida por diseño</span>
+                <span class="concept__tag">Cortes y remux sin recodificar</span>
                 <span class="concept__tag">Preservación del tono</span>
                 <span class="concept__tag">Acelerado por hardware</span>
-                <span class="concept__tag">Sin recodificar</span>
+                <span class="concept__tag">Procesamiento local</span>
                 <span class="concept__tag">Procesamiento por lotes</span>
             </div>
         </div>
@@ -396,7 +418,7 @@
                     </svg>
                 </div>
                 <h2 class="oss__title">Código abierto</h2>
-                <p class="oss__desc">Licenciad under GPL-3.0. Construido con Electron, FFmpeg, y un sinfín de prueba y error. Contributions, issues, and feature requests are welcome on GitHub.</p>
+                <p class="oss__desc">Distribuido bajo la licencia GPL-3.0. Creado con Electron, FFmpeg y mucho ensayo y error. Agradecemos las contribuciones, los informes de problemas y las solicitudes de funciones en GitHub.</p>
                 <a href="https://github.com/mytory/mytory-video-tools" target="_blank" rel="noopener" class="btn btn--ghost">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                         <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
@@ -421,7 +443,7 @@
                 <a href="https://mytory.net" target="_blank" rel="noopener">mytory.net</a>
             </div>
             <p class="footer__support">Orgullosamente libre de anuncios y apoyado por usuarios. Cada café marca la diferencia. ☕ <a href="https://www.paypal.com/ncp/payment/SWKQD7USX8J5U" target="_blank" rel="noopener">Apoya vía PayPal</a></p>
-            <p class="footer__copy">Made with &hearts; by mytory &middot; GPL-3.0</p>
+            <p class="footer__copy">Hecho con &hearts; por mytory &middot; GPL-3.0</p>
         </div>
     </footer>
 

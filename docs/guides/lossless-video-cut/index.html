@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Cut Video Without Re-encoding | Mytory Video Tools</title>
+    <meta name="description" content="Learn how default lossless video cuts work, why keyframes affect cut accuracy, and when Smart Cut can make frame-accurate edits.">
+    <link rel="canonical" href="https://video-tools.mytory.net/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="en" href="https://video-tools.mytory.net/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="ko" href="https://video-tools.mytory.net/ko/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="ja" href="https://video-tools.mytory.net/ja/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="zh-cn" href="https://video-tools.mytory.net/zh-cn/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="es" href="https://video-tools.mytory.net/es/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="pt" href="https://video-tools.mytory.net/pt/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="fr" href="https://video-tools.mytory.net/fr/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="id" href="https://video-tools.mytory.net/id/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="hi" href="https://video-tools.mytory.net/hi/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="x-default" href="https://video-tools.mytory.net/guides/lossless-video-cut/">
+    <link rel="stylesheet" href="../../styles.css?h=331a22122b81f6ff6ec9a500ce1b043e">
+    <link rel="icon" type="image/webp" href="../../assets/logo.webp">
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="navbar__inner">
+            <a href="../../" class="navbar__brand"><img src="../../assets/logo.webp" alt="Mytory" class="navbar__logo" width="28" height="28"><span class="navbar__title">Mytory Video Tools</span></a>
+            <div class="navbar__links"><a href="../../#guides" class="navbar__link">Guides</a><a href="../../#download" class="navbar__link">Download</a></div>
+        </div>
+    </nav>
+    <main class="features">
+        <div class="features__inner">
+            <article class="concept__body">
+                <p class="features__eyebrow">Video guide</p>
+                <h1 class="features__title">How to cut video without re-encoding</h1>
+                <p class="features__sub">The default cut copies the existing streams for speed and avoids another generation of video compression. Optional Smart Cut follows selected frame boundaries when the source is supported.</p>
+                <img src="../../assets/screenshot-1.webp" alt="Mytory Video Tools desktop app interface" width="1200" height="750" loading="lazy" style="max-width: 100%; height: auto;">
+                <h2>Why the cut may not land on the exact time</h2>
+                <p>Compressed video is stored in groups of frames. A keyframe can be decoded on its own; many other frames depend on earlier frames. When FFmpeg seeks to a timestamp before the input, it starts at the closest seek point before that time. With stream copying, the actual start can therefore differ from the time you entered, especially when keyframes are far apart.</p>
+                <p>The default stream-copy method keeps the encoded video unchanged, but it cannot guarantee an exact requested start time. The cut may begin at a preceding keyframe. Smart Cut is optional: it cuts on selected frames. For supported inter-frame video, it re-encodes the boundaries and copies a middle section when safe random-access points are available; some selected segments may be re-encoded in full, and unsafe GOP layouts are rejected. Supported intra-frame video is copied throughout. When audio is present, Smart Cut re-encodes it.</p>
+                <h2>Smart Cut support limits</h2>
+                <p>Smart Cut supports H.264 and HEVC in MP4 or MOV; AV1 in MP4; VP9 in MP4 or WebM; VP8 in MKV or WebM; and MPEG-4 or MPEG-2 in MP4 or MOV. Intra-frame codec containers are: MJPEG and PNG in MP4, MOV, MKV, or AVI; Ut Video and HuffYUV in MOV, MKV, or AVI; FFV1 in MKV, AVI, or MOV; rawvideo in MKV; TIFF in MOV or MKV; HAP and DNxHD in MOV, MKV, or AVI; and ProRes in MOV. For codecs other than H.264 and HEVC, the input and output containers must match.</p>
+                <p>H.264 accepts 8-bit 4:2:0 in Constrained Baseline, Baseline, Main, High, or High 10 profiles; 10-bit is limited to High 10 (4:2:0), High 4:2:2 (4:2:2), or High 4:4:4 Predictive (4:4:4). HEVC accepts Main 8-bit 4:2:0, Main 10 10-bit 4:2:0, or RExt 10-bit 4:2:2/4:4:4. AV1 accepts Main 8-bit or 10-bit 4:2:0; VP9 accepts Profile 0 8-bit 4:2:0, Profile 2 10-bit 4:2:0, or Profile 3 10-bit 4:2:2/4:4:4. VP8 and MPEG-4/MPEG-2 are limited to 8-bit 4:2:0. Intra-frame codecs accept 8-bit or selected 10-bit 4:2:0/4:2:2 formats. Variable-frame-rate video is supported when its frame timestamps are valid and increasing. Smart Cut also requires progressive, square-pixel video with zero start offset (except a small WebM Opus pre-roll), one video stream, and no more than one audio stream. Unsupported combinations are rejected.</p>
+                <h2>Make a quick cut</h2>
+                <ol>
+                    <li>Open Mytory Video Tools and choose Video Splitter.</li>
+                    <li>Load a video and set the start and end times.</li>
+                    <li>Leave Smart Cut off for a fast lossless copy whose start may shift to a keyframe. Turn it on for selected-frame cuts when the source is supported; enter times in decimal seconds while it is on, then export.</li>
+                </ol>
+                <p>Mytory Video Tools is a free Electron desktop app with FFmpeg included. It runs locally on Windows, macOS, and Linux, with no command line required.</p>
+                <p><a class="btn btn--primary" href="../../#download">Download Mytory Video Tools</a></p>
+                <p><a href="../remux-video/">Next: remux MKV to MP4 without re-encoding</a></p>
+            </article>
+        </div>
+    </main>
+    <nav class="lang-nav" aria-label="Language selector">
+        <div class="lang-nav__inner">
+            <span class="lang-nav__label">This page in:</span>
+            <div class="lang-nav__links">
+                <a href="./" class="lang-nav__link lang-nav__link--active" aria-current="page"><span class="lang-nav__flag">🇺🇸</span> English</a>
+                <a href="../../ko/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇰🇷</span> 한국어</a>
+                <a href="../../ja/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇯🇵</span> 日本語</a>
+                <a href="../../zh-cn/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇨🇳</span> 简体中文</a>
+                <a href="../../es/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇪🇸</span> Español</a>
+                <a href="../../pt/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇵🇹</span> Português</a>
+                <a href="../../fr/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇫🇷</span> Français</a>
+                <a href="../../id/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇮🇩</span> Indonesia</a>
+                <a href="../../hi/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇮🇳</span> हिन्दी</a>
+            </div>
+        </div>
+    </nav>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>बिना री-एन्कोडिंग के वीडियो कैसे काटें | Mytory Video Tools</title>
+    <meta name="description" content="जानें कि डिफ़ॉल्ट रूप से बिना री-एन्कोडिंग वाले वीडियो कट कैसे काम करते हैं, कीफ़्रेम सटीकता को कैसे प्रभावित करते हैं और Smart Cut चुने हुए फ़्रेमों पर कब कट कर सकता है।">
+    <link rel="canonical" href="https://video-tools.mytory.net/hi/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="en" href="https://video-tools.mytory.net/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="ko" href="https://video-tools.mytory.net/ko/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="ja" href="https://video-tools.mytory.net/ja/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="zh-cn" href="https://video-tools.mytory.net/zh-cn/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="es" href="https://video-tools.mytory.net/es/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="pt" href="https://video-tools.mytory.net/pt/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="fr" href="https://video-tools.mytory.net/fr/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="id" href="https://video-tools.mytory.net/id/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="hi" href="https://video-tools.mytory.net/hi/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="x-default" href="https://video-tools.mytory.net/guides/lossless-video-cut/">
+    <link rel="stylesheet" href="../../../styles.css?h=331a22122b81f6ff6ec9a500ce1b043e">
+    <link rel="icon" type="image/webp" href="../../../assets/logo.webp">
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="navbar__inner">
+            <a href="../../" class="navbar__brand"><img src="../../../assets/logo.webp" alt="Mytory" class="navbar__logo" width="28" height="28"><span class="navbar__title">Mytory Video Tools</span></a>
+            <div class="navbar__links"><a href="../../#guides" class="navbar__link">गाइड</a><a href="../../#download" class="navbar__link">डाउनलोड</a></div>
+        </div>
+    </nav>
+    <main class="features">
+        <div class="features__inner">
+            <article class="concept__body">
+                <p class="features__eyebrow">वीडियो गाइड</p>
+                <h1 class="features__title">बिना री-एन्कोडिंग के वीडियो कैसे काटें</h1>
+                <p class="features__sub">डिफ़ॉल्ट कट गति के लिए मौजूदा स्ट्रीम की प्रतिलिपि बनाता है और वीडियो संपीड़न की एक और पीढ़ी से बचाता है। स्रोत समर्थित होने पर वैकल्पिक Smart Cut चुने गए फ़्रेमों की सीमाओं पर कट करता है।</p>
+                <img src="../../../assets/screenshot-1.webp" alt="Mytory Video Tools डेस्कटॉप ऐप का इंटरफ़ेस" width="1200" height="750" loading="lazy" style="max-width: 100%; height: auto;">
+                <h2>कट ठीक उसी समय पर क्यों नहीं हो सकता</h2>
+                <p>संपीड़ित वीडियो फ़्रेमों के समूहों में संग्रहीत होता है। कीफ़्रेम को अकेले डिकोड किया जा सकता है; कई दूसरे फ़्रेम पहले के फ़्रेमों पर निर्भर होते हैं। जब FFmpeg इनपुट से पहले के टाइमस्टैम्प पर खोजता है, तो वह उस समय से पहले के सबसे नज़दीकी खोज बिंदु से शुरू करता है। इसलिए स्ट्रीम कॉपी करते समय वास्तविक शुरुआत आपके दिए समय से अलग हो सकती है, खासकर जब कीफ़्रेम के बीच लंबा अंतर हो।</p>
+                <p>डिफ़ॉल्ट स्ट्रीम-कॉपी तरीका एन्कोड किए गए वीडियो को ज्यों का त्यों रखता है, लेकिन माँगे गए शुरुआती समय की गारंटी नहीं देता: कट पिछले कीफ़्रेम से शुरू हो सकता है। Smart Cut वैकल्पिक है और चुने हुए फ़्रेमों पर कट करता है। समर्थित inter-frame वीडियो में, सुरक्षित random-access बिंदु उपलब्ध होने पर यह सीमा वाले हिस्सों को री-एन्कोड करता है और बीच का हिस्सा कॉपी करता है; कुछ चुने हुए सेगमेंट पूरी तरह री-एन्कोड हो सकते हैं और असुरक्षित GOP संरचनाएँ अस्वीकार कर दी जाती हैं। समर्थित intra-frame वीडियो पूरी तरह कॉपी किया जाता है। ऑडियो मौजूद हो तो Smart Cut उसे री-एन्कोड करता है।</p>
+                <h2>Smart Cut की समर्थन सीमाएँ</h2>
+                <p>Smart Cut MP4 या MOV में H.264 और HEVC; MP4 में AV1; MP4 या WebM में VP9; MKV या WebM में VP8; और MP4 या MOV में MPEG-4 या MPEG-2 का समर्थन करता है। Intra-frame कोडेक के कंटेनर: MP4, MOV, MKV या AVI में MJPEG और PNG; MOV, MKV या AVI में Ut Video और HuffYUV; MKV, AVI या MOV में FFV1; MKV में rawvideo; MOV या MKV में TIFF; MOV, MKV या AVI में HAP और DNxHD; और MOV में ProRes। H.264 और HEVC के अलावा अन्य कोडेक के लिए इनपुट और आउटपुट कंटेनर समान होने चाहिए।</p>
+                <p>H.264 में Constrained Baseline, Baseline, Main, High या High 10 प्रोफ़ाइल के साथ 8-bit 4:2:0 समर्थित है; 10-bit के लिए केवल High 10 4:2:0, 4:2:2 में High 4:2:2, या 4:4:4 में High 4:4:4 Predictive समर्थित है। HEVC में Main 8-bit 4:2:0, Main 10 10-bit 4:2:0, या RExt 10-bit 4:2:2/4:4:4 समर्थित है। AV1 में Main 8-bit या 10-bit 4:2:0; VP9 में Profile 0 8-bit 4:2:0, Profile 2 10-bit 4:2:0, या Profile 3 10-bit 4:2:2/4:4:4 समर्थित है। VP8 और MPEG-4/MPEG-2 केवल 8-bit 4:2:0 तक सीमित हैं। Intra-frame कोडेक 8-bit या कुछ चुनिंदा 10-bit 4:2:0/4:2:2 फ़ॉर्मैट स्वीकार करते हैं। Variable-frame-rate वीडियो समर्थित है, जब उसके फ़्रेम टाइमस्टैम्प वैध हों और बढ़ते क्रम में हों। Smart Cut के लिए progressive, square-pixel वीडियो, शून्य start offset (WebM में छोटे Opus pre-roll को छोड़कर), एक video stream और अधिकतम एक audio stream भी आवश्यक है। असमर्थित संयोजनों को अस्वीकार कर दिया जाता है।</p>
+                <h2>जल्दी से कट बनाएँ</h2>
+                <ol>
+                    <li>Mytory Video Tools खोलें और वीडियो विभाजक चुनें।</li>
+                    <li>वीडियो लोड करें और शुरुआत तथा अंत का समय सेट करें।</li>
+                    <li>तेज़, बिना री-एन्कोडिंग वाली कॉपी के लिए Smart Cut बंद रखें; शुरुआत पिछले कीफ़्रेम तक खिसक सकती है। स्रोत समर्थित हो तो चुने हुए फ़्रेमों पर कट के लिए इसे चालू करें। चालू रहने पर समय दशमलव सेकंड में दर्ज करें, फिर निर्यात करें।</li>
+                </ol>
+                <p>Mytory Video Tools एक मुफ़्त Electron डेस्कटॉप ऐप है जिसमें FFmpeg शामिल है। यह Windows, macOS और Linux पर स्थानीय रूप से चलता है और कमांड लाइन की ज़रूरत नहीं पड़ती।</p>
+                <p><a class="btn btn--primary" href="../../#download">Mytory Video Tools डाउनलोड करें</a></p>
+                <p><a href="../remux-video/">अगला: बिना री-एन्कोडिंग के MKV को MP4 में रीमक्स करें</a></p>
+            </article>
+        </div>
+    </main>
+    <nav class="lang-nav" aria-label="भाषा चुनें">
+        <div class="lang-nav__inner">
+            <span class="lang-nav__label">यह पृष्ठ इन भाषाओं में:</span>
+            <div class="lang-nav__links">
+                <a href="../../../guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇺🇸</span> English</a>
+                <a href="../../../ko/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇰🇷</span> 한국어</a>
+                <a href="../../../ja/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇯🇵</span> 日本語</a>
+                <a href="../../../zh-cn/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇨🇳</span> 简体中文</a>
+                <a href="../../../es/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇪🇸</span> Español</a>
+                <a href="../../../pt/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇵🇹</span> Português</a>
+                <a href="../../../fr/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇫🇷</span> Français</a>
+                <a href="../../../id/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇮🇩</span> Indonesia</a>
+                <a href="./" class="lang-nav__link lang-nav__link--active" aria-current="page"><span class="lang-nav__flag">🇮🇳</span> हिन्दी</a>
+            </div>
+        </div>
+    </nav>
+</body>
+</html>

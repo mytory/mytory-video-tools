@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cara Memotong Video Tanpa Encoding Ulang | Mytory Video Tools</title>
+    <meta name="description" content="Pelajari cara kerja pemotongan video tanpa encoding ulang secara default, pengaruh keyframe terhadap ketepatan, dan kapan Smart Cut dapat memotong pada batas frame yang dipilih.">
+    <link rel="canonical" href="https://video-tools.mytory.net/id/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="en" href="https://video-tools.mytory.net/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="ko" href="https://video-tools.mytory.net/ko/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="ja" href="https://video-tools.mytory.net/ja/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="zh-cn" href="https://video-tools.mytory.net/zh-cn/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="es" href="https://video-tools.mytory.net/es/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="pt" href="https://video-tools.mytory.net/pt/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="fr" href="https://video-tools.mytory.net/fr/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="id" href="https://video-tools.mytory.net/id/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="hi" href="https://video-tools.mytory.net/hi/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="x-default" href="https://video-tools.mytory.net/guides/lossless-video-cut/">
+    <link rel="stylesheet" href="../../../styles.css?h=331a22122b81f6ff6ec9a500ce1b043e">
+    <link rel="icon" type="image/webp" href="../../../assets/logo.webp">
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="navbar__inner">
+            <a href="../../" class="navbar__brand"><img src="../../../assets/logo.webp" alt="Mytory" class="navbar__logo" width="28" height="28"><span class="navbar__title">Mytory Video Tools</span></a>
+            <div class="navbar__links"><a href="../../#guides" class="navbar__link">Panduan</a><a href="../../#download" class="navbar__link">Unduh</a></div>
+        </div>
+    </nav>
+    <main class="features">
+        <div class="features__inner">
+            <article class="concept__body">
+                <p class="features__eyebrow">Panduan video</p>
+                <h1 class="features__title">Cara memotong video tanpa encoding ulang</h1>
+                <p class="features__sub">Pemotongan default menyalin aliran yang sudah ada agar lebih cepat dan menghindari satu generasi kompresi video tambahan. Smart Cut bersifat opsional dan mengikuti batas frame yang dipilih jika sumbernya didukung.</p>
+                <img src="../../../assets/screenshot-1.webp" alt="Antarmuka aplikasi desktop Mytory Video Tools" width="1200" height="750" loading="lazy" style="max-width: 100%; height: auto;">
+                <h2>Mengapa potongan bisa tidak tepat pada waktunya</h2>
+                <p>Video terkompresi disimpan dalam kelompok bingkai. Keyframe dapat didekode sendiri, sedangkan banyak bingkai lain bergantung pada bingkai sebelumnya. Saat FFmpeg mencari ke timestamp sebelum input, FFmpeg memulai dari titik pencarian terdekat sebelum waktu tersebut. Karena itu, saat stream disalin, waktu mulai sebenarnya dapat berbeda dari waktu yang Anda masukkan, terutama jika jarak antar-keyframe cukup jauh.</p>
+                <p>Metode penyalinan aliran default mempertahankan video yang sudah dienkode tanpa perubahan, tetapi tidak menjamin waktu mulai yang diminta: potongan dapat dimulai dari keyframe sebelumnya. Smart Cut bersifat opsional dan memotong pada frame yang dipilih. Untuk video inter-frame yang didukung, Smart Cut meng-encode ulang bagian batas dan menyalin bagian tengah jika tersedia titik akses acak yang aman; beberapa segmen pilihan dapat di-encode ulang seluruhnya, sedangkan struktur GOP yang tidak aman akan ditolak. Video intra-frame yang didukung disalin seluruhnya. Jika ada audio, Smart Cut meng-encode ulang audio tersebut.</p>
+                <h2>Batas dukungan Smart Cut</h2>
+                <p>Smart Cut mendukung H.264 dan HEVC dalam MP4 atau MOV; AV1 dalam MP4; VP9 dalam MP4 atau WebM; VP8 dalam MKV atau WebM; serta MPEG-4 atau MPEG-2 dalam MP4 atau MOV. Kontainer untuk codec intra-frame: MJPEG dan PNG dalam MP4, MOV, MKV, atau AVI; Ut Video dan HuffYUV dalam MOV, MKV, atau AVI; FFV1 dalam MKV, AVI, atau MOV; rawvideo dalam MKV; TIFF dalam MOV atau MKV; HAP dan DNxHD dalam MOV, MKV, atau AVI; serta ProRes dalam MOV. Untuk codec selain H.264 dan HEVC, kontainer masukan dan keluaran harus sama.</p>
+                <p>H.264 mendukung 8-bit 4:2:0 dengan profil Constrained Baseline, Baseline, Main, High, atau High 10; format 10-bit dibatasi pada High 10 4:2:0, High 4:2:2 dalam 4:2:2, atau High 4:4:4 Predictive dalam 4:4:4. HEVC mendukung Main 8-bit 4:2:0, Main 10 10-bit 4:2:0, atau RExt 10-bit 4:2:2/4:4:4. AV1 mendukung Main 8-bit atau 10-bit 4:2:0; VP9 mendukung Profile 0 8-bit 4:2:0, Profile 2 10-bit 4:2:0, atau Profile 3 10-bit 4:2:2/4:4:4. VP8 dan MPEG-4/MPEG-2 terbatas pada 8-bit 4:2:0. Codec intra-frame mendukung 8-bit atau format 10-bit 4:2:0/4:2:2 tertentu. Video dengan variable frame rate didukung jika timestamp frame valid dan berurutan naik. Smart Cut juga mensyaratkan video progresif dengan piksel persegi, offset awal nol (kecuali pre-roll Opus kecil di WebM), satu stream video, dan paling banyak satu stream audio. Kombinasi yang tidak didukung akan ditolak.</p>
+                <h2>Memotong klip dengan cepat</h2>
+                <ol>
+                    <li>Buka Mytory Video Tools, lalu pilih Pemotong video.</li>
+                    <li>Muat video, lalu atur waktu mulai dan akhir.</li>
+                    <li>Biarkan Smart Cut nonaktif untuk salinan cepat tanpa kehilangan kualitas; titik awalnya dapat bergeser ke keyframe. Aktifkan untuk memotong pada frame pilihan jika sumber didukung; saat aktif, masukkan waktu dalam detik desimal, lalu ekspor.</li>
+                </ol>
+                <p>Mytory Video Tools adalah aplikasi desktop Electron gratis yang menyertakan FFmpeg. Aplikasi berjalan secara lokal di Windows, macOS, dan Linux tanpa perlu baris perintah.</p>
+                <p><a class="btn btn--primary" href="../../#download">Unduh Mytory Video Tools</a></p>
+                <p><a href="../remux-video/">Berikutnya: remux MKV ke MP4 tanpa encoding ulang</a></p>
+            </article>
+        </div>
+    </main>
+    <nav class="lang-nav" aria-label="Pemilih bahasa">
+        <div class="lang-nav__inner">
+            <span class="lang-nav__label">Halaman ini dalam:</span>
+            <div class="lang-nav__links">
+                <a href="../../../guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇺🇸</span> English</a>
+                <a href="../../../ko/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇰🇷</span> 한국어</a>
+                <a href="../../../ja/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇯🇵</span> 日本語</a>
+                <a href="../../../zh-cn/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇨🇳</span> 简体中文</a>
+                <a href="../../../es/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇪🇸</span> Español</a>
+                <a href="../../../pt/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇵🇹</span> Português</a>
+                <a href="../../../fr/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇫🇷</span> Français</a>
+                <a href="./" class="lang-nav__link lang-nav__link--active" aria-current="page"><span class="lang-nav__flag">🇮🇩</span> Indonesia</a>
+                <a href="../../../hi/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇮🇳</span> हिन्दी</a>
+            </div>
+        </div>
+    </nav>
+</body>
+</html>

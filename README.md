@@ -2,11 +2,15 @@
 
 > **🇰🇷 한국어:** [README.ko.md](./README.ko.md) · **🇯🇵 日本語:** [README.ja.md](./README.ja.md) · **🇨🇳 简体中文:** [README.zh-cn.md](./README.zh-cn.md) · **🇪🇸 Español:** [README.es.md](./README.es.md) · **🇧🇷 Português:** [README.pt.md](./README.pt.md) · **🇫🇷 Français:** [README.fr.md](./README.fr.md) · **🇮🇩 Bahasa Indonesia:** [README.id.md](./README.id.md) · **🇮🇳 हिन्दी:** [README.hi.md](./README.hi.md)
 
-**Mytory Video Tools** is a cross-platform (Windows, macOS, Linux) desktop application for high-speed video encoding and various media manipulation tasks. It is built with Electron and ships with embedded FFmpeg/FFprobe binaries.
+**Mytory Video Tools** is a desktop FFmpeg GUI for quick media tasks that feel too small to open a full editor and too tedious to handle by memorizing FFmpeg commands.
 
-### What’s new in v1.9.2
+[⬇️ Download for Windows, macOS, or Linux](https://github.com/mytory/mytory-video-tools/releases)
 
-Frame Capture now saves immediately while frame-rate analysis runs. Filenames use milliseconds before analysis completes; new captures use frame precision once a constant frame rate is confirmed. Variable-frame-rate videos keep millisecond filenames. This applies to single-frame, interval, and scene captures.
+![Mytory Video Tools desktop app screenshot](./screenshots/screenshot-1.png)
+
+### What’s new in v1.10.0
+
+Video Splitter now offers optional Smart Cut for exact selected-frame boundaries. It re-encodes only the cut edges and stream-copies the middle. With Smart Cut off, the default remains stream copy, so cut points may follow keyframes. 8-bit and 10-bit variable-frame-rate video is supported within codec, profile, and container compatibility limits.
 
 ---
 
@@ -26,7 +30,7 @@ Frame Capture now saves immediately while frame-rate analysis runs. Filenames us
 | 📸 **Frame Capture** | Single-frame capture, batch extraction at intervals, and automatic scene detection with sensitivity control. Choose a save folder or reset to the video's folder. Capture immediately while frame-rate analysis runs: filenames use milliseconds until analysis confirms a constant frame rate, then use frame precision for new captures. Variable-frame-rate videos keep millisecond filenames; times under one hour omit the hour field. Captured images retain their actual capture time in EXIF. |
 | 🔄 **Remuxer** | Fast container format conversion (MP4, MKV, MOV) without re-encoding. |
 | 🔗 **Video Joiner** | Join multiple video files with automatic compatibility handling. Drag to reorder, check compatibility at a glance, and handles differing frame rates with smart re-encoding. Perfect for re-assembling split segments. |
-| ✂️ **Video Splitter** | Losslessly cut a segment by setting start and end points. Extremely fast. |
+| ✂️ **Video Splitter** | Trim a segment by setting start and end points. The default stream-copy mode may place cuts at keyframes. Optional Smart Cut re-encodes only the edges for exact selected-frame boundaries and stream-copies the middle. Supports 8-bit and 10-bit variable-frame-rate video within codec, profile, and container compatibility limits. |
 | 📦 **Compressor** | Compress video to a target file size with various codec and quality options. |
 
 > **🖱️ Global Drag & Drop**: Drag files anywhere onto the app window to instantly add them to the currently active tool.
@@ -129,7 +133,7 @@ This application uses the following open-source projects and complies with their
 
 ## 6. License
 
-Copyright (c) 2026 mytory. This project is licensed under **GPL-3.0-only**. See the [LICENSE](./LICENSE) file for details.
+Copyright (c) 2026 mytory. This project is licensed under the **GNU General Public License v3.0**. See the [LICENSE](./LICENSE) file for details.
 
 ---
 

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>재인코딩 없이 영상 자르기 | Mytory Video Tools</title>
+    <meta name="description" content="기본 스트림 복사 방식의 영상 자르기와 키프레임이 정확도에 미치는 영향, 지원되는 원본에서 프레임 단위로 자르는 Smart Cut 사용법을 알아보세요.">
+    <link rel="canonical" href="https://video-tools.mytory.net/ko/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="en" href="https://video-tools.mytory.net/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="ko" href="https://video-tools.mytory.net/ko/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="ja" href="https://video-tools.mytory.net/ja/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="zh-cn" href="https://video-tools.mytory.net/zh-cn/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="es" href="https://video-tools.mytory.net/es/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="pt" href="https://video-tools.mytory.net/pt/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="fr" href="https://video-tools.mytory.net/fr/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="id" href="https://video-tools.mytory.net/id/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="hi" href="https://video-tools.mytory.net/hi/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="x-default" href="https://video-tools.mytory.net/guides/lossless-video-cut/">
+    <link rel="stylesheet" href="../../../styles.css?h=331a22122b81f6ff6ec9a500ce1b043e">
+    <link rel="icon" type="image/webp" href="../../../assets/logo.webp">
+</head>
+<body>
+    <nav class="navbar" id="navbar"><div class="navbar__inner"><a href="../../../ko/" class="navbar__brand"><img src="../../../assets/logo.webp" alt="Mytory" class="navbar__logo" width="28" height="28"><span class="navbar__title">Mytory Video Tools</span></a><div class="navbar__links"><a href="../../../ko/#guides" class="navbar__link">가이드</a><a href="../../../ko/#download" class="navbar__link">다운로드</a></div></div></nav>
+    <main class="features"><div class="features__inner"><article class="concept__body">
+        <p class="features__eyebrow">영상 가이드</p>
+        <h1 class="features__title">재인코딩 없이 영상 자르는 방법</h1>
+        <p class="features__sub">기본 자르기는 기존 스트림을 복사해 빠르게 처리하고 영상 압축을 다시 하지 않습니다. 선택 사항인 Smart Cut은 지원되는 원본에서 지정한 프레임 경계에 맞춰 자릅니다.</p>
+        <img src="../../../assets/screenshot-1.webp" alt="Mytory Video Tools 데스크톱 앱 화면" width="1200" height="750" loading="lazy" style="max-width: 100%; height: auto;">
+        <h2>지정한 시각과 실제 컷이 다를 수 있는 이유</h2>
+        <p>압축 영상은 여러 프레임을 묶어 저장합니다. 키프레임은 단독으로 디코딩할 수 있지만, 다른 프레임은 앞선 프레임에 의존합니다. FFmpeg가 입력 앞에서 특정 시각으로 이동하면 그 시각보다 앞선 가장 가까운 탐색 지점에서 시작합니다. 스트림 복사에서는 특히 키프레임 간격이 길 때 실제 시작점이 지정한 시각과 다를 수 있습니다.</p>
+        <p>기본 스트림 복사는 인코딩된 영상을 변경하지 않지만, 요청한 시작 시각에 정확히 맞는다고 보장할 수는 없습니다. 컷이 앞선 키프레임에서 시작할 수 있습니다. 선택 기능인 Smart Cut은 선택한 프레임에서 자릅니다. 지원되는 프레임 간 압축 영상은 컷 경계를 재인코딩하고, 안전한 랜덤 액세스 지점이 있을 때 중간 구간을 복사합니다. 일부 선택 구간은 전체가 재인코딩될 수도 있으며, 안전하지 않은 GOP 구조는 거부합니다. 지원되는 프레임 내 압축 영상은 전체 구간을 복사합니다. 오디오가 있으면 Smart Cut은 오디오를 재인코딩합니다.</p>
+        <h2>Smart Cut 지원 제한</h2>
+        <p>Smart Cut은 MP4 또는 MOV의 H.264와 HEVC, MP4의 AV1, MP4 또는 WebM의 VP9, MKV 또는 WebM의 VP8, MP4 또는 MOV의 MPEG-4와 MPEG-2를 지원합니다. 프레임 내 압축 코덱과 컨테이너 조합은 다음과 같습니다. MJPEG와 PNG는 MP4, MOV, MKV 또는 AVI, Ut Video와 HuffYUV는 MOV, MKV 또는 AVI, FFV1은 MKV, AVI 또는 MOV, rawvideo는 MKV, TIFF는 MOV 또는 MKV, HAP과 DNxHD는 MOV, MKV 또는 AVI, ProRes는 MOV에서 사용할 수 있습니다. H.264와 HEVC가 아닌 코덱은 입력과 출력 컨테이너가 같아야 합니다.</p>
+        <p>H.264는 8-bit 4:2:0에서 Constrained Baseline, Baseline, Main, High 또는 High 10 프로필을 지원합니다. 10-bit는 High 10 프로필의 4:2:0, High 4:2:2 프로필의 4:2:2 또는 High 4:4:4 Predictive 프로필의 4:4:4로 제한됩니다. HEVC는 Main 8-bit 4:2:0, Main 10 10-bit 4:2:0 또는 RExt 10-bit 4:2:2/4:4:4를 지원합니다. AV1은 Main 8-bit 또는 10-bit 4:2:0, VP9는 Profile 0 8-bit 4:2:0, Profile 2 10-bit 4:2:0 또는 Profile 3 10-bit 4:2:2/4:4:4를 지원합니다. VP8과 MPEG-4/MPEG-2는 8-bit 4:2:0으로 제한됩니다. 프레임 내 압축 코덱은 8-bit 또는 일부 10-bit 4:2:0/4:2:2 형식을 지원합니다. 가변 프레임 레이트 영상은 프레임 타임스탬프가 유효하고 증가하는 경우 지원됩니다. Smart Cut은 프로그레시브 스캔, 정사각형 픽셀, 시작 오프셋 0도 요구합니다(WebM Opus의 짧은 프리롤은 예외). 비디오 스트림은 하나여야 하며 오디오 스트림은 최대 하나까지 허용됩니다. 지원되지 않는 조합은 거부됩니다.</p>
+        <h2>빠르게 구간 자르기</h2>
+        <ol><li>Mytory Video Tools에서 비디오 분할기를 엽니다.</li><li>영상을 불러와 시작 시각과 종료 시각을 지정합니다.</li><li>빠르고 손실 없는 복사를 원하면 Smart Cut을 끈 채 내보냅니다. 시작점이 키프레임으로 이동할 수 있습니다. 지원되는 원본에서 선택한 프레임 기준으로 자르려면 Smart Cut을 켜고 시간을 소수점 초 단위로 입력한 다음 내보냅니다.</li></ol>
+        <p>Mytory Video Tools는 FFmpeg를 포함한 무료 Electron 데스크톱 앱입니다. Windows, macOS, Linux에서 로컬로 실행되며 명령줄을 사용할 필요가 없습니다.</p>
+        <p><a class="btn btn--primary" href="../../../ko/#download">Mytory Video Tools 다운로드</a></p>
+        <p><a href="../remux-video/">다음: 재인코딩 없이 MKV를 MP4로 리먹스하기</a></p>
+    </article></div></main>
+    <nav class="lang-nav" aria-label="언어 선택"><div class="lang-nav__inner"><span class="lang-nav__label">이 페이지:</span><div class="lang-nav__links">
+        <a href="../../../guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇺🇸</span> English</a><a href="./" class="lang-nav__link lang-nav__link--active" aria-current="page"><span class="lang-nav__flag">🇰🇷</span> 한국어</a><a href="../../../ja/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇯🇵</span> 日本語</a><a href="../../../zh-cn/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇨🇳</span> 简体中文</a><a href="../../../es/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇪🇸</span> Español</a><a href="../../../pt/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇵🇹</span> Português</a><a href="../../../fr/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇫🇷</span> Français</a><a href="../../../id/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇮🇩</span> Indonesia</a><a href="../../../hi/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇮🇳</span> हिन्दी</a>
+    </div></div></nav>
+</body>
+</html>

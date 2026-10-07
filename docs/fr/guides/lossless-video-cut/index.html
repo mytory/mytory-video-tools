@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comment couper une vidéo sans réencodage | Mytory Video Tools</title>
+    <meta name="description" content="Découvrez comment fonctionnent les coupes vidéo sans réencodage par défaut, pourquoi les images clés influent sur la précision et quand Smart Cut peut couper aux images sélectionnées.">
+    <link rel="canonical" href="https://video-tools.mytory.net/fr/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="en" href="https://video-tools.mytory.net/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="ko" href="https://video-tools.mytory.net/ko/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="ja" href="https://video-tools.mytory.net/ja/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="zh-cn" href="https://video-tools.mytory.net/zh-cn/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="es" href="https://video-tools.mytory.net/es/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="pt" href="https://video-tools.mytory.net/pt/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="fr" href="https://video-tools.mytory.net/fr/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="id" href="https://video-tools.mytory.net/id/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="hi" href="https://video-tools.mytory.net/hi/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="x-default" href="https://video-tools.mytory.net/guides/lossless-video-cut/">
+    <link rel="stylesheet" href="../../../styles.css?h=331a22122b81f6ff6ec9a500ce1b043e">
+    <link rel="icon" type="image/webp" href="../../../assets/logo.webp">
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="navbar__inner">
+            <a href="../../../fr/" class="navbar__brand"><img src="../../../assets/logo.webp" alt="Mytory" class="navbar__logo" width="28" height="28"><span class="navbar__title">Mytory Video Tools</span></a>
+            <div class="navbar__links"><a href="../../../fr/#guides" class="navbar__link">Guides</a><a href="../../../fr/#download" class="navbar__link">Télécharger</a></div>
+        </div>
+    </nav>
+    <main class="features">
+        <div class="features__inner">
+            <article class="concept__body">
+                <p class="features__eyebrow">Guide vidéo</p>
+                <h1 class="features__title">Comment couper une vidéo sans réencodage</h1>
+                <p class="features__sub">La coupe par défaut copie les flux existants pour aller vite et évite une nouvelle génération de compression vidéo. Smart Cut, facultatif, suit les limites des images sélectionnées lorsque la source est prise en charge.</p>
+                <img src="../../../assets/screenshot-1.webp" alt="Interface de l’application de bureau Mytory Video Tools" width="1200" height="750" loading="lazy" style="max-width: 100%; height: auto;">
+                <h2>Pourquoi la coupe peut ne pas tomber au moment exact</h2>
+                <p>La vidéo compressée est stockée par groupes d’images. Une image clé peut être décodée seule ; de nombreuses autres dépendent des images précédentes. Lorsque FFmpeg recherche un horodatage à partir du début du fichier, il commence au point de recherche le plus proche avant cet instant. Avec la copie des flux, le début réel peut donc différer du temps indiqué, surtout lorsque les images clés sont très espacées.</p>
+                <p>La copie des flux par défaut conserve la vidéo encodée telle quelle, mais ne garantit pas l’heure de début demandée : la coupe peut commencer à une image clé précédente. Smart Cut est facultatif et coupe aux images sélectionnées. Pour les vidéos inter-images prises en charge, il réencode les limites et copie une section centrale lorsque des points d’accès aléatoire sûrs sont disponibles ; certains segments sélectionnés peuvent être entièrement réencodés, et les structures GOP non sûres sont refusées. Les vidéos intra-image prises en charge sont copiées intégralement. En présence d’audio, Smart Cut le réencode.</p>
+                <h2>Limites de prise en charge de Smart Cut</h2>
+                <p>Smart Cut prend en charge H.264 et HEVC dans les conteneurs MP4 ou MOV ; AV1 dans MP4 ; VP9 dans MP4 ou WebM ; VP8 dans MKV ou WebM ; et MPEG-4 ou MPEG-2 dans MP4 ou MOV. Conteneurs pour les codecs intra-image : MJPEG et PNG dans MP4, MOV, MKV ou AVI ; Ut Video et HuffYUV dans MOV, MKV ou AVI ; FFV1 dans MKV, AVI ou MOV ; rawvideo dans MKV ; TIFF dans MOV ou MKV ; HAP et DNxHD dans MOV, MKV ou AVI ; et ProRes dans MOV. Pour les codecs autres que H.264 et HEVC, les conteneurs d’entrée et de sortie doivent être identiques.</p>
+                <p>H.264 accepte le 8 bits 4:2:0 avec les profils Constrained Baseline, Baseline, Main, High ou High 10 ; le 10 bits est limité à High 10 en 4:2:0, High 4:2:2 en 4:2:2 ou High 4:4:4 Predictive en 4:4:4. HEVC accepte Main 8 bits 4:2:0, Main 10 10 bits 4:2:0 ou RExt 10 bits 4:2:2/4:4:4. AV1 accepte Main 8 ou 10 bits 4:2:0 ; VP9 accepte Profile 0 8 bits 4:2:0, Profile 2 10 bits 4:2:0 ou Profile 3 10 bits 4:2:2/4:4:4. VP8 et MPEG-4/MPEG-2 sont limités au 8 bits 4:2:0. Les codecs intra-image acceptent le 8 bits ou certains formats 10 bits 4:2:0/4:2:2. La vidéo à fréquence d’images variable est prise en charge si ses horodatages d’images sont valides et croissants. Smart Cut exige aussi une vidéo progressive à pixels carrés, un décalage de départ nul (sauf un léger pré-déroulement Opus dans WebM), une seule piste vidéo et au plus une piste audio. Les combinaisons non prises en charge sont refusées.</p>
+                <h2>Effectuer une coupe rapide</h2>
+                <ol>
+                    <li>Ouvrez Mytory Video Tools et choisissez Diviseur vidéo.</li>
+                    <li>Chargez une vidéo et définissez les heures de début et de fin.</li>
+                    <li>Laissez Smart Cut désactivé pour une copie rapide sans perte, dont le début peut glisser jusqu’à une image clé. Activez-le pour couper aux images sélectionnées si la source est prise en charge ; lorsqu’il est activé, saisissez les temps en secondes décimales, puis exportez.</li>
+                </ol>
+                <p>Mytory Video Tools est une application de bureau Electron gratuite qui inclut FFmpeg. Elle s’exécute localement sous Windows, macOS et Linux, sans ligne de commande.</p>
+                <p><a class="btn btn--primary" href="../../../fr/#download">Télécharger Mytory Video Tools</a></p>
+                <p><a href="../remux-video/">Suivant : remuxer un MKV en MP4 sans réencodage</a></p>
+            </article>
+        </div>
+    </main>
+    <nav class="lang-nav" aria-label="Sélecteur de langue">
+        <div class="lang-nav__inner">
+            <span class="lang-nav__label">Cette page en :</span>
+            <div class="lang-nav__links">
+                <a href="../../../guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇺🇸</span> English</a>
+                <a href="../../../ko/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇰🇷</span> 한국어</a>
+                <a href="../../../ja/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇯🇵</span> 日本語</a>
+                <a href="../../../zh-cn/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇨🇳</span> 简体中文</a>
+                <a href="../../../es/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇪🇸</span> Español</a>
+                <a href="../../../pt/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇵🇹</span> Português</a>
+                <a href="./" class="lang-nav__link lang-nav__link--active" aria-current="page"><span class="lang-nav__flag">🇫🇷</span> Français</a>
+                <a href="../../../id/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇮🇩</span> Indonesia</a>
+                <a href="../../../hi/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇮🇳</span> हिन्दी</a>
+            </div>
+        </div>
+    </nav>
+</body>
+</html>

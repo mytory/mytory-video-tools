@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>再エンコードせずに動画をカットする方法 | Mytory Video Tools</title>
+    <meta name="description" content="標準のストリームコピーによるカットの仕組みとキーフレームが精度に与える影響、対応する素材をフレーム単位で編集するSmart Cutの使い方を紹介します。">
+    <link rel="canonical" href="https://video-tools.mytory.net/ja/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="en" href="https://video-tools.mytory.net/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="ko" href="https://video-tools.mytory.net/ko/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="ja" href="https://video-tools.mytory.net/ja/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="zh-cn" href="https://video-tools.mytory.net/zh-cn/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="es" href="https://video-tools.mytory.net/es/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="pt" href="https://video-tools.mytory.net/pt/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="fr" href="https://video-tools.mytory.net/fr/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="id" href="https://video-tools.mytory.net/id/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="hi" href="https://video-tools.mytory.net/hi/guides/lossless-video-cut/">
+    <link rel="alternate" hreflang="x-default" href="https://video-tools.mytory.net/guides/lossless-video-cut/">
+    <link rel="stylesheet" href="../../../styles.css?h=331a22122b81f6ff6ec9a500ce1b043e">
+    <link rel="icon" type="image/webp" href="../../../assets/logo.webp">
+</head>
+<body>
+    <nav class="navbar" id="navbar"><div class="navbar__inner"><a href="../../../ja/" class="navbar__brand"><img src="../../../assets/logo.webp" alt="Mytory" class="navbar__logo" width="28" height="28"><span class="navbar__title">Mytory Video Tools</span></a><div class="navbar__links"><a href="../../../ja/#guides" class="navbar__link">ガイド</a><a href="../../../ja/#download" class="navbar__link">ダウンロード</a></div></div></nav>
+    <main class="features"><div class="features__inner"><article class="concept__body">
+        <p class="features__eyebrow">動画ガイド</p>
+        <h1 class="features__title">再エンコードせずに動画をカットする方法</h1>
+        <p class="features__sub">標準のカットは既存のストリームをコピーするため高速で、映像を再圧縮しません。任意で使えるSmart Cutは、対応する素材を選択したフレーム境界でカットします。</p>
+        <img src="../../../assets/screenshot-1.webp" alt="Mytory Video Toolsのデスクトップアプリ画面" width="1200" height="750" loading="lazy" style="max-width: 100%; height: auto;">
+        <h2>指定した時刻どおりにカットできないことがある理由</h2>
+        <p>圧縮動画は複数のフレームをまとめて保存します。キーフレームは単独でデコードできますが、多くのフレームは前のフレームを参照します。FFmpegが入力前の位置からタイムスタンプを探すと、その時刻より前にある最も近いシーク位置から処理を始めます。そのためストリームコピーでは、特にキーフレームの間隔が長い場合、実際の開始位置が指定時刻と異なることがあります。</p>
+        <p>標準のストリームコピーではエンコード済みの映像は変更されませんが、指定した開始時刻に正確に合うとは限らず、前のキーフレームから始まる場合があります。任意機能のSmart Cutは選択したフレームでカットします。対応するフレーム間圧縮動画ではカット境界を再エンコードし、安全にランダムアクセスできる位置があれば中間部分をコピーします。選択した区間によっては、その区間全体を再エンコードする場合があり、安全でないGOP構成は拒否されます。対応するフレーム内圧縮動画は全区間をコピーします。音声がある場合、Smart Cutは音声を再エンコードします。</p>
+        <h2>Smart Cutの対応範囲</h2>
+        <p>Smart Cutは、MP4またはMOVのH.264とHEVC、MP4のAV1、MP4またはWebMのVP9、MKVまたはWebMのVP8、MP4またはMOVのMPEG-4とMPEG-2に対応しています。フレーム内圧縮コーデックとコンテナの組み合わせは次のとおりです。MJPEGとPNGはMP4、MOV、MKV、AVI、Ut VideoとHuffYUVはMOV、MKV、AVI、FFV1はMKV、AVI、MOV、rawvideoはMKV、TIFFはMOV、MKV、HAPとDNxHDはMOV、MKV、AVI、ProResはMOVに対応します。H.264とHEVC以外のコーデックでは、入力と出力のコンテナを同じにする必要があります。</p>
+        <p>H.264は8-bit 4:2:0のConstrained Baseline、Baseline、Main、High、High 10プロファイルに対応します。10-bitではHigh 10プロファイルの4:2:0、High 4:2:2プロファイルの4:2:2、またはHigh 4:4:4 Predictiveプロファイルの4:4:4に限られます。HEVCはMain 8-bit 4:2:0、Main 10 10-bit 4:2:0、またはRExt 10-bit 4:2:2/4:4:4に対応します。AV1はMain 8-bitまたは10-bit 4:2:0、VP9はProfile 0 8-bit 4:2:0、Profile 2 10-bit 4:2:0、またはProfile 3 10-bit 4:2:2/4:4:4に対応します。VP8とMPEG-4/MPEG-2は8-bit 4:2:0に限られます。フレーム内圧縮コーデックは8-bitまたは一部の10-bit 4:2:0/4:2:2形式に対応します。可変フレームレート動画は、フレームのタイムスタンプが有効で単調増加している場合に対応します。Smart Cutにはプログレッシブ方式、正方画素、開始オフセット0も必要です（WebM Opusの短いプリロールは例外）。映像ストリームは1つ、音声ストリームは最大1つまでです。対応していない組み合わせは拒否されます。</p>
+        <h2>すばやくカットする</h2>
+        <ol><li>Mytory Video Toolsを開き、「動画分割」を選びます。</li><li>動画を読み込み、開始時刻と終了時刻を設定します。</li><li>高速で劣化のないコピーにするにはSmart Cutをオフのまま書き出します。開始位置がキーフレームに移動する場合があります。対応する素材を選択したフレームでカットするにはSmart Cutをオンにし、時間を小数の秒で入力してから書き出します。</li></ol>
+        <p>Mytory Video ToolsはFFmpegを内蔵した無料のElectronデスクトップアプリです。Windows、macOS、Linuxでローカルに動作し、コマンドラインは必要ありません。</p>
+        <p><a class="btn btn--primary" href="../../../ja/#download">Mytory Video Toolsをダウンロード</a></p>
+        <p><a href="../remux-video/">次へ：再エンコードせずにMKVをMP4へリマックス</a></p>
+    </article></div></main>
+    <nav class="lang-nav" aria-label="言語選択"><div class="lang-nav__inner"><span class="lang-nav__label">このページの言語：</span><div class="lang-nav__links">
+        <a href="../../../guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇺🇸</span> English</a><a href="../../../ko/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇰🇷</span> 한국어</a><a href="./" class="lang-nav__link lang-nav__link--active" aria-current="page"><span class="lang-nav__flag">🇯🇵</span> 日本語</a><a href="../../../zh-cn/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇨🇳</span> 简体中文</a><a href="../../../es/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇪🇸</span> Español</a><a href="../../../pt/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇵🇹</span> Português</a><a href="../../../fr/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇫🇷</span> Français</a><a href="../../../id/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇮🇩</span> Indonesia</a><a href="../../../hi/guides/lossless-video-cut/" class="lang-nav__link"><span class="lang-nav__flag">🇮🇳</span> हिन्दी</a>
+    </div></div></nav>
+</body>
+</html>

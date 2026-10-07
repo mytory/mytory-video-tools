@@ -709,6 +709,17 @@ const translations = {
         id: 'Waktu mulai harus lebih awal dari waktu selesai.',
         hi: 'प्रारंभ समय समाप्ति समय से पहले होना चाहिए।',
     },
+    'Smart cut is not supported for this video. Turn it off to use lossless splitting.': {
+        en: 'Smart cut is not supported for this video. Turn it off to use lossless splitting.',
+        ko: '이 영상은 스마트 컷을 지원하지 않습니다. 옵션을 끄면 무손실 분할을 사용할 수 있습니다.',
+        ja: 'この動画はスマートカットに対応していません。オフにすると、無劣化で分割できます。',
+        'zh-cn': '此视频不支持智能剪切。关闭此选项即可无损分割。',
+        es: 'Este video no admite el corte inteligente. Desactive la opción para dividirlo sin pérdida.',
+        pt: 'Este vídeo não é compatível com o corte inteligente. Desative a opção para dividi-lo sem perdas.',
+        fr: 'Cette vidéo ne prend pas en charge la coupe intelligente. Désactivez l’option pour la découper sans perte.',
+        id: 'Video ini tidak mendukung potong cerdas. Nonaktifkan opsi ini untuk memotong tanpa kehilangan kualitas.',
+        hi: 'यह वीडियो स्मार्ट कट का समर्थन नहीं करता। बिना गुणवत्ता हानि के विभाजित करने के लिए इसे बंद करें।',
+    },
 
     // --- HW Status ---
     'No hardware acceleration detected. Fallback to CPU-based encoders.': {
@@ -947,6 +958,17 @@ const templateTranslations = {
         fr: (path) => `Enregistré sans perte dans ${path}`,
         id: (path) => `Disimpan tanpa kehilangan ke ${path}`,
         hi: (path) => `${path} में बिना हानि के सहेजा गया`,
+    },
+    '!split_file_saved_smart': {
+        en: (path) => `Smart cut saved to ${path}`,
+        ko: (path) => `${path}에 스마트 컷으로 저장되었습니다.`,
+        ja: (path) => `スマートカットで ${path} に保存しました。`,
+        'zh-cn': (path) => `已通过智能剪切保存到 ${path}`,
+        es: (path) => `Corte inteligente guardado en ${path}`,
+        pt: (path) => `Corte inteligente salvo em ${path}`,
+        fr: (path) => `Coupe intelligente enregistrée dans ${path}`,
+        id: (path) => `Potong cerdas disimpan ke ${path}`,
+        hi: (path) => `स्मार्ट कट ${path} में सहेजा गया`,
     },
 };
 

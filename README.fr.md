@@ -8,9 +8,9 @@
 
 ![Capture d’écran de l’application de bureau Mytory Video Tools](./screenshots/screenshot-1.png)
 
-### Nouveautés de la v1.9.2
+### Nouveautés de la v1.10.0
 
-Frame Capture enregistre désormais immédiatement pendant l’analyse de la fréquence d’images. Les noms de fichiers utilisent les millisecondes avant la fin de l’analyse ; les nouvelles captures utilisent une précision à l’image près une fois la fréquence constante confirmée. Les vidéos à fréquence variable conservent les millisecondes. Cela s’applique aux captures individuelles, à intervalles et par scènes.
+Le Coupe-vidéo propose désormais Smart Cut, une option pour couper exactement aux limites des images sélectionnées. Cette option réencode uniquement les extrémités de la coupe ; la partie centrale est copiée sans réencodage. Sans Smart Cut, le mode par défaut reste la copie de flux ; les points de coupe peuvent donc dépendre des images clés. Les vidéos à fréquence d’images variable (VFR) en 8 et 10 bits sont prises en charge dans les limites de compatibilité des codecs, profils et conteneurs.
 
 ---
 
@@ -30,7 +30,7 @@ Frame Capture enregistre désormais immédiatement pendant l’analyse de la fr�
 | 📸 **Capture d'image** | Capture d'une seule image, extraction par lots à intervalles réguliers et détection automatique de scènes avec réglage de la sensibilité. Choisissez un dossier d’enregistrement ou revenez au dossier de la vidéo. Capturez immédiatement pendant l’analyse de la fréquence d’images : les noms de fichiers utilisent les millisecondes jusqu’à la confirmation d’une fréquence constante, puis les nouvelles captures utilisent une précision à l’image près. Les vidéos à fréquence variable conservent les millisecondes ; le champ des heures est omis pour les vidéos de moins d’une heure. Les images capturées conservent leur heure réelle de capture dans l'EXIF. |
 | 🔄 **Remuxeur** | Conversion rapide de format de conteneur (MP4, MKV, MOV) sans ré-encodage. |
 | 🔗 **Assembler les vidéos** | Concatène sans perte plusieurs fichiers vidéo avec des paramètres d'encodage identiques. Parfait pour réassembler des segments divisés. |
-| ✂️ **Coupe-vidéo** | Coupe un segment sans perte en définissant les points de début et de fin. Extrêmement rapide. |
+| ✂️ **Coupe-vidéo** | Coupe un segment en définissant les points de début et de fin. Le mode par défaut de copie de flux peut placer les coupes sur les images clés. Smart Cut est une option qui réencode uniquement les extrémités pour couper exactement aux limites des images sélectionnées et copie les flux vidéo de la partie centrale sans réencodage. Les vidéos à fréquence d’images variable (VFR) en 8 et 10 bits sont prises en charge dans les limites de compatibilité des codecs, profils et conteneurs. |
 | 📦 **Compresseur** | Compresse une vidéo à une taille de fichier cible avec diverses options de codec et de qualité. |
 
 > **🖱️ Glisser-déposer global** : Faites glisser des fichiers n'importe où sur la fenêtre de l'application pour les ajouter instantanément à l'outil actif.

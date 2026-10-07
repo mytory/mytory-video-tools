@@ -8,9 +8,9 @@
 
 ![Tangkapan layar aplikasi desktop Mytory Video Tools](./screenshots/screenshot-1.png)
 
-### Yang baru di v1.9.2
+### Yang baru di v1.10.0
 
-Frame Capture kini langsung menyimpan saat analisis frame rate berlangsung. Nama file menggunakan milidetik sebelum analisis selesai; tangkapan baru menggunakan presisi frame setelah frame rate konstan dikonfirmasi. Video dengan frame rate variabel tetap menggunakan milidetik. Ini berlaku untuk tangkapan tunggal, per interval, dan per adegan.
+Pemotong Video kini menyediakan Smart Cut opsional untuk memotong tepat pada batas frame yang dipilih. Fitur ini mengodekan ulang hanya bagian tepi potongan dan menyalin aliran di bagian tengah. Jika Smart Cut dinonaktifkan, mode default tetap menyalin aliran, sehingga titik potong dapat mengikuti keyframe. Mendukung video dengan frame rate variabel 8-bit dan 10-bit dalam batas kompatibilitas codec, profil, dan kontainer.
 
 ---
 
@@ -30,7 +30,7 @@ Frame Capture kini langsung menyimpan saat analisis frame rate berlangsung. Nama
 | 📸 **Tangkapan Bingkai** | Tangkapan bingkai tunggal, ekstraksi batch pada interval, dan deteksi adegan otomatis dengan kontrol sensitivitas. Pilih folder penyimpanan atau kembali ke folder video. Tangkap segera saat analisis frame rate berlangsung: nama file menggunakan milidetik hingga frame rate konstan dikonfirmasi, lalu tangkapan baru menggunakan presisi frame. Video dengan frame rate variabel tetap menggunakan milidetik; kolom jam dihilangkan jika durasi di bawah satu jam. Gambar hasil tangkapan menyimpan waktu tangkap sebenarnya di EXIF. |
 | 🔄 **Remuxer** | Konversi format kontainer cepat (MP4, MKV, MOV) tanpa encoding ulang. |
 | 🔗 **Gabungkan video** | Menggabungkan beberapa file video dengan parameter encoding identik tanpa kehilangan kualitas. Sempurna untuk menyusun ulang segmen yang dipisah. |
-| ✂️ **Pemotong Video** | Potong segmen tanpa kehilangan dengan menetapkan titik awal dan akhir. Sangat cepat. |
+| ✂️ **Pemotong Video** | Potong segmen dengan menetapkan titik awal dan akhir. Mode default penyalinan aliran dapat menempatkan potongan pada keyframe. Smart Cut opsional mengodekan ulang hanya bagian tepi agar potongan tepat pada batas frame yang dipilih, lalu menyalin aliran di bagian tengah. Mendukung video dengan frame rate variabel 8-bit dan 10-bit dalam batas kompatibilitas codec, profil, dan kontainer. |
 | 📦 **Kompresor** | Kompres video ke ukuran file target dengan berbagai opsi codec dan kualitas. |
 
 > **🖱️ Seret dan Lepas Global**: Seret file ke mana saja di jendela aplikasi untuk langsung menambahkannya ke alat yang sedang aktif.

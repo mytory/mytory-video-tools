@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Como cortar vídeo sem reencodificar | Mytory Video Tools</title>
-    <meta name="description" content="Entenda como funcionam os cortes de vídeo sem reencodificação, por que os quadros-chave afetam a precisão do corte e como aparar um clipe rapidamente com o Mytory Video Tools.">
+    <meta name="description" content="Entenda como funcionam os cortes padrão de vídeo sem reencodificação, por que os quadros-chave afetam a precisão e quando o Smart Cut pode cortar em quadros selecionados.">
     <link rel="canonical" href="https://video-tools.mytory.net/pt/guides/lossless-video-cut/">
     <link rel="alternate" hreflang="en" href="https://video-tools.mytory.net/guides/lossless-video-cut/">
     <link rel="alternate" hreflang="ko" href="https://video-tools.mytory.net/ko/guides/lossless-video-cut/">
@@ -31,16 +31,19 @@
             <article class="concept__body">
                 <p class="features__eyebrow">Guia de vídeo</p>
                 <h1 class="features__title">Como cortar vídeo sem reencodificar</h1>
-                <p class="features__sub">Um corte sem reencodificação copia os fluxos de vídeo e áudio existentes. Por isso, é rápido e não acrescenta outra geração de compressão.</p>
+                <p class="features__sub">O corte padrão copia os fluxos existentes para ser rápido e evita outra geração de compressão de vídeo. O Smart Cut é opcional e segue os limites dos quadros selecionados quando a fonte é compatível.</p>
                 <img src="../../../assets/screenshot-1.webp" alt="Interface do aplicativo desktop Mytory Video Tools" width="1200" height="750" loading="lazy" style="max-width: 100%; height: auto;">
                 <h2>Por que o corte pode não ocorrer no horário exato</h2>
                 <p>O vídeo comprimido é armazenado em grupos de quadros. Um quadro-chave pode ser decodificado sozinho; muitos outros dependem de quadros anteriores. Quando o FFmpeg busca um horário a partir do início do arquivo, ele começa no ponto de busca mais próximo antes desse horário. Ao copiar os fluxos, o início real pode diferir do horário informado, especialmente quando os quadros-chave estão muito distantes.</p>
-                <p>Esse método mantém os fluxos codificados intactos, mas não garante o horário exato de corte solicitado para todos os arquivos. A reencodificação permite cortes mais precisos, ao custo de mais tempo de processamento e uma nova codificação.</p>
+                <p>O método padrão de cópia de fluxos mantém o vídeo codificado intacto, mas não garante o horário de início solicitado: o corte pode começar em um quadro-chave anterior. O Smart Cut é opcional e corta nos quadros selecionados. Em vídeos compatíveis com codificação interframe, ele reencodifica os limites e copia um trecho intermediário quando há pontos seguros de acesso aleatório; alguns segmentos selecionados podem ser reencodificados por inteiro, e estruturas GOP inseguras são rejeitadas. Vídeos compatíveis com codificação intraframe são copiados por completo. Se houver áudio, o Smart Cut o reencodifica.</p>
+                <h2>Limites de compatibilidade do Smart Cut</h2>
+                <p>O Smart Cut aceita H.264 e HEVC em MP4 ou MOV; AV1 em MP4; VP9 em MP4 ou WebM; VP8 em MKV ou WebM; e MPEG-4 ou MPEG-2 em MP4 ou MOV. Contêineres para codecs intraframe: MJPEG e PNG em MP4, MOV, MKV ou AVI; Ut Video e HuffYUV em MOV, MKV ou AVI; FFV1 em MKV, AVI ou MOV; rawvideo em MKV; TIFF em MOV ou MKV; HAP e DNxHD em MOV, MKV ou AVI; e ProRes em MOV. Para codecs diferentes de H.264 e HEVC, os contêineres de entrada e saída devem ser iguais.</p>
+                <p>H.264 aceita 8 bits 4:2:0 nos perfis Constrained Baseline, Baseline, Main, High ou High 10; o formato de 10 bits é limitado a High 10 4:2:0, High 4:2:2 em 4:2:2 ou High 4:4:4 Predictive em 4:4:4. HEVC aceita Main de 8 bits 4:2:0, Main 10 de 10 bits 4:2:0 ou RExt de 10 bits 4:2:2/4:4:4. AV1 aceita Main de 8 ou 10 bits 4:2:0; VP9 aceita Profile 0 de 8 bits 4:2:0, Profile 2 de 10 bits 4:2:0 ou Profile 3 de 10 bits 4:2:2/4:4:4. VP8 e MPEG-4/MPEG-2 são limitados a 8 bits 4:2:0. Codecs intraframe aceitam 8 bits ou alguns formatos de 10 bits 4:2:0/4:2:2. Vídeos com taxa de quadros variável são aceitos quando os timestamps dos quadros são válidos e crescentes. O Smart Cut também exige vídeo progressivo, pixels quadrados, deslocamento inicial zero (exceto um pequeno pré-roll Opus em WebM), uma faixa de vídeo e no máximo uma faixa de áudio. Combinações incompatíveis são rejeitadas.</p>
                 <h2>Faça um corte rápido</h2>
                 <ol>
                     <li>Abra o Mytory Video Tools e escolha Divisor de vídeo.</li>
                     <li>Carregue um vídeo e defina os horários de início e término.</li>
-                    <li>Exporte o trecho. O aplicativo copia os fluxos sem reencodificar; confira o limite inicial se a precisão do horário for importante.</li>
+                    <li>Deixe o Smart Cut desativado para uma cópia rápida e sem perdas, cujo início pode avançar até um quadro-chave. Ative-o para cortar nos quadros selecionados quando a fonte for compatível; com ele ativado, informe os horários em segundos decimais e depois exporte.</li>
                 </ol>
                 <p>O Mytory Video Tools é um aplicativo desktop Electron gratuito que inclui FFmpeg. Ele funciona localmente no Windows, macOS e Linux, sem exigir o uso da linha de comando.</p>
                 <p><a class="btn btn--primary" href="../../../pt/#download">Baixar Mytory Video Tools</a></p>

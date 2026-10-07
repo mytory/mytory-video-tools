@@ -63,7 +63,7 @@
         <div class="hero__bg"></div>
         <div class="hero__inner">
             <div class="hero__content">
-                <div class="hero__eyebrow">v1.9.2 &middot; बहु-प्लेटफ़ॉर्म डेस्कटॉप ऐप</div>
+                <div class="hero__eyebrow">v1.10.0 &middot; बहु-प्लेटफ़ॉर्म डेस्कटॉप ऐप</div>
                 <h1 class="hero__title">
                     हाई-स्पीड<br>
                     <span class="hero__title--accent">वीडियो टूल्स</span>
@@ -222,10 +222,10 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
                     </div>
                     <h3 class="feature-card__title">वीडियो स्प्लिटर</h3>
-                    <p class="feature-card__desc">बिना री-एन्कोडिंग के क्लिप काटें, लेकिन सटीक कट समय की गारंटी नहीं है; शुरुआती बिंदु विशेष रूप से कीफ़्रेम की जगह से प्रभावित होता है। हाइलाइट काटने या क्लिप तैयार करने के लिए उपयोगी।</p>
+                    <p class="feature-card__desc">डिफ़ॉल्ट रूप से तेज़, बिना गुणवत्ता खोए stream copy से कट करें; शुरुआत पिछले keyframe तक खिसक सकती है। वैकल्पिक Smart Cut चुने गए फ़्रेमों के अनुसार कट करता है: समर्थित inter-frame वीडियो में किनारों को दोबारा encode करके बीच के सुरक्षित हिस्से की कॉपी करता है, जबकि intra-frame वीडियो को पूरी तरह कॉपी करता है। Smart Cut ऑडियो को दोबारा encode करता है; codec, profile, container, bit depth और frame timing की सीमाएँ लागू होती हैं।</p>
                     <ul class="feature-card__tags">
-                        <li>बिना री-एन्कोडिंग</li>
-                        <li>तेज़ स्ट्रीम कॉपी</li>
+                        <li>डिफ़ॉल्ट रूप से गुणवत्ता बरकरार रखने वाली कॉपी</li>
+                        <li>वैकल्पिक Smart Cut</li>
                         <li>विभाजन-संपादन-जोड़ कार्यप्रवाह</li>
                     </ul>
                 </article>
@@ -237,17 +237,17 @@
     <section class="features" id="guides">
         <div class="features__inner">
             <div class="features__header">
-                <h2 class="features__title">काम की वीडियो गाइड</h2>
-                <p class="features__sub">तेज़ वर्कफ़्लो और कीफ़्रेम तथा कंटेनर की सीमाओं को समझें।</p>
+                <h2 class="features__title">काम की वीडियो गाइड (अंग्रेज़ी)</h2>
+                <p class="features__sub">बिना दोबारा encode किए तेज़ वर्कफ़्लो की क्षमताएँ और कंटेनर या कीफ़्रेम की सीमाएँ जानें।</p>
             </div>
             <div class="features__grid">
                 <article class="feature-card">
                     <h3 class="feature-card__title"><a href="guides/lossless-video-cut/">बिना री-एन्कोडिंग के वीडियो कैसे काटें</a></h3>
-                    <p class="feature-card__desc">कीफ़्रेम सीमाओं और तेज़ कट करते समय ध्यान रखने वाली बातों को समझें।</p>
+                    <p class="feature-card__desc">कीफ़्रेम सीमाएँ और अलग-अलग तरीकों के फ़ायदे-नुकसान समझें, फिर तेज़ी से बिना गुणवत्ता खोए कट करना सीखें।</p>
                 </article>
                 <article class="feature-card">
                     <h3 class="feature-card__title"><a href="guides/remux-video/">MKV को MP4 में रीमक्स कैसे करें</a></h3>
-                    <p class="feature-card__desc">ट्रांसकोडिंग के बिना कंटेनर बदलें और कोडेक संगतता जाँचें।</p>
+                    <p class="feature-card__desc">ट्रांसकोडिंग के बिना कंटेनर बदलें और साझा करने से पहले codec संगतता जाँचें।</p>
                 </article>
             </div>
         </div>
@@ -341,7 +341,7 @@
             </div>
             <div class="download__platforms">
                 <div class="platform-card__wrapper">
-                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2-arm64.dmg" target="_blank" rel="noopener" class="platform-card">
+                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0-arm64.dmg" target="_blank" rel="noopener" class="platform-card">
                         <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <rect x="2" y="3" width="20" height="14" rx="2"/>
                             <path d="M8 21h8"/>
@@ -351,7 +351,7 @@
                         <p class="platform-card__desc">Apple Silicon (ARM)</p>
                         <span class="platform-card__meta">.dmg</span>
                     </a>
-                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2-x64.dmg" class="platform-card__alt" target="_blank" rel="noopener">
+                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0-x64.dmg" class="platform-card__alt" target="_blank" rel="noopener">
                         Intel (x64) संस्करण →
                     </a>
                 </div>
@@ -364,7 +364,7 @@
                     <p class="platform-card__desc">Microsoft Store से इंस्टॉल करें</p>
                     <span class="platform-card__meta">Microsoft Store</span>
                 </a>
-                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2.AppImage" target="_blank" rel="noopener" class="platform-card">
+                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0.AppImage" target="_blank" rel="noopener" class="platform-card">
                     <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/>
                         <line x1="12" y1="22" x2="12" y2="12"/>

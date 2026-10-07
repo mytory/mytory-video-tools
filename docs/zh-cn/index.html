@@ -63,7 +63,7 @@
         <div class="hero__bg"></div>
         <div class="hero__inner">
             <div class="hero__content">
-                <div class="hero__eyebrow">v1.9.2 &middot; 跨平台桌面应用</div>
+                <div class="hero__eyebrow">v1.10.0 &middot; 跨平台桌面应用</div>
                 <h1 class="hero__title">
                     高速<br>
                     <span class="hero__title--accent">视频工具</span>
@@ -222,10 +222,10 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
                     </div>
                     <h3 class="feature-card__title">视频分割</h3>
-                    <p class="feature-card__desc">无需重新编码即可剪切片段，但无法保证剪切时间与指定时间完全一致，尤其是起始位置会受关键帧分布影响。适合快速剪辑精彩片段或准备素材。</p>
+                    <p class="feature-card__desc">默认使用快速、无损的流复制剪切；起点可能移到前一个关键帧。可选的 Smart Cut 会按所选帧剪切：对于支持的帧间编码视频，它会重新编码边界并复制安全的中间部分；对于帧内编码视频，则全程复制。Smart Cut 会重新编码音频，并受编解码器、配置文件、容器、位深和帧时序限制。</p>
                     <ul class="feature-card__tags">
-                        <li>无需重新编码</li>
-                        <li>快速复制媒体流</li>
+                        <li>默认无损复制</li>
+                        <li>可选 Smart Cut</li>
                         <li>分割-编辑-合并工作流</li>
                     </ul>
                 </article>
@@ -237,17 +237,17 @@
     <section class="features" id="guides">
         <div class="features__inner">
             <div class="features__header">
-                <h2 class="features__title">视频指南（英文）</h2>
-                <p class="features__sub">了解快速视频处理方式，以及关键帧和容器格式的限制。</p>
+                <h2 class="features__title">实用视频指南（英文）</h2>
+                <p class="features__sub">了解快速免重新编码工作流的适用范围，以及容器格式或关键帧带来的限制。</p>
             </div>
             <div class="features__grid">
                 <article class="feature-card">
                     <h3 class="feature-card__title"><a href="guides/lossless-video-cut/">如何在不重新编码的情况下剪切视频</a></h3>
-                    <p class="feature-card__desc">了解关键帧边界和快速剪切时需要注意的事项。</p>
+                    <p class="feature-card__desc">了解关键帧边界和不同剪切方式的取舍，以及如何快速完成无损剪切。</p>
                 </article>
                 <article class="feature-card">
                     <h3 class="feature-card__title"><a href="guides/remux-video/">如何将 MKV 重新封装为 MP4</a></h3>
-                    <p class="feature-card__desc">无需转码即可更改容器，并检查编解码器兼容性。</p>
+                    <p class="feature-card__desc">无需转码即可更改容器，并在分享前检查编解码器兼容性。</p>
                 </article>
             </div>
         </div>
@@ -341,7 +341,7 @@
             </div>
             <div class="download__platforms">
                 <div class="platform-card__wrapper">
-                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2-arm64.dmg" target="_blank" rel="noopener" class="platform-card">
+                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0-arm64.dmg" target="_blank" rel="noopener" class="platform-card">
                         <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <rect x="2" y="3" width="20" height="14" rx="2"/>
                             <path d="M8 21h8"/>
@@ -351,7 +351,7 @@
                         <p class="platform-card__desc">Apple Silicon (ARM)</p>
                         <span class="platform-card__meta">.dmg</span>
                     </a>
-                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2-x64.dmg" class="platform-card__alt" target="_blank" rel="noopener">
+                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0-x64.dmg" class="platform-card__alt" target="_blank" rel="noopener">
                         Intel（x64）版本 →
                     </a>
                 </div>
@@ -364,7 +364,7 @@
                     <p class="platform-card__desc">从 Microsoft Store 安装</p>
                     <span class="platform-card__meta">Microsoft Store</span>
                 </a>
-                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2.AppImage" target="_blank" rel="noopener" class="platform-card">
+                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0.AppImage" target="_blank" rel="noopener" class="platform-card">
                     <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/>
                         <line x1="12" y1="22" x2="12" y2="12"/>

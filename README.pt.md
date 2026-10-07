@@ -8,9 +8,9 @@
 
 ![Captura de tela do aplicativo desktop Mytory Video Tools](./screenshots/screenshot-1.png)
 
-### Novidades da v1.9.2
+### Novidades da v1.10.0
 
-O Frame Capture agora salva imediatamente durante a análise da taxa de quadros. Os nomes dos arquivos usam milissegundos antes do fim da análise; as novas capturas usam precisão de quadro após a confirmação de uma taxa constante. Vídeos com taxa variável mantêm os milissegundos. Isso se aplica a capturas individuais, por intervalos e por cenas.
+O Divisor de vídeo agora oferece o Smart Cut como opção para cortar exatamente nos limites dos quadros selecionados. Ele recodifica apenas as extremidades do corte e copia o fluxo na parte central. Com o Smart Cut desativado, o padrão continua sendo a cópia do fluxo, então os pontos de corte podem depender dos quadros-chave. Compatível com vídeos de taxa de quadros variável de 8 e 10 bits, dentro dos limites de compatibilidade do codec, perfil e contêiner.
 
 ---
 
@@ -30,7 +30,7 @@ O Frame Capture agora salva imediatamente durante a análise da taxa de quadros.
 | 📸 **Captura de quadros** | Captura de quadro único, extração em lote em intervalos e detecção automática de cenas com controle de sensibilidade. Escolha uma pasta para salvar ou volte para a pasta do vídeo. Capture imediatamente durante a análise da taxa de quadros: os nomes dos arquivos usam milissegundos até que uma taxa constante seja confirmada; as novas capturas passam então a usar precisão de quadro. Vídeos com taxa variável mantêm os milissegundos; vídeos com menos de uma hora omitem o campo das horas. As imagens capturadas preservam a hora real da captura no EXIF. |
 | 🔄 **Remuxer** | Conversão rápida de formato de contêiner (MP4, MKV, MOV) sem recodificação. |
 | 🔗 **Juntar vídeos** | Concatena sem perdas vários arquivos de vídeo com parâmetros de codificação idênticos. Perfeito para remontar segmentos divididos. |
-| ✂️ **Divisor de vídeo** | Recorta um trecho definindo os pontos inicial e final. A precisão do corte pode depender da posição dos quadros-chave e da compatibilidade do codec. |
+| ✂️ **Divisor de vídeo** | Recorta um trecho definindo os pontos inicial e final. O modo padrão de cópia do fluxo pode posicionar os cortes nos quadros-chave. O Smart Cut opcional recodifica apenas as extremidades para cortar exatamente nos limites dos quadros selecionados e copia o fluxo na parte central. Compatível com vídeos de taxa de quadros variável de 8 e 10 bits, dentro dos limites de compatibilidade do codec, perfil e contêiner. |
 | 📦 **Compressor** | Comprime vídeo para um tamanho de arquivo alvo com várias opções de codec e qualidade. |
 
 > **🖱️ Arrastar e soltar global**: Arraste arquivos para qualquer lugar na janela do aplicativo para adicioná-los instantaneamente à ferramenta ativa no momento.

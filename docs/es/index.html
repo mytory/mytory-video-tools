@@ -63,7 +63,7 @@
         <div class="hero__bg"></div>
         <div class="hero__inner">
             <div class="hero__content">
-                <div class="hero__eyebrow">v1.9.2 &middot; Aplicación de escritorio multiplataforma</div>
+                <div class="hero__eyebrow">v1.10.0 &middot; Aplicación de escritorio multiplataforma</div>
                 <h1 class="hero__title">
                     Herramientas de<br>
                     <span class="hero__title--accent">Video rápidas</span>
@@ -222,11 +222,11 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
                     </div>
                     <h3 class="feature-card__title">Divisor de video</h3>
-                    <p class="feature-card__desc">Corta un segmento sin recodificar, aunque no se puede garantizar el tiempo exacto; el punto inicial depende especialmente de la ubicación de los fotogramas clave. Ideal para recortar momentos destacados o preparar clips.</p>
+                    <p class="feature-card__desc">De forma predeterminada, corta con una copia rápida y sin pérdidas del flujo; el inicio puede desplazarse hasta un fotograma clave anterior. Smart Cut es opcional y respeta los fotogramas seleccionados: en videos inter-frame compatibles, recodifica los límites y copia un tramo central seguro; en videos intra-frame, copia todo el contenido. Smart Cut recodifica el audio; hay límites de códec, perfil, contenedor, profundidad de bits y temporización de fotogramas.</p>
                     <ul class="feature-card__tags">
-                        <li>Sin recodificación</li>
-                        <li>Copia rápida de flujos</li>
-                        <li>Flujo dividir-editar-unir</li>
+                        <li>Copia sin pérdidas predeterminada</li>
+                        <li>Smart Cut opcional</li>
+                        <li>Flujo de dividir, editar y unir</li>
                     </ul>
                 </article>
             </div>
@@ -238,16 +238,16 @@
         <div class="features__inner">
             <div class="features__header">
                 <h2 class="features__title">Guías prácticas de video</h2>
-                <p class="features__sub">Descubre los flujos rápidos y los límites de los fotogramas clave y los contenedores.</p>
+                <p class="features__sub">Descubre lo que permiten los flujos rápidos sin recodificación y los límites de los contenedores y los fotogramas clave.</p>
             </div>
             <div class="features__grid">
                 <article class="feature-card">
                     <h3 class="feature-card__title"><a href="guides/lossless-video-cut/">Cómo cortar video sin recodificar</a></h3>
-                    <p class="feature-card__desc">Explica los límites de los fotogramas clave y cómo hacer cortes rápidos.</p>
+                    <p class="feature-card__desc">Conoce los límites de los fotogramas clave y las diferencias entre métodos para hacer un corte rápido sin pérdidas.</p>
                 </article>
                 <article class="feature-card">
                     <h3 class="feature-card__title"><a href="guides/remux-video/">Cómo remuxear MKV a MP4</a></h3>
-                    <p class="feature-card__desc">Cambia el contenedor sin transcodificar y comprueba la compatibilidad de códecs.</p>
+                    <p class="feature-card__desc">Cambia el contenedor sin transcodificar y comprueba la compatibilidad del códec antes de compartir.</p>
                 </article>
             </div>
         </div>
@@ -341,7 +341,7 @@
             </div>
             <div class="download__platforms">
                 <div class="platform-card__wrapper">
-                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2-arm64.dmg" target="_blank" rel="noopener" class="platform-card">
+                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0-arm64.dmg" target="_blank" rel="noopener" class="platform-card">
                         <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <rect x="2" y="3" width="20" height="14" rx="2"/>
                             <path d="M8 21h8"/>
@@ -351,7 +351,7 @@
                         <p class="platform-card__desc">Apple Silicon (ARM)</p>
                         <span class="platform-card__meta">.dmg</span>
                     </a>
-                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2-x64.dmg" class="platform-card__alt" target="_blank" rel="noopener">
+                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0-x64.dmg" class="platform-card__alt" target="_blank" rel="noopener">
                         Intel (x64) variant →
                     </a>
                 </div>
@@ -364,7 +364,7 @@
                     <p class="platform-card__desc">Instalar desde Microsoft Store</p>
                     <span class="platform-card__meta">Microsoft Store</span>
                 </a>
-                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2.AppImage" target="_blank" rel="noopener" class="platform-card">
+                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0.AppImage" target="_blank" rel="noopener" class="platform-card">
                     <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/>
                         <line x1="12" y1="22" x2="12" y2="12"/>

@@ -63,7 +63,7 @@
         <div class="hero__bg"></div>
         <div class="hero__inner">
             <div class="hero__content">
-                <div class="hero__eyebrow">v1.9.2 &middot; 크로스플랫폼 데스크톱 앱</div>
+                <div class="hero__eyebrow">v1.10.0 &middot; 크로스플랫폼 데스크톱 앱</div>
                 <h1 class="hero__title">
                     초고속<br>
                     <span class="hero__title--accent">비디오 도구</span>
@@ -222,10 +222,10 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
                     </div>
                     <h3 class="feature-card__title">비디오 분할기</h3>
-                    <p class="feature-card__desc">재인코딩 없이 구간을 자르지만 요청한 시각에 정확히 잘린다는 보장은 없습니다. 특히 시작 지점은 키프레임 위치의 영향을 받습니다. 하이라이트를 빠르게 자르거나 클립을 준비할 때 유용합니다.</p>
+                    <p class="feature-card__desc">기본값은 빠르고 무손실인 스트림 복사입니다. 시작 지점은 앞쪽 키프레임으로 이동할 수 있습니다. 선택 기능인 Smart Cut은 선택한 프레임에 맞춰 자릅니다. 지원되는 프레임 간 예측 영상에서는 경계 부분을 재인코딩하고 안전한 중간 구간은 복사하며, 인트라프레임 영상은 전체를 복사합니다. Smart Cut은 오디오를 재인코딩하며 코덱, 프로필, 컨테이너, 비트 깊이, 프레임 타이밍에 제한이 있습니다.</p>
                     <ul class="feature-card__tags">
-                        <li>재인코딩 없음</li>
-                        <li>빠른 스트림 복사</li>
+                        <li>기본 무손실 복사</li>
+                        <li>선택 가능한 Smart Cut</li>
                         <li>분할-편집-결합 워크플로우</li>
                     </ul>
                 </article>
@@ -238,16 +238,16 @@
         <div class="features__inner">
             <div class="features__header">
                 <h2 class="features__title">실용적인 영상 가이드</h2>
-                <p class="features__sub">재인코딩 없는 빠른 작업 방식과 키프레임·컨테이너의 한계를 알아보세요.</p>
+                <p class="features__sub">빠른 무재인코딩 작업 방식의 가능성과 컨테이너 또는 키프레임에 따른 한계를 알아보세요.</p>
             </div>
             <div class="features__grid">
                 <article class="feature-card">
                     <h3 class="feature-card__title"><a href="guides/lossless-video-cut/">재인코딩 없이 영상 자르기</a></h3>
-                    <p class="feature-card__desc">키프레임 경계와 주의점을 이해하고 빠르게 컷을 내보내는 방법을 알아봅니다.</p>
+                    <p class="feature-card__desc">키프레임 경계와 각 방식의 장단점을 이해하고 빠르게 무손실 컷을 만드는 방법을 알아봅니다.</p>
                 </article>
                 <article class="feature-card">
                     <h3 class="feature-card__title"><a href="guides/remux-video/">MKV를 MP4로 리먹스하기</a></h3>
-                    <p class="feature-card__desc">트랜스코딩 없이 컨테이너를 바꾸고 코덱 호환성을 확인하는 방법을 알아봅니다.</p>
+                    <p class="feature-card__desc">트랜스코딩 없이 컨테이너를 변경하고 공유하기 전에 코덱 호환성을 확인하는 방법을 알아봅니다.</p>
                 </article>
             </div>
         </div>
@@ -341,7 +341,7 @@
             </div>
             <div class="download__platforms">
                 <div class="platform-card__wrapper">
-                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2-arm64.dmg" target="_blank" rel="noopener" class="platform-card">
+                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0-arm64.dmg" target="_blank" rel="noopener" class="platform-card">
                         <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <rect x="2" y="3" width="20" height="14" rx="2"/>
                             <path d="M8 21h8"/>
@@ -351,7 +351,7 @@
                         <p class="platform-card__desc">Apple Silicon (ARM)</p>
                         <span class="platform-card__meta">.dmg</span>
                     </a>
-                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2-x64.dmg" class="platform-card__alt" target="_blank" rel="noopener">
+                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0-x64.dmg" class="platform-card__alt" target="_blank" rel="noopener">
                         Intel (x64) 버전 →
                     </a>
                 </div>
@@ -364,7 +364,7 @@
                     <p class="platform-card__desc">Microsoft Store에서 설치</p>
                     <span class="platform-card__meta">Microsoft Store</span>
                 </a>
-                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2.AppImage" target="_blank" rel="noopener" class="platform-card">
+                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0.AppImage" target="_blank" rel="noopener" class="platform-card">
                     <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/>
                         <line x1="12" y1="22" x2="12" y2="12"/>

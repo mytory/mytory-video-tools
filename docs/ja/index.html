@@ -63,7 +63,7 @@
         <div class="hero__bg"></div>
         <div class="hero__inner">
             <div class="hero__content">
-                <div class="hero__eyebrow">v1.9.2 &middot; クロスプラットフォームデスクトップアプリ</div>
+                <div class="hero__eyebrow">v1.10.0 &middot; クロスプラットフォームデスクトップアプリ</div>
                 <h1 class="hero__title">
                     高速<br>
                     <span class="hero__title--accent">ビデオツール</span>
@@ -222,11 +222,11 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
                     </div>
                     <h3 class="feature-card__title">動画分割</h3>
-                    <p class="feature-card__desc">再エンコードせずに区間をカットします。指定した時刻どおりのカットは保証されず、特に開始位置はキーフレームの配置に影響されます。ハイライトやクリップの準備に便利です。</p>
+                    <p class="feature-card__desc">標準では、高速でロスレスなストリームコピーでカットします。開始位置は直前のキーフレームまでずれる場合があります。オプションのSmart Cutは選択したフレームに合わせてカットします。対応するフレーム間予測動画では境界を再エンコードして安全な中間部分をコピーし、イントラフレーム動画は全体をコピーします。Smart Cutでは音声も再エンコードされ、コーデック、プロファイル、コンテナ、ビット深度、フレームタイミングに制限があります。</p>
                     <ul class="feature-card__tags">
-                        <li>再エンコードなし</li>
-                        <li>高速なストリームコピー</li>
-                        <li>分割-編集-結合フロー</li>
+                        <li>標準はロスレスコピー</li>
+                        <li>オプションのSmart Cut</li>
+                        <li>分割・編集・結合のワークフロー</li>
                     </ul>
                 </article>
             </div>
@@ -237,17 +237,17 @@
     <section class="features" id="guides">
         <div class="features__inner">
             <div class="features__header">
-                <h2 class="features__title">ビデオガイド（英語）</h2>
-                <p class="features__sub">高速な動画処理と、キーフレームやコンテナの制約について説明します。</p>
+                <h2 class="features__title">実用的な動画ガイド（英語）</h2>
+                <p class="features__sub">再エンコードなしの高速な処理でできることと、コンテナやキーフレームによる制約を紹介します。</p>
             </div>
             <div class="features__grid">
                 <article class="feature-card">
                     <h3 class="feature-card__title"><a href="guides/lossless-video-cut/">動画を再エンコードせずにカットする方法</a></h3>
-                    <p class="feature-card__desc">キーフレーム境界と高速カットの注意点を解説します。</p>
+                    <p class="feature-card__desc">キーフレーム境界と各方式の違いを理解し、すばやくロスレスカットする方法を紹介します。</p>
                 </article>
                 <article class="feature-card">
                     <h3 class="feature-card__title"><a href="guides/remux-video/">MKVをMP4にリマックスする方法</a></h3>
-                    <p class="feature-card__desc">トランスコードせずにコンテナを変更し、コーデック互換性を確認します。</p>
+                    <p class="feature-card__desc">トランスコードせずにコンテナを変更し、共有前にコーデックの互換性を確認する方法を紹介します。</p>
                 </article>
             </div>
         </div>
@@ -341,7 +341,7 @@
             </div>
             <div class="download__platforms">
                 <div class="platform-card__wrapper">
-                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2-arm64.dmg" target="_blank" rel="noopener" class="platform-card">
+                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0-arm64.dmg" target="_blank" rel="noopener" class="platform-card">
                         <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <rect x="2" y="3" width="20" height="14" rx="2"/>
                             <path d="M8 21h8"/>
@@ -351,7 +351,7 @@
                         <p class="platform-card__desc">Apple Silicon (ARM)</p>
                         <span class="platform-card__meta">.dmg</span>
                     </a>
-                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2-x64.dmg" class="platform-card__alt" target="_blank" rel="noopener">
+                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0-x64.dmg" class="platform-card__alt" target="_blank" rel="noopener">
                         Intel（x64）版 →
                     </a>
                 </div>
@@ -364,7 +364,7 @@
                     <p class="platform-card__desc">Microsoft Storeからインストール</p>
                     <span class="platform-card__meta">Microsoft Store</span>
                 </a>
-                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.9.2/mytory-video-tool-v1.9.2.AppImage" target="_blank" rel="noopener" class="platform-card">
+                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.0/mytory-video-tool-v1.10.0.AppImage" target="_blank" rel="noopener" class="platform-card">
                     <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/>
                         <line x1="12" y1="22" x2="12" y2="12"/>

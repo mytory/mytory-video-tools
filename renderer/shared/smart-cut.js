@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const ACCEPTED_H264_PROFILES = new Set(['constrained baseline', 'baseline', 'main', 'high']);
+const ACCEPTED_H264_PROFILES = new Set(['constrained baseline', 'baseline', 'main', 'high', 'high 10']);
 const INTRA_CONTAINERS = new Map([
     ['mjpeg', new Set(['mp4', 'mov', 'mkv', 'avi'])],
     ['png', new Set(['mp4', 'mov', 'mkv', 'avi'])],
@@ -11,11 +11,12 @@ const INTRA_CONTAINERS = new Map([
     ['rawvideo', new Set(['mkv'])],
     ['tiff', new Set(['mov', 'mkv'])],
     ['hap', new Set(['mov', 'mkv', 'avi'])],
-    ['dnxhd', new Set(['mov', 'mkv', 'avi'])]
+    ['dnxhd', new Set(['mov', 'mkv', 'avi'])],
+    ['prores', new Set(['mov'])]
 ]);
 const MODERN_CONTAINERS = new Map([
     ['av1', new Set(['mp4'])],
-    ['vp9', new Set(['mp4'])],
+    ['vp9', new Set(['mp4', 'webm'])],
     ['vp8', new Set(['mkv', 'webm'])]
 ]);
 const MPEG_CONTAINERS = new Set(['mp4', 'mov']);
@@ -47,7 +48,7 @@ function parseFrames(output) {
         }));
         const pts = Number.parseInt(fields.pts ?? fields.best_effort_timestamp, 10);
         if (!Number.isSafeInteger(pts)) throw unsupported('영상 프레임의 PTS를 확인할 수 없습니다.');
-        frames.push({ pts, keyFrame: fields.key_frame === '1' });
+        frames.push({ pts, duration: Number.parseInt(fields.pkt_duration ?? fields.duration, 10), keyFrame: fields.key_frame === '1' });
     }
     if (frames.length < 2) throw unsupported('프레임이 2개 이상인 영상만 지원합니다.');
     return frames;
@@ -107,18 +108,30 @@ function validateSource(metadata, inputPath, outputPath) {
             }
         } else if (modern) {
             const profile = String(video.profile || '').toLowerCase();
-            if (video.pix_fmt !== 'yuv420p' || (video.bits_per_raw_sample && Number(video.bits_per_raw_sample) > 8)) {
-                throw unsupported('AV1, VP9, VP8 8-bit yuv420p 영상만 지원합니다.');
+            const eightBit420 = video.pix_fmt === 'yuv420p' && (!video.bits_per_raw_sample || Number(video.bits_per_raw_sample) === 8);
+            const tenBit420 = video.pix_fmt === 'yuv420p10le' && (!video.bits_per_raw_sample || Number(video.bits_per_raw_sample) === 10);
+            const tenBit422 = video.pix_fmt === 'yuv422p10le' && (!video.bits_per_raw_sample || Number(video.bits_per_raw_sample) === 10);
+            const tenBit444 = video.pix_fmt === 'yuv444p10le' && (!video.bits_per_raw_sample || Number(video.bits_per_raw_sample) === 10);
+            if (codec === 'av1' && (profile !== 'main' || (!eightBit420 && !tenBit420))) {
+                throw unsupported('AV1 Main 8-bit/10-bit yuv420p 영상만 지원합니다.');
             }
-            if ((codec === 'av1' && profile !== 'main') || (codec === 'vp9' && !['profile 0', 'unknown'].includes(profile))) {
-                throw unsupported('AV1 Main, VP9 Profile 0, VP8 영상만 지원합니다.');
+            if (codec === 'vp9' && !((eightBit420 && ['profile 0', 'unknown'].includes(profile))
+                || (tenBit420 && profile === 'profile 2')
+                || ((tenBit422 || tenBit444) && profile === 'profile 3'))) {
+                throw unsupported('VP9 Profile 0 8-bit 또는 Profile 2/3 10-bit 영상만 지원합니다.');
+            }
+            if (codec === 'vp8' && !eightBit420) {
+                throw unsupported('VP8 8-bit yuv420p 영상만 지원합니다.');
             }
         } else {
-            if (video.bits_per_raw_sample && Number(video.bits_per_raw_sample) !== 8) {
-                throw unsupported('8-bit 영상만 지원합니다.');
-            }
-            if (/(?:10|12|14|16|32)(?:le|be)?$/i.test(String(video.pix_fmt || ''))) {
-                throw unsupported('8-bit 영상만 지원합니다.');
+            const pixelFormat = String(video.pix_fmt || '');
+            const bitDepth = Number(video.bits_per_raw_sample) || (/(?:^|p)10(?:le|be)$/i.test(pixelFormat) ? 10 : 8);
+            if (bitDepth === 10) {
+                if (!['yuv420p10le', 'yuv422p10le'].includes(pixelFormat)) {
+                    throw unsupported('10-bit intra 영상은 yuv420p10le 또는 yuv422p10le만 지원합니다.');
+                }
+            } else if (bitDepth !== 8 || /(?:10|12|14|16|32)(?:le|be)?$/i.test(pixelFormat)) {
+                throw unsupported('8-bit 또는 10-bit intra 영상만 지원합니다.');
             }
         }
     } else {
@@ -128,14 +141,24 @@ function validateSource(metadata, inputPath, outputPath) {
         if (!String(format.format_name || '').split(',').some((name) => ['mov', 'mp4'].includes(name))) {
             throw unsupported('MP4 또는 MOV 컨테이너만 지원합니다.');
         }
-        if (!['h264', 'hevc'].includes(codec) || video.pix_fmt !== 'yuv420p' || (video.bits_per_raw_sample && Number(video.bits_per_raw_sample) !== 8)) {
-            throw unsupported('H.264 또는 HEVC 8-bit yuv420p 영상만 지원합니다.');
-        }
         const profile = String(video.profile || '').toLowerCase();
-        if (codec === 'h264' && !ACCEPTED_H264_PROFILES.has(profile)) {
-            throw unsupported('Constrained Baseline, Baseline, Main, High 프로파일만 지원합니다.');
+        const pixelFormat = String(video.pix_fmt || '');
+        const eightBit420 = pixelFormat === 'yuv420p' && (!video.bits_per_raw_sample || Number(video.bits_per_raw_sample) === 8);
+        const tenBit420 = pixelFormat === 'yuv420p10le' && (!video.bits_per_raw_sample || Number(video.bits_per_raw_sample) === 10);
+        const tenBit422 = pixelFormat === 'yuv422p10le' && (!video.bits_per_raw_sample || Number(video.bits_per_raw_sample) === 10);
+        const tenBit444 = pixelFormat === 'yuv444p10le' && (!video.bits_per_raw_sample || Number(video.bits_per_raw_sample) === 10);
+        if (codec === 'h264' && !((eightBit420 && ACCEPTED_H264_PROFILES.has(profile))
+            || (tenBit420 && profile === 'high 10')
+            || (tenBit422 && profile === 'high 4:2:2')
+            || (tenBit444 && profile === 'high 4:4:4 predictive'))) {
+            throw unsupported('지원되는 H.264 8-bit 또는 10-bit yuv420p/422p/444p 프로파일만 지원합니다.');
         }
-        if (codec === 'hevc' && profile !== 'main') throw unsupported('HEVC Main 프로파일만 지원합니다.');
+        if (codec === 'hevc' && !((eightBit420 && profile === 'main')
+            || (tenBit420 && profile === 'main 10')
+            || (tenBit422 && profile === 'rext')
+            || (tenBit444 && profile === 'rext'))) {
+            throw unsupported('지원되는 HEVC Main 또는 10-bit Main 4:2:2/4:4:4 영상만 지원합니다.');
+        }
     }
     if (video.field_order && video.field_order !== 'progressive') {
         throw unsupported('Progressive 영상만 지원합니다.');
@@ -169,26 +192,51 @@ function frameSeconds(frame, timeBase) {
     return frame.pts * timeBase.numerator / timeBase.denominator;
 }
 
-function frameEndPts(frames, endIndex, frameDelta) {
-    return endIndex < frames.length ? frames[endIndex].pts : frames[frames.length - 1].pts + frameDelta;
+function frameClock(frames, video, timeBase) {
+    const deltas = frames.slice(1).map((frame, index) => frame.pts - frames[index].pts);
+    if (deltas.some((delta) => !Number.isSafeInteger(delta) || delta <= 0)) {
+        throw unsupported('영상 프레임 PTS는 표시 순서로 엄격히 증가해야 합니다.');
+    }
+    const lastFrame = frames.at(-1);
+    let streamEndPts = Number(video.duration_ts);
+    if (!Number.isSafeInteger(streamEndPts) && Number.isFinite(Number(video.duration))) {
+        const durationTicks = Number(video.duration) * timeBase.denominator / timeBase.numerator;
+        if (Math.abs(durationTicks - Math.round(durationTicks)) < 1e-4) streamEndPts = Math.round(durationTicks);
+    }
+    let lastDuration = Number.isSafeInteger(streamEndPts) ? streamEndPts - lastFrame.pts : NaN;
+    if (!Number.isSafeInteger(lastDuration) || lastDuration <= 0) lastDuration = lastFrame.duration;
+    if (!Number.isSafeInteger(lastDuration) || lastDuration <= 0) {
+        throw unsupported('마지막 영상 프레임의 표시 시간을 확인할 수 없습니다.');
+    }
+    return {
+        deltas,
+        lastDuration,
+        isCfr: deltas.every((delta) => delta === deltas[0])
+    };
 }
 
-async function runIntraSmartCut(options, frames, audio, timeBase, inputPath, outputPath, startTime, endTime) {
+function frameEndPts(frames, endIndex, lastDuration) {
+    return endIndex < frames.length ? frames[endIndex].pts : frames.at(-1).pts + lastDuration;
+}
+
+function copyRangeFilter(startPts, endPts, lastFramePts, lastFrameDuration) {
+    return `noise=drop='lt(pts,${startPts})+gte(pts,${endPts})',setts=pts=PTS-${startPts}:dts=DTS-${startPts}:duration='if(eq(PTS,${lastFramePts}),${lastFrameDuration},DURATION)'`;
+}
+
+async function runIntraSmartCut(options, frames, audio, timeBase, inputPath, outputPath, startTime, endTime, lastDuration) {
     const { taskId, runFFmpeg, isCancelled } = options;
     const checkCancelled = () => {
         if (isCancelled()) throw new Error('Task was cancelled by user.');
     };
-    const step = frames[1].pts - frames[0].pts;
-    if (step <= 0) {
-        throw unsupported('가변 프레임 레이트 영상은 지원하지 않습니다.');
-    }
     const startIndex = frames.findIndex((frame) => frameSeconds(frame, timeBase) >= startTime - 1e-9);
     let endIndex = frames.findIndex((frame) => frameSeconds(frame, timeBase) >= endTime - 1e-9);
     if (endIndex < 0) endIndex = frames.length;
     if (startIndex < 0 || endIndex <= startIndex) throw unsupported('선택 구간에 영상 프레임이 없습니다.');
 
     const startPts = frames[startIndex].pts;
-    const endPts = frameEndPts(frames, endIndex, step);
+    const endPts = frameEndPts(frames, endIndex, lastDuration);
+    const lastFrame = frames[endIndex - 1];
+    const lastFrameDuration = endPts - lastFrame.pts;
     const selectedStartTime = frameSeconds(frames[startIndex], timeBase);
     const selectedEndTime = endPts * timeBase.numerator / timeBase.denominator;
     const outputExt = path.extname(outputPath).slice(1).toLowerCase();
@@ -204,10 +252,9 @@ async function runIntraSmartCut(options, frames, audio, timeBase, inputPath, out
     };
 
     try {
-        const rangeFilter = `noise=drop=lt(pts\\,${startPts})+gte(pts\\,${endPts}),setts=pts=PTS-${startPts}:dts=DTS-${startPts}`;
         await runStage([
             '-i', inputPath,
-            '-map', '0:v:0', '-an', '-c:v', 'copy', '-bsf:v', rangeFilter,
+            '-map', '0:v:0', '-an', '-c:v', 'copy', '-bsf:v', copyRangeFilter(startPts, endPts, lastFrame.pts, lastFrameDuration),
             ...timescaleArgs, videoPath
         ], selectedEndTime - selectedStartTime, videoPath);
 
@@ -232,11 +279,6 @@ async function runIntraSmartCut(options, frames, audio, timeBase, inputPath, out
 }
 
 function makePlan(frames, idrIndexes, timeBase, startTime, endTime) {
-    const step = frames[1].pts - frames[0].pts;
-    if (step <= 0 || frames.some((frame, index) => index > 0 && frame.pts - frames[index - 1].pts !== step)) {
-        throw unsupported('가변 프레임 레이트 영상은 지원하지 않습니다.');
-    }
-
     const startIndex = frames.findIndex((frame) => frameSeconds(frame, timeBase) >= startTime - 1e-9);
     if (startIndex < 0) throw unsupported('선택 구간에 영상 프레임이 없습니다.');
     let endIndex = frames.findIndex((frame) => frameSeconds(frame, timeBase) >= endTime - 1e-9);
@@ -403,12 +445,13 @@ async function runSmartCut(options) {
 
     const frameResult = await runCommand(taskId, ffprobePath, [
         '-v', 'error', '-select_streams', 'v:0', '-show_frames',
-        '-show_entries', 'frame=pts,best_effort_timestamp,key_frame',
+        '-show_entries', 'frame=pts,best_effort_timestamp,pkt_duration,duration,key_frame',
         '-of', 'compact=p=1:nk=0', inputPath
     ]);
     checkCancelled();
     const frames = parseFrames(frameResult.stdout);
     if (frames[0].pts !== 0) throw unsupported('영상 시작 오프셋이 0인 파일만 지원합니다.');
+    const { deltas, lastDuration, isCfr } = frameClock(frames, video, timeBase);
     if (intra && frames.some((frame) => !frame.keyFrame)) {
         throw unsupported('선택한 intra 코덱의 프레임 경계를 확인할 수 없습니다.');
     }
@@ -424,26 +467,25 @@ async function runSmartCut(options) {
             throw unsupported('intra 프레임과 패킷의 1:1 독립 경계를 확인할 수 없습니다.');
         }
     }
-    const step = frames[1].pts - frames[0].pts;
-    const actualFrameRate = timeBase.denominator / (timeBase.numerator * step);
-    for (const rateName of ['r_frame_rate', 'avg_frame_rate']) {
-        const rate = parseRational(video[rateName]);
-        if (!intra && rate && Math.abs(rate.numerator / rate.denominator - actualFrameRate) > actualFrameRate * 1e-6) {
-            throw unsupported('메타데이터와 실제 프레임 PTS가 일치하는 CFR 영상만 지원합니다.');
+    if (isCfr) {
+        const actualFrameRate = timeBase.denominator / (timeBase.numerator * deltas[0]);
+        for (const rateName of ['r_frame_rate', 'avg_frame_rate']) {
+            const rate = parseRational(video[rateName]);
+            if (!intra && rate && Math.abs(rate.numerator / rate.denominator - actualFrameRate) > actualFrameRate * 1e-6) {
+                throw unsupported('메타데이터와 실제 프레임 PTS가 일치하는 CFR 영상만 지원합니다.');
+            }
         }
     }
-    if (intra) {
+    if (intra && isCfr) {
         const rate = parseRational(video.avg_frame_rate) || parseRational(video.r_frame_rate);
         const badIndex = frames.findIndex((frame, index) => rate
             && Math.abs(frameSeconds(frame, timeBase) - index * rate.denominator / rate.numerator)
                 > timeBase.numerator / timeBase.denominator + 1e-9);
         if (!rate || rate.numerator <= 0 || rate.denominator <= 0 || badIndex >= 0) {
-            throw unsupported('가변 프레임 레이트 영상은 지원하지 않습니다.');
+            throw unsupported('메타데이터와 실제 프레임 PTS가 일치하는 CFR 영상만 지원합니다.');
         }
-    } else if (frames.some((frame, index) => index > 0 && frame.pts - frames[index - 1].pts !== step)) {
-        throw unsupported('가변 프레임 레이트 영상은 지원하지 않습니다.');
     }
-    if (intra) return runIntraSmartCut(options, frames, audio, timeBase, inputPath, outputPath, startTime, endTime);
+    if (intra) return runIntraSmartCut(options, frames, audio, timeBase, inputPath, outputPath, startTime, endTime, lastDuration);
 
     let packetHeaders = [];
     let idrIndexes;
@@ -512,13 +554,17 @@ async function runSmartCut(options) {
         tailPart.startIndex = previousIdr;
     }
     const selectedStartTime = frameSeconds(frames[parts[0].startIndex], timeBase);
-    const selectedEndTime = frameEndPts(frames, parts[parts.length - 1].endIndex, step) * timeBase.numerator / timeBase.denominator;
+    const selectedEndPts = frameEndPts(frames, parts.at(-1).endIndex, lastDuration);
+    const selectedEndTime = selectedEndPts * timeBase.numerator / timeBase.denominator;
     if (parts.length === 1 && parts[0].mode === 'encode' && parts[0].startIndex === 0 && parts[0].endIndex === frames.length) {
         throw unsupported('전체 입력을 재인코딩하는 스마트 컷은 지원하지 않습니다.');
     }
     const outputDir = path.dirname(outputPath);
     const tempDir = fs.mkdtempSync(path.join(outputDir, '.smart-cut-'));
-    const profile = String(video.profile).toLowerCase().replace('constrained baseline', 'baseline');
+    const profile = String(video.profile).toLowerCase().replace('constrained baseline', 'baseline').replace('high 10', 'high10');
+    const h264Profile = profile === 'high 4:2:2' ? 'high422'
+        : profile === 'high 4:4:4 predictive' ? 'high444'
+            : profile;
     const timescale = timeBase.denominator;
     const segmentPaths = [];
     const level = Number(video.level);
@@ -538,42 +584,55 @@ async function runSmartCut(options) {
             const partPath = path.join(tempDir, outputName);
             segmentPaths.push(partPath);
             const startPts = frames[part.startIndex].pts;
-            const endPts = frameEndPts(frames, part.endIndex, step);
+            const endPts = frameEndPts(frames, part.endIndex, lastDuration);
             const duration = (endPts - startPts) * timeBase.numerator / timeBase.denominator;
             if (part.mode === 'encode') {
                 const edgeFrames = part.endIndex - part.startIndex;
+                const lastFrame = frames[part.endIndex - 1];
+                const lastFrameDuration = endPts - lastFrame.pts;
                 const encoderArgs = modern
-                    ? modernEncoderArgs(codec)
+                    ? modernEncoderArgs(codec, video.pix_fmt, profile)
                     : codec === 'hevc'
-                        ? ['-c:v', 'libx265', '-preset', 'ultrafast', '-crf', '22', '-profile:v', 'main', ...levelArgs,
-                            '-pix_fmt', 'yuv420p', '-bf:v', String(reorderDepth), '-g:v', '25',
+                        ? ['-c:v', 'libx265', '-preset', 'ultrafast', '-crf', '22', '-profile:v', video.pix_fmt === 'yuv420p10le' ? 'main10'
+                                : video.pix_fmt === 'yuv422p10le' ? 'main422-10'
+                                    : video.pix_fmt === 'yuv444p10le' ? 'main444-10'
+                                        : 'main', ...levelArgs,
+                            '-pix_fmt', video.pix_fmt, '-bf:v', String(reorderDepth), '-g:v', '25',
                             '-x265-params', `bframes=${reorderDepth}:keyint=25:min-keyint=25:scenecut=0:open-gop=0:repeat-headers=1`, '-threads', '2']
                     : mpegInter
                         ? ['-c:v', codec, '-q:v', '3', '-g:v', '25', '-bf:v', '2',
                             '-sc_threshold', '1000000000', '-flags', '+cgop']
-                        : ['-c:v', 'libx264', '-crf', '16', '-profile:v', profile, ...levelArgs,
-                            '-pix_fmt', 'yuv420p', '-bf:v', String(reorderDepth)];
+                    : ['-c:v', 'libx264', '-crf', '16', '-profile:v', h264Profile, ...levelArgs,
+                            '-pix_fmt', video.pix_fmt, '-bf:v', String(reorderDepth)];
                 const args = [
                     '-i', inputPath,
                     '-map', '0:v:0', '-an',
                     '-vf', `trim=start_pts=${startPts}:end_pts=${endPts},setpts=PTS-STARTPTS`,
                     '-frames:v', String(edgeFrames),
-                    ...encoderArgs, '-fps_mode', 'passthrough',
+                    ...encoderArgs, ...(!isCfr ? ['-enc_time_base:v', '-1'] : []), '-fps_mode', 'passthrough',
+                    ...(!isCfr ? ['-bsf:v', `setts=pts=PTS:dts=DTS:duration='if(eq(PTS,${lastFrame.pts - startPts}),${lastFrameDuration},DURATION)'`] : []),
                     '-video_track_timescale', String(timescale),
                     partPath
                 ];
                 await runStage(args, duration, partPath);
             } else {
+                const lastFrame = frames[part.endIndex - 1];
+                const lastFrameDuration = endPts - lastFrame.pts;
+                const outputExtension = outputExt(outputPath);
                 const relativeEndPts = endPts - startPts;
-                const rangeFilter = `noise=drop=lt(pts\\,${startPts})+gte(pts\\,${endPts}),setts=pts=PTS-${startPts}:dts=DTS-${startPts}`;
-                const args = outputExt(outputPath) === 'webm'
-                    ? ['-i', inputPath, '-map', '0:v:0', '-an', '-c:v', 'copy', '-bsf:v', rangeFilter, partPath]
-                    : [
-                        '-ss', formatSeconds(frameSeconds(frames[part.startIndex], timeBase)),
-                        '-i', inputPath,
+                const args = isCfr && outputExtension !== 'webm'
+                    ? [
+                        '-ss', formatSeconds(frameSeconds(frames[part.startIndex], timeBase)), '-i', inputPath,
                         '-map', '0:v:0', '-an', '-c:v', 'copy',
                         '-bsf:v', `noise=drop='gte(pts,${relativeEndPts})'`,
-                        '-video_track_timescale', String(timescale),
+                        ...(['mp4', 'mov'].includes(outputExtension) ? ['-video_track_timescale', String(timescale)] : []),
+                        partPath
+                    ]
+                    : [
+                        '-i', inputPath,
+                        '-map', '0:v:0', '-an', '-c:v', 'copy',
+                        '-bsf:v', copyRangeFilter(startPts, endPts, lastFrame.pts, lastFrameDuration),
+                        ...(['mp4', 'mov'].includes(outputExtension) ? ['-video_track_timescale', String(timescale)] : []),
                         partPath
                     ];
                 await runStage(args, duration, partPath);
@@ -583,7 +642,13 @@ async function runSmartCut(options) {
         let videoPath = segmentPaths[0];
         if (segmentPaths.length > 1) {
             const listPath = path.join(tempDir, 'parts.ffconcat');
-            fs.writeFileSync(listPath, `ffconcat version 1.0\n${segmentPaths.map((file) => `file '${path.basename(file)}'`).join('\n')}\n`);
+            fs.writeFileSync(listPath, `ffconcat version 1.0\n${segmentPaths.map((file, index) => {
+                const part = parts[index];
+                const startPts = frames[part.startIndex].pts;
+                const endPts = frameEndPts(frames, part.endIndex, lastDuration);
+                const duration = (endPts - startPts) * timeBase.numerator / timeBase.denominator;
+                return `file '${path.basename(file)}'${isCfr ? '' : `\nduration ${formatSeconds(duration)}`}`;
+            }).join('\n')}\n`);
             videoPath = path.join(tempDir, `video.${outputExt(outputPath)}`);
             await runStage([
                 '-f', 'concat', '-safe', '0', '-i', listPath,
@@ -617,10 +682,11 @@ function outputExt(outputPath) {
     return path.extname(outputPath).slice(1).toLowerCase();
 }
 
-function modernEncoderArgs(codec) {
-    if (codec === 'av1') return ['-c:v', 'libaom-av1', '-cpu-used', '8', '-crf', '32', '-b:v', '0', '-g', '25'];
-    if (codec === 'vp9') return ['-c:v', 'libvpx-vp9', '-deadline', 'realtime', '-cpu-used', '8', '-crf', '32', '-b:v', '0', '-g', '25', '-auto-alt-ref', '0'];
-    return ['-c:v', 'libvpx', '-deadline', 'realtime', '-cpu-used', '8', '-crf', '32', '-b:v', '0', '-g', '25', '-lag-in-frames', '0'];
+function modernEncoderArgs(codec, pixelFormat, profile) {
+    const pixelFormatArg = ['-pix_fmt', pixelFormat];
+    if (codec === 'av1') return ['-c:v', 'libaom-av1', '-cpu-used', '8', '-crf', '32', '-b:v', '0', '-g', '25', ...pixelFormatArg];
+    if (codec === 'vp9') return ['-c:v', 'libvpx-vp9', '-deadline', 'realtime', '-cpu-used', '8', '-crf', '32', '-b:v', '0', '-g', '25', '-profile:v', profile === 'profile 3' ? '3' : pixelFormat === 'yuv420p10le' ? '2' : '0', '-auto-alt-ref', '0', ...pixelFormatArg];
+    return ['-c:v', 'libvpx', '-deadline', 'realtime', '-cpu-used', '8', '-crf', '32', '-b:v', '0', '-g', '25', '-lag-in-frames', '0', ...pixelFormatArg];
 }
 
 module.exports = { runSmartCut, parseFrames, makePlan, validateSource };

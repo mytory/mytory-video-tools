@@ -114,12 +114,13 @@ function makeIntraFixture(codec, extension, file, frameCount = 90) {
 }
 
 function makeInterFrameFixture(codec, extension, file) {
+    const fps = codec === 'mpeg2video' ? 25 : 30;
     runSync(ffmpegPath, [
         '-hide_banner', '-loglevel', 'error', '-y', '-f', 'lavfi', '-i',
-        'testsrc2=size=160x96:rate=30:duration=6', '-an', '-threads', '2',
+        `testsrc2=size=160x96:rate=${fps}:duration=6`, '-an', '-threads', '2',
         '-c:v', codec, '-q:v', '3', '-g', '25', '-bf', '2',
         '-sc_threshold', '1000000000', '-flags', '+cgop',
-        '-video_track_timescale', '30000', file
+        '-video_track_timescale', String(fps * 1000), file
     ]);
 }
 
@@ -185,14 +186,20 @@ test('closed-GOP MPEG-4 and MPEG-2 preserve the copied middle GOP in MP4 and MOV
                 makeInterFrameFixture(codec, ext, input);
                 await cut(input, output, 1, 5);
 
+                const fps = codec === 'mpeg2video' ? 25 : 30;
                 const sourceFrames = decodedHashes(input, 'trim=start=1:end=5,setpts=PTS-STARTPTS');
                 const outputFrames = decodedHashes(output);
-                assert.equal(sourceFrames.length, 120);
-                assert.equal(outputFrames.length, 120);
-                assert.deepEqual(outputFrames.slice(20, 95), sourceFrames.slice(20, 95), `${codec}.${ext} copied middle frames must be exact`);
-                assert.ok(edgeSsim(output, input, 0, 20, 30, 50) > 0.95, `${codec}.${ext} head frames remain visually close`);
-                assert.ok(edgeSsim(output, input, 95, 120, 125, 150) > 0.95, `${codec}.${ext} tail frames remain visually close`);
-                assertCfrTimestamps(output, 120, 30);
+                const frameCount = 4 * fps;
+                const copiedStart = codec === 'mpeg2video' ? 0 : 20;
+                const copiedEnd = codec === 'mpeg2video' ? frameCount : 95;
+                assert.equal(sourceFrames.length, frameCount);
+                assert.equal(outputFrames.length, frameCount);
+                assert.deepEqual(outputFrames.slice(copiedStart, copiedEnd), sourceFrames.slice(copiedStart, copiedEnd), `${codec}.${ext} copied middle frames must be exact`);
+                assert.ok(edgeSsim(output, input, 0, Math.min(20, frameCount), fps, fps + Math.min(20, frameCount)) > 0.95,
+                    `${codec}.${ext} head frames remain visually close`);
+                assert.ok(edgeSsim(output, input, frameCount - Math.min(25, frameCount), frameCount, 5 * fps - Math.min(25, frameCount), 5 * fps) > 0.95,
+                    `${codec}.${ext} tail frames remain visually close`);
+                assertCfrTimestamps(output, frameCount, fps);
                 assertCleanDecode(output);
             });
         }

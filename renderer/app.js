@@ -40,6 +40,9 @@ const state = {
     splitTimelineDragging: false,
     splitStartTime: 0,
     splitEndTime: 0,
+    splitFrameTimestamps: null,
+    splitFrameProbe: null,
+    splitFrameProbeToken: 0,
     
     // 영상 합치기 상태
     joinerFiles: [], // [{ path, name, size, probe }], sorted by user order
@@ -637,6 +640,9 @@ async function initApp() {
 // 탭 전환
 function switchTab(tabId) {
     state.activeTab = tabId;
+    if (tabId === 'splitter' && elements.splitSmartCut.checked) {
+        ensureSplitterFrameTimestamps();
+    }
     elements.navItems.forEach(btn => {
         if (btn.getAttribute('data-tab') === tabId) {
             btn.classList.add('active');
@@ -1770,7 +1776,7 @@ function setupSplitter() {
     elements.splitVideo.addEventListener('timeupdate', () => {
         const time = elements.splitVideo.currentTime;
         if (document.activeElement !== elements.splitTimecode) {
-            elements.splitTimecode.value = secondsToTimecode(time);
+            elements.splitTimecode.value = formatSplitTime(time);
         }
 
         if (!state.splitTimelineDragging && state.splitMetadata) {
@@ -1795,15 +1801,15 @@ function setupSplitter() {
         togglePlayback(elements.splitVideo);
     });
 
-    elements.btnSplitPrevFrame.addEventListener('click', () => stepVideoFrames(elements.splitVideo, state.splitMetadata, -1));
-    elements.btnSplitNextFrame.addEventListener('click', () => stepVideoFrames(elements.splitVideo, state.splitMetadata, 1));
+    elements.btnSplitPrevFrame.addEventListener('click', () => stepSplitterVideoFrames(-1));
+    elements.btnSplitNextFrame.addEventListener('click', () => stepSplitterVideoFrames(1));
     elements.btnSplitMarkIn.addEventListener('click', () => markSplitIn());
     elements.btnSplitMarkOut.addEventListener('click', () => markSplitOut());
-    elements.splitTimecode.addEventListener('change', () => seekVideoToInput(elements.splitVideo, elements.splitTimecode, state.splitMetadata));
+    elements.splitTimecode.addEventListener('change', () => seekSplitterVideoToInput());
     elements.splitTimecode.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
-            seekVideoToInput(elements.splitVideo, elements.splitTimecode, state.splitMetadata);
+            seekSplitterVideoToInput();
             elements.splitTimecode.blur();
         }
     });
@@ -1833,6 +1839,15 @@ function setupSplitter() {
         markSplitOut();
     });
 
+    elements.splitSmartCut.addEventListener('change', () => {
+        state.splitFrameProbeToken += 1;
+        state.splitFrameProbe = null;
+        elements.splitTimecode.value = formatSplitTime(elements.splitVideo.currentTime || 0);
+        elements.splitStartInput.value = formatSplitTime(state.splitStartTime);
+        elements.splitEndInput.value = formatSplitTime(state.splitEndTime);
+        if (elements.splitSmartCut.checked) ensureSplitterFrameTimestamps();
+    });
+
     elements.btnSplitGoStart.addEventListener('click', () => {
         seekVideoToSeconds(elements.splitVideo, state.splitStartTime, state.splitMetadata);
     });
@@ -1842,25 +1857,25 @@ function setupSplitter() {
     });
 
     elements.splitStartInput.addEventListener('input', () => {
-        state.splitStartTime = timecodeToSeconds(elements.splitStartInput.value);
-        updateSplitTimelineOverlay();
+        const seconds = parseSplitTime(elements.splitStartInput.value);
+        if (Number.isFinite(seconds)) {
+            state.splitStartTime = seconds;
+            updateSplitTimelineOverlay();
+        }
     });
     elements.splitStartInput.addEventListener('change', () => {
-        normalizeTimecodeField(elements.splitStartInput, () => {
-            state.splitStartTime = timecodeToSeconds(elements.splitStartInput.value);
-            updateSplitTimelineOverlay();
-        });
+        normalizeSplitTimeField(elements.splitStartInput, 'start');
     });
 
     elements.splitEndInput.addEventListener('input', () => {
-        state.splitEndTime = timecodeToSeconds(elements.splitEndInput.value);
-        updateSplitTimelineOverlay();
+        const seconds = parseSplitTime(elements.splitEndInput.value);
+        if (Number.isFinite(seconds)) {
+            state.splitEndTime = seconds;
+            updateSplitTimelineOverlay();
+        }
     });
     elements.splitEndInput.addEventListener('change', () => {
-        normalizeTimecodeField(elements.splitEndInput, () => {
-            state.splitEndTime = timecodeToSeconds(elements.splitEndInput.value);
-            updateSplitTimelineOverlay();
-        });
+        normalizeSplitTimeField(elements.splitEndInput, 'end');
     });
 
     // 분할 내보내기 실행
@@ -1868,6 +1883,7 @@ function setupSplitter() {
         if (!state.splitFile || !state.splitMetadata) return;
 
         const smartCut = elements.splitSmartCut.checked;
+        if (smartCut) await ensureSplitterFrameTimestamps();
         const startTime = smartCut ? state.splitStartTime : elements.splitStartInput.value;
         const endTime = smartCut ? state.splitEndTime : elements.splitEndInput.value;
         const startSeconds = smartCut ? startTime : timecodeToSeconds(startTime);
@@ -1932,6 +1948,9 @@ async function loadVideoForSplit(file) {
         return;
     }
 
+    state.splitFrameProbeToken += 1;
+    state.splitFrameProbe = null;
+    state.splitFrameTimestamps = null;
     state.splitFile = nativeFile;
     rememberFilenameSource('split', nativeFile.path);
     elements.splitDropzone.style.display = 'none';
@@ -1946,12 +1965,13 @@ async function loadVideoForSplit(file) {
         state.splitStartTime = 0;
         state.splitEndTime = metadata.duration;
 
-        elements.splitStartInput.value = '00:00:00:00';
-        elements.splitEndInput.value = secondsToTimecode(metadata.duration);
-        elements.splitTimecode.value = '00:00:00:00';
+        elements.splitStartInput.value = formatSplitTime(0);
+        elements.splitEndInput.value = formatSplitTime(metadata.duration);
+        elements.splitTimecode.value = formatSplitTime(0);
         elements.btnSplitPlayPause.textContent = t('Play', '재생');
 
         updateSplitTimelineOverlay();
+        if (elements.splitSmartCut.checked) ensureSplitterFrameTimestamps();
     } catch (err) {
         console.error('Failed to probe split file:', err);
     }
@@ -1972,6 +1992,126 @@ function updateSplitTimelineOverlay() {
 function getFrameDuration(metadata) {
     const fps = metadata && metadata.fps ? metadata.fps : 30;
     return 1 / Math.max(1, fps);
+}
+
+function formatSplitTime(seconds) {
+    if (elements.splitSmartCut.checked) {
+        return Number.isFinite(seconds) ? String(Number(seconds.toFixed(9))) : '0';
+    }
+    return secondsToTimecode(seconds);
+}
+
+function parseSplitTime(value) {
+    if (elements.splitSmartCut.checked) {
+        const text = value.trim();
+        if (!/^(?:\d+(?:\.\d*)?|\.\d+)$/.test(text)) return Number.NaN;
+        const seconds = Number(text);
+        return Number.isFinite(seconds) ? seconds : Number.NaN;
+    }
+    return timecodeToSeconds(value);
+}
+
+function normalizeSplitTimeField(input, endpoint) {
+    if (!elements.splitSmartCut.checked) {
+        normalizeTimecodeField(input, () => {
+            if (endpoint === 'start') state.splitStartTime = timecodeToSeconds(input.value);
+            else state.splitEndTime = timecodeToSeconds(input.value);
+            updateSplitTimelineOverlay();
+        });
+        return;
+    }
+    const seconds = parseSplitTime(input.value);
+    if (Number.isFinite(seconds)) {
+        if (endpoint === 'start') state.splitStartTime = seconds;
+        else state.splitEndTime = seconds;
+        input.value = formatSplitTime(seconds);
+        updateSplitTimelineOverlay();
+        return;
+    }
+    input.value = formatSplitTime(endpoint === 'start' ? state.splitStartTime : state.splitEndTime);
+}
+
+async function ensureSplitterFrameTimestamps() {
+    const filePath = state.splitFile && state.splitFile.path;
+    if (!filePath || !elements.splitSmartCut.checked || state.activeTab !== 'splitter') return false;
+    if (state.splitFrameTimestamps && state.splitFrameTimestamps.path === filePath) return true;
+    if (state.splitFrameProbe && state.splitFrameProbe.path === filePath) {
+        return state.splitFrameProbe.promise;
+    }
+
+    const token = ++state.splitFrameProbeToken;
+    const promise = window.electronAPI.getSplitterFrameTimestamps(filePath).then((result) => {
+        if (token !== state.splitFrameProbeToken || state.splitFile?.path !== filePath ||
+            !elements.splitSmartCut.checked || state.activeTab !== 'splitter') {
+            return false;
+        }
+        if (!result || !result.success || !Array.isArray(result.timestamps)) return false;
+        state.splitFrameTimestamps = { path: filePath, values: result.timestamps };
+        elements.splitTimecode.value = formatSplitTime(elements.splitVideo.currentTime || 0);
+        elements.splitStartInput.value = formatSplitTime(state.splitStartTime);
+        elements.splitEndInput.value = formatSplitTime(state.splitEndTime);
+        return true;
+    }).catch((error) => {
+        console.error('Failed to read splitter frame timestamps:', error);
+        return false;
+    }).finally(() => {
+        if (state.splitFrameProbe?.token === token) state.splitFrameProbe = null;
+    });
+    state.splitFrameProbe = { path: filePath, token, promise };
+    return promise;
+}
+
+function nearestSplitFrameIndex(timestamps, seconds) {
+    let low = 0;
+    let high = timestamps.length - 1;
+    while (low < high) {
+        const mid = Math.floor((low + high) / 2);
+        if (timestamps[mid] < seconds) low = mid + 1;
+        else high = mid;
+    }
+    if (low > 0 && Math.abs(timestamps[low - 1] - seconds) <= Math.abs(timestamps[low] - seconds)) {
+        return low - 1;
+    }
+    return low;
+}
+
+function splitFrameAtOrBefore(timestamps, seconds) {
+    let low = 0;
+    let high = timestamps.length;
+    while (low < high) {
+        const mid = Math.floor((low + high) / 2);
+        if (timestamps[mid] <= seconds + 0.000001) low = mid + 1;
+        else high = mid;
+    }
+    return Math.max(0, low - 1);
+}
+
+async function stepSplitterVideoFrames(frameCount) {
+    const video = elements.splitVideo;
+    video.pause();
+    if (elements.splitSmartCut.checked && await ensureSplitterFrameTimestamps() && state.splitFrameTimestamps?.values.length) {
+        const timestamps = state.splitFrameTimestamps.values;
+        const currentIndex = nearestSplitFrameIndex(timestamps, video.currentTime);
+        const nextIndex = Math.max(0, Math.min(timestamps.length - 1, currentIndex + frameCount));
+        video.currentTime = timestamps[nextIndex];
+        return;
+    }
+    stepVideoFrames(video, state.splitMetadata, frameCount);
+}
+
+function seekSplitterVideoToInput() {
+    const input = elements.splitTimecode;
+    if (!elements.splitSmartCut.checked) {
+        seekVideoToInput(elements.splitVideo, input, state.splitMetadata);
+        return;
+    }
+    const seconds = parseSplitTime(input.value);
+    if (!Number.isFinite(seconds)) {
+        input.value = formatSplitTime(elements.splitVideo.currentTime || 0);
+        return;
+    }
+    seekVideoToSeconds(elements.splitVideo, seconds, state.splitMetadata);
+    input.value = formatSplitTime(elements.splitVideo.currentTime);
 }
 
 function clampVideoTime(video, targetTime) {
@@ -2023,15 +2163,25 @@ function markCaptureOut() {
     updateCaptureTimelineOverlay();
 }
 
-function markSplitIn() {
-    state.splitStartTime = elements.splitVideo.currentTime;
-    elements.splitStartInput.value = secondsToTimecode(state.splitStartTime);
+async function markSplitIn() {
+    if (elements.splitSmartCut.checked) await ensureSplitterFrameTimestamps();
+    const timestamps = state.splitFrameTimestamps?.values;
+    const seconds = timestamps && elements.splitSmartCut.checked
+        ? timestamps[splitFrameAtOrBefore(timestamps, elements.splitVideo.currentTime)]
+        : elements.splitVideo.currentTime;
+    state.splitStartTime = seconds;
+    elements.splitStartInput.value = formatSplitTime(state.splitStartTime);
     updateSplitTimelineOverlay();
 }
 
-function markSplitOut() {
-    state.splitEndTime = elements.splitVideo.currentTime;
-    elements.splitEndInput.value = secondsToTimecode(state.splitEndTime);
+async function markSplitOut() {
+    if (elements.splitSmartCut.checked) await ensureSplitterFrameTimestamps();
+    const timestamps = state.splitFrameTimestamps?.values;
+    const seconds = timestamps && elements.splitSmartCut.checked
+        ? timestamps[splitFrameAtOrBefore(timestamps, elements.splitVideo.currentTime)]
+        : elements.splitVideo.currentTime;
+    state.splitEndTime = seconds;
+    elements.splitEndInput.value = formatSplitTime(state.splitEndTime);
     updateSplitTimelineOverlay();
 }
 
@@ -2057,12 +2207,12 @@ function setupEditorKeyboardShortcuts() {
             }
             if (event.key === 'ArrowLeft') {
                 event.preventDefault();
-                stepVideoFrames(elements.splitVideo, state.splitMetadata, -frameStep);
+                stepSplitterVideoFrames(-frameStep);
                 return;
             }
             if (event.key === 'ArrowRight') {
                 event.preventDefault();
-                stepVideoFrames(elements.splitVideo, state.splitMetadata, frameStep);
+                stepSplitterVideoFrames(frameStep);
                 return;
             }
             if (event.code === 'KeyI') {

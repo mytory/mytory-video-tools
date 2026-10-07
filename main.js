@@ -586,6 +586,74 @@ function collectVideoPacketTimestamps(inputPath) {
     });
 }
 
+// Splitter에서 실제 프레임 경계로 이동할 때만 호출하는 읽기 전용 PTS 조회입니다.
+ipcMain.handle('splitter:frame-timestamps', async (event, inputPath) => {
+    if (typeof inputPath !== 'string' || !inputPath.trim()) {
+        return { success: false, error: 'Invalid input path.' };
+    }
+
+    try {
+        const stat = await fs.promises.stat(inputPath);
+        if (!stat.isFile()) return { success: false, error: 'Input path is not a file.' };
+
+        const timestamps = await new Promise((resolve, reject) => {
+            const ff = spawn(ffprobePath, [
+                '-v', 'error',
+                '-select_streams', 'v:0',
+                '-show_frames',
+                '-show_entries', 'frame=best_effort_timestamp_time',
+                '-of', 'csv=p=0',
+                inputPath
+            ]);
+            const values = [];
+            const maxFrameCount = 1_500_000;
+            let pending = '';
+            let limitExceeded = false;
+            let settled = false;
+
+            const readLines = (chunk, final = false) => {
+                pending += chunk;
+                const lines = pending.split(/\r?\n/);
+                pending = final ? '' : lines.pop();
+                if (final && lines.length === 1 && lines[0] === '') return;
+                for (const line of lines) {
+                    const timestamp = Number.parseFloat(line.trim());
+                    if (!Number.isFinite(timestamp)) continue;
+                    if (values.length >= maxFrameCount) {
+                        limitExceeded = true;
+                        ff.kill();
+                        return;
+                    }
+                    values.push(timestamp);
+                }
+            };
+
+            ff.stdout.on('data', (data) => readLines(data.toString()));
+            ff.stderr.on('data', () => {});
+            ff.on('error', (error) => {
+                if (!settled) {
+                    settled = true;
+                    reject(error);
+                }
+            });
+            ff.on('close', (code) => {
+                if (settled) return;
+                settled = true;
+                if (limitExceeded) return reject(new Error('Video has too many frames for precise navigation.'));
+                readLines('', true);
+                if (code !== 0) return reject(new Error(`ffprobe failed with exit code ${code}`));
+                if (values.length === 0) return reject(new Error('No frame timestamps found.'));
+                values.sort((a, b) => a - b);
+                resolve(values);
+            });
+        });
+
+        return { success: true, timestamps };
+    } catch (err) {
+        return { success: false, error: err.message };
+    }
+});
+
 // 3-2. 조이너 전용 상세 프로브 (원시 ffprobe JSON 반환)
 ipcMain.handle('joiner:probe', async (event, inputPath) => {
     try {

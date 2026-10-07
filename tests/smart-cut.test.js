@@ -15,7 +15,6 @@ let inputMainNoB;
 let input2997;
 let input23976;
 let inputBeep;
-let inputVfr;
 let inputOpenGop;
 
 function runSync(binary, args, options = {}) {
@@ -108,7 +107,6 @@ before(() => {
     input2997 = path.join(tempDir, 'input-2997.mp4');
     input23976 = path.join(tempDir, 'input-23976.mp4');
     inputBeep = path.join(tempDir, 'input-beep.mp4');
-    inputVfr = path.join(tempDir, 'input-vfr.mp4');
     inputOpenGop = path.join(tempDir, 'input-open-gop.mp4');
     makeFixture(input30, '30');
     makeFixture(input25, '25', false, [], 30);
@@ -116,11 +114,6 @@ before(() => {
     makeFixture(input2997, '30000/1001');
     makeFixture(input23976, '24000/1001');
     makeFixture(inputBeep, '30', true);
-    runSync(ffmpegPath, [
-        '-hide_banner', '-loglevel', 'error', '-y', '-i', input30,
-        '-vf', "setpts='if(lt(N,150),N,N+10)/(30*TB)'", '-fps_mode', 'vfr',
-        '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-profile:v', 'high', inputVfr
-    ]);
     runSync(ffmpegPath, [
         '-hide_banner', '-loglevel', 'error', '-y',
         '-f', 'lavfi', '-i', 'color=c=black:s=320x180:r=30:d=5',
@@ -276,13 +269,10 @@ test('audio beep follows the selected video frame boundary and AAC trim', async 
     assert.ok(Math.abs(active[0] - expected) < 0.025, `beep started at ${active[0]}s, expected about ${expected}s`);
 });
 
-test('VFR and unsupported profile inputs return the supported-range error code', async () => {
-    await assert.rejects(cut(inputVfr, path.join(tempDir, 'vfr-out.mp4'), 1, 2),
-        (error) => error.code === 'SMART_CUT_UNSUPPORTED');
-
+test('unsupported profile and video metadata return the supported-range error code', async () => {
     const sourceMetadata = probeJson(input30, ['-show_format', '-show_streams']);
     for (const mutate of [
-        (metadata) => { metadata.streams[0].profile = 'High 10'; },
+        (metadata) => { metadata.streams[0].profile = 'High 4:4:4 Predictive'; },
         (metadata) => { metadata.streams[0].pix_fmt = 'yuv420p10le'; },
         (metadata) => { metadata.streams[0].sample_aspect_ratio = '4:3'; },
         (metadata) => { metadata.streams[0].field_order = 'tt'; },

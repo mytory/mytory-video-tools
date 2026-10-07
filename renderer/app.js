@@ -198,6 +198,7 @@ const elements = {
     splitTimelineHandle: document.getElementById('splitTimelineHandle'),
     splitStartInput: document.getElementById('splitStartInput'),
     splitEndInput: document.getElementById('splitEndInput'),
+    splitSmartCut: document.getElementById('splitSmartCut'),
     btnSplitSetStart: document.getElementById('btnSplitSetStart'),
     btnSplitSetEnd: document.getElementById('btnSplitSetEnd'),
     btnSplitGoStart: document.getElementById('btnSplitGoStart'),
@@ -1868,6 +1869,7 @@ function setupSplitter() {
 
         const startTime = elements.splitStartInput.value;
         const endTime = elements.splitEndInput.value;
+        const smartCut = elements.splitSmartCut.checked;
 
         if (timecodeToSeconds(startTime) >= timecodeToSeconds(endTime)) {
             showToast(t('Invalid Segment', '잘못된 구간 설정'), t('Start time must be before end time.', '시작 지점이 종료 지점보다 앞서야 합니다.'), 'error');
@@ -1887,16 +1889,23 @@ function setupSplitter() {
                 inputPath: splitFile.path,
                 startTime,
                 endTime,
-                outputPath
+                outputPath,
+                smartCut
             });
 
             if (result.success) {
                 finishQueueItem(taskId, 'done');
-                showToast(t('Video Split Complete', '비디오 자르기 성공'), t('!split_file_saved', outputPath));
+                const savedMessage = smartCut
+                    ? t('!split_file_saved_smart', outputPath)
+                    : t('!split_file_saved', outputPath);
+                showToast(t('Video Split Complete', '비디오 자르기 성공'), savedMessage);
                 showDonationToast();
             } else {
-                finishQueueItem(taskId, 'error', result.error);
-                showToast(t('Video Split Failed', '비디오 자르기 실패'), result.error, 'error');
+                const errorMessage = result.errorCode === 'SMART_CUT_UNSUPPORTED'
+                    ? t('Smart cut is not supported for this video. Turn it off to use lossless splitting.')
+                    : result.error;
+                finishQueueItem(taskId, 'error', errorMessage);
+                showToast(t('Video Split Failed', '비디오 자르기 실패'), errorMessage, 'error');
             }
         };
 

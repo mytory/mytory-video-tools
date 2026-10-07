@@ -183,7 +183,7 @@ function runFFmpeg(taskId, args, duration, outputPath) {
     });
 }
 
-function runSmartCutCommand(taskId, commandPath, args, onStderrLine) {
+function runSmartCutCommand(taskId, commandPath, args, onStderrLine, onStdoutChunk) {
     return new Promise((resolve, reject) => {
         const child = spawn(commandPath, args);
         activeTasks.set(taskId, child);
@@ -191,7 +191,10 @@ function runSmartCutCommand(taskId, commandPath, args, onStderrLine) {
         let stderrTail = '';
         let pendingLine = '';
 
-        child.stdout.on('data', (data) => { stdout += data.toString(); });
+        child.stdout.on('data', (data) => {
+            if (onStdoutChunk) onStdoutChunk(data);
+            else stdout += data.toString();
+        });
         child.stderr.on('data', (data) => {
             const text = pendingLine + data.toString();
             const lines = text.split(/\r?\n/);

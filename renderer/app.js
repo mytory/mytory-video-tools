@@ -1867,11 +1867,13 @@ function setupSplitter() {
     elements.btnSplitExport.addEventListener('click', async () => {
         if (!state.splitFile || !state.splitMetadata) return;
 
-        const startTime = elements.splitStartInput.value;
-        const endTime = elements.splitEndInput.value;
         const smartCut = elements.splitSmartCut.checked;
+        const startTime = smartCut ? state.splitStartTime : elements.splitStartInput.value;
+        const endTime = smartCut ? state.splitEndTime : elements.splitEndInput.value;
+        const startSeconds = smartCut ? startTime : timecodeToSeconds(startTime);
+        const endSeconds = smartCut ? endTime : timecodeToSeconds(endTime);
 
-        if (timecodeToSeconds(startTime) >= timecodeToSeconds(endTime)) {
+        if (startSeconds >= endSeconds) {
             showToast(t('Invalid Segment', '잘못된 구간 설정'), t('Start time must be before end time.', '시작 지점이 종료 지점보다 앞서야 합니다.'), 'error');
             return;
         }

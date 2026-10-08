@@ -8,9 +8,9 @@
 
 ![Captura de la aplicación de escritorio Mytory Video Tools](./screenshots/screenshot-1.png)
 
-### Novedades de v1.10.0
+### Novedades de v1.10.1
 
-El Divisor de video ahora ofrece Smart Cut, una opción para cortar con precisión en los límites de los fotogramas seleccionados. Solo vuelve a codificar los extremos del corte y copia el flujo de la parte central. Si Smart Cut está desactivado, el modo predeterminado sigue copiando el flujo, por lo que los puntos de corte pueden depender de los fotogramas clave. Admite video de frecuencia de fotogramas variable de 8 y 10 bits, dentro de los límites de compatibilidad del códec, perfil y contenedor.
+En Windows, el aviso de apoyo que aparece tras guardar correctamente un archivo ahora incluye un botón para dejar una reseña en Microsoft Store.
 
 ---
 

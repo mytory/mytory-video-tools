@@ -60,6 +60,12 @@
     margin: 0 0 11px;
 }
 
+.mytory-donation-toast__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
 .mytory-donation-toast__cta {
     display: inline-flex;
     min-height: 40px;
@@ -73,11 +79,24 @@
     color: #fff !important;
     font-weight: 700;
     text-decoration: none;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: pointer;
+}
+
+.mytory-donation-toast__cta--review {
+    background: transparent;
+    color: var(--brand-fallback, #6a7aff) !important;
 }
 
 .mytory-donation-toast__cta:hover {
     background: #5365e8;
     border-color: #5365e8;
+}
+
+.mytory-donation-toast__cta--review:hover {
+    background: #e2e6ff;
+    border-color: var(--brand-fallback, #6a7aff);
 }
 
 .mytory-donation-toast__cta:focus-visible,

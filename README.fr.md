@@ -8,9 +8,9 @@
 
 ![Capture d’écran de l’application de bureau Mytory Video Tools](./screenshots/screenshot-1.png)
 
-### Nouveautés de la v1.10.0
+### Nouveautés de la v1.10.1
 
-Le Coupe-vidéo propose désormais Smart Cut, une option pour couper exactement aux limites des images sélectionnées. Cette option réencode uniquement les extrémités de la coupe ; la partie centrale est copiée sans réencodage. Sans Smart Cut, le mode par défaut reste la copie de flux ; les points de coupe peuvent donc dépendre des images clés. Les vidéos à fréquence d’images variable (VFR) en 8 et 10 bits sont prises en charge dans les limites de compatibilité des codecs, profils et conteneurs.
+Sous Windows, le message de soutien affiché après l’enregistrement réussi d’un fichier propose désormais un bouton pour laisser un avis sur le Microsoft Store.
 
 ---
 

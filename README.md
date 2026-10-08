@@ -8,9 +8,9 @@
 
 ![Mytory Video Tools desktop app screenshot](./screenshots/screenshot-1.png)
 
-### What’s new in v1.10.0
+### What’s new in v1.10.1
 
-Video Splitter now offers optional Smart Cut for exact selected-frame boundaries. It re-encodes only the cut edges and stream-copies the middle. With Smart Cut off, the default remains stream copy, so cut points may follow keyframes. 8-bit and 10-bit variable-frame-rate video is supported within codec, profile, and container compatibility limits.
+On Windows, the post-success support toast now includes a button to leave a review on the Microsoft Store.
 
 ---
 

@@ -8,9 +8,9 @@
 
 ![Captura de tela do aplicativo desktop Mytory Video Tools](./screenshots/screenshot-1.png)
 
-### Novidades da v1.10.0
+### Novidades da v1.10.1
 
-O Divisor de vídeo agora oferece o Smart Cut como opção para cortar exatamente nos limites dos quadros selecionados. Ele recodifica apenas as extremidades do corte e copia o fluxo na parte central. Com o Smart Cut desativado, o padrão continua sendo a cópia do fluxo, então os pontos de corte podem depender dos quadros-chave. Compatível com vídeos de taxa de quadros variável de 8 e 10 bits, dentro dos limites de compatibilidade do codec, perfil e contêiner.
+No Windows, o aviso de apoio exibido após salvar um arquivo com sucesso agora inclui um botão para deixar uma avaliação na Microsoft Store.
 
 ---
 

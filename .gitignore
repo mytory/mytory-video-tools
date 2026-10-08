@@ -21,5 +21,6 @@ Thumbs.db
 # Internal library docs (not for GitHub Pages)
 docs/mytory-i18n/
 /builds
+/reports
 /cache
 *Zone.Identifier

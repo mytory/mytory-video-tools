@@ -8,9 +8,9 @@
 
 ![Tangkapan layar aplikasi desktop Mytory Video Tools](./screenshots/screenshot-1.png)
 
-### Yang baru di v1.10.0
+### Yang baru di v1.10.1
 
-Pemotong Video kini menyediakan Smart Cut opsional untuk memotong tepat pada batas frame yang dipilih. Fitur ini mengodekan ulang hanya bagian tepi potongan dan menyalin aliran di bagian tengah. Jika Smart Cut dinonaktifkan, mode default tetap menyalin aliran, sehingga titik potong dapat mengikuti keyframe. Mendukung video dengan frame rate variabel 8-bit dan 10-bit dalam batas kompatibilitas codec, profil, dan kontainer.
+Di Windows, pesan dukungan yang muncul setelah file berhasil disimpan kini menyertakan tombol untuk menulis ulasan di Microsoft Store.
 
 ---
 

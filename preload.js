@@ -1,6 +1,8 @@
 const { contextBridge, ipcRenderer, webUtils } = require('electron');
 
 contextBridge.exposeInMainWorld('electronAPI', {
+    platform: process.platform,
+    reviewInStore: () => ipcRenderer.invoke('app:review-in-store'),
     getConfig: () => ipcRenderer.invoke('app:get-config'),
     selectDirectory: () => ipcRenderer.invoke('app:select-directory'),
     getPathForFile: (file) => webUtils.getPathForFile(file),

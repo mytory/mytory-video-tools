@@ -78,6 +78,9 @@ npm start
 npm run dist
 ```
 
+### Microsoft Store용 AppX 패키지
+Windows x64에서 `npm run dist:store:appx`를 실행하면 Store 제출용 `.appx`가 `dist/`에 생성됩니다. 빌드는 `build/electron-builder.store-appx.cjs`에 설정된 이 앱의 Partner Center identity를 사용합니다.
+
 ### macOS 서명/CI 빌드 안내
 
 * `npm run dist`는 `dotenv`를 사용해 `.env`를 로드합니다.

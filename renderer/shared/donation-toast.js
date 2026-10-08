@@ -53,6 +53,14 @@
         const supportLink = createElement("a", "mytory-donation-toast__cta");
         supportLink.target = "_blank";
         supportLink.rel = "noopener noreferrer";
+        const actions = createElement("div", "mytory-donation-toast__actions");
+        const reviewButton = global.electronAPI?.platform === "win32"
+            ? createElement("button", "mytory-donation-toast__cta mytory-donation-toast__cta--review")
+            : null;
+        if (reviewButton) {
+            reviewButton.type = "button";
+            reviewButton.addEventListener("click", () => global.electronAPI.reviewInStore());
+        }
 
         const closeButton = createElement("button", "mytory-donation-toast__close", "×");
         closeButton.type = "button";
@@ -60,7 +68,9 @@
         const arrow = createElement("span", "", "↗");
         arrow.setAttribute("aria-hidden", "true");
         supportLink.append(arrow);
-        content.append(title, message, supportLink);
+        actions.append(supportLink);
+        if (reviewButton) actions.append(reviewButton);
+        content.append(title, message, actions);
         layout.append(icon, content);
         toast.append(layout, closeButton);
         global.document.body.append(toast);
@@ -76,6 +86,7 @@
             supportLink.href = language === "ko" ? KOREAN_SUPPORT_URL : PAYPAL_URL;
             supportLink.textContent = strings.cta || "Support via PayPal";
             supportLink.append(arrow);
+            if (reviewButton) reviewButton.textContent = strings.review;
         }
 
         function show() {

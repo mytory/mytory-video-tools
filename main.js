@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog, nativeImage } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, nativeImage, shell } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const { spawn } = require('child_process');
@@ -468,6 +468,11 @@ app.on('before-quit', () => {
 });
 
 // --- IPC 구현부 ---
+
+ipcMain.handle('app:review-in-store', () => {
+    if (process.platform !== 'win32') return;
+    return shell.openExternal('ms-windows-store://review/?ProductId=9NKRWRKMLGMW');
+});
 
 // 1. 설정/가속 능력값 획득
 ipcMain.handle('app:get-config', () => {

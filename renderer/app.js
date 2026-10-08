@@ -52,15 +52,15 @@ const state = {
 };
 
 const donationMessages = {
-    en: { title: 'Like what you made?', message: 'If this free tool helped, please support its continued development.', cta: 'Support via PayPal', close: 'Dismiss donation message' },
-    ko: { title: '완성한 결과물이 마음에 드셨나요?', message: '이 무료 도구가 도움이 되었다면 개발을 후원해 주세요.', cta: '후원하기', close: '후원 안내 닫기' },
-    ja: { title: '完成した作品はいかがですか？', message: 'この無料ツールがお役に立ちましたら、開発をご支援ください。', cta: 'PayPalで支援', close: '寄付の案内を閉じる' },
-    'zh-cn': { title: '喜欢完成的作品吗？', message: '如果这款免费工具对您有帮助，请支持它的持续开发。', cta: '通过 PayPal 支持', close: '关闭捐助提示' },
-    es: { title: '¿Te gusta el resultado?', message: 'Si esta herramienta gratuita te ayudó, apoya su desarrollo.', cta: 'Apoyar con PayPal', close: 'Cerrar aviso de donación' },
-    pt: { title: 'Gostou do resultado?', message: 'Se esta ferramenta gratuita ajudou você, apoie seu desenvolvimento.', cta: 'Apoiar via PayPal', close: 'Fechar aviso de apoio' },
-    fr: { title: 'Le résultat vous plaît ?', message: 'Si cet outil gratuit vous a aidé, soutenez son développement.', cta: 'Soutenir via PayPal', close: 'Fermer le message de soutien' },
-    id: { title: 'Suka hasilnya?', message: 'Jika alat gratis ini membantu, dukung pengembangannya.', cta: 'Dukung lewat PayPal', close: 'Tutup pesan dukungan' },
-    hi: { title: 'क्या आपको परिणाम पसंद आया?', message: 'अगर इस मुफ़्त टूल से मदद मिली, तो इसके विकास में सहयोग करें।', cta: 'PayPal से सहयोग करें', close: 'सहयोग संदेश बंद करें' }
+    en: { title: 'Like what you made?', message: 'If this free tool helped, please support its continued development.', cta: 'Support via PayPal', review: 'Leave a review', close: 'Dismiss donation message' },
+    ko: { title: '완성한 결과물이 마음에 드셨나요?', message: '이 무료 도구가 도움이 되었다면 개발을 후원해 주세요.', cta: '후원하기', review: '리뷰 남기기', close: '후원 안내 닫기' },
+    ja: { title: '完成した作品はいかがですか？', message: 'この無料ツールがお役に立ちましたら、開発をご支援ください。', cta: 'PayPalで支援', review: 'レビューを書く', close: '寄付の案内を閉じる' },
+    'zh-cn': { title: '喜欢完成的作品吗？', message: '如果这款免费工具对您有帮助，请支持它的持续开发。', cta: '通过 PayPal 支持', review: '撰写评价', close: '关闭捐助提示' },
+    es: { title: '¿Te gusta el resultado?', message: 'Si esta herramienta gratuita te ayudó, apoya su desarrollo.', cta: 'Apoyar con PayPal', review: 'Escribir una reseña', close: 'Cerrar aviso de donación' },
+    pt: { title: 'Gostou do resultado?', message: 'Se esta ferramenta gratuita ajudou você, apoie seu desenvolvimento.', cta: 'Apoiar via PayPal', review: 'Escrever uma avaliação', close: 'Fechar aviso de apoio' },
+    fr: { title: 'Le résultat vous plaît ?', message: 'Si cet outil gratuit vous a aidé, soutenez son développement.', cta: 'Soutenir via PayPal', review: 'Laisser un avis', close: 'Fermer le message de soutien' },
+    id: { title: 'Suka hasilnya?', message: 'Jika alat gratis ini membantu, dukung pengembangannya.', cta: 'Dukung lewat PayPal', review: 'Tulis ulasan', close: 'Tutup pesan dukungan' },
+    hi: { title: 'क्या आपको परिणाम पसंद आया?', message: 'अगर इस मुफ़्त टूल से मदद मिली, तो इसके विकास में सहयोग करें।', cta: 'PayPal से सहयोग करें', review: 'समीक्षा लिखें', close: 'सहयोग संदेश बंद करें' }
 };
 const donationToast = window.MytoryDonationToast.create(donationMessages);
 function showDonationToast() {

@@ -4,6 +4,55 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    /* --- macOS download and launch guidance --- */
+    const macGuides = {
+        en: ['macOS installation note', 'Move the app to Applications. If double-clicking it asks you to move it to the Trash, open Terminal and run:', 'Enter your Mac login password when prompted. Nothing appears while you type; that is normal. Press Return. If no message appears, the command succeeded. Then open the app again.', 'Close'],
+        ko: ['macOS 설치 안내', '앱을 응용 프로그램 폴더에 설치하세요. 더블클릭했을 때 휴지통으로 이동하라는 메시지가 나오면 터미널 앱을 열고 다음 명령어를 입력한 뒤 엔터를 누르세요.', '비밀번호를 묻는다면 Mac 사용자 비밀번호를 입력하고 엔터를 누르세요. 입력 중 화면에 글자가 보이지 않는 것은 정상입니다. 아무 메시지도 나오지 않으면 성공한 것입니다. 이제 앱을 다시 실행하세요.', '닫기'],
+        ja: ['macOS のインストール案内', 'アプリを「アプリケーション」フォルダに入れてください。ダブルクリック時にゴミ箱へ移動するよう求められたら、「ターミナル」を開いて次のコマンドを入力し、Return キーを押してください。', 'パスワードを求められたら、Mac のログインパスワードを入力して Return キーを押してください。入力中に文字が表示されないのは正常です。何も表示されなければ成功です。その後、アプリを再度開いてください。', '閉じる'],
+        'zh-cn': ['macOS 安装说明', '将应用移到“应用程序”文件夹。如果双击后系统提示将其移到废纸篓，请打开“终端”，输入以下命令并按回车键。', '出现密码提示时，输入 Mac 登录密码并按回车键。输入时屏幕上不显示字符是正常现象。如果没有显示任何消息，表示命令执行成功。然后重新打开应用。', '关闭'],
+        es: ['Instrucciones de instalación en macOS', 'Mueve la app a la carpeta Aplicaciones. Si al hacer doble clic se te pide moverla a la Papelera, abre Terminal, escribe este comando y pulsa Intro:', 'Cuando se solicite, escribe tu contraseña de inicio de sesión de Mac y pulsa Intro. Es normal que no aparezca nada mientras escribes. Si no aparece ningún mensaje, el comando se ejecutó correctamente. Después, abre la app de nuevo.', 'Cerrar'],
+        pt: ['Instruções de instalação no macOS', 'Mova o app para a pasta Aplicativos. Se, ao clicar duas vezes, aparecer uma mensagem para movê-lo para o Lixo, abra o Terminal, digite o comando abaixo e pressione Enter:', 'Quando solicitado, digite a senha de login do Mac e pressione Enter. É normal que nada apareça enquanto você digita. Se nenhuma mensagem aparecer, o comando foi executado com sucesso. Depois, abra o app novamente.', 'Fechar'],
+        fr: ['Instructions d’installation sur macOS', 'Placez l’application dans le dossier Applications. Si un double clic vous invite à la placer dans la corbeille, ouvrez Terminal, saisissez la commande suivante et appuyez sur Entrée :', 'Lorsque le mot de passe est demandé, saisissez celui de votre session Mac et appuyez sur Entrée. Aucun caractère ne s’affiche pendant la saisie : c’est normal. Si aucun message ne s’affiche ensuite, la commande a réussi. Rouvrez alors l’application.', 'Fermer'],
+        id: ['Petunjuk instalasi macOS', 'Pindahkan aplikasi ke folder Applications. Jika saat diklik dua kali muncul permintaan untuk memindahkannya ke Tong Sampah, buka Terminal, ketik perintah berikut, lalu tekan Enter:', 'Saat diminta, ketik kata sandi masuk Mac Anda lalu tekan Enter. Tidak ada karakter yang terlihat saat mengetik; itu normal. Jika tidak ada pesan yang muncul, perintah berhasil. Setelah itu, buka kembali aplikasinya.', 'Tutup'],
+        hi: ['macOS इंस्टॉल करने के निर्देश', 'ऐप को Applications फ़ोल्डर में ले जाएँ। डबल क्लिक करने पर अगर उसे Trash में ले जाने का संदेश आए, तो Terminal खोलें, यह कमांड लिखें और Return दबाएँ:', 'पूछे जाने पर अपना Mac लॉगिन पासवर्ड लिखकर Return दबाएँ। टाइप करते समय स्क्रीन पर कुछ नहीं दिखना सामान्य है। अगर कोई संदेश नहीं आता, तो कमांड सफल रही। इसके बाद ऐप दोबारा खोलें।', 'बंद करें'],
+    };
+    const macGuide = macGuides[document.documentElement.lang] || macGuides.en;
+
+    const macLinks = document.querySelectorAll('.download__platforms a[href$=".dmg"]');
+    if (macLinks.length) {
+        const command = 'sudo xattr -d com.apple.quarantine /Applications/Mytory\\ Video\\ Tools.app';
+        const note = document.createElement('div');
+        note.className = 'download__mac-note';
+        const noteTitle = document.createElement('strong');
+        noteTitle.textContent = macGuide[0];
+        const noteIntro = document.createElement('p');
+        noteIntro.textContent = macGuide[1];
+        const noteCommand = document.createElement('code');
+        noteCommand.textContent = command;
+        const noteDetail = document.createElement('p');
+        noteDetail.textContent = macGuide[2];
+        note.append(noteTitle, noteIntro, noteCommand, noteDetail);
+        document.querySelector('.download__platforms').after(note);
+
+        const dialog = document.createElement('dialog');
+        dialog.className = 'mac-guide';
+        const title = document.createElement('h2');
+        title.textContent = macGuide[0];
+        const intro = document.createElement('p');
+        intro.textContent = macGuide[1];
+        const code = document.createElement('code');
+        code.textContent = command;
+        const detail = document.createElement('p');
+        detail.textContent = macGuide[2];
+        const close = document.createElement('button');
+        close.type = 'button';
+        close.textContent = macGuide[3];
+        close.addEventListener('click', () => dialog.close());
+        dialog.append(title, intro, code, detail, close);
+        document.body.append(dialog);
+        macLinks.forEach(link => link.addEventListener('click', () => dialog.showModal()));
+    }
+
     /* --- Mobile Nav Toggle --- */
     const toggle = document.querySelector('.navbar__toggle');
     const navLinks = document.querySelector('.navbar__links');

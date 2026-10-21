@@ -8,9 +8,11 @@
 
 ![Capture d’écran de l’application de bureau Mytory Video Tools](./screenshots/screenshot-1.png)
 
-### Nouveautés de la v1.10.1
+### Nouveautés de la v1.11.0
 
-Sous Windows, le message de soutien affiché après l’enregistrement réussi d’un fichier propose désormais un bouton pour laisser un avis sur le Microsoft Store.
+Réglez la vitesse de l’aperçu : saisissez par exemple 1.25 ou utilisez ↑/↓ pour modifier la valeur de 0.1. Plage : 0.0625–16× ; 0 met en pause. La vitesse de la vidéo enregistrée reste inchangée.
+
+Les segments héritent des métadonnées compatibles de la source ; leur date de prise de vue est décalée selon leur position de début dans l’original. La conservation des balises modifiables d’appareil et de GPS en MP4/MOV est renforcée, sans garantie de préserver toutes les données propriétaires.
 
 ---
 
@@ -30,7 +32,7 @@ Sous Windows, le message de soutien affiché après l’enregistrement réussi d
 | 📸 **Capture d'image** | Capture d'une seule image, extraction par lots à intervalles réguliers et détection automatique de scènes avec réglage de la sensibilité. Choisissez un dossier d’enregistrement ou revenez au dossier de la vidéo. Capturez immédiatement pendant l’analyse de la fréquence d’images : les noms de fichiers utilisent les millisecondes jusqu’à la confirmation d’une fréquence constante, puis les nouvelles captures utilisent une précision à l’image près. Les vidéos à fréquence variable conservent les millisecondes ; le champ des heures est omis pour les vidéos de moins d’une heure. Les images capturées conservent leur heure réelle de capture dans l'EXIF. |
 | 🔄 **Remuxeur** | Conversion rapide de format de conteneur (MP4, MKV, MOV) sans ré-encodage. |
 | 🔗 **Assembler les vidéos** | Concatène sans perte plusieurs fichiers vidéo avec des paramètres d'encodage identiques. Parfait pour réassembler des segments divisés. |
-| ✂️ **Coupe-vidéo** | Coupe un segment en définissant les points de début et de fin. Le mode par défaut de copie de flux peut placer les coupes sur les images clés. Smart Cut est une option qui réencode uniquement les extrémités pour couper exactement aux limites des images sélectionnées et copie les flux vidéo de la partie centrale sans réencodage. Les vidéos à fréquence d’images variable (VFR) en 8 et 10 bits sont prises en charge dans les limites de compatibilité des codecs, profils et conteneurs. |
+| ✂️ **Coupe-vidéo** | Coupe un segment en définissant les points de début et de fin. Le mode par défaut de copie de flux peut placer les coupes sur les images clés. Smart Cut est une option qui réencode uniquement les extrémités pour couper exactement aux limites des images sélectionnées et copie les flux vidéo de la partie centrale sans réencodage. Les vidéos à fréquence d’images variable (VFR) en 8 et 10 bits sont prises en charge dans les limites de compatibilité des codecs, profils et conteneurs. Réglez la vitesse de l’aperçu sans modifier celle du fichier enregistré. Les métadonnées compatibles sont conservées et la date de prise de vue est ajustée au début du segment. |
 | 📦 **Compresseur** | Compresse une vidéo à une taille de fichier cible avec diverses options de codec et de qualité. |
 
 > **🖱️ Glisser-déposer global** : Faites glisser des fichiers n'importe où sur la fenêtre de l'application pour les ajouter instantanément à l'outil actif.

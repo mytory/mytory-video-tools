@@ -968,6 +968,66 @@ a {
     align-items: start;
 }
 
+.download__mac-note {
+    max-width: 680px;
+    margin-top: -20px;
+    color: var(--color-text-secondary);
+    font-size: 13px;
+    line-height: 1.7;
+    text-align: center;
+}
+
+.download__mac-note p { margin: 10px 0; }
+.download__mac-note code {
+    display: block;
+    overflow-x: auto;
+    padding: 12px;
+    border-radius: 8px;
+    background: var(--color-surface);
+    font-size: 12px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.mac-guide {
+    width: min(560px, calc(100% - 32px));
+    max-height: calc(100% - 32px);
+    margin: auto;
+    padding: 32px;
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.2);
+}
+
+.mac-guide::backdrop {
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.mac-guide h2 { margin-bottom: 20px; font-size: 22px; }
+.mac-guide p { margin: 16px 0; line-height: 1.7; }
+.mac-guide code {
+    display: block;
+    overflow-x: auto;
+    padding: 14px;
+    border-radius: 8px;
+    background: var(--color-surface-subtle);
+    font-size: 12px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+.mac-guide button {
+    display: block;
+    margin: 24px 0 0 auto;
+    padding: 10px 20px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--color-accent);
+    color: white;
+    cursor: pointer;
+}
+
 .platform-card {
     display: flex;
     flex-direction: column;

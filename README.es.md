@@ -8,9 +8,11 @@
 
 ![Captura de la aplicación de escritorio Mytory Video Tools](./screenshots/screenshot-1.png)
 
-### Novedades de v1.10.1
+### Novedades de v1.11.0
 
-En Windows, el aviso de apoyo que aparece tras guardar correctamente un archivo ahora incluye un botón para dejar una reseña en Microsoft Store.
+Introduce la velocidad de vista previa: escribe valores como 1.25 o usa ↑/↓ para cambiarla en 0.1. Admite 0.0625–16×; 0 pausa la reproducción. La velocidad del video guardado no cambia.
+
+Los fragmentos heredan los metadatos compatibles del original y ajustan la fecha de grabación según su posición inicial en él. Se amplía la conservación de etiquetas de cámara y GPS que se pueden escribir en MP4/MOV; no se garantiza conservar todos los datos exclusivos del fabricante.
 
 ---
 
@@ -30,7 +32,7 @@ En Windows, el aviso de apoyo que aparece tras guardar correctamente un archivo 
 | 📸 **Captura de fotogramas** | Captura de un solo fotograma, extracción por lotes a intervalos y detección automática de escenas con control de sensibilidad. Elija una carpeta de destino o vuelva a la carpeta del video. Capture inmediatamente mientras se analiza la frecuencia de fotogramas: los nombres de archivo usan milisegundos hasta confirmar una frecuencia constante; las nuevas capturas usan entonces precisión de fotograma. Los videos de frecuencia variable mantienen los milisegundos; si dura menos de una hora, se omite el campo de horas. Las imágenes capturadas conservan su hora real de captura en EXIF. |
 | 🔄 **Remuxer** | Conversión rápida de formato de contenedor (MP4, MKV, MOV) sin recodificación. |
 | 🔗 **Unir videos** | Concatena sin pérdidas múltiples archivos de video con parámetros de codificación idénticos. Perfecto para reensamblar segmentos divididos. |
-| ✂️ **Divisor de video** | Recorta un segmento estableciendo los puntos de inicio y fin. El modo predeterminado de copia del flujo puede situar los cortes en fotogramas clave. Smart Cut es opcional: vuelve a codificar solo los extremos para cortar exactamente en los límites de los fotogramas seleccionados y copia el flujo de la parte central. Admite video de frecuencia de fotogramas variable de 8 y 10 bits, dentro de los límites de compatibilidad del códec, perfil y contenedor. |
+| ✂️ **Divisor de video** | Recorta un segmento estableciendo los puntos de inicio y fin. El modo predeterminado de copia del flujo puede situar los cortes en fotogramas clave. Smart Cut es opcional: vuelve a codificar solo los extremos para cortar exactamente en los límites de los fotogramas seleccionados y copia el flujo de la parte central. Admite video de frecuencia de fotogramas variable de 8 y 10 bits, dentro de los límites de compatibilidad del códec, perfil y contenedor. Permite ajustar la velocidad de vista previa sin cambiar la del video guardado. Conserva los metadatos compatibles y ajusta la fecha de grabación al inicio del fragmento. |
 | 📦 **Compresor** | Comprime video a un tamaño de archivo objetivo con varias opciones de códec y calidad. |
 
 > **🖱️ Arrastrar y soltar global**: Arrastra archivos a cualquier parte de la ventana de la aplicación para agregarlos instantáneamente a la herramienta activa actual.

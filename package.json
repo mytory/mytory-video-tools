@@ -1,6 +1,6 @@
 {
   "name": "mytory-video-tool",
-  "version": "1.10.1",
+  "version": "1.11.0",
   "description": "Unified high-performance native desktop video utilities.",
   "main": "main.js",
   "scripts": {
@@ -66,6 +66,8 @@
     "asarUnpack": [
       "**/node_modules/ffmpeg-static/**/*",
       "**/node_modules/ffprobe-static/**/*",
+      "**/node_modules/exiftool-vendored.pl/**/*",
+      "**/node_modules/exiftool-vendored.exe/**/*",
       "**/node_modules/@img/**/*"
     ],
     "mac": {

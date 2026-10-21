@@ -27,7 +27,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles.css?h=331a22122b81f6ff6ec9a500ce1b043e">
+    <link rel="stylesheet" href="../styles.css?h=48e78e235d6902052056e1a416c0698a">
     <link rel="icon" type="image/webp" href="../assets/logo.webp">
 </head>
 <body>
@@ -63,7 +63,7 @@
         <div class="hero__bg"></div>
         <div class="hero__inner">
             <div class="hero__content">
-                <div class="hero__eyebrow">v1.10.1 &middot; Aplicativo desktop multiplataforma</div>
+                <div class="hero__eyebrow">v1.11.0 &middot; Aplicativo desktop multiplataforma</div>
                 <h1 class="hero__title">
                     Ferramentas de<br>
                     <span class="hero__title--accent">Vídeo rápidas</span>
@@ -223,6 +223,7 @@
                     </div>
                     <h3 class="feature-card__title">Divisor de vídeo</h3>
                     <p class="feature-card__desc">Por padrão, corte com cópia de fluxo rápida e sem perdas; o início pode avançar para um keyframe anterior. O Smart Cut é opcional e segue os quadros selecionados: em vídeos inter-frame compatíveis, reencoda os limites e copia um trecho central seguro; em vídeos intra-frame, copia tudo. O Smart Cut reencoda o áudio; há limites de codec, perfil, contêiner, profundidade de bits e temporização dos quadros.</p>
+                    <p class="feature-card__desc">Visualize em velocidades como 1.25×, com ajustes de 0.1 pelas teclas de seta. Os clipes preservam os metadados de origem compatíveis e ajustam a data e hora de captura ao início de cada clipe.</p>
                     <ul class="feature-card__tags">
                         <li>Cópia sem perdas por padrão</li>
                         <li>Smart Cut opcional</li>
@@ -341,7 +342,7 @@
             </div>
             <div class="download__platforms">
                 <div class="platform-card__wrapper">
-                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.1/mytory-video-tool-v1.10.1-arm64.dmg" target="_blank" rel="noopener" class="platform-card">
+                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.11.0/mytory-video-tool-v1.11.0-arm64.dmg" target="_blank" rel="noopener" class="platform-card">
                         <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <rect x="2" y="3" width="20" height="14" rx="2"/>
                             <path d="M8 21h8"/>
@@ -351,20 +352,25 @@
                         <p class="platform-card__desc">Apple Silicon (ARM)</p>
                         <span class="platform-card__meta">.dmg</span>
                     </a>
-                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.1/mytory-video-tool-v1.10.1-x64.dmg" class="platform-card__alt" target="_blank" rel="noopener">
+                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.11.0/mytory-video-tool-v1.11.0-x64.dmg" class="platform-card__alt" target="_blank" rel="noopener">
                         Intel (x64) variant →
                     </a>
                 </div>
-                <a href="https://apps.microsoft.com/detail/9nkrwrkmlgmw" target="_blank" rel="noopener" class="platform-card">
-                    <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <rect x="4" y="2" width="16" height="20" rx="2"/>
-                        <line x1="9" y1="2" x2="9" y2="22"/>
-                    </svg>
-                    <h3 class="platform-card__title">Windows</h3>
-                    <p class="platform-card__desc">Instale pela Microsoft Store</p>
-                    <span class="platform-card__meta">Microsoft Store</span>
-                </a>
-                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.10.1/mytory-video-tool-v1.10.1.AppImage" target="_blank" rel="noopener" class="platform-card">
+                <div class="platform-card__wrapper">
+                    <a href="https://apps.microsoft.com/detail/9nkrwrkmlgmw" target="_blank" rel="noopener" class="platform-card">
+                        <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="4" y="2" width="16" height="20" rx="2"/>
+                            <line x1="9" y1="2" x2="9" y2="22"/>
+                        </svg>
+                        <h3 class="platform-card__title">Windows</h3>
+                        <p class="platform-card__desc">Instale pela Microsoft Store</p>
+                        <span class="platform-card__meta">Microsoft Store</span>
+                    </a>
+                    <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.11.0/mytory-video-tool-Setup-v1.11.0.exe" class="platform-card__alt" target="_blank" rel="noopener">
+                        Baixar o instalador diretamente (.exe) →
+                    </a>
+                </div>
+                <a href="https://github.com/mytory/mytory-video-tools/releases/download/v1.11.0/mytory-video-tool-v1.11.0.AppImage" target="_blank" rel="noopener" class="platform-card">
                     <svg class="platform-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/>
                         <line x1="12" y1="22" x2="12" y2="12"/>
@@ -447,6 +453,6 @@
         </div>
     </footer>
 
-    <script src="../script.js?h=4bdb6d7a853f8d182ec646dee43c2a2e"></script>
+    <script src="../script.js?h=32d7f14ee22d2a894b5dbee33258eb92"></script>
 </body>
 </html>

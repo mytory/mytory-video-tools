@@ -5,6 +5,7 @@ const { spawn } = require('child_process');
 const sharp = require('sharp');
 const { exiftool } = require('exiftool-vendored');
 const { runSmartCut } = require('./renderer/shared/smart-cut');
+const { assertDistinctSplitPaths, splitMetadataArgs, copySplitExifMetadata } = require('./renderer/shared/split-metadata');
 
 // EPIPE 에러 무시 (console.log 시 stdout/stderr 파이프가 끊어지는 경우 대응)
 process.stdout.on('error', () => {});
@@ -1120,6 +1121,7 @@ ipcMain.handle('split:start', async (event, { taskId, inputPath, startTime, endT
     const smartCutTask = smartCut ? { cancelled: false } : null;
     if (smartCutTask) activeSmartCutTasks.set(taskId, smartCutTask);
     try {
+        assertDistinctSplitPaths(inputPath, outputPath);
         if (smartCut) {
             return await runSmartCut({
                 taskId,
@@ -1131,6 +1133,7 @@ ipcMain.handle('split:start', async (event, { taskId, inputPath, startTime, endT
                 ffprobePath,
                 runCommand: runSmartCutCommand,
                 runFFmpeg,
+                finalizeMetadata: (file, seconds) => copySplitExifMetadata(exiftool, inputPath, file, seconds),
                 isCancelled: () => smartCutTask.cancelled
             });
         }
@@ -1162,10 +1165,20 @@ ipcMain.handle('split:start', async (event, { taskId, inputPath, startTime, endT
             '-i', inputPath,
             '-c', 'copy',
             ...timescaleArg,
+            ...splitMetadataArgs(info, startSec, 0, outputPath),
             outputPath
         ];
         
-        await runFFmpeg(taskId, args, duration, outputPath);
+        // Publish only after metadata succeeds, preserving an existing destination on failure.
+        const tempDir = fs.mkdtempSync(path.join(path.dirname(outputPath), '.split-'));
+        const tempPath = path.join(tempDir, path.basename(outputPath));
+        try {
+            await runFFmpeg(taskId, [...args.slice(0, -1), tempPath], duration, tempPath);
+            await copySplitExifMetadata(exiftool, inputPath, tempPath, startSec);
+            fs.renameSync(tempPath, outputPath);
+        } finally {
+            fs.rmSync(tempDir, { recursive: true, force: true });
+        }
         return { success: true, outputPath };
     } catch (err) {
         return {

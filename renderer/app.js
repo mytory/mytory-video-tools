@@ -191,6 +191,7 @@ const elements = {
     splitEditor: document.getElementById('splitEditor'),
     splitVideo: document.getElementById('splitVideo'),
     splitTimecode: document.getElementById('splitTimecode'),
+    splitPlaybackRate: document.getElementById('splitPlaybackRate'),
     btnSplitPlayPause: document.getElementById('btnSplitPlayPause'),
     btnSplitPrevFrame: document.getElementById('btnSplitPrevFrame'),
     btnSplitNextFrame: document.getElementById('btnSplitNextFrame'),
@@ -1765,7 +1766,36 @@ async function processRemuxFiles(files) {
 }
 
 // 6. 도구 5: 비디오 분할 도구 (Splitter) 핸들링
+function setupSplitterPlaybackRate() {
+    const input = elements.splitPlaybackRate;
+    const video = elements.splitVideo;
+    const applyRate = () => {
+        // Chromium accepts 0 (stopped) or speeds from 0.0625 to 16.
+        input.setCustomValidity(input.valueAsNumber > 0 && input.valueAsNumber < 0.0625 ? '0 / 0.0625–16' : '');
+        if (!input.value || !input.validity.valid) return;
+        video.defaultPlaybackRate = input.valueAsNumber;
+        video.playbackRate = input.valueAsNumber;
+    };
+    input.addEventListener('input', applyRate);
+    input.addEventListener('blur', () => {
+        applyRate();
+        input.value = String(video.defaultPlaybackRate);
+        input.setCustomValidity('');
+    });
+    input.addEventListener('keydown', (event) => {
+        if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
+        event.preventDefault();
+        const current = input.value && input.validity.valid && (input.valueAsNumber === 0 || input.valueAsNumber >= 0.0625)
+            ? input.valueAsNumber : video.defaultPlaybackRate;
+        let next = Number((current + (event.key === 'ArrowUp' ? 0.1 : -0.1)).toFixed(12));
+        if (next > 0 && next < 0.0625) next = 0.0625;
+        input.value = String(Math.min(Number(input.max), Math.max(Number(input.min), next)));
+        applyRate();
+    });
+}
+
 function setupSplitter() {
+    setupSplitterPlaybackRate();
     elements.splitFileInput.addEventListener('change', async (e) => {
         if (e.target.files.length > 0) {
             await loadVideoForSplit(e.target.files[0]);

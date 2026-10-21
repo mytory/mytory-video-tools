@@ -8,9 +8,11 @@
 
 ![Mytory Video Tools desktop app screenshot](./screenshots/screenshot-1.png)
 
-### What’s new in v1.10.1
+### What’s new in v1.11.0
 
-On Windows, the post-success support toast now includes a button to leave a review on the Microsoft Store.
+The splitter now supports numeric preview speed: enter values such as 1.25 or use ↑/↓ to change by 0.1. Playback supports 0.0625–16×; 0 pauses playback. Saved video speed is unchanged.
+
+Split clips inherit supported source metadata, with capture dates shifted by each clip’s original start position. Writable camera and GPS tags receive extended preservation in MP4/MOV; preservation of all proprietary metadata is not guaranteed.
 
 ---
 
@@ -30,7 +32,7 @@ On Windows, the post-success support toast now includes a button to leave a revi
 | 📸 **Frame Capture** | Single-frame capture, batch extraction at intervals, and automatic scene detection with sensitivity control. Choose a save folder or reset to the video's folder. Capture immediately while frame-rate analysis runs: filenames use milliseconds until analysis confirms a constant frame rate, then use frame precision for new captures. Variable-frame-rate videos keep millisecond filenames; times under one hour omit the hour field. Captured images retain their actual capture time in EXIF. |
 | 🔄 **Remuxer** | Fast container format conversion (MP4, MKV, MOV) without re-encoding. |
 | 🔗 **Video Joiner** | Join multiple video files with automatic compatibility handling. Drag to reorder, check compatibility at a glance, and handles differing frame rates with smart re-encoding. Perfect for re-assembling split segments. |
-| ✂️ **Video Splitter** | Trim a segment by setting start and end points. The default stream-copy mode may place cuts at keyframes. Optional Smart Cut re-encodes only the edges for exact selected-frame boundaries and stream-copies the middle. Supports 8-bit and 10-bit variable-frame-rate video within codec, profile, and container compatibility limits. |
+| ✂️ **Video Splitter** | Trim a segment by setting start and end points. Preview at a custom playback speed without changing saved video speed. Preserve supported source metadata and adjust capture dates to the clip’s start. The default stream-copy mode may place cuts at keyframes. Optional Smart Cut re-encodes only the edges for exact selected-frame boundaries and stream-copies the middle. Supports 8-bit and 10-bit variable-frame-rate video within codec, profile, and container compatibility limits. |
 | 📦 **Compressor** | Compress video to a target file size with various codec and quality options. |
 
 > **🖱️ Global Drag & Drop**: Drag files anywhere onto the app window to instantly add them to the currently active tool.

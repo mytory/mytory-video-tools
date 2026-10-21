@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { splitMetadataArgs } = require('./split-metadata');
 
 const ACCEPTED_H264_PROFILES = new Set(['constrained baseline', 'baseline', 'main', 'high', 'high 10']);
 const INTRA_CONTAINERS = new Map([
@@ -223,7 +224,7 @@ function copyRangeFilter(startPts, endPts, lastFramePts, lastFrameDuration) {
     return `noise=drop='lt(pts,${startPts})+gte(pts,${endPts})',setts=pts=PTS-${startPts}:dts=DTS-${startPts}:duration='if(eq(PTS,${lastFramePts}),${lastFrameDuration},DURATION)'`;
 }
 
-async function runIntraSmartCut(options, frames, audio, timeBase, inputPath, outputPath, startTime, endTime, lastDuration) {
+async function runIntraSmartCut(options, frames, audio, timeBase, inputPath, outputPath, startTime, endTime, lastDuration, metadata) {
     const { taskId, runFFmpeg, isCancelled } = options;
     const checkCancelled = () => {
         if (isCancelled()) throw new Error('Task was cancelled by user.');
@@ -270,8 +271,14 @@ async function runIntraSmartCut(options, frames, audio, timeBase, inputPath, out
             ], selectedEndTime - selectedStartTime, publishPath);
         }
 
+        const metadataPath = path.join(tempDir, `metadata.${outputExt}`);
+        await runStage([
+            '-i', publishPath, '-i', inputPath, '-map', '0', '-c', 'copy',
+            ...timescaleArgs, ...splitMetadataArgs(metadata, selectedStartTime, 1, outputPath), metadataPath
+        ], selectedEndTime - selectedStartTime, metadataPath);
+        if (options.finalizeMetadata) await options.finalizeMetadata(metadataPath, selectedStartTime);
         checkCancelled();
-        fs.renameSync(publishPath, outputPath);
+        fs.renameSync(metadataPath, outputPath);
         return { success: true, outputPath };
     } finally {
         fs.rmSync(tempDir, { recursive: true, force: true });
@@ -485,7 +492,7 @@ async function runSmartCut(options) {
             throw unsupported('메타데이터와 실제 프레임 PTS가 일치하는 CFR 영상만 지원합니다.');
         }
     }
-    if (intra) return runIntraSmartCut(options, frames, audio, timeBase, inputPath, outputPath, startTime, endTime, lastDuration);
+    if (intra) return runIntraSmartCut(options, frames, audio, timeBase, inputPath, outputPath, startTime, endTime, lastDuration, metadata);
 
     let packetHeaders = [];
     let idrIndexes;
@@ -670,8 +677,15 @@ async function runSmartCut(options) {
             ], selectedEndTime - selectedStartTime, publishPath);
         }
 
+        const metadataPath = path.join(tempDir, `metadata.${outputExt(outputPath)}`);
+        await runStage([
+            '-i', publishPath, '-i', inputPath, '-map', '0', '-c', 'copy',
+            ...(['mp4', 'mov'].includes(outputExt(outputPath)) ? ['-video_track_timescale', String(timescale)] : []),
+            ...splitMetadataArgs(metadata, selectedStartTime, 1, outputPath), metadataPath
+        ], selectedEndTime - selectedStartTime, metadataPath);
+        if (options.finalizeMetadata) await options.finalizeMetadata(metadataPath, selectedStartTime);
         checkCancelled();
-        fs.renameSync(publishPath, outputPath);
+        fs.renameSync(metadataPath, outputPath);
         return { success: true, outputPath };
     } finally {
         fs.rmSync(tempDir, { recursive: true, force: true });

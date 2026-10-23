@@ -80,6 +80,13 @@ npm start
 npm run dist
 ```
 
+### Install from Source on macOS
+Clone or download this repository, then run the installer from its root directory:
+```bash
+./install-mac.sh
+```
+The script builds for the current Mac architecture and installs the app in `/Applications`. Node.js 20 or later is required. The first launch may require choosing **Open** from the app's right-click menu because the app is not signed with a paid certificate.
+
 ### macOS Code Signing / CI Build Notes
 
 * `npm run dist` loads environment variables from `.env` via `dotenv`.

@@ -80,6 +80,13 @@ npm start
 npm run dist
 ```
 
+### macOS에서 소스로 설치
+저장소를 내려받은 뒤 루트 디렉터리에서 설치 스크립트를 실행합니다.
+```bash
+./install-mac.sh
+```
+현재 Mac 아키텍처에 맞춰 앱을 빌드하고 `/Applications`에 설치합니다. Node.js 20 이상이 필요합니다. 유료 인증서로 서명하지 않은 앱이므로 처음 실행할 때 앱을 우클릭해 **열기**를 선택해야 할 수 있습니다.
+
 ### macOS 서명/CI 빌드 안내
 
 * `npm run dist`는 `dotenv`를 사용해 `.env`를 로드합니다.

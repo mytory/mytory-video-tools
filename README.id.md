@@ -8,11 +8,9 @@
 
 ![Tangkapan layar aplikasi desktop Mytory Video Tools](./screenshots/screenshot-1.png)
 
-### Yang baru di v1.11.0
+### Yang baru di v1.11.1
 
-Atur kecepatan pratinjau dengan angka: masukkan nilai seperti 1.25 atau gunakan ↑/↓ untuk mengubahnya sebesar 0.1. Mendukung 0.0625–16×; 0 menjeda pemutaran. Kecepatan video yang disimpan tidak berubah.
-
-Potongan mewarisi metadata sumber yang didukung, dengan waktu perekaman disesuaikan menurut posisi awal potongan di video asli. Pelestarian tag kamera dan GPS yang dapat ditulis pada MP4/MOV diperluas; seluruh data khusus produsen tidak dijamin tetap tersimpan.
+Jika encoder GPU tidak dapat digunakan, aplikasi kini otomatis beralih ke encoder perangkat lunak dan menyelesaikan tugas, bukan gagal. Item antrean dan notifikasi selesai menunjukkan encoder yang benar-benar dipakai. Berlaku untuk pengubahan kecepatan maupun kompresi.
 
 ---
 

@@ -8,11 +8,9 @@
 
 ![Captura de tela do aplicativo desktop Mytory Video Tools](./screenshots/screenshot-1.png)
 
-### Novidades da v1.11.0
+### Novidades da v1.11.1
 
-Defina a velocidade da prévia: digite valores como 1.25 ou use ↑/↓ para alterar em 0.1. Suporta 0.0625–16×; 0 pausa a reprodução. A velocidade do vídeo salvo não muda.
-
-Os trechos herdam os metadados compatíveis do original e ajustam a data de gravação conforme a posição inicial no original. A preservação de tags graváveis de câmera e GPS em MP4/MOV foi ampliada; não há garantia de preservar todos os dados proprietários do fabricante.
+Se o codificador de GPU não puder ser usado, o app agora alterna automaticamente para um codificador de software e conclui a tarefa em vez de falhar. O item da fila e o aviso de conclusão mostram qual codificador foi realmente usado. Vale tanto para a mudança de velocidade quanto para a compressão.
 
 ---
 

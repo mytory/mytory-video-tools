@@ -8,11 +8,9 @@
 
 ![Captura de la aplicación de escritorio Mytory Video Tools](./screenshots/screenshot-1.png)
 
-### Novedades de v1.11.0
+### Novedades de v1.11.1
 
-Introduce la velocidad de vista previa: escribe valores como 1.25 o usa ↑/↓ para cambiarla en 0.1. Admite 0.0625–16×; 0 pausa la reproducción. La velocidad del video guardado no cambia.
-
-Los fragmentos heredan los metadatos compatibles del original y ajustan la fecha de grabación según su posición inicial en él. Se amplía la conservación de etiquetas de cámara y GPS que se pueden escribir en MP4/MOV; no se garantiza conservar todos los datos exclusivos del fabricante.
+Si el codificador GPU no se puede usar, la aplicación ahora cambia automáticamente a un codificador de software y termina el trabajo en lugar de fallar. El elemento de la cola y el aviso de finalización indican qué codificador se usó realmente. Se aplica tanto al cambio de velocidad como a la compresión.
 
 ---
 

@@ -78,6 +78,9 @@ npm start
 npm run dist
 ```
 
+### Package AppX pour le Microsoft Store
+Sous Windows x64, exécutez `npm run dist:store:appx` pour créer un fichier `.appx` destiné au Store dans `dist/`. La compilation utilise l'identité Partner Center configurée pour cette application dans `build/electron-builder.store-appx.cjs`.
+
 ### Notes sur la signature de code macOS / construction CI
 
 * `npm run dist` charge les variables d'environnement depuis `.env` via `dotenv`.

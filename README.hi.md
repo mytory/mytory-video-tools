@@ -78,6 +78,9 @@ npm start
 npm run dist
 ```
 
+### Microsoft Store AppX पैकेज
+Windows x64 पर `npm run dist:store:appx` चलाने से Store के लिए `.appx` पैकेज `dist/` में बनता है। यह बिल्ड `build/electron-builder.store-appx.cjs` में कॉन्फ़िगर किए गए ऐप के Partner Center identity का उपयोग करता है।
+
 ### macOS कोड साइनिंग / CI बिल्ड नोट्स
 
 * `npm run dist` `dotenv` के माध्यम से `.env` से एनवायरनमेंट वेरिएबल लोड करता है।

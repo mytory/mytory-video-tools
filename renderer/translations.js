@@ -840,6 +840,17 @@ const templateTranslations = {
         id: (name) => `Menggunakan encoding perangkat keras: ${name}`,
         hi: (name) => `हार्डवेयर एन्कोडिंग का उपयोग: ${name}`,
     },
+    '!hardware_fallback_notice': {
+        en: (from, to) => `Could not use hardware encoding (${from}); switched to ${to} (software) automatically.`,
+        ko: (from, to) => `하드웨어 인코딩(${from})을 사용할 수 없어 ${to}(소프트웨어)로 자동 전환했습니다.`,
+        ja: (from, to) => `ハードウェアエンコード（${from}）が使用できないため、${to}（ソフトウェア）に自動で切り替えました。`,
+        'zh-cn': (from, to) => `无法使用硬件编码（${from}），已自动切换为 ${to}（软件）。`,
+        es: (from, to) => `No se pudo usar la codificación por hardware (${from}); se cambió automáticamente a ${to} (software).`,
+        pt: (from, to) => `Não foi possível usar a codificação por hardware (${from}); alterado automaticamente para ${to} (software).`,
+        fr: (from, to) => `L'encodage matériel (${from}) n'a pas pu être utilisé ; bascule automatique vers ${to} (logiciel).`,
+        id: (from, to) => `Encoding perangkat keras (${from}) tidak dapat digunakan; otomatis beralih ke ${to} (perangkat lunak).`,
+        hi: (from, to) => `हार्डवेयर एन्कोडिंग (${from}) का उपयोग नहीं हो सका; स्वचालित रूप से ${to} (सॉफ़्टवेयर) पर स्विच किया गया।`,
+    },
     '!supported_gpus': {
         en: (list) => `Supported GPUs: ${list}`,
         ko: (list) => `감지된 GPU 가속 코덱: ${list}`,

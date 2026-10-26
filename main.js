@@ -5,6 +5,7 @@ const { spawn } = require('child_process');
 const sharp = require('sharp');
 const { exiftool } = require('exiftool-vendored');
 const { runSmartCut } = require('./renderer/shared/smart-cut');
+const { runWithEncoderFallback } = require('./renderer/shared/encoder-fallback');
 const { assertDistinctSplitPaths, splitMetadataArgs, copySplitExifMetadata } = require('./renderer/shared/split-metadata');
 
 // EPIPE 에러 무시 (console.log 시 stdout/stderr 파이프가 끊어지는 경우 대응)
@@ -170,7 +171,9 @@ function runFFmpeg(taskId, args, duration, outputPath) {
             } else {
                 // 취소된 경우(code가 null이고 signal로 종료)와 실제 오류 구분
                 if (ff.killed || code === null) {
-                    reject(new Error('Task was cancelled by user.'));
+                    const cancelError = new Error('Task was cancelled by user.');
+                    cancelError.cancelled = true;
+                    reject(cancelError);
                 } else {
                     reject(new Error(`FFmpeg exited with code ${code}. Log:\n${stderrBuffer.slice(-500)}`));
                 }
@@ -230,6 +233,32 @@ function getEncoderForCodec(videoCodec, useHw) {
     return useHw && hwEncoders.h264 ? hwEncoders.h264 : 'libx264';
 }
 
+// 배속 변환은 VP9를 항상 소프트웨어로 처리하고 AV1만 하드웨어 인코더를 쓴다.
+function getSpeedEncoder(videoCodec, useHw) {
+    if (videoCodec === 'vp9') return 'libvpx-vp9';
+    if (videoCodec === 'av1') return useHw && hwEncoders.av1 ? hwEncoders.av1 : 'libsvtav1';
+    return getEncoderForCodec(videoCodec, useHw);
+}
+
+// 배속 변환의 화질 옵션. 인코더마다 받는 옵션이 달라서 인코더 이름으로 고른다.
+function getSpeedQualityArgs(videoCodec, encoder) {
+    if (encoder === 'libx264') return ['-preset', 'ultrafast', '-crf', '23'];
+    if (encoder === 'libx265') return ['-preset', 'ultrafast', '-crf', '28'];
+    if (encoder === 'libvpx-vp9') return ['-deadline', 'good', '-cpu-used', '4', '-crf', '32'];
+    if (encoder === 'libsvtav1') return ['-preset', '8', '-crf', '35'];
+
+    // AV1 하드웨어 인코더는 기존 동작을 유지하려고 별도 화질 옵션을 주지 않는다.
+    if (videoCodec === 'av1') return [];
+    if (encoder.includes('videotoolbox')) return ['-q:v', videoCodec === 'h265' ? '45' : '50'];
+    if (encoder.includes('nvenc')) return ['-preset', 'p1', '-cq', videoCodec === 'h265' ? '30' : '28'];
+    if (encoder.includes('qsv')) return ['-global_quality', videoCodec === 'h265' ? '28' : '25'];
+
+    // AMF는 기존 동작(코덱 기본값)을 유지한다.
+    return videoCodec === 'h265'
+        ? ['-preset', 'ultrafast', '-crf', '28']
+        : ['-preset', 'ultrafast', '-crf', '23'];
+}
+
 function getCompressQualityArgs(encoder, videoCodec, bitrateKbps, maxrateKbps, bufsizeKbps) {
     const bitrate = `${bitrateKbps}k`;
     const maxrate = `${maxrateKbps || Math.round(bitrateKbps * 1.5)}k`;
@@ -254,6 +283,55 @@ function getCompressQualityArgs(encoder, videoCodec, bitrateKbps, maxrateKbps, b
         return ['-preset', '6', '-b:v', bitrate, '-maxrate', maxrate, '-bufsize', bufsize];
     }
     return ['-preset', 'medium', '-b:v', bitrate, '-maxrate', maxrate, '-bufsize', bufsize];
+}
+
+// 용량 최적화 FFmpeg 인자. 인코더를 바꿔 다시 시도할 수 있도록 인자 생성과 실행을 나눈다.
+function buildCompressArgs({
+    inputPath,
+    outputPath,
+    videoCodec,
+    encoder,
+    width,
+    height,
+    videoBitrate,
+    maxrate,
+    bufsize,
+    audioBitrate,
+    fps,
+    fastStart
+}) {
+    const args = ['-i', inputPath];
+    const filters = [];
+
+    if (width > 0 && height > 0) {
+        filters.push(`scale=w=${width}:h=${height}:force_original_aspect_ratio=decrease,scale=trunc(iw/2)*2:trunc(ih/2)*2`);
+    }
+
+    if (fps && fps !== 'source') {
+        filters.push(`fps=${fps}`);
+    }
+
+    if (filters.length > 0) {
+        args.push('-vf', filters.join(','));
+    }
+
+    args.push('-c:v', encoder);
+    args.push(...getCompressQualityArgs(
+        encoder,
+        videoCodec,
+        parseInt(videoBitrate, 10),
+        parseInt(maxrate, 10),
+        parseInt(bufsize, 10)
+    ));
+    args.push('-pix_fmt', 'yuv420p');
+
+    args.push('-c:a', 'aac', '-b:a', `${parseInt(audioBitrate, 10)}k`);
+    if (fastStart) {
+        args.push('-movflags', '+faststart');
+    }
+    args.push(outputPath);
+
+    return args;
 }
 
 // HTML 엔티티 이스케이프 (SVG 텍스트용)
@@ -842,60 +920,7 @@ ipcMain.handle('speed:start', async (event, { taskId, inputPath, speed, videoCod
         const outputDuration = duration / speed;
 
         const hasVideo = (info.streams || []).some(s => s.codec_type === 'video');
-
-        const args = ['-i', inputPath];
-
-        // 비디오 스트림이 있을 때만 비디오 필터 및 코덱 설정
-        if (hasVideo) {
-            args.push('-vf', `setpts=(1/${speed})*PTS`);
-
-            // 인코더 및 압축 화질 설정 (선택 코덱 + HW 적용 여부)
-            let encoder = 'libx264';
-            let qualityArgs = ['-preset', 'ultrafast', '-crf', '23'];
-
-            if (videoCodec === 'h264') {
-                if (useHw && hwEncoders.h264) {
-                    encoder = hwEncoders.h264;
-                    if (encoder.includes('videotoolbox')) {
-                        qualityArgs = ['-q:v', '50'];
-                    } else if (encoder.includes('nvenc')) {
-                        qualityArgs = ['-preset', 'p1', '-cq', '28'];
-                    } else if (encoder.includes('qsv')) {
-                        qualityArgs = ['-global_quality', '25'];
-                    }
-                } else {
-                    encoder = 'libx264';
-                    qualityArgs = ['-preset', 'ultrafast', '-crf', '23'];
-                }
-            } else if (videoCodec === 'h265') {
-                if (useHw && hwEncoders.hevc) {
-                    encoder = hwEncoders.hevc;
-                    if (encoder.includes('videotoolbox')) {
-                        qualityArgs = ['-q:v', '45'];
-                    } else if (encoder.includes('nvenc')) {
-                        qualityArgs = ['-preset', 'p1', '-cq', '30'];
-                    } else if (encoder.includes('qsv')) {
-                        qualityArgs = ['-global_quality', '28'];
-                    }
-                } else {
-                    encoder = 'libx265';
-                    qualityArgs = ['-preset', 'ultrafast', '-crf', '28'];
-                }
-            } else if (videoCodec === 'vp9') {
-                encoder = 'libvpx-vp9';
-                qualityArgs = ['-deadline', 'good', '-cpu-used', '4', '-crf', '32'];
-            } else if (videoCodec === 'av1') {
-                if (useHw && hwEncoders.av1) {
-                    encoder = hwEncoders.av1;
-                    qualityArgs = [];
-                } else {
-                    encoder = 'libsvtav1';
-                    qualityArgs = ['-preset', '8', '-crf', '35'];
-                }
-            }
-
-            args.push('-c:v', encoder, ...qualityArgs);
-        }
+        const encoder = hasVideo ? getSpeedEncoder(videoCodec, useHw) : null;
 
         // 오디오 템포 계산 (비디오/오디오 모두 공통)
         let atempoChain = '';
@@ -911,17 +936,40 @@ ipcMain.handle('speed:start', async (event, { taskId, inputPath, speed, videoCod
         if (tempSpeed !== 1.0) {
             atempoChain += (atempoChain ? ',' : '') + `atempo=${tempSpeed.toFixed(4)}`;
         }
-        
-        if (atempoChain) {
-            args.push('-af', atempoChain);
+
+        const buildArgs = (targetEncoder) => {
+            const args = ['-i', inputPath];
+
+            // 비디오 스트림이 있을 때만 비디오 필터 및 코덱 설정
+            if (hasVideo) {
+                args.push('-vf', `setpts=(1/${speed})*PTS`);
+                args.push('-c:v', targetEncoder, ...getSpeedQualityArgs(videoCodec, targetEncoder));
+            }
+
+            if (atempoChain) {
+                args.push('-af', atempoChain);
+            }
+
+            // 오디오 코덱 설정
+            args.push('-c:a', 'aac');
+            args.push(outputPath);
+            return args;
+        };
+
+        const { fallback } = await runWithEncoderFallback({
+            encoder,
+            videoCodec,
+            attempt: (targetEncoder) => runFFmpeg(
+                taskId,
+                buildArgs(targetEncoder),
+                outputDuration,
+                outputPath
+            )
+        });
+        if (fallback) {
+            console.warn(`Hardware encoder ${fallback.from} failed. Fell back to ${fallback.to}.`);
         }
-
-        // 오디오 코덱 설정
-        args.push('-c:a', 'aac');
-        args.push(outputPath);
-
-        await runFFmpeg(taskId, args, outputDuration, outputPath);
-        return { success: true, outputPath };
+        return { success: true, outputPath, fallback };
     } catch (err) {
         return { success: false, error: err.message };
     }
@@ -946,39 +994,34 @@ ipcMain.handle('compress:start', async (event, {
         const info = await probeVideo(inputPath);
         const duration = parseFloat(info.format.duration || 0);
         const encoder = getEncoderForCodec(videoCodec, useHw);
-        const args = ['-i', inputPath];
-        const filters = [];
 
-        if (width > 0 && height > 0) {
-            filters.push(`scale=w=${width}:h=${height}:force_original_aspect_ratio=decrease,scale=trunc(iw/2)*2:trunc(ih/2)*2`);
-        }
-
-        if (fps && fps !== 'source') {
-            filters.push(`fps=${fps}`);
-        }
-
-        if (filters.length > 0) {
-            args.push('-vf', filters.join(','));
-        }
-
-        args.push('-c:v', encoder);
-        args.push(...getCompressQualityArgs(
+        const { fallback } = await runWithEncoderFallback({
             encoder,
             videoCodec,
-            parseInt(videoBitrate, 10),
-            parseInt(maxrate, 10),
-            parseInt(bufsize, 10)
-        ));
-        args.push('-pix_fmt', 'yuv420p');
-
-        args.push('-c:a', 'aac', '-b:a', `${parseInt(audioBitrate, 10)}k`);
-        if (fastStart) {
-            args.push('-movflags', '+faststart');
+            attempt: (targetEncoder) => runFFmpeg(
+                taskId,
+                buildCompressArgs({
+                    inputPath,
+                    outputPath,
+                    videoCodec,
+                    encoder: targetEncoder,
+                    width,
+                    height,
+                    videoBitrate,
+                    maxrate,
+                    bufsize,
+                    audioBitrate,
+                    fps,
+                    fastStart
+                }),
+                duration,
+                outputPath
+            )
+        });
+        if (fallback) {
+            console.warn(`Hardware encoder ${fallback.from} failed. Fell back to ${fallback.to}.`);
         }
-        args.push(outputPath);
-
-        await runFFmpeg(taskId, args, duration, outputPath);
-        return { success: true, outputPath };
+        return { success: true, outputPath, fallback };
     } catch (err) {
         return { success: false, error: err.message };
     }

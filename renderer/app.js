@@ -278,6 +278,21 @@ function updateSpeedCodecHelp() {
     }
 }
 
+// 하드웨어 인코더가 실패해 소프트웨어 인코더로 대체되면, 큐에 실제 사용한 인코더와
+// 대체 이유를 남긴다.
+function applyEncoderFallback(task, fallback, videoCodec) {
+    if (!task || !fallback) return;
+    const softwareMeta = resolveSpeedEncoderMeta(videoCodec, false);
+    task.encoderMeta = { encoder: fallback.to, label: softwareMeta.label };
+    task.engineLabel = t('!hardware_fallback_notice', fallback.from, fallback.to);
+}
+
+function encoderFallbackNote(result) {
+    return result && result.fallback
+        ? t('!hardware_fallback_notice', result.fallback.from, result.fallback.to)
+        : '';
+}
+
 function resolveSpeedEncoderMeta(videoCodec, useHw) {
     const encoders = state.config.hwEncoders || {};
 
@@ -782,11 +797,15 @@ async function processSpeedFiles(files) {
             });
 
             if (result.success) {
+                applyEncoderFallback(task, result.fallback, state.speedCodec);
                 finishQueueItem(task.taskId, 'done');
                 elements.statDone.textContent = parseInt(elements.statDone.textContent) + 1;
+                const fallbackNote = encoderFallbackNote(result);
                 const label = task.isAudio
                     ? `${task.speed.toFixed(2)}x ${t('audio speed change', '오디오 배속')}`
-                    : `${task.speed.toFixed(2)}x, ${task.encoderMeta.label}`;
+                    : fallbackNote
+                        ? `${task.speed.toFixed(2)}x · ${fallbackNote}`
+                        : `${task.speed.toFixed(2)}x, ${task.encoderMeta.label}`;
                 showToast(t('Conversion Complete', '인코딩 완료'), `${task.file.name} -> ${label}`);
                 showDonationToast();
             } else {
@@ -934,8 +953,13 @@ async function processCompressFiles(files) {
             });
 
             if (result.success) {
+                applyEncoderFallback(task, result.fallback, settings.videoCodec);
                 finishQueueItem(task.taskId, 'done');
-                showToast(t('Compression Complete', '용량 최적화 완료'), `${task.file.name} -> ${settings.videoBitrate}k MP4`);
+                const fallbackNote = encoderFallbackNote(result);
+                showToast(
+                    t('Compression Complete', '용량 최적화 완료'),
+                    `${task.file.name} -> ${settings.videoBitrate}k MP4${fallbackNote ? ` · ${fallbackNote}` : ''}`
+                );
                 showDonationToast();
             } else {
                 finishQueueItem(task.taskId, 'error', result.error);

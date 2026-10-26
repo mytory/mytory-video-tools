@@ -220,11 +220,12 @@ HTML 구조 자체가 언어마다 달라야 할 때 사용합니다. 해당 언
    - macOS Intel: `.../download/vX.Y.Z/...-vX.Y.Z-x64.dmg`
    - Windows: `.../download/vX.Y.Z/...-Setup-vX.Y.Z.exe`
    - Linux: `.../download/vX.Y.Z/...-vX.Y.Z.AppImage`
-8. 변경사항을 커밋합니다.
-9. 태그를 만듭니다: `git tag -a vX.Y.Z -m "Release vX.Y.Z"`
-10. 사용자에게 `git push origin master vX.Y.Z` 등 필요한 브랜치/태그 푸시 명령을 안내합니다.
-11. 푸시 후 GitHub Release의 공개 상태와 산출물, 실제 웹사이트의 다운로드 링크를 각각 확인합니다. 태그 빌드 성공만으로 웹사이트까지 갱신됐다고 판단하지 않습니다.
-12. 출시 요청에는 Microsoft Store용 x64 AppX 생성도 포함합니다. [build-store-appx-from-macos 스킬](.agents/skills/build-store-appx-from-macos/SKILL.md)에 따라 해당 출시 태그를 포함한 소스로 빌드하고, 버전·Identity·Publisher·내장 실행 파일을 검증한 뒤 AppX를 다운로드해 로컬 경로와 SHA-256을 보고합니다. Partner Center 제출·심사는 별도 요청으로 진행합니다.
+8. `humanize-korean` 스킬로 한국어 문구를 다듬습니다. 대상은 `docs/ko/index.html`의 한국어 문구와 `README.ko.md`입니다. 이번 릴리즈에서 바뀐 문구를 우선하되 문서 전체에서 AI 티가 나는 표현도 함께 정리하고, 사실·수치·링크·제품명·명령과 HTML 구조는 바꾸지 않습니다.
+9. 변경사항을 커밋합니다.
+10. 태그를 만듭니다: `git tag -a vX.Y.Z -m "Release vX.Y.Z"`
+11. 사용자에게 `git push origin master vX.Y.Z` 등 필요한 브랜치/태그 푸시 명령을 안내합니다.
+12. 푸시 후 GitHub Release의 공개 상태와 산출물, 실제 웹사이트의 다운로드 링크를 각각 확인합니다. 태그 빌드 성공만으로 웹사이트까지 갱신됐다고 판단하지 않습니다.
+13. 출시 요청에는 Microsoft Store용 x64 AppX 생성도 포함합니다. [build-store-appx-from-macos 스킬](.agents/skills/build-store-appx-from-macos/SKILL.md)에 따라 해당 출시 태그를 포함한 소스로 빌드하고, 버전·Identity·Publisher·내장 실행 파일을 검증한 뒤 AppX를 다운로드해 로컬 경로와 SHA-256을 보고합니다. Partner Center 제출·심사는 별도 요청으로 진행합니다.
 
 ## GitHub Pages 웹사이트 업데이트 규칙
 

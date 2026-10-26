@@ -14,13 +14,18 @@ description: macOS에서 Mytory Video Tools의 Microsoft Store용 x64 AppX를 Wi
 - 사용자가 빌드를 요청한 범위에서 빌드 브랜치를 푸시한다. PR 머지는 AppX 생성에 필요하지 않다.
 - `.github/workflows/store-appx.yml`은 master 대상 PR에서 `package.json`, `package-lock.json`, `build/**`, 워크플로 변경에 반응한다. PR이 없거나 경로 변경이 없다면 푸시만으로 실행된다고 가정하지 않는다.
 - `gh run list --workflow store-appx.yml`에서 이번 푸시의 실행을 식별하고, head SHA와 PR merge ref가 요청한 릴리즈를 포함하는지 확인한다. 과거 성공 실행을 내려받지 않는다.
-- 실행 성공 후 `gh run download <run-id> -D dist/store-appx`로 산출물을 받는다.
+
+## 다운로드와 최종 저장 경로
+
+- 실행 성공 후 `gh run download <run-id> --name <artifact-name> -D <임시폴더>`로 이번 실행의 산출물을 받는다.
+- 검증을 마친 `.appx`는 산출물 파일명을 유지해 **`dist/store-appx/` 바로 아래**에 둔다. 예: `dist/store-appx/Mytory-Video-Tools-v1.11.0-x64.appx`. 실행 번호·버전·artifact 이름의 하위 폴더는 임시 다운로드에만 사용한다.
+- 같은 이름의 완성 파일이 있으면 SHA-256이 같을 때 재사용하고, 다르면 덮어쓰지 않고 보고한다. 완료 보고에는 이 최종 경로를 사용한다.
 
 ## 검증
 
 Windows CI는 `npm ci`, `npm run dist:store:appx`, `build/verify-store-appx.ps1` 순서로 실행한다. 로컬 다운로드 후 ZIP 내부 `AppxManifest.xml`의 버전(`X.Y.Z.0`), x64 아키텍처, 설정 파일의 Identity/Publisher를 확인한다. `app.asar`, Windows용 ffmpeg/ffprobe, AppxBlockMap과 필수 assets 포함 여부 및 SHA-256을 기록한다.
 
-macOS 로컬 빌드는 지원 Windows VM 또는 pwsh/Wine 환경이 필요하므로 이 도구들이 없으면 Windows CI를 사용한다. 파일 확장자만 MSIX로 바꾸지 않는다. 기존 패키지는 덮어쓰지 않는다. 실패가 반복되면 원인을 확인하며 최대 5회에서 중단하고 보고한다.
+macOS 로컬 빌드는 지원 Windows VM 또는 pwsh/Wine 환경이 필요하므로 이 도구들이 없으면 Windows CI를 사용한다. 파일 확장자만 MSIX로 바꾸지 않는다. 실패가 반복되면 원인을 확인하며 최대 5회에서 중단하고 보고한다.
 
 완료 보고에는 버전, 실행 URL, 로컬 AppX 경로, 검증 결과를 포함한다. Partner Center 제출과 인증서·심볼 요구사항은 실제 제출 결과 없이 성공했다고 주장하지 않는다.
 

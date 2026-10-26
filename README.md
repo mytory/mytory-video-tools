@@ -8,11 +8,9 @@
 
 ![Mytory Video Tools desktop app screenshot](./screenshots/screenshot-1.png)
 
-### What’s new in v1.11.0
+### What’s new in v1.11.1
 
-The splitter now supports numeric preview speed: enter values such as 1.25 or use ↑/↓ to change by 0.1. Playback supports 0.0625–16×; 0 pauses playback. Saved video speed is unchanged.
-
-Split clips inherit supported source metadata, with capture dates shifted by each clip’s original start position. Writable camera and GPS tags receive extended preservation in MP4/MOV; preservation of all proprietary metadata is not guaranteed.
+If the GPU encoder cannot be used, the app now switches to a software encoder automatically and finishes the job instead of failing. The queue item and the completion notice show which encoder was actually used. This applies to both speed change and compression.
 
 ---
 
@@ -82,6 +80,13 @@ npm run dist
 
 ### Microsoft Store AppX Package
 On Windows x64, run `npm run dist:store:appx` to create a Store-targeted `.appx` in `dist/`. The build uses this app's Partner Center identity from `build/electron-builder.store-appx.cjs`.
+
+### Install from Source on macOS
+Clone or download this repository, then run the installer from its root directory:
+```bash
+./install-mac.sh
+```
+The script builds for the current Mac architecture and installs the app in `/Applications`. Node.js 20 or later is required. The first launch may require choosing **Open** from the app's right-click menu because the app is not signed with a paid certificate.
 
 ### macOS Code Signing / CI Build Notes
 

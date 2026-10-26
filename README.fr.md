@@ -8,11 +8,9 @@
 
 ![Capture d’écran de l’application de bureau Mytory Video Tools](./screenshots/screenshot-1.png)
 
-### Nouveautés de la v1.11.0
+### Nouveautés de la v1.11.1
 
-Réglez la vitesse de l’aperçu : saisissez par exemple 1.25 ou utilisez ↑/↓ pour modifier la valeur de 0.1. Plage : 0.0625–16× ; 0 met en pause. La vitesse de la vidéo enregistrée reste inchangée.
-
-Les segments héritent des métadonnées compatibles de la source ; leur date de prise de vue est décalée selon leur position de début dans l’original. La conservation des balises modifiables d’appareil et de GPS en MP4/MOV est renforcée, sans garantie de préserver toutes les données propriétaires.
+Si l’encodeur GPU ne peut pas être utilisé, l’application bascule automatiquement vers un encodeur logiciel et termine la tâche au lieu d’échouer. L’élément de file d’attente et la notification de fin indiquent l’encodeur réellement utilisé. Cela s’applique au changement de vitesse comme à la compression.
 
 ---
 

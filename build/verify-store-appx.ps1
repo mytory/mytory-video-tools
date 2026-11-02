@@ -63,10 +63,40 @@ try {
         throw 'AppX package is missing the Windows x64 FFprobe executable.'
     }
 
+    $requiredAssets = @('StoreLogo.png', 'Square44x44Logo.png', 'Square150x150Logo.png', 'Wide310x150Logo.png')
+    foreach ($assetName in $requiredAssets) {
+        $assetPath = Join-Path $PSScriptRoot "appx/$assetName"
+        if (-not (Test-Path -LiteralPath $assetPath -PathType Leaf)) {
+            throw "Required Store icon source is missing: $assetPath"
+        }
+
+        $packageEntry = $archive.Entries | Where-Object { $_.FullName -ieq "Assets/$assetName" } | Select-Object -First 1
+        if ($null -eq $packageEntry) {
+            throw "AppX package is missing required Store icon: Assets/$assetName"
+        }
+
+        $expectedBytes = [System.IO.File]::ReadAllBytes($assetPath)
+        $packageStream = $packageEntry.Open()
+        $memoryStream = [System.IO.MemoryStream]::new()
+        try {
+            $packageStream.CopyTo($memoryStream)
+            $actualBytes = $memoryStream.ToArray()
+        }
+        finally {
+            $memoryStream.Dispose()
+            $packageStream.Dispose()
+        }
+
+        if ([Convert]::ToBase64String($expectedBytes) -cne [Convert]::ToBase64String($actualBytes)) {
+            throw "AppX icon does not match the approved source asset: Assets/$assetName"
+        }
+    }
+
     Write-Output "Verified AppX package: $PackagePath"
     Write-Output "Identity: $expectedIdentityName ($expectedApplicationId), x64"
     Write-Output "Publisher display name: $expectedPublisherDisplayName"
     Write-Output 'FFmpeg and FFprobe Windows binaries are present.'
+    Write-Output 'All four Store icon assets match build/appx byte for byte.'
 }
 finally {
     $archive.Dispose()

@@ -8,9 +8,9 @@
 
 ![Capture d’écran de l’application de bureau Mytory Video Tools](./screenshots/screenshot-1.png)
 
-### Nouveautés de la v1.11.1
+### Nouveautés de la v1.11.2
 
-Si l’encodeur GPU ne peut pas être utilisé, l’application bascule automatiquement vers un encodeur logiciel et termine la tâche au lieu d’échouer. L’élément de file d’attente et la notification de fin indiquent l’encodeur réellement utilisé. Cela s’applique au changement de vitesse comme à la compression.
+L’extraction Auto enregistre désormais les pistes AAC au format M4A sans réencodage. Cela corrige les estimations incorrectes de durée des fichiers AAC bruts dans des lecteurs comme Coup d’œil de macOS, sans perte de qualité.
 
 ---
 

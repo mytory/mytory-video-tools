@@ -8,9 +8,9 @@
 
 ![Tangkapan layar aplikasi desktop Mytory Video Tools](./screenshots/screenshot-1.png)
 
-### Yang baru di v1.11.1
+### Yang baru di v1.11.2
 
-Jika encoder GPU tidak dapat digunakan, aplikasi kini otomatis beralih ke encoder perangkat lunak dan menyelesaikan tugas, bukan gagal. Item antrean dan notifikasi selesai menunjukkan encoder yang benar-benar dipakai. Berlaku untuk pengubahan kecepatan maupun kompresi.
+Ekstraksi Auto kini menyimpan trek AAC sebagai M4A tanpa encoding ulang. Ini memperbaiki perkiraan durasi yang salah untuk file AAC mentah di pemutar seperti Quick Look macOS, tanpa penurunan kualitas audio.
 
 ---
 

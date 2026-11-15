@@ -1150,7 +1150,8 @@ async function processAudioFiles(files) {
         let ext = state.audioFormat;
         if (ext === 'auto') {
             const codec = probe.audioCodec || '';
-            const mapping = { aac: 'aac', mp3: 'mp3', vorbis: 'ogg', pcm_s16le: 'wav' };
+            // AAC는 길이 정보를 기록할 수 있는 M4A 컨테이너에 무손실 복사한다.
+            const mapping = { aac: 'm4a', mp3: 'mp3', vorbis: 'ogg', pcm_s16le: 'wav' };
             ext = mapping[codec] || 'aac';
         }
         state.filenameAudioExt = ext;
@@ -2386,7 +2387,7 @@ function initFilenameControls() {
             const sample = {
                 speed: ['sample.mp4', 'mp4', `_speed_${state.speed.toFixed(2)}x`],
                 compress: ['sample.mov', 'mp4', `_optimized_${getCompressSettings().videoBitrate}k`],
-                audio: ['sample.mp4', state.audioFormat === 'auto' ? 'aac' : state.audioFormat, '_audio'],
+                audio: ['sample.mp4', state.audioFormat === 'auto' ? 'm4a' : state.audioFormat, '_audio'],
                 audioCompress: ['sample.wav', 'mp3', '_compressed'],
                 capture: ['sample.mp4', elements.captureFormatSelect.value.split('/')[1], '_frame'],
                 remux: ['sample.mov', state.remuxFormat, '_remuxed'],

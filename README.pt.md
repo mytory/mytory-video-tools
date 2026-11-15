@@ -8,9 +8,9 @@
 
 ![Captura de tela do aplicativo desktop Mytory Video Tools](./screenshots/screenshot-1.png)
 
-### Novidades da v1.11.1
+### Novidades da v1.11.2
 
-Se o codificador de GPU não puder ser usado, o app agora alterna automaticamente para um codificador de software e conclui a tarefa em vez de falhar. O item da fila e o aviso de conclusão mostram qual codificador foi realmente usado. Vale tanto para a mudança de velocidade quanto para a compressão.
+A extração Auto agora salva faixas AAC como M4A sem recodificar. Isso corrige estimativas incorretas de duração de arquivos AAC brutos em reprodutores como a Visualização Rápida do macOS, sem perda de qualidade.
 
 ---
 

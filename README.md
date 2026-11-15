@@ -8,9 +8,9 @@
 
 ![Mytory Video Tools desktop app screenshot](./screenshots/screenshot-1.png)
 
-### What’s new in v1.11.1
+### What’s new in v1.11.2
 
-If the GPU encoder cannot be used, the app now switches to a software encoder automatically and finishes the job instead of failing. The queue item and the completion notice show which encoder was actually used. This applies to both speed change and compression.
+Auto audio extraction now saves AAC tracks as M4A without re-encoding. This fixes incorrect duration estimates for raw AAC files in players such as macOS Quick Look, with no loss of audio quality.
 
 ---
 

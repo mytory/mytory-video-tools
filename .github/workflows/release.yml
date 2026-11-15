@@ -3,6 +3,12 @@
 name: Release
 
 on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Existing release tag to build without moving it
+        required: true
+        type: string
   push:
     tags:
       - 'v*'
@@ -13,6 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.release_tag || github.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -25,18 +33,20 @@ jobs:
           name: linux-build
           path: dist/*.AppImage
 
-  # 2. Windows 빌드 (Wine 컨테이너)
+  # 2. Windows 네이티브 빌드
   build-windows:
-    runs-on: ubuntu-latest
-    container:
-      image: electronuserland/builder:wine
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.release_tag || github.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
       - run: npm ci
       - run: npm install @img/sharp-win32-x64@0.34.5 --no-save --force
-      - run: |
-          export HOME=/root
-          npm run dist:release -- --win --publish never
+      - run: npm run dist:release -- --win --publish never
       - uses: actions/upload-artifact@v4
         with:
           name: windows-build
@@ -47,6 +57,8 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.release_tag || github.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -79,9 +91,10 @@ jobs:
       - uses: softprops/action-gh-release@v2
         with:
           files: release-assets/*
-          name: Mytory Video Tools ${{ github.ref_name }}
+          tag_name: ${{ inputs.release_tag || github.ref_name }}
+          name: Mytory Video Tools ${{ inputs.release_tag || github.ref_name }}
           body: |
-            Release ${{ github.ref_name }}
+            Release ${{ inputs.release_tag || github.ref_name }}
 
             ### ⚠️ Security Warning (필독 / Please Read)
 

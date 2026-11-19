@@ -10,7 +10,7 @@
 
 ### v1.11.3 새 기능
 
-구간 나누기와 프레임 캡처 탭에서 스페이스바(재생/멈춤)와 C(이미지 캡처) 단축키가 텍스트를 입력하는 중이 아니라면 어디에 포커스가 있어도 작동합니다. 스페이스바를 눌러도 화면이 스크롤되지 않고, 한글 키보드 상태에서도 C(ㅋ)로 캡처할 수 있습니다.
+구간 나누기와 프레임 캡처 탭에서 스페이스바(재생/멈춤)와 C(이미지 캡처) 단축키가 텍스트를 입력하는 중이 아니라면 어디에 포커스가 있어도 작동합니다. 스페이스바를 눌러도 화면이 스크롤되지 않고 한글 키보드 상태에서도 C(ㅋ)로 캡처할 수 있습니다.
 
 ---
 
@@ -121,11 +121,11 @@ npm run dist
 
 ## 5. 오픈소스 라이선스 고지 (Open Source Licenses)
 
-이 프로그램은 다음 오픈소스 프로젝트들을 사용하고 있으며 각 프로젝트의 라이선스 규정을 준수합니다.
+이 프로그램은 다음 오픈소스 프로젝트들을 사용하며 각 프로젝트의 라이선스 규정을 준수합니다.
 
 *   **[Electron](https://www.electronjs.org/)** (MIT License): 데스크톱 애플리케이션 프레임워크
 *   **[FFmpeg](https://ffmpeg.org/)** (LGPL/GPL License): 멀티미디어 처리 엔진
-    *   이 프로그램은 `ffmpeg-static`을 통해 FFmpeg 바이너리를 포함하고 있습니다. FFmpeg의 소스 코드는 공식 사이트에서 다운로드할 수 있습니다.
+    *   이 프로그램은 `ffmpeg-static`을 통해 FFmpeg 바이너리를 포함합니다. FFmpeg의 소스 코드는 공식 사이트에서 다운로드할 수 있습니다.
 *   **[Pico.css](https://picocss.com/)** (MIT License): UI 스타일링을 위한 미니멀 CSS 프레임워크
 *   **[ffmpeg-static](https://github.com/eugeneware/ffmpeg-static) & [ffprobe-static](https://github.com/eugeneware/ffprobe-static)** (MIT License): FFmpeg 바이너리 제공 라이브러리
 

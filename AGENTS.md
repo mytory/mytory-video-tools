@@ -205,6 +205,8 @@ HTML 구조 자체가 언어마다 달라야 할 때 사용합니다. 해당 언
 
 ## 릴리즈 절차
 
+> **"출시"·"릴리즈" 요청은 아래 1~13단계 전체를 뜻합니다.** 8단계(humanize-korean)와 13단계(Microsoft Store AppX)도 포함이며, 사용자에게 "만들까요?"라고 묻지 않고 수행합니다. 시작할 때 1~13단계 체크리스트를 만들고, 마지막 보고 전에 모든 단계를 완료했는지 대조합니다. 건너뛰는 단계가 있으면 건너뛰기 전에 이유를 사용자에게 알립니다. 푸시만 사용자 허락을 받습니다.
+
 1. 현재 `package.json` 버전을 확인합니다.
 2. 변경사항을 확인하고, 다음 릴리즈 버전을 semver에 따라 결정합니다.
    - patch: 버그 수정
@@ -225,7 +227,7 @@ HTML 구조 자체가 언어마다 달라야 할 때 사용합니다. 해당 언
 10. 태그를 만듭니다: `git tag -a vX.Y.Z -m "Release vX.Y.Z"`
 11. 사용자에게 `git push origin master vX.Y.Z` 등 필요한 브랜치/태그 푸시 명령을 안내합니다.
 12. 푸시 후 GitHub Release의 공개 상태와 산출물, 실제 웹사이트의 다운로드 링크를 각각 확인합니다. 태그 빌드 성공만으로 웹사이트까지 갱신됐다고 판단하지 않습니다.
-13. 출시 요청에는 Microsoft Store용 x64 AppX 생성도 포함합니다. [build-store-appx-from-macos 스킬](.agents/skills/build-store-appx-from-macos/SKILL.md)에 따라 해당 출시 태그를 포함한 소스로 빌드하고, 버전·Identity·Publisher·내장 실행 파일을 검증한 뒤 AppX를 다운로드해 로컬 경로와 SHA-256을 보고합니다. Partner Center 제출·심사는 별도 요청으로 진행합니다.
+13. **필수 단계입니다. 생략하거나 사용자에게 묻지 않습니다.** 출시 요청에는 Microsoft Store용 x64 AppX 생성도 포함합니다. 태그를 푸시한 직후 `gh workflow run store-appx.yml --ref vX.Y.Z`로 시작하면 브랜치를 따로 푸시하지 않아도 됩니다. [build-store-appx-from-macos 스킬](.agents/skills/build-store-appx-from-macos/SKILL.md)에 따라 해당 출시 태그를 포함한 소스로 빌드하고, 버전·Identity·Publisher·내장 실행 파일을 검증한 뒤 AppX를 다운로드해 로컬 경로와 SHA-256을 보고합니다. Partner Center 제출·심사는 별도 요청으로 진행합니다.
 
 ## GitHub Pages 웹사이트 업데이트 규칙
 

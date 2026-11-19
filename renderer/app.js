@@ -2243,7 +2243,11 @@ async function markSplitOut() {
 function isTypingTarget(target) {
     if (!target) return false;
     const tagName = target.tagName ? target.tagName.toLowerCase() : '';
-    return tagName === 'input' || tagName === 'textarea' || tagName === 'select' || target.isContentEditable;
+    if (tagName === 'input') {
+        const nonTextTypes = ['checkbox', 'radio', 'range', 'button', 'submit', 'reset', 'file', 'color'];
+        return !nonTextTypes.includes((target.type || '').toLowerCase());
+    }
+    return tagName === 'textarea' || tagName === 'select' || target.isContentEditable;
 }
 
 function setupEditorKeyboardShortcuts() {
@@ -2255,7 +2259,7 @@ function setupEditorKeyboardShortcuts() {
         const frameStep = event.shiftKey ? 10 : 1;
 
         if (state.activeTab === 'splitter' && state.splitFile && state.splitMetadata) {
-            if (event.key === ' ') {
+            if (event.code === 'Space') {
                 event.preventDefault();
                 togglePlayback(elements.splitVideo);
                 return;
@@ -2283,7 +2287,7 @@ function setupEditorKeyboardShortcuts() {
         }
 
         if (state.activeTab === 'frame-capture' && state.captureFile && state.captureMetadata) {
-            if (event.key === ' ') {
+            if (event.code === 'Space') {
                 event.preventDefault();
                 togglePlayback(elements.captureVideo);
                 return;
@@ -2308,7 +2312,7 @@ function setupEditorKeyboardShortcuts() {
                 markCaptureOut();
                 return;
             }
-            if (event.code === 'KeyC' && !event.isComposing) {
+            if (event.code === 'KeyC') {
                 event.preventDefault();
                 elements.btnCaptureSingle.click();
                 return;

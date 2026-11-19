@@ -8,9 +8,9 @@
 
 ![Capture d’écran de l’application de bureau Mytory Video Tools](./screenshots/screenshot-1.png)
 
-### Nouveautés de la v1.11.2
+### Nouveautés de la v1.11.3
 
-L’extraction Auto enregistre désormais les pistes AAC au format M4A sans réencodage. Cela corrige les estimations incorrectes de durée des fichiers AAC bruts dans des lecteurs comme Coup d’œil de macOS, sans perte de qualité.
+Les raccourcis Espace et C des onglets Découpage et Capture d’image fonctionnent désormais quel que soit l’élément ayant le focus, sauf pendant la saisie de texte. Espace ne fait plus défiler la page et C capture une image même avec un clavier coréen ou un autre IME.
 
 ---
 

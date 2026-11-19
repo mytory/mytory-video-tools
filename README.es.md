@@ -8,9 +8,9 @@
 
 ![Captura de la aplicación de escritorio Mytory Video Tools](./screenshots/screenshot-1.png)
 
-### Novedades de v1.11.2
+### Novedades de v1.11.3
 
-La extracción Auto ahora guarda las pistas AAC como M4A sin recodificar. Corrige las estimaciones incorrectas de duración de archivos AAC sin contenedor en reproductores como Vista Rápida de macOS, sin pérdida de calidad.
+Los atajos Espacio y C de las pestañas Dividir y Captura de fotogramas ahora funcionan estés donde estés, salvo al escribir en un campo de texto. Espacio ya no desplaza la página y C captura un fotograma incluso con un teclado coreano u otro IME.
 
 ---
 

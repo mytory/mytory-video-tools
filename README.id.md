@@ -8,9 +8,9 @@
 
 ![Tangkapan layar aplikasi desktop Mytory Video Tools](./screenshots/screenshot-1.png)
 
-### Yang baru di v1.11.2
+### Yang baru di v1.11.3
 
-Ekstraksi Auto kini menyimpan trek AAC sebagai M4A tanpa encoding ulang. Ini memperbaiki perkiraan durasi yang salah untuk file AAC mentah di pemutar seperti Quick Look macOS, tanpa penurunan kualitas audio.
+Pintasan Spasi dan C di tab Pemisah dan Tangkapan Bingkai kini berfungsi di mana pun fokusnya, kecuali saat mengetik di kolom teks. Spasi tidak lagi menggulir halaman, dan C menangkap bingkai bahkan dengan keyboard Korea atau IME lain.
 
 ---
 

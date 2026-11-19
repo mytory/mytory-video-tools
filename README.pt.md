@@ -8,9 +8,9 @@
 
 ![Captura de tela do aplicativo desktop Mytory Video Tools](./screenshots/screenshot-1.png)
 
-### Novidades da v1.11.2
+### Novidades da v1.11.3
 
-A extração Auto agora salva faixas AAC como M4A sem recodificar. Isso corrige estimativas incorretas de duração de arquivos AAC brutos em reprodutores como a Visualização Rápida do macOS, sem perda de qualidade.
+Os atalhos Espaço e C nas abas Dividir e Captura de quadro agora funcionam onde quer que esteja o foco, exceto ao digitar em um campo de texto. O Espaço não rola mais a página e o C captura um quadro mesmo com teclado coreano ou outro IME.
 
 ---
 

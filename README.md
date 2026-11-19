@@ -8,9 +8,9 @@
 
 ![Mytory Video Tools desktop app screenshot](./screenshots/screenshot-1.png)
 
-### What’s new in v1.11.2
+### What’s new in v1.11.3
 
-Auto audio extraction now saves AAC tracks as M4A without re-encoding. This fixes incorrect duration estimates for raw AAC files in players such as macOS Quick Look, with no loss of audio quality.
+The Space and C shortcuts in the Splitter and Frame Capture tabs now work wherever focus is, unless you are typing in a text field. Space no longer scrolls the page, and C captures a frame even with a Korean (or other IME) keyboard layout.
 
 ---
 
